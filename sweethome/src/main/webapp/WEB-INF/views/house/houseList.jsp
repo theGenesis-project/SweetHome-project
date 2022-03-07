@@ -9,5 +9,14 @@
 </head>
 <body>
 	
+	<jsp:include page="../common/header.jsp" />
+	
+	
+	<div>gggg</div>
+	
+	
+	
+	<jsp:include page="../common/footer.jsp" />
+	
 </body>
 </html>
