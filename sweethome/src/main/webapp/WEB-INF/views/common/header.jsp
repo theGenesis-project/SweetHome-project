@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
  <style>
-      
         div{
             box-sizing: border-box;         
         }
