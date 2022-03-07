@@ -4,9 +4,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>공지사항</title>
 </head>
 <body>
+	<div id="main">
+		<div id="title">
+			<h2>공지사항</h2>
+		</div>
+		
+		<div id="search">
+			<select name="" id="">
+				<option value=""></option>
+				<option value=""></option>
+				
+			</select>
+		</div>
+	
+	</div>
 
 </body>
 </html>
