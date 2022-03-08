@@ -1,1 +1,3 @@
-SweetHome-project/sweethome/target/
+.metadata/
+target/
+.settings/
