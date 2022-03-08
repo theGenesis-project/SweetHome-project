@@ -8,7 +8,7 @@
 	<!-- DB 접속이 끊기면 자동으로 자원 반납 -->
 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@sweethomedb_high?TNS_ADMIN=E://blitz//KH//workspace//SweetHome-workspace//Wallet_SweetHomeDB"/>
+		<property name="url" value="jdbc:oracle:thin:@sweethomedb_high?TNS_ADMIN=C:\database\Wallet_SweetHomeDB"/>
 		<property name="username" value="SWEETHOME"/>
 		<property name="password" value="theGenesis05"/>
 	</bean>
