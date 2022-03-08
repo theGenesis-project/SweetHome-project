@@ -7,10 +7,10 @@
 	<!-- 1. DB 연결을 위한 도구 -->
 	<!-- DB 접속이 끊기면 자동으로 자원 반납 -->
 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="SWEETHOME" />
-		<property name="password" value="SWEETHOME"	/>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@sweethomedb_high?TNS_ADMIN=E://blitz//KH//workspace//SweetHome-workspace//Wallet_SweetHomeDB"/>
+		<property name="username" value="SWEETHOME"/>
+		<property name="password" value="theGenesis05"/>
 	</bean>
 	
 	 <!-- 2단계. MyBatis Spring에서 제공하는 SQL명령어 실행을 위한 도구 등록 -->
