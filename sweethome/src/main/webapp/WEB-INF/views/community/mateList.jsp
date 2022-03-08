@@ -5,9 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>중고거래</title>
+<title>Insert title here</title>
+</head>
 <style>
- #main{
+	#main{
             width: 1000px;
             margin: auto;
             margin-top: 50px;     
@@ -64,15 +65,14 @@
             border-radius: 3px;
         }
 </style>
-</head>
 <body>
 
-	 <jsp:include page="../common/header.jsp" />
-	 <jsp:include page="../common/communityNavi.jsp" />
-
- 	<div id="main">
+	<jsp:include page="../common/header.jsp" />
+	<jsp:include page="../common/communityNavi.jsp" />
+	
+	<div id="main">
 		<div id="title">
-			<h2>중고장터</h2>
+			<h2>메이트찾기</h2>
 		</div>
 		
 		<div id="search">
@@ -92,37 +92,38 @@
             <table>
                 <tr>
                     <th>No.</th>
-                    <th>분류</th>
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>판매</td>
-                    <td>제목이 오는 자리</td>
+                    <td>[공지]고객센터 운영 안내</td>
                     <td>작성자</td>                  
                     <td>2022-02-03</td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>판매</td>
-                    <td>제목이 오는 자리</td>
-                    <td>작성자</td>                  
+                    <td>1</td>
+                    <td>[공지]홈페이지 오픈</td>
+                    <td>관리자</td>
                     <td>2022-02-03</td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>판매</td>
-                    <td>제목이 오는 자리</td>
-                    <td>작성자</td>                  
+                    <td>1</td>
+                    <td>[공지]홈페이지 오픈</td>
+                    <td>관리자</td>
                     <td>2022-02-03</td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>판매</td>
-                    <td>제목이 오는 자리</td>
-                    <td>작성자</td>                  
+                    <td>1</td>
+                    <td>[공지]홈페이지 오픈</td>
+                    <td>관리자</td>
+                    <td>2022-02-03</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>[공지]홈페이지 오픈</td>
+                    <td>관리자</td>
                     <td>2022-02-03</td>
                 </tr>
 
@@ -141,8 +142,8 @@
 	
 	</div>
 	
-	 <jsp:include page="../common/footer.jsp" />
 	
+	<jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>
