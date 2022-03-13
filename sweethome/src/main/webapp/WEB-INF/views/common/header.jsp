@@ -8,12 +8,11 @@
 
 <title>Insert title here1</title>
  <style>
-
         div{
             box-sizing: border-box;         
         }
         #header{
-            width: 1200px;
+            width: 1500px;
             height: 150px;
             margin: auto;
             display: flex;       
@@ -47,11 +46,13 @@
             font-weight: bold;
             margin: auto;
         }
-        #header_rightDown>ul>li>a{
+        #header_rightDown>ul>li{
             float: right;
-            margin: 10px;
-            text-decoration: none;
-            color: rgb(65, 65, 65);         
+            margin: 10px;          
+        }
+        #header_rightDown>ul>li>a{
+        	text-decoration: none;
+            color: rgb(65, 65, 65);
         }
         #header_rightDown>ul>li>a:hover{
             color: rgb(247, 202, 201);
@@ -71,7 +72,14 @@
             </div>
             <div id="header_rightDown">
                 <ul>
-                    <li><a href="">로그인/회원가입</a></li>
+                <c:choose>
+                	<c:when test="${ empty loginUser }">
+                    	<li><a href="loginform.me">로그인</a>/<a href="">회원가입</a></li>
+                	</c:when>
+                	<c:otherwise>
+                		<li><a href="">마이페이지</a></li>
+                	</c:otherwise>
+                </c:choose>
                     <li><a href="">커뮤니티</a></li>
                     <li><a href="">인테리어</a></li>
                     <li><a href="">하우스</a></li>

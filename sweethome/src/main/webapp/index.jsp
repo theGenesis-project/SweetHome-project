@@ -9,7 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-인덱스 hihi~1212 bye bye bye ~
+	<jsp:forward page="WEB-INF/views/main.jsp" />
 </body>
-
 </html>

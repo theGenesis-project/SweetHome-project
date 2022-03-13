@@ -6,8 +6,11 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Member" alias="member" />
+		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat" />
 	</typeAliases>
 	
 	<mappers>
+		<mapper resource="/mappers/member-mapper.xml" />
 	</mappers>
 </configuration>

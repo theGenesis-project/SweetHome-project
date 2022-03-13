@@ -86,7 +86,7 @@
 					<artifactId>jmxri</artifactId>
 				</exclusion>
 			</exclusions>
-			<scope>runtime</scope>
+			<!-- <scope>runtime</scope> -->
 		</dependency>
 
 		<!-- @Inject -->
@@ -124,6 +124,7 @@
 		</dependency>      
 		
 		<!-- DB 관련 라이브러리 -->
+		<!-- 오라클 클라우드 -->
 		<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8 -->
 		<dependency>
 		    <groupId>com.oracle.database.jdbc</groupId>
@@ -148,6 +149,13 @@
 		    <groupId>com.oracle.database.security</groupId>
 		    <artifactId>osdt_cert</artifactId>
 		    <version>19.9.0.0</version>
+		</dependency>
+		
+		<!-- Ojdbc6 -->
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3</version>
 		</dependency>
 		
 		<!-- spring-jdbc -->
@@ -205,6 +213,11 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>5.5.2</version>
 		</dependency>
+		<dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-taglibs</artifactId>
+	        <version>5.5.2</version>
+        </dependency>
 		
 		<!-- 파일 업로드 -->
 		<!-- commons-fileupload -->
@@ -220,6 +233,17 @@
 			<version>2.6</version>
 		</dependency>
 		
+		<!-- 소켓 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.11.3</version>
+		</dependency>
 		
 	</dependencies>
     <build>
