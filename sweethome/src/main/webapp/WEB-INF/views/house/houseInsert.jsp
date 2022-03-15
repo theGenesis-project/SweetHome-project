@@ -8,15 +8,13 @@
 <title>하우스 등록</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
 <!-- jQuery library -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-
 <!-- Popper JS -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
 	.outer {
 		width: 1500px;
@@ -82,8 +80,11 @@
 	}
 	.house_intro {
 		text-align: center;
-		font-size: 40px;
+		/* font-size: 40px; */
 		background-color: gainsboro;
+	}
+	.smarteditors {
+		align: center;
 	}
 </style>
 </head>
@@ -99,13 +100,12 @@
 				<h1>하우스 등록</h1>
 			</div>
 
+			<form action="" method="post">
 				<div class="subtitle">
 					<div class="house_name_insert">
 						<h3>하우스 이름</h3>
-						&nbsp&nbsp<h4>스위트홈 1호점</h4>
+						&nbsp&nbsp <input type="text" name="">
 					</div>
-	
-	
 				</div>
 				<div class="house_photo_insert_title">
 					<div class="photo_insert_title_01"><h3>대표사진</h3></div>
@@ -138,7 +138,7 @@
 
 				<div class="house_photo_insert_title">
 					<div class="photo_insert_title_01"><h3>방 이름</h3></div>
-					<div class="photo_insert_title_02"><h4>201호</h4></div>
+					<div class="photo_insert_title_02"><input type="text" name=""></div>
 					<div class="photo_insert_title_03"><button class="button button1">파일첨부</button></div>
 				</div>
 	
@@ -180,7 +180,6 @@
 			<table class="house_room_info table table-hover">
 				<thead>
 					<tr>
-						<th>입주신청</th>
 						<th>구분</th>
 						<th>성별</th>
 						<th>타입</th>
@@ -194,52 +193,18 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><a href="">입주가능</a></td>
-						<td>101호</td>
-						<td>남성</td>
-						<td>1인실</td>
-						<td>9.4m2</td>
-						<td>1,000,000원</td>
-						<td>500,000원</td>
-						<td>50,000원</td>
-						<td>50,000원</td>
-						<td>2022-02-02</td>
-					</tr>
-					<tr>
-						<td><a href="">입주가능</a></td>
-						<td>101호</td>
-						<td>남성</td>
-						<td>1인실</td>
-						<td>9.4m2</td>
-						<td>1,000,000원</td>
-						<td>500,000원</td>
-						<td>50,000원</td>
-						<td>50,000원</td>
-						<td>2022-02-02</td>
-					</tr>
-					<tr>
-						<td><a href="">입주가능</a></td>
-						<td>101호</td>
-						<td>남성</td>
-						<td>1인실</td>
-						<td>9.4m2</td>
-						<td>1,000,000원</td>
-						<td>500,000원</td>
-						<td>50,000원</td>
-						<td>50,000원</td>
-						<td>2022-02-02</td>
-					</tr>
-					<tr>
-						<td><a href="">입주가능</a></td>
-						<td>101호</td>
-						<td>남성</td>
-						<td>1인실</td>
-						<td>9.4m2</td>
-						<td>1,000,000원</td>
-						<td>500,000원</td>
-						<td>50,000원</td>
-						<td>50,000원</td>
-						<td>2022-02-02</td>
+						<td><input type="text" name="" id=""></td>
+						<td>
+							<input type="radio" name="gender">남성
+							<input type="radio" name="gender">여성
+						</td>
+						<td><input type="text" name="" id="">인실</td>
+						<td><input type="text" name="" id="">m2</td>
+						<td><input type="text" name="" id="">원</td>
+						<td><input type="text" name="" id="">원</td>
+						<td><input type="text" name="" id="">원</td>
+						<td><input type="text" name="" id="">원</td>
+						<td><input type="date" name="" id=""></td>
 					</tr>
 				</tbody>
 			</table>
@@ -255,13 +220,13 @@
 				<h2>하우스 등록</h2>
 			</div>
 			<div class="house_intro">
-				정말 좋은 하우스
+				<textarea cols="100" style="resize: none;"></textarea>
 			</div>
 
 		</div>
 
 		<div>
-			<textarea>네이버 에디터 들어갈 곳</textarea>
+			<textarea name="ir1" id="ir1" rows="10" cols="100"></textarea>
 			
 		</div>
 
@@ -272,10 +237,17 @@
 
 			<table>
 				<tr>
-					<td>공용공간</td>
-					<td><textarea>네이버 에디터 들어갈 곳</textarea></td>
-					<td>개인공간</td>
-					<td><textarea>네이버 에디터 들어갈 곳</textarea></td>
+					공용공간
+				</tr>
+				<tr>
+					<textarea></textarea>
+				</tr>
+				<tr>
+					개인공간
+
+				</tr>
+				<tr>
+					<textarea></textarea>
 				</tr>
 			</table>
 		</div>
@@ -287,29 +259,26 @@
 
 			<table>
 				<tr>
-					<td rowspan="4">카카오 지도</td>
-					<td>교통시설/접근성</td>
+					교통시설/접근성
 				</tr>
 				<tr>
-
-					<td><textarea>네이버 에디터 들어갈 곳</textarea></td>
+					<textarea></textarea>
 				</tr>
 				<tr>
+					편의시설
 
-					<td>편의시설</td>
 				</tr>
 				<tr>
-
-					<td><textarea>네이버 에디터 들어갈 곳</textarea></td>
+					<textarea></textarea>
 				</tr>
-				
 			</table>
 		</div>
-
+		
 		<div>
-			<button>등록 및 결제</button>
-			<button>취소</button>
+			<button type="submit">등록 및 결제</button>
+			<button type="reset">취소</button>
 		</div>
+	</form>
 
 	</div>
 
