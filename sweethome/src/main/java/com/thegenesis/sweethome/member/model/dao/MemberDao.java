@@ -9,7 +9,8 @@ import com.thegenesis.sweethome.member.model.vo.Member;
 public class MemberDao {
 
 	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
-		return sqlSession.selectOne(statement);
+		return sqlSession.selectOne("memberMapper.loginMember", m);
 	}
-	
+
 }
+

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="askMapper">
+	<resultMap type="ask" id="askResultSet">
+		<result column="ASK_NO" property="askNo" />
+		<result column="USER_NO" property="userNo" />
+		<result column="ASK_TITLE" property="askTitle" />
+		<result column="ASK_DATE" property="askDate" />
+		<result column="ASK_CONTENT" property="askContent" />
+		<result column="COMMENT_DATE" property="commentDate" />
+		<result column="ASK_COMMENT" property="askComment" />
+	</resultMap>
+	
+	<resultMap type="askFile" id="askFileResultSet">
+		<result column="FILE_NO" property="fileNo" />
+		<result column="ASK_NO" property="askNo" />
+		<result column="ORIGIN_NAME" property="originName" />
+		<result column="CHANGE_NAME" property="changeName" />
+		<result column="FILE_PATH" property="filePath" />
+	</resultMap>
+	
+	<!-- 문의 등록용 쿼리문 -->
+  	<insert id="insertAsk" parameterType="ask">
+  		INSERT INTO ASK(
+  						ASK_NO
+  					  , USER_NO
+  					  , ASK_TITLE
+  					  , ASK_CONTENT
+  						)
+  			 VALUES
+  			 			(
+  			 			 SEQ_ASK_NO.NEXTVAL
+  			 		   , #{userNo}
+  			 		   , #{askTitle}
+  			 		   , #{askContent}
+  			 			)	
+  	</insert>
+  	
+  	<!-- 문의 사진 등록용 쿼리문 -->
+  	<insert id="insertAskFile" parameterType="askFile">
+  		INSERT INTO ASK_FILE(
+  							FILE_NO
+  						  , ASK_NO
+  						  , ORIGIN_NAME
+  						  , CHANGE_NAME
+  						  , FILE_PATH
+  							)
+  			 VALUES
+  			 				(
+  			 				SEQ_FILE_NO.NEXTVAL
+  			 			  , SEQ_ASK_NO.CURRVAL
+  			 			  , #{originName}
+  			 			  , #{changeName}
+  			 			  , #{filePath}
+  			 				)
+  	</insert>
+  	
+  	<!-- 문의 갯수 확인용 쿼리문 -->
+  	<select id="selectAskCount" resultType="_int">
+  		SELECT 
+  				COUNT(1)
+  		  FROM 
+  		  		ASK
+  		 WHERE
+  		 		USER_NO = #{userNo}
+  	</select>
+  	
+  	<!-- 문의 내역 확인용 쿼리문 -->
+  	<select id="selectList" resultMap="askResultSet">
+  		SELECT 
+  			   ASK_NO
+  			 , ASK_TITLE
+  			 , TO_CHAR(ASK_DATE, 'YYYY/MM/DD') ASK_DATE
+  			 , NVL2(ASK_COMMENT, 'Y', 'N') ASK_COMMENT
+  		 FROM 
+  		 	   ASK
+  		WHERE
+  		 	   USER_NO = #{userNo}
+  		ORDER BY
+  			   ASK_NO DESC
+  	</select>
+  	
+  	<!-- 게시글 상세보기를 위한 쿼리문 -->
+  	<select id="selectAskOne" resultMap="askResultSet">
+  		SELECT
+  			   ASK_NO
+  			 , ASK_TITLE
+  			 , TO_CHAR(ASK_DATE, 'YYYY/MM/DD') ASK_DATE
+  			 , ASK_CONTENT
+  			 , COMMENT_DATE
+  			 , NVL2(ASK_COMMENT, ASK_COMMENT, 'N') ASK_COMMENT
+  		 FROM 
+  		 	   ASK
+  		WHERE
+  			   USER_NO = #{userNo}
+  		  AND
+  		  	   ASK_NO = #{askNo}
+  	</select>
+  	
+  	<!-- 게시글 사진을 위한 쿼리문 -->
+  	<select id="selectAskFile" resultMap="askFileResultSet">
+		SELECT
+  			   FILE_NO
+  			 , ORIGIN_NAME
+  			 , CHANGE_NAME
+  			 , FILE_PATH
+  		 FROM 
+  		 	   ASK_FILE
+  		WHERE
+  		  	   ASK_NO = #{askNo}
+  	</select>
+</mapper>

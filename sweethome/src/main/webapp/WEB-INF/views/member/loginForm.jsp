@@ -62,6 +62,13 @@
 <body>
     <!-- 메뉴바 -->
     <jsp:include page="../common/header.jsp" />
+    
+    <c:if test="${ not empty errorMsg }">
+		<script>
+			alert("${errorMsg}");
+		</script>
+		<c:remove var="errorMsg" scope="session" />
+	</c:if>
 
     <div class="content">
         <div class="innerOuter">

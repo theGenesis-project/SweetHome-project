@@ -11,8 +11,6 @@
     width: 220px;
     border-radius: 13px;
     border: 2px solid lightgray;
-    margin-top: 30px;
-    margin-left: 50px;
     margin-right: 5px;
 
     }
@@ -30,7 +28,7 @@
     text-align: center;
     }
 
-    .sub-nav-head>h2 {
+    .sub-nav-head>h4 {
     margin: 0;
     line-height: 100px;
     }
@@ -60,9 +58,9 @@
 <body>
 	<div class="sub-nav-area">
         <div class="sub-nav-head">
-            <h2>마이페이지</h2>
+            <h4 class="font-weight-bold">마이페이지</h4>
         </div>
-        <div class="sub-nav-list" onclick="location.href=''">
+        <div class="sub-nav-list" onclick="location.href='myPage.me'">
           	 회원정보 관리
         </div>
         <div class="sub-nav-list" onclick="location.href=''">
@@ -77,7 +75,7 @@
          <div class="sub-nav-list" onclick="location.href=''">
          	게시글/댓글 확인
          </div>
-         <div class="sub-nav-list" onclick="location.href=''">
+         <div class="sub-nav-list" onclick="location.href='list.ask'">
          	1:1문의 관리
          </div>
          <div class="sub-nav-list" onclick="location.href=''">
