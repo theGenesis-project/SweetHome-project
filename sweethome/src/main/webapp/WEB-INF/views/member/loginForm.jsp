@@ -1,68 +1,107 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인 페이지</title>
+<title>Insert title here</title>
 <style>
-    .login-container {
-        width: 570px;
-        height: 456px;
-        margin: auto;
-        margin-top: 100px;
-        margin-bottom: 100px;
-        border: 1px solid lightgray;
-        text-align: center;
-    }
-    .login-api {
-        height: 40%;
-    }
-    .loginform {
-        height: 60%;
-    }
-    .login-input {
-        width: 370px;
-        height: 40px;
-        margin: 5px;
-    }
-    .login-button {
-        background-color: rgb(247, 202, 201);
-        border: 0;
-        height: 45px;
-        width: 375px;
-        border-radius: 5px;
-    }
+        .content{
+            border: 1px solid rgb(247, 202 , 201);
+            width: 1200px;
+            margin: auto;
+        }
 
-</style>
+        .innerOuter{
+            border: 1px solid rgb(247, 202 , 201);
+            width:600px;
+            height:550px;
+            margin:auto;
+        }
+
+        .Login{ /*로그인 제목*/
+            font-size: large;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+        .sLogin{ /*간편로그인 버튼공간*/
+            width: 300px;
+            height: 100px;
+            margin: auto;
+            border: 1px solid rgb(247, 202 , 201);
+        }
+        .bLogin{
+            text-align: center;
+        }
+        .inputForm{
+            border: 1px solid rgb(247, 202 , 201);
+            width : 400px;
+            height: 50px;
+            margin: auto;  
+            font-size: 15px;
+        }
+
+        .btn1 {  /*이메일인증버튼*/
+            border: none;
+            width: 410px;
+            height:50px;
+            background-color: rgb(247, 202 , 201) ;   
+        }
+
+        .findLogin{
+            text-align: center;
+        }
+
+        a{
+            text-decoration: none;
+        }
+       
+    </style>
 </head>
 <body>
-	<jsp:include page="../common/header.jsp" />
-	
-	<c:if test="${ not empty errorMsg }">
+    <!-- 메뉴바 -->
+    <jsp:include page="../common/header.jsp" />
+    
+    <c:if test="${ not empty errorMsg }">
 		<script>
 			alert("${errorMsg}");
 		</script>
 		<c:remove var="errorMsg" scope="session" />
 	</c:if>
-	
-	<div class="login-container">
-        <form action="login.me" method="post">
-            <div class="login-api">
 
-            </div>
-            <div class="loginform">
-                <h3>로그인</h3>
-                <input type="text" class="login-input" placeholder="Enter ID" id="userId" name="userId" required> 
-                <br> 
-                <input type="password" class="login-input" placeholder="Enter Password" id="userPwd" name="userPwd" required>
+    <div class="content">
+        <div class="innerOuter">
+            <div class="simpleLogin">
+                <br><br>
+                <div class="Login">SNS 간편 로그인</div>
                 <br>
-                <button type="submit" class="login-input login-button">로그인</button>
+                <div class="sLogin"></div>
             </div>
-        </form>
+            <br><br><br>
+            <form action="login.me" method="post">
+	            <div class="basicLogin">
+	                <div class="Login">로그인</div><br>
+	                <div class="bLogin">
+	                    <input type="text" placeholder="아이디" class="inputForm" id="userId" name="userId"> <br>
+	                    <br>
+	                    <input type="password" placeholder="비밀번호" class="inputForm" id="userPwd" name="userPwd">
+	                    <br><br>
+	                    <button type="submit" class="btn1">로그인</button>
+	                </div>
+	            </div>
+            </form>
+        </div>
+        <br>
+        <div class="findLogin">
+            <a href="">아이디 찾기 </a>  
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="">비밀번호 찾기</a>
+        </div>
+        <br>
     </div>
-	
-	<jsp:include page="../common/footer.jsp" />
+
+     <!-- 푸터바 -->
+    <jsp:include page="../common/footer.jsp" />
 </body>
 </html>

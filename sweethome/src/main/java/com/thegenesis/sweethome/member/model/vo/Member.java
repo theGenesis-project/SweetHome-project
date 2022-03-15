@@ -23,3 +23,4 @@ public class Member {
 	private String ownerNo;
 	private String userType;
 }
+
