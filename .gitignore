@@ -1,3 +1,4 @@
 .metadata/
-/MANIFEST.MF
-/pom.properties
+target/
+MANIFEST.MF
+pom.properties
