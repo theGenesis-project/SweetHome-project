@@ -1,5 +1,6 @@
 package com.thegenesis.sweethome.member.model.service;
 
+import com.thegenesis.sweethome.member.model.vo.Cert;
 import com.thegenesis.sweethome.member.model.vo.Member;
 
 public interface MemberService {
@@ -12,5 +13,14 @@ public interface MemberService {
 	
 	// 아이디 중복체크
 	int idCheck(String checkId);
+
+	// 회원정보 수정
+	int updateMember(Member m);
+
+	// 메일 인증번호 추가
+	int insertEmailCheck(Cert cert);
+
+	// 인증번호 확인
+	boolean validate(Cert cert);
 	
 }

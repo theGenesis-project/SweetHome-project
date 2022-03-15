@@ -10,6 +10,7 @@
 		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat" />
 		<typeAlias type="com.thegenesis.sweethome.ask.model.vo.Ask" alias="ask" />
 		<typeAlias type="com.thegenesis.sweethome.ask.model.vo.AskFile" alias="askFile" />
+		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Cert" alias="cert"/>
 	</typeAliases>
 	
 	<mappers>

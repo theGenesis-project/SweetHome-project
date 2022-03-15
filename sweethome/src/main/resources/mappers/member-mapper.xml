@@ -16,6 +16,12 @@
   	<result column="USER_TYPE" property="userType" />
   </resultMap>
   
+  <resultMap type="cert" id="certResultSet">
+  	<result column="WHO" property="who"/>
+  	<result column="CERT_NUM" property="certNum"/>
+  	<result column="CERT_DATE" property="certDate"/>  	
+  </resultMap>
+  
   <!-- 로그인용 쿼리문 -->
   <select id="loginMember" resultMap="memberResultSet" parameterType="member">
   		SELECT 
@@ -37,5 +43,50 @@
 		   AND 
 		 		STATUS = 'Y'
   </select>
+  
+  <!-- 회원정보 수정용 쿼리문 -->
+  <update id="updateMember" parameterType="member">
+  	UPDATE 
+  			MEMBER
+  	   SET
+  	   		USER_NAME = #{userName}
+  	   	  , EMAIL = #{email}
+  	   	  , PHONE = #{phone}
+  	   	  , MODIFY_DATE = SYSDATE
+  	 WHERE
+  	 		USER_NO = #{userNo}
+  	   AND
+  			USER_ID = #{userId}
+  	   AND 
+  	   		STATUS = 'Y'
+  </update>
+  
+  <!-- 메일 인증번호 저장용 쿼리문 -->
+  <insert id="insertEmailCheck" parameterType="cert">
+  	INSERT INTO CERT(
+  			 		 WHO
+  				   , CERT_NUM
+  			) VALUES (
+  		 	 		 #{who}
+  		 		   , #{certNum}
+  			)
+  </insert>
+  
+  <select id="validate" parameterType="cert" resultMap="certResultSet">
+  	SELECT 
+  			WHO
+  		  , CERT_NUM
+  		  , CERT_DATE
+  	  FROM
+  	  		CERT
+  	 WHERE
+  	 		CERT_NUM = #{certNum}
+  	   AND
+  	   		WHO = #{who}
+  	   AND
+  	 		CERT_DATE BETWEEN CERT_DATE AND SYSDATE - 6/24/60
+  		
+  </select>
+  
 </mapper>
 

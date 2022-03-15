@@ -44,6 +44,7 @@
 
     .sub-nav-list:hover {
         color: rgb(247, 202, 201);
+        cursor: pointer;
     }
 
     .sub-nav-bottom {
