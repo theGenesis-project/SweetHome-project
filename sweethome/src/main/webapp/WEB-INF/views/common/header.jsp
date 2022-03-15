@@ -13,7 +13,7 @@
             box-sizing: border-box;         
         }
         #header{
-            width: 1200px;
+            width: 1500px;
             height: 150px;
             margin: auto;
             display: flex;       
