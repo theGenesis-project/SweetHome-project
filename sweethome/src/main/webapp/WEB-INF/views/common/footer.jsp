@@ -53,7 +53,7 @@
             <div id="footerUp2">
                 <ul>
                     <li><a href="">개인정보 처리방침</a></li>
-                    <li><a href="">1:1 문의</a></li>
+                    <li><a href="askForm">1:1 문의</a></li>
                     <c:if test="${ not empty loginUser }">
                     	<li><a class="logout-button" href="logout.me">로그아웃</a></li>
 					</c:if>

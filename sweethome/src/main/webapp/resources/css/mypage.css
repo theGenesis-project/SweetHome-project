@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.sub_nav {
+	float: left;
+	width: 250px;
+	height: auto;
+}
+
+.mypage {
+	float: left;
+	width: 1250px;
+	position: relative;
+}
+
+.end{
+	clear: both;
+}
+
+.list-area:hover {
+	background-color:rgb(237, 237, 237); 
+}
+
+#pagingArea {
+	width: fit-content; 
+	margin:auto;	
+}

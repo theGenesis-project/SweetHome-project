@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
 <style>
-    .container {
+    .login-container {
         width: 570px;
         height: 456px;
         margin: auto;
@@ -47,7 +47,7 @@
 		<c:remove var="errorMsg" scope="session" />
 	</c:if>
 	
-	<div class="container">
+	<div class="login-container">
         <form action="login.me" method="post">
             <div class="login-api">
 

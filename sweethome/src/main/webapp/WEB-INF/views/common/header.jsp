@@ -5,8 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>Insert title here1</title>
+    <!-- jQuery 라이브러리 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 부트스트랩에서 제공하고 있는 스타일 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
  <style>
         div{
             box-sizing: border-box;         
@@ -58,6 +63,11 @@
             color: rgb(247, 202, 201);
             cursor: pointer;
         }
+        
+        .sweethome-container {
+		    width: 1500px;   
+			margin: 30px auto 50px auto;
+		}
 
     </style>
 </head>
@@ -77,7 +87,7 @@
                     	<li><a href="loginform.me">로그인</a>/<a href="">회원가입</a></li>
                 	</c:when>
                 	<c:otherwise>
-                		<li><a href="">마이페이지</a></li>
+                		<li><a href="myPage.me">마이페이지</a></li>
                 	</c:otherwise>
                 </c:choose>
                     <li><a href="">커뮤니티</a></li>

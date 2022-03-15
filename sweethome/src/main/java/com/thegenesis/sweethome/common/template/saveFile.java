@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class saveFile {
 	
-	public static String saveFilePolicy(MultipartFile upfile, HttpSession session) {
+	public static String changeFileName(MultipartFile upfile, HttpSession session) {
 		// 파일명 수정 작업 후 서버에 업로드 시키기(시간 + 랜덤5자리 숫자 + 확장자명)
 		String originName = upfile.getOriginalFilename();
 							

@@ -52,4 +52,9 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	
+	@RequestMapping("myPage.me")
+	public String memberInfoView() {
+		return "mypage/memberInfo";
+	}
 }

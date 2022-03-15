@@ -26,6 +26,12 @@
 		<!-- SQL 명령어 실행을 위한 도구에 대한 참조 설정 -->
 		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
+	
+	<!-- 수동 트랜잭션 처리릉 위한 도구 -->
+	<bean id="transactionManager" 
+	     class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="dataSource"/>
+	</bean>
 	  
 	<!-- 파일 업로드를 위한 도구 -->
 	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
