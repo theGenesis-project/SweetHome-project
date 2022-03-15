@@ -6,8 +6,10 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Member" alias="member" />
 	</typeAliases>
 	
 	<mappers>
+		<mapper resource="/mappers/member-mapper.xml" />
 	</mappers>
 </configuration>
