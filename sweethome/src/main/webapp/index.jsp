@@ -9,7 +9,6 @@
 </head>
 <body>
 인덱스 hihi~1212 bye bye bye ~
-	<jsp:forward page="WEB-INF/views/house/houseInsert.jsp"/>
 </body>
 
 </html>
