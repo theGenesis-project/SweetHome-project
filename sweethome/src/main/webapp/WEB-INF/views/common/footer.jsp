@@ -12,7 +12,7 @@
           
        }
         #footer{
-            width: 1200px;
+            width: 1500px;
             height: 180px;
             margin: auto;
         }
