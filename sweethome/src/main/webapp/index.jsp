@@ -10,6 +10,7 @@
 </head>
 <body>
 인덱스 hihi~1212 bye bye bye ~
+<jsp:forward page="WEB-INF/views/member/memberEnrollForm.jsp" />
 </body>
 
 </html>
