@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>하우스 등록</title>
+<title>하우스 등록하기</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -18,12 +18,12 @@
 <style>
 	.outer {
 		width: 1500px;
-		border: 1px solid red;
+		/* border: 1px solid red; */
 		margin: auto;
 	}
-	div {
+	/* div {
 		border: 1px solid red;
-	}
+	} */
 	.house_name_insert {
 		display: flex;
 		font-size: 25px;
@@ -100,13 +100,68 @@
 				<h1>하우스 등록</h1>
 			</div>
 
-			<form action="" method="post">
+			<form action="insertHouse.ho" method="post">
 				<div class="subtitle">
 					<div class="house_name_insert">
 						<h3>하우스 이름</h3>
 						&nbsp&nbsp <input type="text" name="">
 					</div>
 				</div>
+
+				<div>
+                    <h3>하우스 주소</h3>
+
+                    <%-- Daum 우편번호 서비스 --%> 
+                    <input type="text" id="postcode" placeholder="우편번호" disabled>
+                    <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+                    <input type="text" id="roadAddress" placeholder="도로명주소" disabled>
+                    <span id="guide" style="color:#999;display:none"></span>
+                    <input type="text" id="detailAddress" placeholder="상세주소">
+
+                    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                    <script>
+                        function execDaumPostcode() {
+                            new daum.Postcode({
+                                oncomplete: function(data) {
+                                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                                    // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                                    var roadAddr = data.roadAddress; // 도로명 주소 변수
+                                    // var extraRoadAddr = ''; // 참고 항목 변수
+
+                                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                                    }
+
+                                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                                    document.getElementById('postcode').value = data.zonecode;
+                                    document.getElementById("roadAddress").value = roadAddr;
+
+                                    var guideTextBox = document.getElementById("guide");
+                                    // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                                    if(data.autoRoadAddress) {
+                                        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                                        guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                                        guideTextBox.style.display = 'block';
+
+                                    } else if(data.autoJibunAddress) {
+                                        var expJibunAddr = data.autoJibunAddress;
+                                        guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                                        guideTextBox.style.display = 'block';
+                                    } else {
+                                        guideTextBox.innerHTML = '';
+                                        guideTextBox.style.display = 'none';
+                                    }
+                                }
+                            }).open();
+                        }
+                    </script>
+                </div>
+
+
+
 				<div class="house_photo_insert_title">
 					<div class="photo_insert_title_01"><h3>대표사진</h3></div>
 					<div class="photo_insert_title_02"><h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4></div>
@@ -193,18 +248,18 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><input type="text" name="" id=""></td>
+						<td><input type="text" name="roomName"></td>
 						<td>
 							<input type="radio" name="gender">남성
 							<input type="radio" name="gender">여성
 						</td>
-						<td><input type="text" name="" id="">인실</td>
-						<td><input type="text" name="" id="">m2</td>
-						<td><input type="text" name="" id="">원</td>
-						<td><input type="text" name="" id="">원</td>
-						<td><input type="text" name="" id="">원</td>
-						<td><input type="text" name="" id="">원</td>
-						<td><input type="date" name="" id=""></td>
+						<td><input type="text" name="people">인실</td>
+						<td><input type="text" name="area">m2</td>
+						<td><input type="text" name="deposit">원</td>
+						<td><input type="text" name="rent">원</td>
+						<td><input type="text" name="expense">원</td>
+						<td><input type="text" name="utility">원</td>
+						<td><input type="date" name="date"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -217,10 +272,10 @@
 		<div>
 			
 			<div class="title">
-				<h2>하우스 등록</h2>
+				<h2>지점 소개</h2>
 			</div>
 			<div class="house_intro">
-				<textarea cols="100" style="resize: none;"></textarea>
+				<textarea cols="100" style="resize: none;" name="description"></textarea>
 			</div>
 
 		</div>
