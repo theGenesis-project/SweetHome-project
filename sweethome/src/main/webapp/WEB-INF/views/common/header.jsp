@@ -65,8 +65,8 @@
         }
         
         .sweethome-container {
-		    width: 1500px;   
-			margin: 30px auto 50px auto;
+		    width: 1500px; 
+		    margin: 30px auto 50px auto;  
 		}
 
     </style>
@@ -77,6 +77,12 @@
 			alert("${errorMsg}");
 		</script>
 		<c:remove var="errorMsg" scope="session" />
+	</c:if>
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			alert("${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" scope="session" />
 	</c:if>
 	<div id="header">
         <div id="header_left">
