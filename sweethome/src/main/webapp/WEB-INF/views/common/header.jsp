@@ -84,7 +84,7 @@
                 <ul>
                 <c:choose>
                 	<c:when test="${ empty loginUser }">
-                    	<li><a href="loginform.me">로그인</a>/<a href="">회원가입</a></li>
+                    	<li><a href="loginform.me">로그인</a>/<a href="enrollForm.me">회원가입</a></li>
                 	</c:when>
                 	<c:otherwise>
                 		<li><a href="myPage.me">마이페이지</a></li>

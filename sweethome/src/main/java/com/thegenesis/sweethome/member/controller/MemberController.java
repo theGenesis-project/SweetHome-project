@@ -57,4 +57,28 @@ public class MemberController {
 	public String memberInfoView() {
 		return "mypage/memberInfo";
 	}
+	
+	@RequestMapping("enrollForm.me")
+	public String memberChoose() {
+		return "member/memberChoose";
+	}
+	
+	@RequestMapping("mateEnrollForm.me")
+	public String mateMember() {
+		return "member/memberEnrollForm";
+	}
+	
+	@RequestMapping("ownerEnrollForm.me")
+	public String ownerMember() {
+		return "member/memberEnrollFormOwner";
+	}
+	
+	@RequestMapping("insert.me")
+	public String insertMember(Member m) {
+		
+		//System.out.println(m);
+		
+		return "main";
+	}
+	
 }

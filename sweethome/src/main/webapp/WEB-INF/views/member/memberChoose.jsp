@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +56,7 @@
         <div class="innerOuter">
             <div class="btn-area">
                 <div style="float: left; margin-right: 50px;">
-                    <button class="btn1" onclick="">
+                    <button class="btn1" onclick="location.href='mateEnrollForm.me'">
                         <div class="big">메이트 회원가입</div><br>
                         <div class="small">일반회원</div>
                     </button>
@@ -63,7 +64,7 @@
                 </div>
                 
                 <div>            
-                    <button class="btn1" onclick="">
+                    <button type="button" class="btn1" onclick="location.href='ownerEnrollForm.me'">
                         <div class="big">하우스오너 회원가입</div><br>                
                         <div class="small">사업자 회원</div>
                     </button>               
