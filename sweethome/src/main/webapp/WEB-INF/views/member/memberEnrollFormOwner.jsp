@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-    <style>
+     <style>
         .content {
             /*border: 1px solid rgb(247, 202 , 201);*/
             width:1200px;
@@ -78,7 +78,7 @@
     </style>
 </head>
 <body>
-    <!-- 메뉴바 -->
+<!-- 메뉴바 -->
     <jsp:include page="../common/header.jsp" />
 
     <br><br><br><br>
@@ -108,16 +108,16 @@
             </div>
 
             <br><br>
-            <form action="insert.me" method="post">
-                <input type="hidden" name="userType" value="M">
+            <form action="" method="post">
+                <input type="hidden" name="userType" value="O">
                 
                 <div class="form-group">
 
                     <label for="userId">아이디  </label><br>
-                    <input type="text" class="fcontrol" id="userId" placeholder="영어, 숫자 포함 10자 이하" name="userId" required> <br>
+                    <input type="text" class="fcontrol" id="userId" placeholder="영어, 숫자 포함 10자 이하" name="" required> <br>
 					<br>
                     <label for="userPwd">비밀번호  </label><br>
-                    <input type="password" class="fcontrol" id="userPwd" placeholder="영어,숫자,기호!#$%^&*()_- 포함 13자 이상" name="userPwd" required> <br>
+                    <input type="password" class="fcontrol" id="userPwd" placeholder="영어,숫자,기호!#$%^&*()_- 포함 13자 이상" name="" required> <br>
                     <br>
                     <label for="checkPwd">비밀번호 확인  </label><br>
                     <input type="password" class="fcontrol" id="checkPwd" placeholder="영어,숫자,기호!#$%^&*()_- 포함 13자 이상" required> <br>
@@ -125,7 +125,7 @@
                     <br>
                     <div style="float: left;">
                         <label for="userName">이름</label><br>
-                        <input type="text" class="fcontrolname" id="userName" name="userName" required> <br>
+                        <input type="text" class="fcontrolname" id="userName" name="" required> <br>
                     </div>
                     
                     <div>
@@ -141,11 +141,11 @@
                     <div style="clear:both;"></div> 
 
                     <label for="phone">휴대전화 </label><br>
-                    <input type="tel" class="fcontrol" id="phone" placeholder="( - ) 없이 입력해주세요" name="phone"> <br>
+                    <input type="tel" class="fcontrol" id="phone" placeholder="( - ) 없이 입력해주세요" name=""> <br>
 					<br>
-                    <label for="email">이메일 </label>
+                    <label for="email">사업자 번호 </label>
                     <div>
-                        <input type="text" class="fcontrolemail" id="email" name="email" style="float:left; margin-right: 10px;"> 
+                        <input type="text" class="fcontrolemail" id="email" name="" style="float:left; margin-right: 10px;"> 
                     </div>   
                         <button class="btns1">인증하기</button>
                      
