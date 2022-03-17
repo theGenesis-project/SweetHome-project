@@ -46,5 +46,15 @@ public class MemberServiceImpl implements MemberService{
 	 public boolean validate(Cert cert) {
 		 return memberDao.validate(sqlSession, cert);
 	 }
+	 
+	 @Override
+	 public int updateMemberPwd(Member m) {
+		 return memberDao.updateMemberPwd(sqlSession, m);
+	 }
+
+	@Override
+	public int deleteMember(String userId) {
+		return memberDao.deleteMember(sqlSession, userId);
+	}
 
 }

@@ -22,5 +22,11 @@ public interface MemberService {
 
 	// 인증번호 확인
 	boolean validate(Cert cert);
+
+	// 비밀번호 변경
+	int updateMemberPwd(Member m);
+
+	// 회원 탈퇴
+	int deleteMember(String userId);
 	
 }

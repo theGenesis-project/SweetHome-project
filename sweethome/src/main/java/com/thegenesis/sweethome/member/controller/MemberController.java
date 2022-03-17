@@ -72,6 +72,7 @@ public class MemberController {
 		if(result > 0) {
 			Member loginUser = memberService.loginMember(m);
 			session.setAttribute("loginUser", loginUser);
+			session.setAttribute("alertMsg", "회원정보 수정에 성공하셨습니다.");
 			return("redirect:/myPage.me");
 		} else {
 			session.setAttribute("errorMsg", "회원정보 수정에 실패하셨습니다.");
@@ -113,11 +114,54 @@ public class MemberController {
 													.certNum(certNum)
 													.build());
 		return result;
-		
 	}
 	
 	@RequestMapping("changePwd.me")
-	public void updateMemberPwd(String prePwd, String newPwd) {
+	public String updateMemberPwd(Member m, HttpSession session) {
+		// 현재 세션의 회원정보 받아오기
+		Member loginUser = (Member) session.getAttribute("loginUser");
 		
+		// 세션의 비밀번호와 사용자가 입력한 비밀번호 대조
+		if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
+			// 새로 입력한 비밀번호 암호화
+			String encPwd = bcryptPasswordEncoder.encode(m.getNewPwd());
+			loginUser.setNewPwd(encPwd);
+			// DB에 저장
+			int result = memberService.updateMemberPwd(loginUser);
+			
+			if(result > 0) {
+				// 회원정보 바꾸기
+				session.setAttribute("loginUser", loginUser);
+				session.setAttribute("alertMsg", "비밀번호 변경에 성공하였습니다.");
+				return "redirect:/myPage.me";
+			} else {
+				session.setAttribute("errorMsg", "비밀번호 변경에 실패하였습니다.");
+				return "mypage/memberInfo";
+			}
+		} else {
+			session.setAttribute("errorMsg", "비밀번호가 일치하지 않습니다.");
+			return "mypage/memberInfo";
+		}
+	}
+	
+	@RequestMapping("delete.me")
+	public String deleteMember(Member m, HttpSession session) {
+		String encPwd = ((Member)session.getAttribute("loginUser")).getUserPwd();
+		
+		if(bcryptPasswordEncoder.matches(m.getUserPwd(), encPwd)) {
+			int result = memberService.deleteMember(m.getUserId());
+			
+			if(result > 0) {
+				// 탈퇴처리 성공 => session에서 loginUser 지움, alert문구 담기 => 메인페이지 url 요청
+				session.removeAttribute("loginUser");
+				session.setAttribute("alertMsg", "탈퇴 성공");
+				return "redirect:/";
+			} else { // 탈퇴처리 실패
+				session.setAttribute("errorMsg", "회원탈퇴실패");
+				return "mypage/memberInfo";
+			}
+		} else { // 탈퇴처리 실패
+			session.setAttribute("errorMsg", "회원탈퇴실패");
+			return "mypage/memberInfo";
 	}
 }

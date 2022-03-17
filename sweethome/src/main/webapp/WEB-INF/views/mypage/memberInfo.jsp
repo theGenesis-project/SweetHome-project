@@ -47,6 +47,14 @@
     .pwd-change td{
     	text-align: right;
     }
+    .check-area {
+    	height: 1.5em;
+    }
+    ::placeholder {
+	  font-size: 0.7em;
+	  font-weight: 400;
+	  opacity: 1; /* Firefox */
+	}
 </style>
 </head>
 <body>
@@ -94,8 +102,8 @@
 		            <b>휴대전화</b><br>
 		            <input type="text" name="phone" class="memberForm" value="${ loginUser.phone }"><br><br>
 
-		            <button type="submit" class="member-button submit" onclick="">내 정보 수정하기</button><br>
-		            <button type="button" class="member-button delete">탈퇴하기</button>
+		            <button type="submit" class="member-button submit">내 정보 수정하기</button><br>
+		            <button type="button" class="member-button delete" data-toggle="modal" data-target="#deleteModal">탈퇴하기</button>
 		        </form>
 		    </div>
 		</div>
@@ -178,10 +186,10 @@
 						alert("메일 인증 실패! 다시 시도해주세요");
 					}
 				})
-			}
+			}		
 		</script>
 		
-		<!-- Modal -->
+		<!-- 비밀번호 변경 모달창 -->
 		<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered">
 		    <div class="modal-content">
@@ -192,33 +200,31 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-		      	<br>
 		      	<form action="changePwd.me" id="pwd-change-form">
 			      	<table class="pwd-change">
 			      		<tr>
 			      			<td>현재 비밀번호</td>
-			      			<td><input type="password" name="prePwd"></td>
+			      			<td><input type="password" name="userPwd" required></td>
 			      		</tr>
 			      		<tr>
 			      			<td>새로운 비밀번호</td>
-			      			<td><input type="password" name="newPwd"></td>
+			      			<td><input type="password" name="newPwd" placeholder="영문, 숫자, 특수문자 포함 8-20자리" required></td>
 			      		</tr>
 			      		<tr>
-			      			<td colspan="2"><div id="pwdVali" style="font-size:0.7em;"></div></td>
+			      			<td colspan="2"><div class="valiPwd check-area" style="font-size:0.7em;"></div></td>
 			      		</tr>
 			      		<tr>
 			      			<td>새로운 비밀번호 확인</td>
-			      			<td><input type="password" name="newPwdCheck"></td>
+			      			<td><input type="password" name="newPwdCheck" required></td>
 			      		</tr>
 			      		<tr>
-			      			<td colspan="2"><div id="checkPwd" style="font-size:0.7em;"></div></td>
+			      			<td colspan="2"><div class="checkPwd check-area" style="font-size:0.7em;"></div></td>
 			      		</tr>
 			      	</table>
 		      	</form>
-		      	<br>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="submit" form="pwd-change-form" class="btn btn-secondary" style="margin:auto">비밀번호 변경</button>
+		        <button type="submit" form="pwd-change-form" onclick="return pwdChange()" class="btn btn-secondary" style="margin:auto">비밀번호 변경</button>
 		      </div>
 		    </div>
 		  </div>
@@ -226,25 +232,73 @@
 	</div>
 	
 	<script>
+		var $prePwd = $('input[name=prePwd]');
 		var $newPwd = $('input[name=newPwd]');
 		var $pwdCheck = $('input[name=newPwdCheck]');
-	
+		// 영문 숫자 특수문자 조합 8자리 이상 20자리 이하
+		var regExp = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&\*\-_=\+])[a-zA-Z0-9!@#$%^&\*\-_=\+].{8,20}$/;
+		
 		// 비밀번호 정규표현식 확인
 		$newPwd.keyup(function(){
 			if($newPwd.val().length >= 8) {
-				var regExp = // 정규화 방침 물어보기;
+				
+				if($newPwd.val().match(regExp) != null){
+					$('.valiPwd').css('color', 'green').text('사용 가능한 비밀번호입니다.');
+				} else {
+					$('.valiPwd').text('');
+				}
+			} else {
+				$('.valiPwd').text('')
 			}
 		})
 		
 		// 비밀번호 일치 여부 확인
 		$pwdCheck.keyup(function(){
 			if($newPwd.val() === $pwdCheck.val()) {				
-				$('#checkPwd').css('color', 'green').text('비밀번호가 일치합니다.');
+				$('.checkPwd').css('color', 'green').text('비밀번호가 일치합니다.');
 			} else {
-				$('#checkPwd').css('color', 'red').text('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+				$('.checkPwd').css('color', 'red').text('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
 			}
 		})
+		
+		// 새 비밀번호 잘못된상태면 못넘어감
+		function pwdChange() {
+			if($newPwd.val().match(regExp) == null || $newPwd.val() !== $pwdCheck.val()) {
+				alert("비밀번호를 다시 확인해주세요");
+				return false;
+			}
+		}
 	</script>
+	
+	<!-- 회원 탈퇴 모달창 -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">회원 탈퇴</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<div align="center">
+				탈퇴 후 복구가 불가능합니다. <br>
+				정말로 탈퇴 하시겠습니까? <br>
+			</div>
+			<br>
+			<form action="delete.me" id="delete-form">
+				<input type="hidden" name="userId" value="${loginUser.userId}">
+				<label for="userPwd" class="mr-sm-2">비밀번호 : </label>
+				<input type="text" class="form-control mb-2 mr-sm-2" placeholder="비밀번호를 입력하세요" id="userPwd" name="userPwd"> <br>
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	        <button type="submit" form="delete-form" class="btn btn-danger">탈퇴</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
 	<jsp:include page="../common/footer.jsp" />
 </body>
