@@ -65,13 +65,25 @@
         }
         
         .sweethome-container {
-		    width: 1500px;   
-			margin: 30px auto 50px auto;
+		    width: 1500px; 
+		    margin: 30px auto 50px auto;  
 		}
 
     </style>
 </head>
 <body>
+	<c:if test="${ not empty errorMsg }">
+		<script>
+			alert("${errorMsg}");
+		</script>
+		<c:remove var="errorMsg" scope="session" />
+	</c:if>
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			alert("${alertMsg}");
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+	</c:if>
 	<div id="header">
         <div id="header_left">
             <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FewshBz%2Fbtru1asrG4F%2FD4bgCQcDjVHeVEm5ii1KX0%2Fimg.png" alt="logo">
