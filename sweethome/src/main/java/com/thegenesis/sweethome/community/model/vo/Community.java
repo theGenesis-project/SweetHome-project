@@ -18,5 +18,10 @@ public class Community {
 	private Date createDate;//	CREATE_DATE	DATE
 	private String status;//	STATUS	VARCHAR2(1 BYTE)
 	private String report;	//	REPORT	VARCHAR2(1 BYTE)
+	private String boardContent;
+	
+	
+	private String userId;
+	private String categoryName;
 
 }

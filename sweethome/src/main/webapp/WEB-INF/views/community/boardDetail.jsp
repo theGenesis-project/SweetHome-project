@@ -38,34 +38,38 @@
 
             <table id="contentArea" align="center" class="table">
                 <tr>
+                	<c:if test="${ cm.boardType == 2 }" >              	
+		                <th width="80">분류</th> 
+		                <td width="50">${cm.categoryName }</td>
+	                </c:if>           	
                     <th width="100">제목</th>
-                    <td colspan="3">제목입니다요</td>
+                    <td colspan="3">${cm.boardTitle }</td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>admin</td>
+                    <td>${cm.userId }</td>
                     <th>작성일</th>
-                    <td>2020-02-07</td>
+                    <td>${cm.createDate }</td>
                 </tr>
                 <tr>
                     <th>내용</th>
                     <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><p style="height:150px;">게시판 내용이 들어갈 자리!!</p></td>
+                    <td colspan="4"><p style="height:150px;">${cm.boardContent }</p></td>
                 </tr>
             </table>
             <br>
 
             <div align="center">
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 
-                     본인이 작성한 글이 아닌 경우  신고하기 버튼-->
+                                           본인이 작성한 글이 아닌 경우  신고하기 버튼-->
                 <a class="btn btn-primary" href="">수정하기</a>
                 <a class="btn btn-danger" href="">취소하기</a>
             </div>
             <br><br>
-
-            <!-- 댓글 기능은 나중에 ajax 배우고 나서 구현할 예정! 우선은 화면구현만 해놓음 -->
+        <!-- 댓글 기능은 정보/장터/메이트찾기 게시판에만  -->
+		<c:if test="${ cm.boardType != 0 }">
             <table id="replyArea" class="table" align="center">
                 <thead>
                     <tr>
@@ -96,6 +100,7 @@
                     </tr>
                 </tbody>
             </table>
+            </c:if>
         </div>
         <br><br>
 
