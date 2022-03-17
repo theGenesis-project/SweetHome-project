@@ -163,5 +163,6 @@ public class MemberController {
 		} else { // 탈퇴처리 실패
 			session.setAttribute("errorMsg", "회원탈퇴실패");
 			return "mypage/memberInfo";
+		}
 	}
 }
