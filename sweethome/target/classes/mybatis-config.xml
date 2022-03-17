@@ -10,10 +10,16 @@
 		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat" />
 		<typeAlias type="com.thegenesis.sweethome.ask.model.vo.Ask" alias="ask" />
 		<typeAlias type="com.thegenesis.sweethome.ask.model.vo.AskFile" alias="askFile" />
+		<typeAlias type="com.thegenesis.sweethome.house.model.vo.House" alias="house" />
+		<typeAlias type="com.thegenesis.sweethome.house.model.vo.HouseFile" alias="houseFile" />
+		<typeAlias type="com.thegenesis.sweethome.room.model.vo.Room" alias="room" />
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml" />
 		<mapper resource="/mappers/ask-mapper.xml"	/>
+		<mapper resource="/mappers/house-mapper.xml"/>
+		<mapper resource="/mappers/house-file-mapper.xml"/>
+		<mapper resource="/mappers/room-mapper.xml"/>
 	</mappers>
 </configuration>

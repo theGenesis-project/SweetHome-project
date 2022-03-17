@@ -21,5 +21,6 @@ public class House {
 	private String convenience;
 	private String status;
 	private int report;
+	private String address;
 	
 }

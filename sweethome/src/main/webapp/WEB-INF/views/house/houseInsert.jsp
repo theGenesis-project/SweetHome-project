@@ -15,6 +15,9 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- services 라이브러리 불러오기 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6&libraries=services"></script>
+
 <style>
 	.outer {
 		width: 1500px;
@@ -100,21 +103,21 @@
 				<h1>하우스 등록</h1>
 			</div>
 
-			<form action="insertHouse.ho" method="post">
+			<form action="insertHouse.ho" method="post" onsubmit="">
 				<div class="subtitle">
 					<div class="house_name_insert">
 						<h3>하우스 이름</h3>
-						&nbsp&nbsp <input type="text" name="">
+						&nbsp&nbsp <input type="text" name="houseName" oninvalid="this.setCustomValidity('하우스 이름을 입력해주세요')" required>
 					</div>
 				</div>
 
-				<div>
+				<div class="house_address">
                     <h3>하우스 주소</h3>
 
                     <%-- Daum 우편번호 서비스 --%> 
-                    <input type="text" id="postcode" placeholder="우편번호" disabled>
+                    <input type="text" id="postcode" placeholder="우편번호" readonly>
                     <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-                    <input type="text" id="roadAddress" placeholder="도로명주소" disabled>
+                    <!-- <input type="text" id="roadAddress" placeholder="도로명주소" name="address" oninvalid="this.setCustomValidity('주소를 입력해주세요')" required readonly> -->
                     <span id="guide" style="color:#999;display:none"></span>
                     <input type="text" id="detailAddress" placeholder="상세주소">
 
@@ -157,7 +160,58 @@
                                 }
                             }).open();
                         }
+                        
+						// $(function() {
+
+						// 	function address() {
+
+								
+						// 			var address = $("#roadAddress").val() + " " + $("#detailAddress").val();
+						// 			$(".house_address").html("<input type='hidden' name='address' value='" + address + "'>");
+						// 			console.log(address);
+						// 			return false;
+									
+	
+								
+						// 	}
+						// })
+
+
+                        
+                       /*$(function() {
+                        	
+                        	$("#submitclick").on("click", function() {
+	                            var geocoder = new kakao.maps.services.Geocoder();
+	
+	                            var callback = function(result, status) {
+	                                if (status === kakao.maps.services.Status.OK) {
+	                                    console.log(result);
+	                                    $(".house_address").html("<input type='hidden' name='x' value='" + result[0].x + "'>");
+	                                    $(".house_address").html("<input type='hidden' name='y' value='" + result[0].y + "'>");
+	                                }
+	                            };
+	                            
+	                            geocoder.addressSearch(document.getElementById('roadAddress'), callback);
+                        		
+                        	})
+                        	
+                        	
+                        	
+	                            
+                        		
+                        	
+                        	
+                        	
+                        })*/
+
+                        
+                        
                     </script>
+                    
+
+                    
+                    
+                    
                 </div>
 
 
@@ -165,7 +219,50 @@
 				<div class="house_photo_insert_title">
 					<div class="photo_insert_title_01"><h3>대표사진</h3></div>
 					<div class="photo_insert_title_02"><h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4></div>
-					<div class="photo_insert_title_03"><button class="button button1">파일첨부</button></div>
+					<div class="photo_insert_title_03">
+
+					</div>
+
+				<input type="file" multiple id="gallery-photo-add">
+<div class="gallery"></div>
+
+
+
+					
+
+
+
+					
+					<script>
+					
+					$(function() {
+					    // Multiple images preview in browser
+					    var imagesPreview = function(input, placeToInsertImagePreview) {
+
+					        if (input.files) {
+					            var filesAmount = input.files.length;
+
+					            for (i = 0; i < filesAmount; i++) {
+					                var reader = new FileReader();
+
+					                reader.onload = function(event) {
+					                    $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+					                }
+
+					                reader.readAsDataURL(input.files[i]);
+					            }
+					        }
+
+					    };
+
+					    $('#gallery-photo-add').on('change', function() {
+					        imagesPreview(this, 'div.gallery');
+					    });
+					});
+					</script>
+					
+					
+					
 				</div>
 	
 				<div class="house_photo_insert">
@@ -193,8 +290,7 @@
 
 				<div class="house_photo_insert_title">
 					<div class="photo_insert_title_01"><h3>방 이름</h3></div>
-					<div class="photo_insert_title_02"><input type="text" name=""></div>
-					<div class="photo_insert_title_03"><button class="button button1">파일첨부</button></div>
+					<div class="photo_insert_title_02"><button class="button button1">파일첨부</button></div>
 				</div>
 	
 				<div class="house_photo_insert">
@@ -275,13 +371,13 @@
 				<h2>지점 소개</h2>
 			</div>
 			<div class="house_intro">
-				<textarea cols="100" style="resize: none;" name="description"></textarea>
+				<textarea></textarea>
 			</div>
 
 		</div>
 
 		<div>
-			<textarea name="ir1" id="ir1" rows="10" cols="100"></textarea>
+			<textarea name="houseIntroduce" id="hi"></textarea>
 			
 		</div>
 
@@ -295,14 +391,14 @@
 					공용공간
 				</tr>
 				<tr>
-					<textarea></textarea>
+					<textarea name="shareSpace"></textarea>
 				</tr>
 				<tr>
 					개인공간
 
 				</tr>
 				<tr>
-					<textarea></textarea>
+					<textarea name="personalSpace"></textarea>
 				</tr>
 			</table>
 		</div>
@@ -317,22 +413,23 @@
 					교통시설/접근성
 				</tr>
 				<tr>
-					<textarea></textarea>
+					<textarea name="traffic"></textarea>
 				</tr>
 				<tr>
 					편의시설
 
 				</tr>
 				<tr>
-					<textarea></textarea>
+					<textarea name="convenience"></textarea>
 				</tr>
 			</table>
 		</div>
 		
 		<div>
-			<button type="submit">등록 및 결제</button>
+			<button type="submit" id="submitclick">등록 및 결제</button>
 			<button type="reset">취소</button>
 		</div>
+
 	</form>
 
 	</div>
