@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
+import com.thegenesis.sweethome.community.model.vo.CommunityFile;
 
 @Repository
 public class CommunityDao {
@@ -32,6 +33,10 @@ public class CommunityDao {
 		
 		return sqlSession.selectOne("communityMapper.searchNoticeCount");
 	}
+	public int searchInfoCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("communityMapper.searchInfoCount");
+	}
 	//게시글 검색 기능
 	public ArrayList<Community> searchNoticeList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
 		
@@ -42,6 +47,15 @@ public class CommunityDao {
 		
 		return (ArrayList)sqlSession.selectList("communityMapper.searchNoticeList", map, rowBounds);
 	}
+	public ArrayList<Community> searchInfoList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return (ArrayList)sqlSession.selectList("communityMapper.searchInfoList", map, rowBounds);
+	}
 	//게시글 상세보기(조회수 증가)
 	public int increaseCount(SqlSessionTemplate sqlSession, int bno) {
 		
@@ -51,6 +65,19 @@ public class CommunityDao {
 	public Community boardDetail(SqlSessionTemplate sqlSession, int bno) {
 			
 		return sqlSession.selectOne("communityMapper.boardDetail", bno);
+	}
+	//게시글 먼저
+	public int insertBoard(SqlSessionTemplate sqlSession, Community cm, CommunityFile coFile) {
+		//게시글 먼저
+		int result = sqlSession.insert("communityMapper.insertBoard", cm);
+		//게시글 작성 후 파일 있을 경우에
+		if(result > 0 && coFile != null) {
+			System.out.println("dao까지");
+			return result = sqlSession.insert("communityMapper.insertCoFile", coFile);
+		}
+		
+		return result;
+			
 	}
 
 }

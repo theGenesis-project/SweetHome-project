@@ -80,34 +80,53 @@
 			<c:when test="${ boardType == 1 }">
 				<h2>정보</h2>
 			</c:when>
+			<c:when test="${ boardType == 2 }">
+				<h2>중고장터</h2>
+			</c:when>
+			<c:when test="${ boardType == 3 }">
+				<h2>메이트 찾기</h2>
+			</c:when>
 		</c:choose>
 		
 		
 		</div>
 		
 		<div id="search">
-			<form id="searchForm" action="searchNotice.co" method="get">
+		<c:choose>
+			<c:when test="${ boardType == 0 }">
+				<form id="searchForm" action="searchNotice.co" method="get">
+			</c:when>
+			<c:when test="${ boardType == 1 }">
+				<form id="searchForm" action="searchInfo.co" method="get">
+			</c:when>
+			<c:when test="${ boardType == 2 }">
+				<form id="searchForm" action="searchFlea.co" method="get">
+			</c:when>
+			<c:when test="${ boardType == 3 }">
+				<form id="searchForm" action="searchMate.co" method="get">
+			</c:when>
+		</c:choose>
+			
 				<select name="condition">
-					<c:if test="${boardType != 0 }">
-					<option value="writer">작성자</option>
-					</c:if>
+				
+					<option value="writer">작성자</option>				
 					<option value="title">제목</option>
 					<option value="content">내용</option>
 				</select>
 	            <input type="text" name="keyword">
-	            <button>검색</button>
+	            <button type="submit">검색</button>
 	          </form>
 		</div>
 
         <div id="button">
-            <button>글쓰기</button>
+            <button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
         </div>
 
         <div id="list">
             <table id="boardTable">
             	<thead>
 	                <tr>
-	                    <th>No.</th>
+	                    <th>No.</th>                    
 	                    <th>제목</th>
 	                    <th>작성자</th>
 	                    <th>조회수</th>
@@ -125,10 +144,11 @@
 	                	<c:otherwise>
 	                		<c:forEach var="n" items="${list }">
 			                <tr>
-			                    <td class="bno">${n.boardNo }</td>
+			                    <td>${n.rowNo }</td>
+			                    <td class="bno" style="display:none">${n.boardNo }</td>
 			                    <td>${n.boardTitle }</td>
 			                    <td>${n.userId }</td>  
-			                    <td>${n.count }</td>                
+			                    <td>${n.count }</td>
 			                    <td>${n.createDate }</td>
 			                </tr>
 		                </c:forEach>
@@ -140,7 +160,7 @@
             </table>
 
         </div>
-
+	<c:if test="${boardType == 0 }">
         <div id="paging">
         	<c:if test="${ pi.currentPage ne 1 }">
         		<c:choose>
@@ -148,7 +168,7 @@
         				<button onclick="location.href='notice.co?npage=${pi.currentPage - 1}'">&lt;</button> 
         			</c:when>
         			<c:otherwise>
-        				<button onclick="location.href='notice.co?npage=${pi.currentPage - 1}&condition=${condition }&keyword=${keyword }'">&lt;</button>
+        				<button onclick="location.href='searchNotice.co?npage=${pi.currentPage - 1}&condition=${condition }&keyword=${keyword }'">&lt;</button>
         			</c:otherwise>
         		</c:choose>
         	</c:if>
@@ -159,7 +179,7 @@
         				<button onclick="location.href='notice.co?npage=${n}'">${ n }</button>
         			</c:when>
         			<c:otherwise>
-        				<button onclick="location.href='notice.co?npage=${n}&condition=${condition }&keyword=${keyword }'">${n}</button>
+        				<button onclick="location.href='searchNotice.co?npage=${n}&condition=${condition }&keyword=${keyword }'">${n}</button>
         			</c:otherwise>
         		</c:choose>
         	</c:forEach>
@@ -170,23 +190,70 @@
         				<button onclick="location.href='notice.co?npage=${pi.currentPage + 1}'">&gt;</button> 
         			</c:when>
         			<c:otherwise>
-        				<button onclick="location.href='notice.co?npage=${pi.currentPage + 1}&condition=${condition }&keyword=${keyword }'">&gt;</button>
+        				<button onclick="location.href='searchNotice.co?npage=${pi.currentPage + 1}&condition=${condition }&keyword=${keyword }'">&gt;</button>
         			</c:otherwise>
         		</c:choose>
         	</c:if>
   
         </div>
-	
+		</c:if>
+		
+		<c:if test="${boardType == 1 }">
+        <div id="paging">
+        	<c:if test="${ pi.currentPage ne 1 }">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='info.co?ipage=${pi.currentPage - 1}'">&lt;</button> 
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchInfo.co?ipage=${pi.currentPage - 1}&condition=${condition }&keyword=${keyword }'">&lt;</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:if>
+        	
+        	<c:forEach var="n" begin="${pi.startPage }" end="${pi.endPage }" step="1">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='info.co?ipage=${n}'">${ n }</button>
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchInfo.co?ipage=${n}&condition=${condition }&keyword=${keyword }'">${n}</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:forEach>
+        	
+        	<c:if test="${ pi.currentPage ne pi.maxPage }">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='info.co?ipage=${pi.currentPage + 1}'">&gt;</button> 
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchInfo.co?ipage=${pi.currentPage + 1}&condition=${condition }&keyword=${keyword }'">&gt;</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:if>
+  
+        </div>
+		</c:if>
+		
 	</div>
 	
 	<script>
 		$(function(){
-			$("#boardTable>tbody>tr").click(function(){
-				location.href = 'detail.co?bno='+$(this).children(".bno").text();
-			})
+			if(${boardType == 0}){
+				$("#boardTable>tbody>tr").click(function(){
+					location.href = 'detail.co?bno='+$(this).children(".bno").text();
+				})
+				
+			}if(${boardType == 1}){
+				$("#boardTable>tbody>tr").click(function(){
+					location.href = 'detail.co?bno='+$(this).children(".bno").text();
+				})
+			}
+			
 			
 		})
-		console.log()
+	
 		
 	</script>
 	

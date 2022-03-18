@@ -23,5 +23,6 @@ public class Community {
 	
 	private String userId;
 	private String categoryName;
+	private int rowNo;
 
 }

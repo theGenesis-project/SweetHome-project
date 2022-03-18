@@ -15,6 +15,7 @@
 		<result column="BOARD_CONTENT" property="boardContent"/>
 		<result column="USER_ID" property="userId"/>
 		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="ROW_NO" property="rowNo"/>
 	</resultMap>
 	
 	<resultMap id="communityFileResultSet" type="communityFile">
@@ -23,7 +24,6 @@
 		<result column="ORIGIN_NAME" property="originName"/>
 		<result column="CHANGE_NAME" property="changeName"/>
 		<result column="FILE_PATH" property="filePath"/>
-		<result column="FILE_LEVEL" property="fileLevel"/>	
 	</resultMap>
 	
 	<resultMap id="categoryResultSet" type="category">
@@ -47,9 +47,9 @@
 	<select id="boardList" parameterType="_int" resultMap="communityResultSet">
 		SELECT *
 		FROM(
-		    SELECT ROWNUM BOARD_NO, A.*
+		    SELECT ROWNUM ROW_NO, A.*
 		    FROM (
-		        SELECT BOARD_TITLE, USER_ID, C.COUNT, C.CREATE_DATE, BOARD_TYPE
+		        SELECT BOARD_NO, BOARD_TITLE, USER_ID, C.COUNT, C.CREATE_DATE, BOARD_TYPE
 		        FROM COMMUNITY C
 		        JOIN MEMBER USING (USER_NO)
 		        <choose>
@@ -117,6 +117,54 @@
 		        ORDER BY CREATE_DATE DESC) A)
 	
 	</select>
+	<select id="searchInfoCount" parameterType="hashmap" resultType="_int">		
+		SELECT
+			COUNT(*)
+		FROM 
+			COMMUNITY C
+		JOIN MEMBER USING(USER_NO)
+		WHERE
+			C.STATUS = 'Y'
+		AND 
+			BOARD_TYPE = 1
+		 <choose>
+		      <when test="condition == 'title'">
+		        	AND BOARD_TITLE
+		       </when>
+		       <when test="condition == 'writer'">
+		       		AND USER_ID
+		       </when>
+		       <otherwise>
+		        	AND BOARD_CONTENT
+		       </otherwise>
+		 </choose>
+			LIKE '%' || #{keyword} || '%'
+	
+	</select>
+	
+	<select id="searchInfoList" parameterType="hashmap" resultMap="communityResultSet">
+		SELECT *
+		FROM(
+		    SELECT ROWNUM RNUM, A.*
+		    FROM (
+		        SELECT BOARD_NO, BOARD_TITLE, USER_ID, C.COUNT, C.CREATE_DATE
+		        FROM COMMUNITY C
+		        JOIN MEMBER USING (USER_NO)
+		        WHERE BOARD_TYPE = 1
+		        AND C.STATUS = 'Y'
+		        
+		        <choose>
+		        	<when test="condition == 'title'">
+		        		AND BOARD_TITLE
+		        	</when>
+		        	<otherwise>
+		        		AND BOARD_CONTENT
+		        	</otherwise>
+		        </choose>
+		        		LIKE '%' || #{keyword} || '%'
+		        ORDER BY CREATE_DATE DESC) A)
+	
+	</select>
 	
 	<update id="increaseCount" parameterType="_int">
 		UPDATE 
@@ -150,7 +198,48 @@
 			
 	</select>
 	
-
+	<insert id="insertBoard" parameterType="Community">
+		INSERT
+		INTO COMMUNITY(
+			BOARD_NO,
+			USER_NO,
+			CATEGORY_NO,
+			BOARD_TYPE,
+			BOARD_TITLE,
+			CREATE_DATE,
+			BOARD_CONTENT		
+		)
+		VALUES(
+			SEQ_COM_NO.NEXTVAL		
+			,#{userNo}
+			,#{categoryNo}
+			,#{boardType}
+			,#{boardTitle}		
+			,SYSDATE
+			,#{boardContent}
+		)
+	</insert>
+	
+	<insert id="insertCoFile" parameterType="communityFile">
+		INSERT
+		INTO COMMUNITY_FILE(
+			FILE_NO,
+			BOARD_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH
+		
+		)
+		VALUES(
+			SEQ_COM_FILE_NO.NEXTVAL
+			,SEQ_COM_NO.CURRVAL
+			,#{originName}
+			,#{changeName}
+			,#{filePath}
+		)
+	
+	
+	</insert>
 
 
 

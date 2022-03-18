@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.dao.CommunityDao;
 import com.thegenesis.sweethome.community.model.vo.Community;
+import com.thegenesis.sweethome.community.model.vo.CommunityFile;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -38,11 +39,19 @@ public class CommunityServiceImpl implements CommunityService {
 		
 		return communityDao.searchNoticeCount(sqlSession);
 	}
+	@Override
+	public int searchInfoCount(HashMap<String, String> map) {
+		return 0;
+	}
 	//공지사항 검색 기능(게시글 리스트 조회)
 	@Override
 	public ArrayList<Community> searchNoticeList(PageInfo pi, HashMap<String, String> map) {
 		
 		return communityDao.searchNoticeList(sqlSession, pi, map);
+	}
+	@Override
+	public ArrayList<Community> searchInfoList(PageInfo pi, HashMap<String, String> map) {
+		return communityDao.searchInfoList(sqlSession, pi, map);
 	}
 	//게시글 상세보기(조회수 증가)
 	@Override
@@ -55,6 +64,11 @@ public class CommunityServiceImpl implements CommunityService {
 	public Community boardDetail(int bno) {
 		
 		return communityDao.boardDetail(sqlSession, bno) ;
+	}
+	//게시글 작성(게시글)
+	@Override
+	public int insertBoard(Community cm, CommunityFile coFile) {
+		return communityDao.insertBoard(sqlSession, cm, coFile);
 	}
 	
 }

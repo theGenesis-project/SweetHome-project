@@ -12,6 +12,6 @@ public class CommunityFile {
 	private String originName;//	ORIGIN_NAME	VARCHAR2(1000 BYTE)
 	private String changeName;//	CHANGE_NAME	VARCHAR2(1000 BYTE)
 	private String filePath;//	FILE_PATH	VARCHAR2(4000 BYTE)
-	private int fileLevel;//	FILE_LEVEL	NUMBER
+
 
 }
