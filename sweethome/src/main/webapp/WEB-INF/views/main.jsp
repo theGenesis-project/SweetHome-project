@@ -12,6 +12,12 @@
 	
 	<a href="chat">채팅</a>
 	
+	<br><br>
+	
+	<a href="houseInsert">하우스 등록 테스트</a>
+	
+	<p>${ h2.traffic }</p>
+	
 	<jsp:include page="common/footer.jsp" />
 </body>
 </html>

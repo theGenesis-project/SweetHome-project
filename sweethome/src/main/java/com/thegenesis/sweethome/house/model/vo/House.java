@@ -19,7 +19,11 @@ public class House {
 	private String personalSpace;
 	private String traffic;
 	private String convenience;
+	private String condition;
 	private String status;
 	private int report;
+	private String address;
+	private String latitude;
+	private String longitude;
 	
 }
