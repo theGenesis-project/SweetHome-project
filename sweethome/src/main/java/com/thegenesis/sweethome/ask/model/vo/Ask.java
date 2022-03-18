@@ -19,4 +19,5 @@ public class Ask {
 	private String askContent;
 	private String commentDate;
 	private String askComment;
+	private int rownum;
 }

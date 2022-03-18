@@ -3,12 +3,14 @@ package com.thegenesis.sweethome.member.model.vo;
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class Member {
 	private int userNo;
 	private String userId;
@@ -22,5 +24,6 @@ public class Member {
 	private String status;
 	private String ownerNo;
 	private String userType;
+	private String newPwd; // 비밀번호 변경에 필요
 }
 

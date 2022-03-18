@@ -5,9 +5,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>관리자메뉴</title>
+<style>
+	.admin-container{
+		height: 100vh;
+		width: 100vw;
+	}
+	.sub_nav {
+	width: 15vw;
+	float: left;
+	height: auto;
+	}
+	
+	.mypage {
+		float: left;
+		width: 75vw;
+		position: relative;
+	}
+	
+	.end{
+		clear: both;
+	}
+</style>
 </head>
 <body>
-
+	<div class="admin-container">
+		<div class="sub_nav">
+			<jsp:include page="adminNavi.jsp"/>
+		</div>
+		<div class="mypage"> 
+		???
+		</div>
+		<div class="end">
+		</div>
+	</div>
+	
 </body>
 </html>

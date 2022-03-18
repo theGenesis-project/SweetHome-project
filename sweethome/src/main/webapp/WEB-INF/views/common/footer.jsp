@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-<hr>
+
  <div id="footer">
         <div id="footerUp">
             <div id="footerUp1">

@@ -13,6 +13,11 @@
 		<typeAlias type="com.thegenesis.sweethome.house.model.vo.House" alias="house" />
 		<typeAlias type="com.thegenesis.sweethome.house.model.vo.HouseFile" alias="houseFile" />
 		<typeAlias type="com.thegenesis.sweethome.room.model.vo.Room" alias="room" />
+		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Cert" alias="cert" />
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Community" alias="community" />
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Reply" alias="reply" />
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.CommunityFile" alias="communityFile"/>
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Category" alias="category"/>
 	</typeAliases>
 	
 	<mappers>
@@ -21,5 +26,6 @@
 		<mapper resource="/mappers/house-mapper.xml"/>
 		<mapper resource="/mappers/house-file-mapper.xml"/>
 		<mapper resource="/mappers/room-mapper.xml"/>
+		<mapper resource="/mappers/community-mapper.xml"/>
 	</mappers>
 </configuration>

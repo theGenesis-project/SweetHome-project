@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,6 +43,7 @@
 
     .sub-nav-list:hover {
         color: rgb(247, 202, 201);
+        cursor: pointer;
     }
 
     .sub-nav-bottom {
@@ -72,7 +72,7 @@
         <div class="sub-nav-list" onclick="location.href=''">
         	찜 내역 관리
          </div>
-         <div class="sub-nav-list" onclick="location.href=''">
+         <div class="sub-nav-list" onclick="location.href='myBoard.my'">
          	게시글/댓글 확인
          </div>
          <div class="sub-nav-list" onclick="location.href='list.ask'">

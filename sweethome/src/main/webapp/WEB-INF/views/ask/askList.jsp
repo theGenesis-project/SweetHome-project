@@ -19,7 +19,7 @@
 	<jsp:include page="../common/header.jsp" />
 	
 	<div class="sweethome-container">
-		<div class="sub_nav">
+		<div class="sub-nav">
 			<jsp:include page="../common/mypageNavi.jsp" />
 		</div>
 		<div class="mypage">
@@ -36,7 +36,7 @@
 			  <tbody>
 			  	<c:forEach var="a" items="${ list }">
 				    <tr class="list-area" onclick="listClick(${a.askNo});">
-				      <th scope="row" class="askNo">${ a.askNo }</th>
+				      <th scope="row" class="askNo">${ a.rownum }</th>
 				      <td>${ a.askTitle }</td>
 				      <td>${ a.askDate }</td>
 				      <td>
@@ -95,7 +95,6 @@
 				function listClick(a) {
 					location.href='detail.ask?ano=' + a;
 				}
-				
 			</script>
 		</div>
 		<div class="end"></div>

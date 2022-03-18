@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.thegenesis.sweethome.member.model.dao.MemberDao;
+import com.thegenesis.sweethome.member.model.vo.Cert;
 import com.thegenesis.sweethome.member.model.vo.Member;
 
 @Service
@@ -23,14 +24,40 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int insertMember(Member m) {
-		return 0;
+		return memberDao.insertMember(sqlSession, m);
 	}
 
 	@Override
 	public int idCheck(String checkId) {
-		return 0;
+		return memberDao.idCheck(sqlSession, checkId);
+	}
+
+	@Override
+	public int updateMember(Member m) {
+		return memberDao.updateMember(sqlSession, m);
+	}
+
+	@Override
+	public int insertEmailCheck(Cert cert) {
+		return memberDao.insertEmailCheck(sqlSession, cert);
 	}
 	
-	  
+	 @Override
+	 public boolean validate(Cert cert) {
+		 return memberDao.validate(sqlSession, cert);
+	 }
+	 
+	 @Override
+	 public int updateMemberPwd(Member m) {
+		 return memberDao.updateMemberPwd(sqlSession, m);
+	 }
+
+	@Override
+	public int deleteMember(String userId) {
+		return memberDao.deleteMember(sqlSession, userId);
+	}
+	
+	
+	
 
 }

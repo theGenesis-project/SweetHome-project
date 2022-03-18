@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,13 +8,13 @@
 <title>Insert title here</title>
 <style>
         .content{
-            border: 1px solid rgb(247, 202 , 201);
+            /*border: 1px solid rgb(247, 202 , 201);*/
             width: 1200px;
             margin: auto;
         }
 
         .innerOuter{
-            border: 1px solid rgb(247, 202 , 201);
+            border: 2px solid rgb(247, 202 , 201);
             width:600px;
             height:550px;
             margin:auto;
@@ -71,6 +72,7 @@
 	</c:if>
 
     <div class="content">
+    <br><br>
         <div class="innerOuter">
             <div class="simpleLogin">
                 <br><br>
@@ -94,9 +96,9 @@
         </div>
         <br>
         <div class="findLogin">
-            <a href="">아이디 찾기 </a>  
+            <a href="idFind.me" style="color:black">아이디 찾기 </a>  
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="">비밀번호 찾기</a>
+            <a href="pwdFind.me" style="color:black">비밀번호 찾기</a>
         </div>
         <br>
     </div>
