@@ -43,10 +43,10 @@
 <body>
 	 <div id="nav">
         <ul>
-            <li><a href="">메이트찾기</a></li>
-            <li><a href="">중고거래</a></li>
-            <li><a href="">정보</a></li>
-            <li><a href="">공지사항</a></li>
+            <li><a href="mate.co">메이트찾기</a></li>
+            <li><a href="flea.co">중고거래</a></li>
+            <li><a href="info.co">정보</a></li>
+            <li><a href="notice.co">공지사항</a></li>
         </ul>
     </div>
 	
