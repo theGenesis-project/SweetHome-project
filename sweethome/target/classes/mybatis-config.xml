@@ -10,11 +10,14 @@
 		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat" />
 		<typeAlias type="com.thegenesis.sweethome.ask.model.vo.Ask" alias="ask" />
 		<typeAlias type="com.thegenesis.sweethome.ask.model.vo.AskFile" alias="askFile" />
-		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Cert" alias="cert"/>
+		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Cert" alias="cert" />
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Community" alias="community" />
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Reply" alias="reply" />
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml" />
 		<mapper resource="/mappers/ask-mapper.xml"	/>
+		<mapper resource="/mappers/community-mapper.xml" />
 	</mappers>
 </configuration>

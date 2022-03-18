@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="communityMapper">
+  <resultMap type="community" id="communityResultSet">
+  	<result column="ROWNUM" property="rownum"/>
+  	<result column="BOARD_NO" property="boardNo"/>
+  	<result column="USER_NO" property="userNo"/>
+  	<result column="CATEGORY_NO" property="categoryNo"/>
+  	<result column="BOARD_TYPE" property="boardType"/>
+  	<result column="BOARD_TITLE" property="boardTitle"/>
+  	<result column="COUNT" property="count"/>
+  	<result column="CREATE_DATE" property="createDate"/>
+  	<result column="STATUS" property="status"/>
+  	<result column="REPORT" property="report"/>
+  </resultMap>
+  
+  <resultMap type="reply" id="replyResultSet">
+  	<result column="ROWNUM" property="rownum"/>
+  	<result column="REPLY_NO" property="replyNo"/>
+  	<result column="BOARD_NO" property="boardNo"/>
+  	<result column="USER_NO" property="userNo"/>
+  	<result column="REPLY_CONTENT" property="replyContent"/>
+  	<result column="CREATE_DATE" property="createDate"/>
+  	<result column="MODITY_DATE" property="modifyDate"/>
+  	<result column="STATUS" property="status"/>
+  	<result column="REREPLY" property="rereply"/>
+  	<result column="REPORT" property="report"/>
+  	<result column="BOARD_TITLE" property="boardTitle"/>
+  </resultMap>
+  
+  <!-- 내 게시글 갯수 확인 -->
+  <select id="myBoardListCount" parameterType="_int" resultType="_int">
+  	SELECT 
+  			COUNT(1)
+  	  FROM 
+  			COMMUNITY
+  	 WHERE
+  	 		USER_NO = #{userNo}
+  	   AND
+  	   		STATUS = 'Y'
+  </select>
+  
+  <!-- 내 게시글 목록 확인 -->
+  <select id="selectMyBoardList" resultMap="communityResultSet">
+  	SELECT 
+  			ROWNUM
+  		  , BOARD_NO
+  		  , USER_NO
+  		  , CATEGORY_NO
+  		  , BOARD_TYPE
+  		  , BOARD_TITLE
+  		  , COUNT
+  		  , CREATE_DATE
+  	 FROM
+  	 		COMMUNITY
+  	WHERE
+  			USER_NO = #{userNo}
+  	  AND
+  	  		STATUS = 'Y'
+  	ORDER
+   	   BY
+   	   		ROWNUM DESC
+  </select>
+  
+  <!-- 내 댓글 갯수 확인 -->
+  <select id="myCommunityListCount" resultType="_int">
+  	SELECT 
+  			COUNT(1)
+  	  FROM 
+  			REPLY
+  	 WHERE
+  	 		USER_NO = #{userNo}
+  	   AND
+  	   		STATUS = 'Y'
+  </select>
+  
+  <!-- 내 댓글 목록 확인 -->
+  <select id="selectMyCommentList" resultMap="replyResultSet">
+  	SELECT
+  			ROWNUM
+  		  ,	R.REPLY_NO
+  		  , R.BOARD_NO
+  		  , C.BOARD_TITLE
+  		  , R.REPLY_CONTENT
+  		  , R.CREATE_DATE
+  	  FROM
+  	  		REPLY R
+  	  JOIN
+  	  		COMMUNITY C ON R.BOARD_NO = C.BOARD_NO
+  	 WHERE
+  	 		R.USER_NO = #{userNo}
+  	   AND
+  	   		R.STATUS = 'Y'
+  	 ORDER
+   	    BY
+   	   		ROWNUM DESC
+  </select>
+  
+</mapper>

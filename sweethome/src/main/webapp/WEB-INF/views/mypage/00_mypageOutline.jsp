@@ -15,6 +15,16 @@
 			<jsp:include page="../common/mypageNavi.jsp"/>
 		</div>
 		<div class="mypage"> 
+			<div class="inner-nav">
+				<div class="inner-nav-area">
+					<div class="inner-nav1 inner-nav-content">	
+					</div>
+					<div class="inner-nav2 inner-nav-content">
+					</div>
+					<div class="end"></div>
+				</div>
+			</div>
+			<div class="inner-body">이너바디</div>
 		</div>
 		<div class="end">
 		</div>

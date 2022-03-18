@@ -13,7 +13,7 @@
 	<jsp:include page="../common/header.jsp" />
 	
     <div class="sweethome-container">
-		<div class="sub_nav">
+		<div class="sub-nav">
 			<jsp:include page="../common/mypageNavi.jsp" />
 		</div>
 		<div class="mypage">

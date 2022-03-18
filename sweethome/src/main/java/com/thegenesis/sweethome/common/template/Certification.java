@@ -20,7 +20,7 @@ public class Certification {
 
 	// 6자리 난수 생성
 	public static int setCertNum() {
-		return (int)((Math.random() * (1000000 -  100000) + 1));
+		return (int)((Math.random() * (999999 -  100000 + 1)) + 100000);
 	}
 	
 	// 메일 발송 로직
