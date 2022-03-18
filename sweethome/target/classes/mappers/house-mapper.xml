@@ -4,5 +4,46 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="houseMapper">
 
+	<!-- 하우스 등록 쿼리문 -->
+	<insert id="insertHouse" parameterType="house">
+  		INSERT INTO
+  			  HOUSE
+  			  	    (
+  			  	      HOUSE_NO
+  			  	     ,HOUSE_NAME
+  			  	     ,HOUSE_TITLE
+  			  	     ,HOUSE_INTRODUCE
+  			  	     ,SHARE_SPACE
+  			  	     ,PERSONAL_SPACE
+  			  	     ,TRAFFIC
+  			  	     ,CONVENIENCE
+  			  	     ,CONDITION
+  			  	     ,STATUS
+  			  	     ,REPORT
+  			  	     ,ADDRESS
+  			  	     ,LATITUDE
+  			  	     ,LONGITUDE
+  			  	    )
+  			 VALUES
+  			 		(
+  			 		  SEQ_ASK_NO.NEXTVAL
+  			 		 ,#{houseName}
+  			 		 ,#{houseTitle}
+  			 		 ,#{houseIntroduce}
+  			 		 ,#{shareSpace}
+  			 		 ,#{personalSpace}
+  			 		 ,#{traffic}
+  			 		 ,#{convenience}
+  			 		 ,DEFAULT
+  			 		 ,DEFAULT
+  			 		 ,DEFAULT
+  			 		 ,#{address}
+  			 		 ,#{latitude}
+  			 		 ,#{longitude}
+  			 		)
+	</insert>
+	<select id="selectHouse" parameterType="string" resultType="house">
+		SELECT * FROM HOUSE WHERE HOUSE_NAME = #{houseName}
+	</select>
 
 </mapper>

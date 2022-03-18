@@ -10,17 +10,21 @@ import com.thegenesis.sweethome.room.model.vo.Room;
 @Repository
 public class HouseDao {
 	
-//	public int insertHouse(SqlSessionTemplate sqlSession, House h, HouseFile hf, Room r) {
-//		
-//		int result = 0;
-//		
-//		result = sqlSession.insert("houseMapper.insertHouse", h);
-//		result = sqlSession.insert("houseFileMapper.insertFileHouse", hf);
-//		result = sqlSession.insert("roomMapper.roomHouse", r);
-//		
-//		return result;
-//		
-//	}
+	/**
+	 * 하우스 등록
+	 * @param sqlSession
+	 * @param h
+	 * @return
+	 */
+	public int insertHouse(SqlSessionTemplate sqlSession, House h) {
+		
+		return sqlSession.insert("houseMapper.insertHouse", h);
+		
+	}
+
+	public House selectHouse(SqlSessionTemplate sqlSession, String houseName) {
+		return sqlSession.selectOne("houseMapper.selectHouse", houseName);
+	}
 	
 
 }

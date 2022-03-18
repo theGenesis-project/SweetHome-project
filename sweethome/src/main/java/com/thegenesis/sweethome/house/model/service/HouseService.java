@@ -19,9 +19,18 @@ public class HouseService {
 	private SqlSessionTemplate sqlSession;
 	
 	
-	
-//	public int insertHouse(House h, HouseFile hf, Room r) {
-//		return houseDao.insertHouse(sqlSession, h, r);
-//	}
+	/**
+	 * 하우스 등록
+	 * @param h
+	 * @return
+	 */
+	public int insertHouse(House h) {
+		return houseDao.insertHouse(sqlSession, h);
+	}
+
+
+	public House selectHouse(String houseName) {
+		return houseDao.selectHouse(sqlSession, houseName);
+	}
 	
 }
