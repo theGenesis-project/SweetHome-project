@@ -42,8 +42,10 @@ public class CommunityControler {
 		if(result > 0) {
 				
 			Community cm = communityService.boardDetail(bno);
-				
+			CommunityFile cf = communityService.boardDetailFile(bno);
+			
 			mv.addObject("cm", cm);
+			mv.addObject("cf", cf);
 			mv.setViewName("community/boardDetail");
 				
 						
@@ -173,10 +175,10 @@ public class CommunityControler {
 	}
 	//게시글 쓰기
 	@RequestMapping("insert.co")
-	public String insertBoard(Model model, Community cm, MultipartFile upfile, HttpSession session, int boardType) {
+	public String insertBoard(Model model, Community cm, MultipartFile upfile, HttpSession session) {
 		
 		CommunityFile CoFile = null;//파일 테이블 따로 씀
-		System.out.println(boardType);
+		
 	 	
 		//전달된 파일있을 경우 파일명 수정 후 서버에 업로드
 		if(!upfile.getOriginalFilename().equals("")) {//선택된 파일이 있을 경우
@@ -200,6 +202,19 @@ public class CommunityControler {
 			return "community/noticeList";
 		}
 		
+		
+	}
+	//게시글 수정
+	@RequestMapping("updateBoardView.co")
+	public String updateBoardView(int bno, Model model) {
+		
+		//글 내용 가져오기
+		Community cm = communityService.boardDetail(bno);
+		
+		//updateForm으로
+		model.addAttribute("cm", cm);
+		
+		return "community/boardUpdate";
 		
 	}
 

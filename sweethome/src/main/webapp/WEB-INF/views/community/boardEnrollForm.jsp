@@ -47,6 +47,7 @@
             <form id="enrollForm" method="post" action="insert.co" enctype="multipart/form-data">
                 <table align="center">
                 <input type="hidden" id="boardType" name="boardType" value="${boardType }">
+                <input type="hidden" id="userNo" name="userNo" value="${loginUser.userNo }">
                     <tr>
                         <th><label for="title">제목</label></th>
                         <c:if test="${boardType == 3 }">

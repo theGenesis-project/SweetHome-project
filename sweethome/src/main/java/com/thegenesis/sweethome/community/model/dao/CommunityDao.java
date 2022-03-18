@@ -66,11 +66,15 @@ public class CommunityDao {
 			
 		return sqlSession.selectOne("communityMapper.boardDetail", bno);
 	}
-	//게시글 먼저
+	//게시글 상세보기(첨부파일)
+	public CommunityFile boardDetailFile(SqlSessionTemplate sqlSession, int bno) {
+		return sqlSession.selectOne("communityMapper.boardDetailFile", bno);
+	}
+	//게시글 작성하기
 	public int insertBoard(SqlSessionTemplate sqlSession, Community cm, CommunityFile coFile) {
-		//게시글 먼저
+		//게시글 먼저 작성 후
 		int result = sqlSession.insert("communityMapper.insertBoard", cm);
-		//게시글 작성 후 파일 있을 경우에
+		//게시글 작성 후 파일 있을 경우에만
 		if(result > 0 && coFile != null) {
 			System.out.println("dao까지");
 			return result = sqlSession.insert("communityMapper.insertCoFile", coFile);
@@ -79,5 +83,7 @@ public class CommunityDao {
 		return result;
 			
 	}
+
+	
 
 }

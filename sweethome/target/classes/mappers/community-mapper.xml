@@ -51,7 +51,7 @@
 		    FROM (
 		        SELECT BOARD_NO, BOARD_TITLE, USER_ID, C.COUNT, C.CREATE_DATE, BOARD_TYPE
 		        FROM COMMUNITY C
-		        JOIN MEMBER USING (USER_NO)
+		        LEFT JOIN MEMBER USING (USER_NO)
 		        <choose>
 		        	<when test="boardType == 0">
 		        		WHERE BOARD_TYPE = 0	        	
@@ -165,7 +165,7 @@
 		        ORDER BY CREATE_DATE DESC) A)
 	
 	</select>
-	
+	<!-- 게시글 상세보기  -->
 	<update id="increaseCount" parameterType="_int">
 		UPDATE 
 			COMMUNITY
@@ -188,8 +188,8 @@
 			BOARD_CONTENT		 
 		FROM 
 			COMMUNITY C
-		JOIN MEMBER USING (USER_NO)
-		JOIN CATEGORY USING(CATEGORY_NO)
+		LEFT JOIN MEMBER USING (USER_NO)
+		LEFT JOIN CATEGORY USING(CATEGORY_NO)
 		WHERE 
 			BOARD_NO = #{boardNo}
 		AND
@@ -197,7 +197,20 @@
 		
 			
 	</select>
+	<select id="boardDetailFile" parameterType="_int" resultMap="communityFileResultSet">
+		SELECT
+			FILE_NO,
+			BOARD_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH	
+		FROM 
+			COMMUNITY_FILE		
+		WHERE 
+			BOARD_NO = #{boardNo}
+	</select>
 	
+	<!--  게시글 작성 -->
 	<insert id="insertBoard" parameterType="Community">
 		INSERT
 		INTO COMMUNITY(

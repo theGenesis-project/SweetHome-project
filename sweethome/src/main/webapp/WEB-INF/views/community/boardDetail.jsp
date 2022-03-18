@@ -52,11 +52,24 @@
                     <td>${cm.createDate }</td>
                 </tr>
                 <tr>
+                	<th>첨부파일</th>
+                    <c:choose>
+                    <c:when test="${empty cf.originName}">
+                    <!-- 첨부파일이 없을 경우 -->
+                	<td colspan="3">
+                  			첨부파일이 없습니다.</td>
+                  	</c:when>
+                  	<c:otherwise>
+                		<td colspan="3"><a href="${cf.changeName }" download="${cf.originName }">${cf.originName }</a></td>
+                	</c:otherwise>
+                	</c:choose>
+                </tr>
+                <tr>
                     <th>내용</th>
                     <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><p style="height:150px;">${cm.boardContent }</p></td>
+                    <td colspan="4">${cm.boardContent }</td>
                 </tr>
             </table>
             <br>
@@ -64,9 +77,29 @@
             <div align="center">
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 
                                            본인이 작성한 글이 아닌 경우  신고하기 버튼-->
-                <a class="btn btn-primary" href="">수정하기</a>
-                <a class="btn btn-danger" href="">취소하기</a>
+                <a class="btn btn-primary" onclick="postFormSubmit(1)">수정하기</a>
+                <a class="btn btn-danger" onclick="postFormSubmit(2)">삭제하기</a>
+                <!-- 신고하기 만들기 -->
             </div>
+            
+            <form method="post" action="" id="postForm">
+            	<input type="hidden" name="bno" value="${cm.boardNo }">   
+            	<input type="hidden" name="filePath" value="${cf.changeName }"> 
+            </form>
+            	  
+            <script>
+	            function postFormSubmit(num){
+	        		if(num == 1){//수정하기 클릭
+	        			$("#postForm").attr("action", "updateBoardView.co").submit();
+	        		}else if(num == 2){//삭제하기 클릭
+	        			$("#postForm").attr("action", "deleteBoard.co").submit();
+	        		}else{
+	        			//신고 만들기~
+	        			
+	        		}
+	        	}
+            
+            </script>
             <br><br>
         <!-- 댓글 기능은 정보/장터/메이트찾기 게시판에만  -->
 		<c:if test="${ cm.boardType != 0 }">

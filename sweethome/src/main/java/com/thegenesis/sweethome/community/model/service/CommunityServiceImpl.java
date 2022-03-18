@@ -63,12 +63,18 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public Community boardDetail(int bno) {
 		
-		return communityDao.boardDetail(sqlSession, bno) ;
+		return communityDao.boardDetail(sqlSession, bno);
+	}
+	//게시글 상세보기(첨부파일)
+	@Override
+	public CommunityFile boardDetailFile(int bno) {
+		return communityDao.boardDetailFile(sqlSession, bno);
 	}
 	//게시글 작성(게시글)
 	@Override
 	public int insertBoard(Community cm, CommunityFile coFile) {
 		return communityDao.insertBoard(sqlSession, cm, coFile);
 	}
+	
 	
 }

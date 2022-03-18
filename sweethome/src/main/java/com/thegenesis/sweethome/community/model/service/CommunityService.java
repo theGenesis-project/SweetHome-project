@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.thegenesis.sweethome.common.vo.PageInfo;
+
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
 
@@ -30,10 +31,12 @@ public interface CommunityService {
 	
 	//게시글 상세보기
 	Community boardDetail(int bno);
+	CommunityFile boardDetailFile(int bno);
+
 	
 	//게시글 작성하기 
 	int insertBoard(Community cm, CommunityFile coFile);
-	
+		
 	
 	//게시글 삭제
 	
