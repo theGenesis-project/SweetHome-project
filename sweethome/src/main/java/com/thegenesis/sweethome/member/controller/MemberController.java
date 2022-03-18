@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,7 +65,6 @@ public class MemberController {
 		return "mypage/memberInfo";
 	}
 	
-
 	@RequestMapping("enrollForm.me")
 	public String memberChoose() {
 		return "member/memberChoose";
@@ -80,14 +80,39 @@ public class MemberController {
 		return "member/memberEnrollFormOwner";
 	}
 	
-	@RequestMapping("insert.me")
-	public String insertMember(Member m) {
-		
-		//System.out.println(m);
-		
-		return "main";
+	@RequestMapping("idFind.me")
+	public String idFind() {
+		return "member/idFindForm";
 	}
 	
+	@RequestMapping("insert.me")
+	public String insertMember(Member m, Model model, HttpSession session) {
+		
+		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());	
+		m.setUserPwd(encPwd);
+		
+		int result = memberService.insertMember(m);
+		
+		if(result > 0) {	
+			session.setAttribute("alertMsg", "성공적으로 회원가입이 되었습니다.");
+			return "member/loginForm";		
+		}else {
+			model.addAttribute("errorMsg", "회웝가입에 실패하셨습니다.");
+			return "common/errorPage";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("idCheck.me")
+	public String idCheck(String checkId) {
+		return memberService.idCheck(checkId) > 0 ? "NNNNN" : "NNNNY";
+		
+	}
+	
+	@RequestMapping("idFindComplete.me")
+	public String idFindComplete() {
+		return "member/idFindComplete";
+	}
 
 	@RequestMapping("update.me")
 	public String updateMember(Member m, HttpSession session) {
