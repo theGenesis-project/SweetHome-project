@@ -13,6 +13,8 @@
 		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Community" alias="community"/>
 		<typeAlias type="com.thegenesis.sweethome.community.model.vo.CommunityFile" alias="communityFile"/>
 		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Category" alias="category"/>
+		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Cert" alias="cert"/>
+
 	</typeAliases>
 	
 	<mappers>

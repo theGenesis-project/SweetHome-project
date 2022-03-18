@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +59,7 @@
                     <br>
                     <input type="text" placeholder="회원가입시 사용한 이메일을 입력해주세요" class="inputForm">
                     <br><br>
-                    <button class="btn1">아이디 찾기</button>
+                    <button type="button" class="btn1" onclick="location.href='idFindComplete.me'">아이디 찾기</button>
                 </div>     
         </div>
         <br><br>

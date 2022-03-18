@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자메뉴</title>
+<title>Insert title here</title>
 <style>
 	.admin-container{
 		height: 100vh;
@@ -30,15 +30,13 @@
 </head>
 <body>
 	<div class="admin-container">
-		<div class="sub_nav">
+		<div class="sub-nav">
 			<jsp:include page="adminNavi.jsp"/>
 		</div>
 		<div class="mypage"> 
-		???
 		</div>
 		<div class="end">
 		</div>
 	</div>
-	
 </body>
 </html>
