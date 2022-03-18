@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class Community {
-	private int rownum;
 	private int boardNo;//	BOARD_NO	NUMBER
 	private int userNo;//	USER_NO	NUMBER
 	private int categoryNo;//	CATEGORY_NO	NUMBER
@@ -19,5 +18,11 @@ public class Community {
 	private Date createDate;//	CREATE_DATE	DATE
 	private String status;//	STATUS	VARCHAR2(1 BYTE)
 	private String report;	//	REPORT	VARCHAR2(1 BYTE)
+	private String boardContent;
+	
+	
+	private String userId;
+	private String categoryName;
+	private int rowNo;
 
 }

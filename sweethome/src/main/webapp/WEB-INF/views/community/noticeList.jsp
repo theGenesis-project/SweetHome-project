@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title>커뮤니티</title>
 <style>
  #main{
             width: 1000px;
@@ -73,74 +73,189 @@
 	
 	<div id="main">
 		<div id="title">
-			<h2>공지사항</h2>
+		<c:choose>
+			<c:when test="${ boardType == 0 }">
+				<h2>공지사항</h2>
+			</c:when>
+			<c:when test="${ boardType == 1 }">
+				<h2>정보</h2>
+			</c:when>
+			<c:when test="${ boardType == 2 }">
+				<h2>중고장터</h2>
+			</c:when>
+			<c:when test="${ boardType == 3 }">
+				<h2>메이트 찾기</h2>
+			</c:when>
+		</c:choose>
+		
+		
 		</div>
 		
 		<div id="search">
-			<select name="" id="">
-				<option value="">제목</option>
-				<option value="">내용</option>
-			</select>
-            <input type="text" id="" name="search">
+		<c:choose>
+			<c:when test="${ boardType == 0 }">
+				<form id="searchForm" action="searchNotice.co" method="get">
+			</c:when>
+			<c:when test="${ boardType == 1 }">
+				<form id="searchForm" action="searchInfo.co" method="get">
+			</c:when>
+			<c:when test="${ boardType == 2 }">
+				<form id="searchForm" action="searchFlea.co" method="get">
+			</c:when>
+			<c:when test="${ boardType == 3 }">
+				<form id="searchForm" action="searchMate.co" method="get">
+			</c:when>
+		</c:choose>
+			
+				<select name="condition">
+				
+					<option value="writer">작성자</option>				
+					<option value="title">제목</option>
+					<option value="content">내용</option>
+				</select>
+	            <input type="text" name="keyword">
+	            <button type="submit">검색</button>
+	          </form>
 		</div>
 
         <div id="button">
-            <button>글쓰기</button>
+            <button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
         </div>
 
         <div id="list">
-            <table>
-                <tr>
-                    <th>No.</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>[공지]고객센터 운영 안내</td>
-                    <td>작성자</td>                  
-                    <td>2022-02-03</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>[공지]홈페이지 오픈</td>
-                    <td>관리자</td>
-                    <td>2022-02-03</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>[공지]홈페이지 오픈</td>
-                    <td>관리자</td>
-                    <td>2022-02-03</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>[공지]홈페이지 오픈</td>
-                    <td>관리자</td>
-                    <td>2022-02-03</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>[공지]홈페이지 오픈</td>
-                    <td>관리자</td>
-                    <td>2022-02-03</td>
-                </tr>
-
+            <table id="boardTable">
+            	<thead>
+	                <tr>
+	                    <th>No.</th>                    
+	                    <th>제목</th>
+	                    <th>작성자</th>
+	                    <th>조회수</th>
+	                    <th>작성일</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+                
+	                <c:choose>
+	                	<c:when test="${empty list }">
+	                		 <tr>
+	                   			 <td colspan="4">게시글이 없습니다.</td>
+	                		</tr>
+	                	</c:when>
+	                	<c:otherwise>
+	                		<c:forEach var="n" items="${list }">
+			                <tr>
+			                    <td>${n.rowNo }</td>
+			                    <td class="bno" style="display:none">${n.boardNo }</td>
+			                    <td>${n.boardTitle }</td>
+			                    <td>${n.userId }</td>  
+			                    <td>${n.count }</td>
+			                    <td>${n.createDate }</td>
+			                </tr>
+		                </c:forEach>
+	               
+	                	</c:otherwise>
+	                </c:choose>
+                </tbody>
+	                
             </table>
 
         </div>
-
+	<c:if test="${boardType == 0 }">
         <div id="paging">
-            <button>&lt;</button> 
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button>
-            <button>&gt;</button>
+        	<c:if test="${ pi.currentPage ne 1 }">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='notice.co?npage=${pi.currentPage - 1}'">&lt;</button> 
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchNotice.co?npage=${pi.currentPage - 1}&condition=${condition }&keyword=${keyword }'">&lt;</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:if>
+        	
+        	<c:forEach var="n" begin="${pi.startPage }" end="${pi.endPage }" step="1">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='notice.co?npage=${n}'">${ n }</button>
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchNotice.co?npage=${n}&condition=${condition }&keyword=${keyword }'">${n}</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:forEach>
+        	
+        	<c:if test="${ pi.currentPage ne pi.maxPage }">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='notice.co?npage=${pi.currentPage + 1}'">&gt;</button> 
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchNotice.co?npage=${pi.currentPage + 1}&condition=${condition }&keyword=${keyword }'">&gt;</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:if>
+  
         </div>
-	
+		</c:if>
+		
+		<c:if test="${boardType == 1 }">
+        <div id="paging">
+        	<c:if test="${ pi.currentPage ne 1 }">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='info.co?ipage=${pi.currentPage - 1}'">&lt;</button> 
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchInfo.co?ipage=${pi.currentPage - 1}&condition=${condition }&keyword=${keyword }'">&lt;</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:if>
+        	
+        	<c:forEach var="n" begin="${pi.startPage }" end="${pi.endPage }" step="1">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='info.co?ipage=${n}'">${ n }</button>
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchInfo.co?ipage=${n}&condition=${condition }&keyword=${keyword }'">${n}</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:forEach>
+        	
+        	<c:if test="${ pi.currentPage ne pi.maxPage }">
+        		<c:choose>
+        			<c:when test="${empty condition }">
+        				<button onclick="location.href='info.co?ipage=${pi.currentPage + 1}'">&gt;</button> 
+        			</c:when>
+        			<c:otherwise>
+        				<button onclick="location.href='searchInfo.co?ipage=${pi.currentPage + 1}&condition=${condition }&keyword=${keyword }'">&gt;</button>
+        			</c:otherwise>
+        		</c:choose>
+        	</c:if>
+  
+        </div>
+		</c:if>
+		
 	</div>
+	
+	<script>
+		$(function(){
+			if(${boardType == 0}){
+				$("#boardTable>tbody>tr").click(function(){
+					location.href = 'detail.co?bno='+$(this).children(".bno").text();
+				})
+				
+			}if(${boardType == 1}){
+				$("#boardTable>tbody>tr").click(function(){
+					location.href = 'detail.co?bno='+$(this).children(".bno").text();
+				})
+			}
+			
+			
+		})
+	
+		
+	</script>
 	
 	 <jsp:include page="../common/footer.jsp" />
 	 

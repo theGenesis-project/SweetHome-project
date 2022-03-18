@@ -60,7 +60,7 @@
 					  <tbody>
 					  	<c:forEach var="b" items="${ Blist }">
 						    <tr class="list-area" onclick="listClick(${ b.boardNo });">
-						      <th scope="row">${ b.rownum }</th>
+						      <th scope="row">${ b.rowNo }</th>
 						      <td>${ b.boardTitle }</td>
 						      <td>${ b.count }</td>
 						      <td>${ b.createDate }</td>
@@ -111,7 +111,7 @@
 					  <tbody>
 					  	<c:forEach var="b" items="${ Clist }">
 						    <tr class="list-area" onclick="listClick(${ c.boardNo });">
-						      <th scope="row">${ c.rownum }</th>
+						      <th scope="row">${ c.rowNo }</th>
 						      <td>${ c.boardTitle }</td>
 						      <td>${ c.replyContent }</td>
 						      <td>${ c.createDate }</td>

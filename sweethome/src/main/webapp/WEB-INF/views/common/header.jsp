@@ -96,13 +96,13 @@
                 <ul>
                 <c:choose>
                 	<c:when test="${ empty loginUser }">
-                    	<li><a href="loginform.me">로그인</a>/<a href="">회원가입</a></li>
+                    	<li><a href="loginform.me">로그인</a>/<a href="enrollForm.me">회원가입</a></li>
                 	</c:when>
                 	<c:otherwise>
                 		<li><a href="myPage.me">마이페이지</a></li>
                 	</c:otherwise>
                 </c:choose>
-                    <li><a href="">커뮤니티</a></li>
+                    <li><a href="notice.co">커뮤니티</a></li>
                     <li><a href="">인테리어</a></li>
                     <li><a href="">하우스</a></li>
                 </ul>

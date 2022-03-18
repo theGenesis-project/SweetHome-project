@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class Reply {
-	private int rownum;
 	private int replyNo;
 	private int boardNo;
 	private int userNo;
@@ -23,4 +22,6 @@ public class Reply {
 	private int rereply;
 	private String report;
 	private String boardTitle;
+	
+	private int rowNo;
 }

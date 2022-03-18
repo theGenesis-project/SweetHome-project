@@ -24,12 +24,12 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int insertMember(Member m) {
-		return 0;
+		return memberDao.insertMember(sqlSession, m);
 	}
 
 	@Override
 	public int idCheck(String checkId) {
-		return 0;
+		return memberDao.idCheck(sqlSession, checkId);
 	}
 
 	@Override
@@ -56,5 +56,8 @@ public class MemberServiceImpl implements MemberService{
 	public int deleteMember(String userId) {
 		return memberDao.deleteMember(sqlSession, userId);
 	}
+	
+	
+	
 
 }

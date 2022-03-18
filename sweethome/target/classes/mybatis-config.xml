@@ -13,11 +13,13 @@
 		<typeAlias type="com.thegenesis.sweethome.member.model.vo.Cert" alias="cert" />
 		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Community" alias="community" />
 		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Reply" alias="reply" />
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.CommunityFile" alias="communityFile"/>
+		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Category" alias="category"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml" />
 		<mapper resource="/mappers/ask-mapper.xml"	/>
-		<mapper resource="/mappers/community-mapper.xml" />
+		<mapper resource="/mappers/community-mapper.xml"/>
 	</mappers>
 </configuration>
