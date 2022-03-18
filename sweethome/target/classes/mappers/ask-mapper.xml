@@ -9,6 +9,7 @@
 		<result column="ASK_CONTENT" property="askContent" />
 		<result column="COMMENT_DATE" property="commentDate" />
 		<result column="ASK_COMMENT" property="askComment" />
+		<result column="ROWNUM" property="rownum" />		
 	</resultMap>
 	
 	<resultMap type="askFile" id="askFileResultSet">
@@ -68,7 +69,8 @@
   	<!-- 문의 내역 확인용 쿼리문 -->
   	<select id="selectList" resultMap="askResultSet">
   		SELECT 
-  			   ASK_NO
+  			   ROWNUM
+  			 , ASK_NO
   			 , ASK_TITLE
   			 , TO_CHAR(ASK_DATE, 'YYYY/MM/DD') ASK_DATE
   			 , NVL2(ASK_COMMENT, 'Y', 'N') ASK_COMMENT
