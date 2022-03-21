@@ -129,98 +129,58 @@
 	<br><br>
 		<div class="w1500">
         <ul class="house-wrap">
+        	<c:forEach var="h" items="${ list }">
             <li class="house-item">
                 <a href="">
                 <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
-                <span class="thumb-title mtb3">MY04 서울역</span>
+                <span class="thumb-title mtb3">${h.houseName}</span>
                 <ul class="thumb-desc mtb3">
-                    <li>마이룸(원룸)</li>
-                    <li>월 53만원 ~</li>
+                    <li> 월</li>
                 </ul>
-                <span class="status1 mtb3">1명 입주가능</span>
+                	<c:choose>
+                	<c:when test="${ h.condition eq 'Y'}">
+                <span class="status1">입주가능</span>
+                </c:when>
+                <c:otherwise>
+                <span class="status2">입주불가</span>
+                </c:otherwise>
+                	</c:choose>
                 </a>
             </li>
-            <li class="house-item">
-                <a href="">
-                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_BY3ZNQk7_20211028123916.jpg" alt="썸네일 이미지">
-                <span class="thumb-title mtb3">MY04 서울역</span>
-                <ul class="thumb-desc mtb3">
-                    <li>마이룸(원룸)</li>
-                    <li>월 53만원 ~</li>
-                </ul>
-                <span class="status1 mtb3">1명 입주가능</span>
-                </a>
-            </li>
-            <li class="house-item">
-                <a href="">
-                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_v1UFODwL_20211028123616.jpg" alt="썸네일 이미지">
-                <span class="thumb-title mtb3">MY04 서울역</span>
-                <ul class="thumb-desc mtb3">
-                    <li>마이룸(원룸)</li>
-                    <li>월 53만원 ~</li>
-                </ul>
-                <span class="status2 mtb3">3개월 입주가능</span>
-                </a>
-            </li>
-            <li class="house-item">
-                <a href="">
-                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
-                <span class="thumb-title mtb3">MY04 서울역</span>
-                <ul class="thumb-desc mtb3">
-                    <li>마이룸(원룸)</li>
-                    <li>월 53만원 ~</li>
-                </ul>
-                <span class="status1 mtb3">1명 입주가능</span>
-                </a>
-            </li>
-            <li class="house-item">
-                <a href="">
-                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_BY3ZNQk7_20211028123916.jpg" alt="썸네일 이미지">
-                <span class="thumb-title mtb3">MY04 서울역</span>
-                <ul class="thumb-desc mtb3">
-                    <li>마이룸(원룸)</li>
-                    <li>월 53만원 ~</li>
-                </ul>
-                <span class="status1 mtb3">1명 입주가능</span>
-                </a>
-            </li>
-            <li class="house-item">
-                <a href="">
-                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_v1UFODwL_20211028123616.jpg" alt="썸네일 이미지">
-                <span class="thumb-title mtb3">MY04 서울역</span>
-                <ul class="thumb-desc mtb3">
-                    <li>마이룸(원룸)</li>
-                    <li>월 53만원 ~</li>
-                </ul>
-                <span class="status2 mtb3">3개월 입주가능</span>
-                </a>
-            </li>
-            
+            </c:forEach>
         </ul>
         <br>
+
     </div>
     
     <div id="pagingArea">
-        <ul class="pagination">
+        <ul class="pagination pagination-lg">
         <c:choose>
             <c:when test="${ pi.currentPage eq 1 }">
-            <li class="page-item none"><a class="page-link" href="#">&laquo;</a></li><!-- 1번 페이지일경우 -->
+            <li class="disabled" style="display:none"><span aria-hidden="true">&laquo;</span></a></li><!-- 1번 페이지일경우 -->
             </c:when>
             <c:otherwise>
-            <li class="page-item"><a class="page-link" href="list.bo?cpage=${ pi.currentPage - 1 }">&laquo;</a></li>
+            <li class="page-item"><a class="page-link" href="house.se?cpage=${ pi.currentPage - 1 }">&laquo;</a></li>
             </c:otherwise>
         </c:choose>
             <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-            <li class="page-item"><a class="page-link" href="list.bo?cpage=${ p }">${ p }</a></li>
+            <c:choose >
+            <c:when test="${ p ne pi.currentPage }">
+            	<li class="page-item "><a class="page-link" href="house.se?cpage=${ p }">${ p }</a></li>
+            </c:when>
+            <c:otherwise>
+            	<li class="page-item disabled" class="page-link" ><a class="page-link" href="house.se?cpage=${ p }">${ p }</a></li>
+            </c:otherwise>
+            </c:choose>
             </c:forEach>
             
             
         <c:choose>
             <c:when test="${ pi.currentPage eq pi.maxPage }">
-            <li class="page-item none"><a class="page-link" href="#">&raquo;</a></li>
+            <li class="disabled" style="display:none"><span aria-hidden="true">&raquo;</span></a></li>
             </c:when>
             <c:otherwise>
-            <li class="page-item"><a class="page-link" href="list.bo?cpage=${ pi.currentPage + 1 }">&raquo;</a></li>
+            <li class="page-item"><a class="page-link" href="house.se?cpage=${ pi.currentPage + 1 }">&raquo;</a></li>
             </c:otherwise>
         </c:choose>
         </ul>
@@ -230,9 +190,15 @@
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6&libraries=services"></script>
 	<script>
-	// 마커를 담을 배열입니다
-	var markers = [];
 	
+	let list = [];
+	<c:forEach var="product" items="${productList}" varStatus="status">
+	list.push("${product}");
+	</c:forEach>
+	
+	
+	var markers = [];
+
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
 	        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -244,7 +210,7 @@
 	
 	// 장소 검색 객체를 생성합니다
 	var ps = new kakao.maps.services.Places();  
-	
+
 	// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 	var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 	
@@ -266,13 +232,14 @@
 	}
 	
 	// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
-	function placesSearchCB(data, status, pagination) {
+	function placesSearchCB(data, status) {
 	    if (status === kakao.maps.services.Status.OK) {
 	
 	        // 정상적으로 검색이 완료됐으면
 	        // 검색 목록과 마커를 표출합니다
 	        displayPlaces(data);
-
+	        
+		
 	
 	    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 	
@@ -290,13 +257,11 @@
 	// 검색 결과 목록과 마커를 표출하는 함수입니다
 	function displayPlaces(places) {
 	
-	    var listEl = document.getElementById('placesList'), 
-	    menuEl = document.getElementById('menu_wrap'),
-	    fragment = document.createDocumentFragment(), 
+	    var fragment = document.createDocumentFragment(), 
 	    bounds = new kakao.maps.LatLngBounds(), 
 	    listStr = '';
 	    
-	
+
 	    // 지도에 표시되고 있는 마커를 제거합니다
 	    removeMarker();
 	    
@@ -304,8 +269,7 @@
 	
 	        // 마커를 생성하고 지도에 표시합니다
 	        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-	            marker = addMarker(placePosition, i)
-	
+	            marker = addMarker(placePosition, i) 
 	
 	        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 	        // LatLngBounds 객체에 좌표를 추가합니다
@@ -323,11 +287,10 @@
 	                infowindow.close();
 	            });
 	
-	         
+	            
 	        })(marker, places[i].place_name);
 	
 	    }
-	
 	
 	    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 	    map.setBounds(bounds);
@@ -375,10 +338,10 @@
 	    infowindow.open(map, marker);
 	}
 	
-	
+
+
 	</script>
 	
-		
 		
 </body>
 </html>
