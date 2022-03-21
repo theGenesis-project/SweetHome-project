@@ -10,7 +10,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
         div{
-            border: red 1px solid;
+           /* border: red 1px solid;*/
         }
         #nav{
             width: 1500px;

@@ -1,5 +1,6 @@
 package com.thegenesis.sweethome.community.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
+import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.service.CommunityService;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
@@ -63,9 +65,8 @@ public class CommunityControler {
 		
 		int listCount = communityService.listCount(boardType);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
+		System.out.println(pi);
 		ArrayList<Community> list = communityService.boardList(pi, boardType);
-		System.out.println(list);
 		
 		mv.addObject("list", list).addObject("pi",pi).addObject("boardType", boardType).setViewName("community/noticeList");
 		
@@ -75,14 +76,15 @@ public class CommunityControler {
 	@RequestMapping("searchNotice.co")
 	public ModelAndView noticeSearch(@RequestParam(value="npage", defaultValue="1") int currentPage, ModelAndView mv, String keyword, String condition) {
 		
-		int boardType = 0;
+		String boardType = "0";//여기바꿈
 		
 		HashMap<String, String> map = new HashMap<>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
+		map.put("bType", boardType);//여기바꿈
 		
 		int listCount = communityService.searchNoticeCount(map);
-		
+	
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
 		ArrayList<Community> list = communityService.searchNoticeList(pi, map);
@@ -102,55 +104,138 @@ public class CommunityControler {
 	//정보게시판 리스트
 	@RequestMapping("info.co")
 	public ModelAndView infoList(@RequestParam(value="ipage", defaultValue="1") int currentPage, ModelAndView mv){
-		
+			
 		int boardType = 1;
-		
+			
 		int listCount = communityService.listCount(boardType);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		
+			
 		ArrayList<Community> list = communityService.boardList(pi, boardType);
-		
+			
 		mv.addObject("list", list).addObject("pi",pi).addObject("boardType", boardType).setViewName("community/noticeList");
-		
+			
 		return mv;
 	}
-	
+		
 	//정보게시판 검색기능
 	@RequestMapping("searchInfo.co")
 	public ModelAndView infoSearch(@RequestParam(value="ipage", defaultValue="1") int currentPage, ModelAndView mv, String keyword, String condition) {
-			
-		int boardType = 1;
+				
+		String boardType = "1";
 		HashMap<String, String> map = new HashMap<>();
 		map.put("condition", condition);
 		map.put("keyword", keyword);
-		
+		map.put("bType", boardType);
 			
-		int listCount = communityService.searchInfoCount(map);
-			
+				
+		int listCount = communityService.searchNoticeCount(map);
+				
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-			
-		ArrayList<Community> list = communityService.searchInfoList(pi, map);
-			
+				
+		ArrayList<Community> list = communityService.searchNoticeList(pi, map);
+				
 		mv.addObject("pi", pi);
 		mv.addObject("list", list);
-			
+				
 		mv.addObject("condition", condition);
 		mv.addObject("keyword", keyword);
 		mv.addObject("boardType", boardType);
-			
+				
 		mv.setViewName("community/noticeList");
+				
+		return mv;
+					
+		}
+	//중고장터
+	@RequestMapping("flea.co")
+	public ModelAndView fleaList(@RequestParam(value="fpage", defaultValue="1") int currentPage, ModelAndView mv){
+			
+		int boardType = 2;
+			
+		int listCount = communityService.listCount(boardType);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+			
+		ArrayList<Community> list = communityService.boardList(pi, boardType);
+			
+		mv.addObject("list", list).addObject("pi",pi).addObject("boardType", boardType).setViewName("community/noticeList");
 			
 		return mv;
-				
 	}
-	//중고장터
+		
+	//중고장터 검색기능
+	@RequestMapping("searchflea.co")
+	public ModelAndView fleaSearch(@RequestParam(value="mpage", defaultValue="1") int currentPage, ModelAndView mv, String keyword, String condition) {
+				
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		map.put("boardType", "2");
+			
+				
+		int listCount = communityService.searchNoticeCount(map);
+				
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+				
+		ArrayList<Community> list = communityService.searchNoticeList(pi, map);
+				
+		mv.addObject("pi", pi);
+		mv.addObject("list", list);
+				
+		mv.addObject("condition", condition);
+		mv.addObject("keyword", keyword);
+		mv.addObject("boardType", 2);
+				
+		mv.setViewName("community/noticeList");
+				
+		return mv;
+					
+	}
 	//메이트찾기
-	
-	
-	
-	
-	
-	
+	@RequestMapping("mate.co")
+	public ModelAndView mateList(@RequestParam(value="mpage", defaultValue="1") int currentPage, ModelAndView mv){
+			
+		int boardType = 3;
+			
+		int listCount = communityService.listCount(boardType);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+			
+		ArrayList<Community> list = communityService.boardList(pi, boardType);
+			
+		mv.addObject("list", list).addObject("pi",pi).addObject("boardType", boardType).setViewName("community/noticeList");
+			
+		return mv;
+	}
+		
+	//메이트찾기 검색기능
+	@RequestMapping("searchmate.co")
+	public ModelAndView mateSearch(@RequestParam(value="mpage", defaultValue="1") int currentPage, ModelAndView mv, String keyword, String condition) {
+				
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		map.put("boardType", "3");
+			
+				
+		int listCount = communityService.searchNoticeCount(map);
+				
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+				
+		ArrayList<Community> list = communityService.searchNoticeList(pi, map);
+				
+		mv.addObject("pi", pi);
+		mv.addObject("list", list);
+				
+		mv.addObject("condition", condition);
+		mv.addObject("keyword", keyword);
+		mv.addObject("boardType", 3);
+				
+		mv.setViewName("community/noticeList");
+				
+		return mv;
+					
+	}
 	
 	
 	
@@ -177,7 +262,7 @@ public class CommunityControler {
 	@RequestMapping("insert.co")
 	public String insertBoard(Model model, Community cm, MultipartFile upfile, HttpSession session) {
 		
-		CommunityFile CoFile = null;//파일 테이블 따로 씀
+		CommunityFile cf = null;//파일 테이블 따로 씀
 		
 	 	
 		//전달된 파일있을 경우 파일명 수정 후 서버에 업로드
@@ -185,7 +270,7 @@ public class CommunityControler {
 						
 			String changeName = saveFile.changeFileName(upfile, session);//파일명 수정
 			
-			CoFile = CommunityFile.builder()
+			cf = CommunityFile.builder()
 								.originName(upfile.getOriginalFilename())
 								.changeName(changeName)
 								.filePath("resources/uploadFiles/" + changeName)
@@ -193,30 +278,128 @@ public class CommunityControler {
 						
 		}
 			
-		int result = communityService.insertBoard(cm, CoFile);
+		int result = communityService.insertBoard(cm, cf);
 		
 		if(result > 0) {//성공
-			//session.setAttribute("alertMsg", "게시글 작성 성공");
-			return "community/noticeList";
+			session.setAttribute("alertMsg", "게시글 작성 성공");
+			if(cm.getBoardType() == 0) {//각자의 페이지로
+				return "redirect:notice.co";
+			}else if(cm.getBoardType() == 1) {
+				return "redirect:info.co";
+			}else if(cm.getBoardType() == 2) {
+				return "redirect:flea.co";
+			}else {
+				return "redirect:mate.co";
+			}
+			
+			
 		}else {//실패
-			return "community/noticeList";
+			session.setAttribute("alertMsg", "게시글 작성 실패");
+			return "redirect:notice.co";
 		}
 		
 		
 	}
-	//게시글 수정
+	//게시글 수정(불러오기)
 	@RequestMapping("updateBoardView.co")
 	public String updateBoardView(int bno, Model model) {
-		
+	
 		//글 내용 가져오기
 		Community cm = communityService.boardDetail(bno);
-		
+		CommunityFile cf = communityService.boardDetailFile(bno);
+	
 		//updateForm으로
 		model.addAttribute("cm", cm);
-		
+		model.addAttribute("cf", cf);
 		return "community/boardUpdate";
 		
 	}
+	//게시글 수정
+	@RequestMapping("update.co")
+	public String updateBoard(Community cm, CommunityFile cf, Model model, HttpSession session, MultipartFile reupfile ) {
+		
+		
+		//새로 첨부파일이 넘어온 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			//기존 첨부파일이 있는 경우
+			//첨부 파일 삭제
+			new File(session.getServletContext().getRealPath(cf.getChangeName())).delete();
+			//새로운 첨부파일 등록
+			String changeName = saveFile.changeFileName(reupfile, session);
+			
+			cf = CommunityFile.builder().originName(reupfile.getOriginalFilename())
+						.fileNo(cf.getFileNo())
+						.originName(reupfile.getOriginalFilename())
+						.changeName(changeName)
+						.filePath("resources/uploadFiles/" + changeName)
+						.build();
+		}
+		
+		//글 수정하기
+		int result = communityService.updateBoard(cm, cf);
+		
+		if(result > 0) {//성공
+			session.setAttribute("alertMsg", "게시글 수정 성공");
+			return "redirect:detail.co?bno=" + cf.getBoardNo();
+			
+			
+		}else {//실패
+			session.setAttribute("alertMsg", "게시글 수정 실패");
+			return "redirect:detail.co?bno=" + cf.getBoardNo();
+		}
+
+	}
+	
+	@RequestMapping("deleteBoard.co")
+	public String deleteBoard(int bno, String filePath, int boardType, HttpSession session, Model model) {
+		
+		int result = communityService.deleteBoard(bno);
+		
+		if(result > 0) {//삭제 성공				
+				//첨부파일이 있을 삭제
+				if(!filePath.equals("")) {		
+					new File(session.getServletContext().getRealPath(filePath)).delete();				
+				}				
+				session.setAttribute("alertMsg", "게시글 삭제 성공");
+				if(boardType == 0) {//각자의 페이지로
+					return "redirect:notice.co";
+				}else if(boardType == 1) {
+					return "redirect:info.co";
+				}else if(boardType == 2) {
+					return "redirect:flea.co";
+				}else {
+					return "redirect:mate.co";
+				}
+				
+		}else {//삭제 실패
+				model.addAttribute("alertMsg", "게시글 삭제 실패");
+				return "redirect:notice.co";
+		}
+	
+	}
+	//게시글 신고
+	@RequestMapping("reportBoard.co")
+	public String reportBoard(int boardNo, int reportCate, HttpSession session) {
+		
+		Report r = new Report();
+		r = Report.builder()
+				.boardNo(boardNo)
+				.reportCate(reportCate)
+				.build();
+		
+		int result = communityService.reportBoard(r);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "신고완료");
+			return "redirect:detail.co?bno=" + boardNo;
+		}else {
+			session.setAttribute("alertMsg", "신고 실패");
+			return "redirect:detail.co?bno=" + boardNo;
+		}
+		
+	}
+	
+	
 
 
 }

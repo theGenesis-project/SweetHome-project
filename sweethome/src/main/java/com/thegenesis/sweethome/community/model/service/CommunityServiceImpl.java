@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.thegenesis.sweethome.common.vo.PageInfo;
+import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.dao.CommunityDao;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
@@ -27,32 +28,27 @@ public class CommunityServiceImpl implements CommunityService {
 		
 		return communityDao.listCount(sqlSession, boardType);
 	}
-	//공지사항 글 리스트 
+	//글 리스트 (통합)
 	@Override
 	public ArrayList<Community> boardList(PageInfo pi, int boardType) {
 		
 		return communityDao.boardList(sqlSession, pi, boardType);
 	}
-	//공지사항 검색 기능(게시글 개수 조회)
+	
+	//검색 기능(게시글 개수 조회/통합)
 	@Override
 	public int searchNoticeCount(HashMap<String, String> map) {
 		
-		return communityDao.searchNoticeCount(sqlSession);
+		return communityDao.searchNoticeCount(sqlSession, map);
 	}
-	@Override
-	public int searchInfoCount(HashMap<String, String> map) {
-		return 0;
-	}
-	//공지사항 검색 기능(게시글 리스트 조회)
+	//검색 기능(게시글 리스트 조회/통합)
 	@Override
 	public ArrayList<Community> searchNoticeList(PageInfo pi, HashMap<String, String> map) {
-		
+			
 		return communityDao.searchNoticeList(sqlSession, pi, map);
 	}
-	@Override
-	public ArrayList<Community> searchInfoList(PageInfo pi, HashMap<String, String> map) {
-		return communityDao.searchInfoList(sqlSession, pi, map);
-	}
+
+
 	//게시글 상세보기(조회수 증가)
 	@Override
 	public int increaseCount(int bno) {
@@ -72,9 +68,30 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 	//게시글 작성(게시글)
 	@Override
-	public int insertBoard(Community cm, CommunityFile coFile) {
-		return communityDao.insertBoard(sqlSession, cm, coFile);
+	public int insertBoard(Community cm, CommunityFile cf) {
+		return communityDao.insertBoard(sqlSession, cm, cf);
 	}
+	//게시글 수정
+	@Override
+	public int updateBoard(Community cm, CommunityFile cf) {
+		return communityDao.updateBoard(sqlSession, cm, cf);
+	}
+	//게시글 삭제
+	@Override
+	public int deleteBoard(int bno) {
+		return communityDao.deleteBoard(sqlSession, bno);
+	}
+	
+	
+	
+	
+	
+	//게시글 신고
+	@Override
+	public int reportBoard(Report r) {
+		return communityDao.reportBoard(sqlSession, r);
+	}
+	
 	
 	
 }

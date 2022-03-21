@@ -7,6 +7,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	/*search-area*/
+	#search-area{
+		margin : auto;
+		width:"100%";
+		height:"20%";
+	}
 	/*navi2 시작----------------------------------------*/
         #interiorCategory{
             width: 20%;
@@ -90,7 +96,7 @@
             color: rgb(247, 202, 201);
             font-weight: 600;
         }
-       
+       /*
         #paging-area{
             margin: 50px 0px;
         }
@@ -129,13 +135,18 @@
             background-color: rgb(247, 202, 201);
             padding: 3px 10px 3px 10px;
         }
+        */
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/interiorNavi.jsp" />
+	<div id="search-area">
+	 		rjatorasdf
+	 </div>
 	
 	 <div class="content">
+	 	
          <!--네비2 시작~!!------------------------------------------------------------------>
         <div id="interiorCategory">
             <ul>
@@ -231,7 +242,7 @@
                 </div>
 
             </div>
-
+			<!--  
             <div id="paging-area">
                 <div id="paging">
                     <button>&lt;</button> 
@@ -254,7 +265,7 @@
                     <button>검색</button>
                 </div>
             </div>
-
+		-->
         </div>
         
        
