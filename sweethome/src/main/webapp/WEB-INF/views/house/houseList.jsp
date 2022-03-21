@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.thegenesis.sweethome.house.model.vo.*, java.util.ArrayList" %>
+<% ArrayList<House> list = (ArrayList)request.getAttribute("list"); %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -185,16 +187,24 @@
         </c:choose>
         </ul>
     </div>
+    
+    <div><%= list.get(0).getAddress() %></div>
+	
+    
 	<hr>
 	<jsp:include page="../common/footer.jsp" />
+
 
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6&libraries=services"></script>
 	<script>
 	
-	let list = [];
-	<c:forEach var="product" items="${productList}" varStatus="status">
-	list.push("${product}");
-	</c:forEach>
+	var x = [];
+	
+	<% for(House h: list) { %>
+		x.push(<%= h.getLatitude() %>);
+	<% } %>
+	
+	console.log(x);
 	
 	
 	var markers = [];
