@@ -233,6 +233,7 @@
             <div class="modal-body">
             <form action="reportBoard.co" method="post">
                	<input type="hidden" name="boardNo" value="${cm.boardNo }">
+               	<input type="hidden" name="userNo" value="${loginUser.userNo }">
                 <select name="reportCate">
                     <option value="1">스팸, 홍보, 도배글</option>
                     <option value="2">욕설 및 음란물</option>

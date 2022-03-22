@@ -263,7 +263,7 @@ public class CommunityControler {
 	public String insertBoard(Model model, Community cm, MultipartFile upfile, HttpSession session) {
 		
 		CommunityFile cf = null;//파일 테이블 따로 씀
-		
+	
 	 	
 		//전달된 파일있을 경우 파일명 수정 후 서버에 업로드
 		if(!upfile.getOriginalFilename().equals("")) {//선택된 파일이 있을 경우
@@ -379,23 +379,39 @@ public class CommunityControler {
 	}
 	//게시글 신고
 	@RequestMapping("reportBoard.co")
-	public String reportBoard(int boardNo, int reportCate, HttpSession session) {
+	public String reportBoard(int boardNo, int reportCate, int userNo, HttpSession session) {
 		
-		Report r = new Report();
-		r = Report.builder()
-				.boardNo(boardNo)
-				.reportCate(reportCate)
-				.build();
 		
-		int result = communityService.reportBoard(r);
+		HashMap<String, String> map = new HashMap<>(); 
+		map.put("boardNo", Integer.toString(boardNo));
+		map.put("UserNo", Integer.toString(userNo));
 		
-		if(result>0) {
-			session.setAttribute("alertMsg", "신고완료");
-			return "redirect:detail.co?bno=" + boardNo;
+		int check = communityService.reportCheck(map);//신고여부체크
+			
+		if(check == 0) {
+			Report r = new Report();
+			r = Report.builder()
+					.boardNo(boardNo)
+					.reportCate(reportCate)
+					.userNo(userNo)
+					.build();
+		
+			
+			int result = communityService.reportBoard(r);
+			
+			if(result>0) {
+				session.setAttribute("alertMsg", "신고완료");
+				return "redirect:detail.co?bno=" + boardNo;
+			}else {
+				session.setAttribute("alertMsg", "신고 실패");
+				return "redirect:detail.co?bno=" + boardNo;
+			}
+			
 		}else {
-			session.setAttribute("alertMsg", "신고 실패");
+			session.setAttribute("alertMsg", "이미 신고하셨습니다.");
 			return "redirect:detail.co?bno=" + boardNo;
 		}
+		
 		
 	}
 	

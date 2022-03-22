@@ -49,6 +49,7 @@ public interface CommunityService {
 	//댓글 삭제
 	
 	//글 신고
+	int reportCheck(HashMap<String, String> map);
 	int reportBoard(Report r);
 	
 	//댓글 신고

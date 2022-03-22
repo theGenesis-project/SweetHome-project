@@ -85,7 +85,11 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	
 	
-	
+	//게시글 신고 선행
+	@Override
+	public int reportCheck(HashMap<String, String> map) {
+		return communityDao.reportCheck(sqlSession, map);
+	}
 	//게시글 신고
 	@Override
 	public int reportBoard(Report r) {

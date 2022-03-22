@@ -42,8 +42,8 @@
   <resultMap type="report" id="reportFileResultSet">
   	<result column="REPORT_NO" property="reportNo"/>
   	<result column="BOARD_NO" property="boardNo"/>
-  	<result column="REPORT_CATE" property="reportCate"/>
-  	
+  	<result column="REPORT_CATE" property="reportCate"/> 
+  	<result column="USER_NO" property="userNo"/>	
   </resultMap>
   
   <!-- 내 게시글 갯수 확인 -->
@@ -346,6 +346,17 @@
 				BOARD_NO = #{boardNo}
 		
 		</update>
+		<!-- 글 신고 선행 -->
+		<select id="reportCheck" parameterType="hashmap" resultType="_int">
+			SELECT COUNT(*)
+			FROM 
+				REPORT
+			WHERE 
+				USER_NO = #{UserNo}
+			AND 
+				BOARD_NO = #{boardNo}
+		
+		</select>
 		
 		<!-- 글 신고 -->
 		<insert id="reportBoard" parameterType="report">
@@ -353,12 +364,14 @@
 			INTO REPORT(
 				REPORT_NO,
 				BOARD_NO,
-				REPORT_CATE
+				REPORT_CATE,
+				USER_NO
 			)
 			VALUES(
 				SEQ_REPORT_NO.NEXTVAL
 				,#{boardNo}
-				,#{reportCate}		
+				,#{reportCate}	
+				,#{userNo}	
 			)
 			
 		

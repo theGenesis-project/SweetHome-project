@@ -16,5 +16,6 @@ public class Report {
 	private int replyNo;//	REPLY_NO	NUMBER
 	private int reportCate;//	REPORT_CATE	NUMBER
 	private String reportContent;//	REPORT_CONTENT	VARCHAR2(300 BYTE)
+	private int userNo;
 
 }

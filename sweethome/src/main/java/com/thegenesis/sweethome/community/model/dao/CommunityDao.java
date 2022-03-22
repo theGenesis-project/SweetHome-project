@@ -113,6 +113,11 @@ public class CommunityDao {
 		
 		return sqlSession.insert("communityMapper.reportBoard", r);
 	}
+	//게시글 신고 선행
+	public int reportCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.selectOne("communityMapper.reportCheck", map);
+	}
 
 	
 
