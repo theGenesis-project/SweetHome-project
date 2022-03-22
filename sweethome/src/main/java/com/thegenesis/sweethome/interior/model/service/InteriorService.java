@@ -26,7 +26,7 @@ public class InteriorService {
 		return interiorDao.listCount(sqlSession, inteCate);
 	}
 	//게시글 리스트
-	public ArrayList<Community> selectInteriorList(PageInfo pi, int inteCate) {
+	public ArrayList<Interior> selectInteriorList(PageInfo pi, int inteCate) {
 		
 		return interiorDao.selectInteriorList(sqlSession, pi, inteCate);
 	}
@@ -35,9 +35,11 @@ public class InteriorService {
 		
 		return interiorDao.insertInterior(sqlSession, in, list);
 	}
-	//게시글 삭제
+	//게시글 삭제(보류)
 	public int deleteInterior(ArrayList<Integer> checkNumbers) {
 		return interiorDao.deleteInterior(sqlSession, checkNumbers);
 	}
+	//게시글 상세페이지
+	
 
 }

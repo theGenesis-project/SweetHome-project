@@ -93,12 +93,13 @@
         #interior-area{
             padding: 40px;
         }
-        .interior_list{
-            width: 27%;
+        .interior_checkbox{
+        	width: 27%;
             height: auto;
             margin: 15px 10px;
             display: inline-block;
         }
+     
         .thumbnail-area{
             width: 100%;
             height: 100%;
@@ -126,46 +127,10 @@
             color: rgb(247, 202, 201);
             font-weight: 600;
         }
-       /*
-        #paging-area{
-            margin: 50px 0px;
+        .ino2{
+        	display:none;
         }
-        #paging{
-            margin-top: 50px;
-            width:fit-content; 
-            margin: auto;
-        }
-        #paging button{
-            background-color: rgb(221, 221, 221);
-            color: rgb(87, 87, 87);
-            padding: 7px;
-            border: 0ch;
-            border-radius: 3px;
-        }
-
-        #search-area{
-            margin: 50px 0px;
-        }
-        #search{
-            margin : auto;
-            height: 30px;
-            width: fit-content;
-        }
-        #search>select{
-            height: 100%;          
-        }
-        #search>input[name=search]{
-            box-sizing: border-box;
-            height: 100%;
-        }
-        #search>button{
-            border: 0ch;
-            border-radius: 3px;
-            color: white;
-            background-color: rgb(247, 202, 201);
-            padding: 3px 10px 3px 10px;
-        }
-        */
+     
 </style>
 </head>
 <body>
@@ -208,7 +173,7 @@
         <!--네비2 끝~!!------------------------------------------------------------------>
         <!--메인 시작!!!!!!!!!!!!--------------------------------------------------------->
         <div id="content2">
-        <form action="deleteInterior.in" method="post">
+        
             <div id="title-area">   	        	
                 <h2>${inteCate }</h2>        	
             </div>
@@ -216,12 +181,12 @@
             <div id="buttons">
                 <!--only 관리자만 보임-->
                 <button onclick="location.href='insertInteriorView.in'">가구등록</button>
-                <button type="submit">가구삭제</button>
+                <button onclick="checkboxArr()">가구삭제</button>
             </div>
-            
+         
             <c:choose>
 	            <c:when test="${empty list }">
-		            <div id="interior-area">
+		            <div class="interior-area">
 		             <div class="interior_list">
 		               	등록되어 있는 가구가 없습니다.
 		             </div>
@@ -229,25 +194,34 @@
 	             </c:when>
 	             <c:otherwise>
 	             	<c:forEach var="i" items="${list}">
+	             		<div class="interior_checkbox">
+	             		<input type="checkbox" name="checkList" value="${i.interiorNo}">
+	             	
 	             		<div class="interior_list">
 		                    <div class="thumbnail-area">
 		                        <img src="${i.filePath }" alt="interior">
 		                    </div>
 		                    <div class="interior_com">
 		                        <p>${i.interiorCo }</p>
-		                        <input type="checkbox" name="checkList" value="{i.interiorNo}">
+		                        
 		                    </div>
 		                    <div class="interior_title">
 		                        <p>${i.interiorTitle }</p>
+		                        
 		                    </div>
+		                  	<div class="ino2">
+		                  		<p class="ino">${i.interiorNo }</p>
+		                  	</div>
+		                  		        
 		                    <div class="interior_price">
-		                        <p>${i.interiorPrice }</p>
+		                        <p>${i.interiorPrice } 원</p>
 		                    </div>
-	                	</div>            	
+	                	</div> 
+	                	</div>           	
 	             	</c:forEach>
 	             </c:otherwise>
              </c:choose>
-      	</form>
+      
        </div>
     </div>
 	
@@ -264,8 +238,48 @@
 		}
 		
 		
-	})
+		$(".interior_list").click(function(){
+			location.href = 'detail.in?ino='+ $(this).children().children('.ino').text();
+			console.log($(this).children('.ino').text());
+		})
+		
+		})
 	
+	 /* 체크박스 선택 시  값이 잘 넘어가는지 확인*/
+       $(function(){
+           $("input:checkbox[name=checkList]").on('click', function(){
+               var uno = $(this).val();
+               console.log(uno);
+               
+           })
+        })
+        
+    function checkboxArr() {
+
+	    var checkArr = [];     // 배열 초기화
+	
+	    $("input[name='chekboxList']:checked").each(function(i) {
+	        checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
+	    })
+	
+	    $.ajax({
+	
+	        url: 'deleteInterior.in'
+	        , type: 'post'
+	        , data: {
+	           valueArrTest : checkArr
+	        }
+	
+	    });
+
+	}
+	
+	
+	
+	
+	
+		
+
 	
 	</script>
 

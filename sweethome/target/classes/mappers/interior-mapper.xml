@@ -102,17 +102,18 @@
 	</insert>
 	
 	<!-- 게시글 삭제 -->
-	<update id="interiorDelete" parameterType="">
+	<!-- <update id="interiorDelete" parameterType="">
 		UPDATE
 			INTERIOR
 		SET 
 			STATUS = 'N'
 		WHERE
 			INTERIOR_NO = #{}
-	
+		
+			
 	
 	</update>
-		
+	1-->	
   
   
 </mapper>

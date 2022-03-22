@@ -52,6 +52,7 @@ public class CommunityControler {
 				
 						
 		}else {
+			
 			mv.setViewName("Redirect:/");
 			//나중에 alertMsg로 바꿔주기~
 		}		

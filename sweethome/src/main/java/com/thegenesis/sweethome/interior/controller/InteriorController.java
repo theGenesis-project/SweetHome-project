@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.interior.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -51,7 +52,7 @@ public class InteriorController {
 				
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
 		
-		ArrayList<Community> list = interiorService.selectInteriorList(pi, inteCate);	
+		ArrayList<Interior> list = interiorService.selectInteriorList(pi, inteCate);	
 		
 		mv.addObject("list", list).addObject("pi", pi).addObject("inteCate",inteCate).setViewName("interior/interiorList");
 		return mv;
@@ -116,16 +117,42 @@ public class InteriorController {
 	}
 	//인테리어 삭제
 	@RequestMapping("deleteInterior.in")
-	public String deleteInterior(String[] checkList) {
+	public String deleteInterior(@RequestParam(value = "valueArrTest[]") List<String> valueArrTest) {
 		
-		 ArrayList<Integer> checkNumbers = new ArrayList<Integer>();
+		System.out.println(valueArrTest);
+		 //ArrayList<Integer> checkNumbers = new ArrayList<Integer>();
 		  
-		  for(int i = 0; i < checkList.length; i++) { 
-			  Integer.parseInt(checkList[i]);
-			  checkNumbers.add(Integer.parseInt(checkList[i])); 
+		/*  for(int i = 0; i < checkList.length; i++) { 
+			  
+			  checkNumbers.add(checkList[i]); 
 		  }
+		  System.out.println(checkNumbers);
 	
-		  int result = interiorService.deleteInterior(checkNumbers);
+		  int result = interiorService.deleteInterior(checkNumbers);*/
+		return "interior/interiorList";
+	}
+	
+	@RequestMapping("detailInterior.in")
+	public ModelAndView detailInterior(ModelAndView mv, int ino) {
+		
+		int result = interiorService.increaseCount(ino);
+		
+		if(result > 0) {
+			
+			Community cm = interiorService.boardDetail(ino);
+			CommunityFile cf = interiorService.boardDetailFile(ino);
+			
+			mv.addObject("cm", cm);
+			mv.addObject("cf", cf);
+			mv.setViewName("community/boardDetail");
+				
+						
+		}else {
+			
+			mv.setViewName("Redirect:/");
+			//나중에 alertMsg로 바꿔주기~
+		}		
+		return mv;
 		
 	}
 		

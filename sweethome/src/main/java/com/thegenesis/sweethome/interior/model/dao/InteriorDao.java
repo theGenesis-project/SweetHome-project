@@ -17,7 +17,7 @@ public class InteriorDao {
 		return sqlSession.selectOne("interiorMapper.listCount", inteCate);
 	}
 
-	public ArrayList<Community> selectInteriorList(SqlSessionTemplate sqlSession, PageInfo pi, int inteCate) {
+	public ArrayList<Interior> selectInteriorList(SqlSessionTemplate sqlSession, PageInfo pi, int inteCate) {
 		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
