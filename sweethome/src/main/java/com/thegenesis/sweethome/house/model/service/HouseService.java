@@ -44,4 +44,8 @@ public class HouseService {
 		return houseDao.selectHouseCount(sqlSession);
 	}
 	
+	public ArrayList<House> houseSearchOne(){
+		return houseDao.houseSearchOne(sqlSession);
+	}
+	
 }

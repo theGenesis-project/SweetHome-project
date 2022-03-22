@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.thegenesis.sweethome.house.model.vo.*, java.util.ArrayList" %>
-<% ArrayList<House> list = (ArrayList)request.getAttribute("list"); %>
+
+<% 
+	ArrayList<House> list = (ArrayList)request.getAttribute("list");
+    ArrayList<House> list1 = (ArrayList)request.getAttribute("list1");
+
+%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -188,7 +194,6 @@
         </ul>
     </div>
     
-    <div><%= list.get(0).getAddress() %></div>
 	
     
 	<hr>
@@ -199,13 +204,19 @@
 	<script>
 	
 	var x = [];
+	var y = [];
+	var houseName = [];
 	
-	<% for(House h: list) { %>
-		x.push(<%= h.getLatitude() %>);
-	<% } %>
+	<% for(House h: list1) { %>
+    	x.push(<%= h.getLatitude() %>);
+    	y.push(<%= h.getLongitude() %>);
+    	houseName.push("<%= h.getHouseName() %>");
+ 	<% } %>
+ 	
 	
-	console.log(x);
 	
+	
+ 	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 	
 	var markers = [];
 
@@ -217,6 +228,10 @@
 	
 	// 지도를 생성합니다    
 	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	
+	map.setMinLevel(3);
+	map.setMaxLevel(9);	
+
 	
 	// 장소 검색 객체를 생성합니다
 	var ps = new kakao.maps.services.Places();  
@@ -278,27 +293,12 @@
 	    for ( var i=0; i<places.length; i++ ) {
 	
 	        // 마커를 생성하고 지도에 표시합니다
-	        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-	            marker = addMarker(placePosition, i) 
-	
+	        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x)
+		
 	        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
 	        // LatLngBounds 객체에 좌표를 추가합니다
 	        bounds.extend(placePosition);
 	
-	        // 마커와 검색결과 항목에 mouseover 했을때
-	        // 해당 장소에 인포윈도우에 장소명을 표시합니다
-	        // mouseout 했을 때는 인포윈도우를 닫습니다
-	        (function(marker, title) {
-	            kakao.maps.event.addListener(marker, 'mouseover', function() {
-	                displayInfowindow(marker, title);
-	            });
-	
-	            kakao.maps.event.addListener(marker, 'mouseout', function() {
-	                infowindow.close();
-	            });
-	
-	            
-	        })(marker, places[i].place_name);
 	
 	    }
 	
@@ -306,29 +306,33 @@
 	    map.setBounds(bounds);
 	}
 	
-	
-	
-	// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-	function addMarker(position, idx, title) {
-	    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-	        imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-	        imgOptions =  {
-	            spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-	            spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-	            offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
-	        },
-	        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-	            marker = new kakao.maps.Marker({
-	            position: position, // 마커의 위치
-	            image: markerImage 
-	        });
-	
-	    marker.setMap(map); // 지도 위에 마커를 표출합니다
-	    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-	
-	    return marker;
+	for(var i = 0; i < x.length; i++){
+		
+		// 마커 이미지의 이미지 크기 입니다
+	    var imageSize = new kakao.maps.Size(24, 35); 
+	    
+	    // 마커 이미지를 생성합니다    
+	    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+		
+		var marker = new kakao.maps.Marker({
+			position: new kakao.maps.LatLng(y[i], x[i]),
+			map: map,
+			image : markerImage // 마커 이미지 
+		});
+		
+		var iwContent = '<a href=""><img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지"><span class="thumb-title mtb3">' + houseName[i] + '</span><ul class="thumb-desc mtb3"><li> 월</li></ul></a>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+	    iwPosition = new kakao.maps.LatLng(y[i], x[i]); //인포윈도우 표시 위치입니다
+
+		// 인포윈도우를 생성합니다
+		var infowindow = new kakao.maps.InfoWindow({
+		    position : iwPosition, 
+		    content : iwContent 
+		});
+	    
+		kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+	    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+	    
 	}
-	
 	// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 	function removeMarker() {
 	    for ( var i = 0; i < markers.length; i++ ) {
@@ -338,14 +342,18 @@
 	}
 	
 	
-	
-	// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-	// 인포윈도우에 장소명을 표시합니다
-	function displayInfowindow(marker, title) {
-	    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-	
-	    infowindow.setContent(content);
-	    infowindow.open(map, marker);
+	// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+	function makeOverListener(map, marker, infowindow) {
+	    return function() {
+	        infowindow.open(map, marker);
+	    };
+	}
+
+	// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+	function makeOutListener(infowindow) {
+	    return function() {
+	        infowindow.close();
+	    };
 	}
 	
 

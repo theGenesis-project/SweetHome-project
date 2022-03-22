@@ -50,11 +50,10 @@ public class HouseController {
 		
 		int result = houseService.insertHouse(h);
 		
-		System.out.println(h.getHouseName());
 		
 		House h2 = houseService.selectHouse(h.getHouseName());
 		
-		System.out.println(h2);
+
 		
 		
 		mv.addObject("h2", h2).setViewName("main");
@@ -76,13 +75,14 @@ public class HouseController {
 		
 		ArrayList<House> list = houseService.houseSearch(pi);
 		
+		
+		ArrayList<House> list1 = houseService.houseSearchOne();
+		
 	
-		mv.addObject("list", list).addObject("pi",  pi).setViewName("house/houseList");
+		mv.addObject("list", list).addObject("pi",  pi).addObject("list1", list1).setViewName("house/houseList");
 		
 		
-		
-		
-		System.out.println(mv);
+	
 		
 		return mv;
 	}

@@ -47,6 +47,9 @@ public class HouseDao {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch", null, rowBounds);
 	}
 
-	
+	public ArrayList<House> houseSearchOne(SqlSessionTemplate sqlSession){
+		
+		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch");
+	}
 
 }
