@@ -43,6 +43,7 @@
             width: 450px;
             height: 450px;
         }
+      
         #interior-content{
             margin: auto;
         }
@@ -53,6 +54,9 @@
         }
         .like-area{
             width: 50%;
+        }
+        .like-area>p>svg{
+        	 color: rgb(247, 202, 201);
         }
         .orderButton{
             width: 50%;
@@ -125,71 +129,62 @@
                             <li class="item2"></li>
                             <li class="item3"></li>
                         </ul>
-                        
-                        <!-- The slideshow -->
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                            <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                            </div>
-                            <div class="carousel-item">
-                            <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                            </div>
-                            <div class="carousel-item">
-                            <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                            </div>
-                        </div>
-                        
-                        <!-- Left and right controls -->
-                        <a class="carousel-control-prev" href="#myCarousel">
-                            <span class="carousel-control-prev-icon"></span>
-                        </a>
-                        <a class="carousel-control-next" href="#myCarousel">
-                            <span class="carousel-control-next-icon"></span>
-                        </a>
+	                        <!-- The slideshow -->
+	                        <div class="carousel-inner">
+	                            <div class="carousel-item active">
+	                            <img src="${inf.get(0).filePath }" alt="">
+	                            </div>
+                       	<c:forEach var="i" begin="1" end="${ infLength }">
+	                            <div class="carousel-item">
+	                            <img src="${inf.get(i).filePath }" alt="">
+	                            </div>
+                      	</c:forEach>                          
+	                        </div>         
                         </div>
                     </div>
                 </div>
-                <div class="content4_2">
-                    <div class="interior_com">
-                        <p>오트밀 하우스</p>
-                    </div>
-                    <div class="interior_title">
-                        <p>게시글 제목 적는 공간</p>
-                    </div>
-                    <div class="interior_price">
-                        <p>인테리어 가격 적는 공간</p>
-                        <hr>
-                    </div>
-                    <div class="interior_post">
-                        <p>배송업체 : 어쩌구택배</p>
-                        <hr>
-                    </div>
-                    <div class="like-order-area">
-                        <div class="like-area">
-                            <p id="like1"><svg id="i-heart" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
-                                </svg>
-                            </p>
-                            <p id="like2">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" width="30" height="30" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                  </svg>
-                            </p>
-                            
-                        </div>
-                        <div class="orderButton">
-                            <button>구매하기</button>
-                        </div>
-                    </div>
-                </div>
+	                <div class="content4_2">             	
+	                    <div class="interior_com">
+	                        <p>${in.interiorCo }</p>
+	                    </div>
+	                    <div class="interior_title">
+	                        <p>${in.interiorTitle }</p>
+	                    </div>
+	                    <div class="interior_price">
+	                        <p>${in.interiorPrice }</p>
+	                        <hr>
+	                    </div>
+	                    <div class="interior_post">
+	                        <p>배송업체 : ${in.interiorPost }</p>
+	                        <hr>
+	                    </div>
+                   		 <div class="like-order-area">
+	                        <div class="like-area">
+	                        <c:choose>
+		                        <c:when test="${ idCheckHeart eq N or idChechHeart eq null }">
+		                            <p id="like" style="cursor:pointer;">
+		                          		  ♡
+		                            </p>
+		                        </c:when>
+		                        <c:when test="${ idCheckHeart eq Y }">
+		                            <p id="like" style="cursor:pointer;">
+		                            	♥
+		                            </p>
+		                        </c:when>
+	                         </c:choose>                                      
+                        	</div>                	
+                        	<div class="orderButton">
+                          	 	<button>구매하기</button>
+                        	</div>
+                    	</div>
+                	</div>
             </div>
 
             <div class="content3_2">
                 <div class="content4_3">
                     <div class="interior-content">
-
+						${ in.interiorDetail }
                     </div>
-
                 </div>
             </div>
             
@@ -204,8 +199,7 @@
                                 <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
                             </th>
                             <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;">댓글등록</button></th>
-                        </tr>
-                        
+                        </tr>                      
                     </thead>
                     <tbody>
                         <tr>
@@ -224,10 +218,8 @@
                             <th>⤷</th>
                             <th>admin</th>
                             <td width="550">뭐</td>
-                            <td width="130">2020-03-12</td>
-                            
-                        </tr>
-                      
+                            <td width="130">2020-03-12</td>             
+                        </tr>     
                     </tbody>
                 </table>
             </div>
@@ -245,15 +237,13 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;">
-                            리뷰 댓글 작성하는 곳
+                            	리뷰 댓글 작성하는 곳
                         </textarea>
-                    </div>
-              
+                    </div>           
                     <!-- Modal footer -->
                     <div class="modal-footer">
                       <button type="button" class="btn" data-dismiss="modal">확인</button>
-                    </div>
-              
+                    </div>           
                   </div>
                 </div>
             </div>
@@ -271,7 +261,7 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;">
-                        댓글 내용 들어있음
+                        		댓글 내용 들어있음
                         </textarea>
                     </div>
               
@@ -283,17 +273,11 @@
                   </div>
                 </div>
             </div>
-
-
         </div>
-
-       
-         
-        
-       
     </div>
 
     <script>
+    	//이미지 슬라이드
         $(document).ready(function(){
             // Activate Carousel
             $("#myCarousel").carousel();
@@ -307,33 +291,46 @@
             });
             $(".item3").click(function(){
                 $("#myCarousel").carousel(2);
-            });
-                
-            // Enable Carousel Controls
-            $(".carousel-control-prev").click(function(){
-                $("#myCarousel").carousel("prev");
-            });
-            $(".carousel-control-next").click(function(){
-                $("#myCarousel").carousel("next");
-            });
+            });       
+           
         });
-
-        $(function(){
-            $("#like1").click(function(){
-                $("like1").hide();
-                $("#like2").show();
-
-            });
-            $("#like2").click(function(){
-            
-                $("#like1").show();
-                $("#like2").hide();
-                
-            });    
-
-        });
-
-        
+		//찜기능
+		
+		var likeBtn = document.getElementById("like");
+		likeBtn.onclick = function(){
+			changeHeart();
+		}
+		
+		//하트 클릭
+		function changeHeart(){
+			
+			$.ajax({
+				
+				url : "changeHeart.in",
+				data : {
+					interiorNo : ${in.interiorNo},
+					userNo : ${loginUser.userNo}					
+				},
+				success : function(result){
+					console.log(result);
+					if(result == "NN"){
+						$("#like").html("♡");
+	                       
+						
+					}else{
+						$("#like").html("♥");
+					}
+				
+				}
+				
+				
+			})
+			
+			
+		}
+		
+	
+	
         </script>
 	
 	<!--메인 끝!!!----------------------------------------------------------->

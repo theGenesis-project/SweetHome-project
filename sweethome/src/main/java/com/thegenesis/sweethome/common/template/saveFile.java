@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 public class saveFile {
 	
 	public static String changeFileName(MultipartFile upfile, HttpSession session) {
@@ -23,12 +26,20 @@ public class saveFile {
 		String ext = originName.substring(originName.lastIndexOf("."));
 					
 		String changeName = currentTime + ranNum + ext;
-					
+			
+		/*
+		//파일 기본경로
+        String defaultPath = session.getServletContext().getRealPath("/");
+        //파일 기본경로 _ 상세경로
+        String savePath = defaultPath + "resources" + File.separator + "uploadFiles" + File.separator;
+        */
 		// 업로드 시키고자 하는 파일의 물리적인 경로 알아내기
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/"); 
-					
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		log.info(savePath + changeName);			
 		try { // 새로운 파일 업로드
 			upfile.transferTo(new File(savePath + changeName));
+			log.info("====================");
+			log.info("파일 저장 완료");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

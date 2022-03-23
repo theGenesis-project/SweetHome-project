@@ -24,5 +24,6 @@ public class Community {
 	private String userId;
 	private String categoryName;
 	private int rowNo;
+	private int[] boardList;
 
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,9 +67,18 @@
         <div class="sub-nav-list" onclick="location.href=''">
         	하우스 톡톡
         </div>
-        <div class="sub-nav-list" onclick="location.href=''">
-           	투어 신청 관리
-        </div>
+        <c:choose>
+        	<c:when test="${ loginUser.userType eq 'M' }">
+		        <div class="sub-nav-list" onclick="location.href='userTour.my'">
+		           	투어 신청 관리
+		        </div>
+	        </c:when>
+	        <c:otherwise>
+		        <div class="sub-nav-list" onclick="location.href='ownerTour.my'">
+		           	투어 신청 관리
+		        </div>
+	        </c:otherwise>
+        </c:choose>
         <div class="sub-nav-list" onclick="location.href=''">
         	찜 내역 관리
          </div>

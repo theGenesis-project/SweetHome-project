@@ -171,7 +171,7 @@
                             <td>상태</td>
                             <td>주문 완료</td>
                             <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                변경하기
+                                	변경하기
                               </button></td><!--관리자만 보임-->
                         </tr>
                     </table>
