@@ -39,14 +39,13 @@
   	<result column="FILE_PATH" property="filePath"/>
   </resultMap>
   
-
   <resultMap type="report" id="reportFileResultSet">
   	<result column="REPORT_NO" property="reportNo"/>
   	<result column="BOARD_NO" property="boardNo"/>
   	<result column="REPORT_CATE" property="reportCate"/> 
   	<result column="USER_NO" property="userNo"/>	
   </resultMap>
-  
+
   <!-- 내 게시글 갯수 확인 -->
   <select id="myBoardListCount" parameterType="_int" resultType="_int">
   	SELECT 

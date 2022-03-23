@@ -1,20 +1,26 @@
 package com.thegenesis.sweethome.house.controller;
 
+import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.thegenesis.sweethome.ask.model.vo.Ask;
+import com.thegenesis.sweethome.common.template.Pagination;
+import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.house.model.service.HouseService;
 import com.thegenesis.sweethome.house.model.vo.House;
+import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.house.model.vo.HouseFile;
 import com.thegenesis.sweethome.room.model.service.RoomService;
 import com.thegenesis.sweethome.room.model.vo.Room;
@@ -62,11 +68,10 @@ public class HouseController {
 		
 		int result = houseService.insertHouse(h);
 		
-		System.out.println(h.getHouseName());
 		
 		House h2 = houseService.selectHouse(h.getHouseName());
 		
-		System.out.println(h2);
+
 		
 		
 		mv.addObject("h2", h2).setViewName("main");
@@ -77,6 +82,39 @@ public class HouseController {
 		
 	}
 	
+	@RequestMapping("house.se")
+	public ModelAndView askListView(@RequestParam(value="cpage", defaultValue="1") int currentPage, HttpSession session, ModelAndView mv) {
+		
+		PageInfo pi = null;
+		
+		int listCount = houseService.selectHouseCount();
+
+		pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
+		
+		ArrayList<House> list = houseService.houseSearch(pi);
+		
+		
+		ArrayList<House> list1 = houseService.houseSearchOne();
+		
+	
+		mv.addObject("list", list).addObject("pi",  pi).addObject("list1", list1).setViewName("house/houseList");
+		
+		
+	
+		
+		return mv;
+	}
+	
+	@RequestMapping("house.de")
+	public ModelAndView houseDetail(ModelAndView mv, int hno) {
+	
+		House house = houseService.houseDetail(hno);
+		
+		mv.addObject("house" ,house).setViewName("house/houseDetail");
+		
+		return mv;
+		
+	}	
 	/**
 	 * 하우스 이미지 파일 처리
 	 * @param hf
@@ -150,7 +188,7 @@ public class HouseController {
 		}
 		
 		return changeName;
-		
+
 	}
 	
 	
