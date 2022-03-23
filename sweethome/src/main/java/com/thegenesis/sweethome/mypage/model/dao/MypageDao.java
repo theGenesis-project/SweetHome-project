@@ -36,5 +36,13 @@ public class MypageDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return (ArrayList)sqlSession.selectList("communityMapper.selectMyCommentList", userNo, rowBounds);
 	}
+	
+	public int deleteMyBoard(SqlSessionTemplate sqlSession, int[] boardList) {
+		return sqlSession.update("communityMapper.deleteMyBoard", boardList);
+	}
+
+	public int myTourListCount(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("tourMapper.userTourListCount", userNo);
+	}
 
 }

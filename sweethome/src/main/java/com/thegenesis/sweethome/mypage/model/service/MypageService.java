@@ -34,4 +34,12 @@ public class MypageService {
 	public ArrayList<Community> selectMyCommentList(PageInfo cpi, int userNo) {
 		return mypageDao.selectMyCommentList(sqlSession, cpi, userNo);
 	}
+
+	public int deleteMyBoard(int[] boardList) {
+		return mypageDao.deleteMyBoard(sqlSession, boardList);
+	}
+
+	public int myTourListCount(int userNo) {
+		return mypageDao.myTourListCount(sqlSession, userNo);
+	}
 }

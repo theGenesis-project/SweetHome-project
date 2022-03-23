@@ -39,6 +39,7 @@
   	<result column="FILE_PATH" property="filePath"/>
   </resultMap>
   
+
   <resultMap type="report" id="reportFileResultSet">
   	<result column="REPORT_NO" property="reportNo"/>
   	<result column="BOARD_NO" property="boardNo"/>
@@ -46,6 +47,7 @@
   	<result column="USER_NO" property="userNo"/>	
   </resultMap>
   
+
   <!-- 내 게시글 갯수 확인 -->
   <select id="myBoardListCount" parameterType="_int" resultType="_int">
   	SELECT 
@@ -291,7 +293,7 @@
 			,#{filePath}
 		)
 	</insert>
-	
+
 	<!-- 게시글 수정 -->
 		<update id="updateBoard" parameterType="community">
 			UPDATE
@@ -376,5 +378,17 @@
 			
 		
 		</insert>
+
+	<update id="deleteMyBoard">
+		UPDATE 
+			COMMUNITY
+		SET
+			STATUS = 'N'
+		WHERE BOARD_NO IN
+		<foreach collection="array" item="boardNo" open="(" close=")" separator=",">		
+			#{boardNo}
+		</foreach>
+	</update>
+
   
 </mapper>
