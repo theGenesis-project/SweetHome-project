@@ -16,7 +16,7 @@
             border: red 1px solid;
         }
         #nav{
-            width: 1200px;
+            width: 1500px;
             height: 50px;
             background-color: rgb(240, 240, 240);
             margin: auto;

@@ -107,8 +107,7 @@
 			</c:when>
 		</c:choose>
 			
-				<select name="condition">
-				
+				<select name="condition">	
 					<option value="writer">작성자</option>				
 					<option value="title">제목</option>
 					<option value="content">내용</option>
@@ -197,7 +196,6 @@
   
         </div>
 		</c:if>
-		
 		<c:if test="${boardType == 1 }">
         <div id="paging">
         	<c:if test="${ pi.currentPage ne 1 }">
@@ -240,17 +238,10 @@
 	
 	<script>
 		$(function(){
-			if(${boardType == 0}){
-				$("#boardTable>tbody>tr").click(function(){
-					location.href = 'detail.co?bno='+$(this).children(".bno").text();
-				})
-				
-			}if(${boardType == 1}){
-				$("#boardTable>tbody>tr").click(function(){
-					location.href = 'detail.co?bno='+$(this).children(".bno").text();
-				})
-			}
+			$("#boardTable>tbody>tr").click(function(){
+				location.href = 'detail.co?bno='+$(this).children(".bno").text();
 			
+			})
 			
 		})
 	

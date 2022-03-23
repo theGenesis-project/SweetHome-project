@@ -12,6 +12,9 @@
   	<result column="STATUS" property="status"/>
   	<result column="REPORT" property="report"/>
   	<result column="ROW_NO" property="rowNo"/>
+  	<result column="BOARD_CONTENT" property="boardContent"/>
+  	<result column="USER_ID" property="userId"/>
+  	<result column="CATEGORY_NAME" property="categoryName"/>
   </resultMap>
   
   <resultMap type="reply" id="replyResultSet">
@@ -36,6 +39,15 @@
   	<result column="FILE_PATH" property="filePath"/>
   </resultMap>
   
+
+  <resultMap type="report" id="reportFileResultSet">
+  	<result column="REPORT_NO" property="reportNo"/>
+  	<result column="BOARD_NO" property="boardNo"/>
+  	<result column="REPORT_CATE" property="reportCate"/> 
+  	<result column="USER_NO" property="userNo"/>	
+  </resultMap>
+  
+
   <!-- 내 게시글 갯수 확인 -->
   <select id="myBoardListCount" parameterType="_int" resultType="_int">
   	SELECT 
@@ -103,7 +115,7 @@
    	    BY
    	   		ROWNUM DESC
   </select>
-  
+  <!-- 게시글 리스트 개수(통합) -->
   <select id="listCount" parameterType="_int" resultType="_int">
 		SELECT
 			COUNT(*)
@@ -115,7 +127,7 @@
 			BOARD_TYPE = #{boardType}
 	
 	</select>
-	
+	<!-- 게시글 리스트 불러오기(통합) -->
 	<select id="boardList" parameterType="_int" resultMap="communityResultSet">
 		SELECT *
 		FROM(
@@ -144,17 +156,22 @@
 		        ORDER BY CREATE_DATE ASC) A)
 		        ORDER BY BOARD_NO DESC
 	</select>
-	
+	<!-- 게시판 검색 기능 -->
+	<!-- Notice지만 통합 -->
 	<select id="searchNoticeCount" parameterType="hashmap" resultType="_int">		
 		SELECT
 			COUNT(*)
 		FROM 
-			COMMUNITY
+			COMMUNITY C
+		LEFT JOIN MEMBER USING (USER_NO)
 		WHERE
-			STATUS = 'Y'
+			C.STATUS = 'Y'
 		AND 
-			BOARD_TYPE = 0
+			BOARD_TYPE = #{bType}<!-- map에서 보낸 boardType//boardType 사용하면 꼬여서 bType으로 변경 -->
 		 <choose>
+		       <when test="condition == 'writer'">
+		       		AND USER_ID
+		       </when>
 		      <when test="condition == 'title'">
 		        	AND BOARD_TITLE
 		       </when>
@@ -169,63 +186,18 @@
 	<select id="searchNoticeList" parameterType="hashmap" resultMap="communityResultSet">
 		SELECT *
 		FROM(
-		    SELECT ROWNUM RNUM, A.*
+		    SELECT ROWNUM ROW_NO, A.*
 		    FROM (
 		        SELECT BOARD_NO, BOARD_TITLE, USER_ID, C.COUNT, C.CREATE_DATE
 		        FROM COMMUNITY C
-		        JOIN MEMBER USING (USER_NO)
-		        WHERE BOARD_TYPE = 0
+		        LEFT JOIN MEMBER USING (USER_NO)
+		        WHERE BOARD_TYPE = #{bType}
 		        AND C.STATUS = 'Y'
 		        
 		        <choose>
-		        	<when test="condition == 'title'">
-		        		AND BOARD_TITLE
-		        	</when>
-		        	<otherwise>
-		        		AND BOARD_CONTENT
-		        	</otherwise>
-		        </choose>
-		        		LIKE '%' || #{keyword} || '%'
-		        ORDER BY CREATE_DATE DESC) A)
-	
-	</select>
-	<select id="searchInfoCount" parameterType="hashmap" resultType="_int">		
-		SELECT
-			COUNT(*)
-		FROM 
-			COMMUNITY C
-		JOIN MEMBER USING(USER_NO)
-		WHERE
-			C.STATUS = 'Y'
-		AND 
-			BOARD_TYPE = 1
-		 <choose>
-		      <when test="condition == 'title'">
-		        	AND BOARD_TITLE
-		       </when>
-		       <when test="condition == 'writer'">
+		        	<when test="condition == 'writer'">
 		       		AND USER_ID
-		       </when>
-		       <otherwise>
-		        	AND BOARD_CONTENT
-		       </otherwise>
-		 </choose>
-			LIKE '%' || #{keyword} || '%'
-	
-	</select>
-	
-	<select id="searchInfoList" parameterType="hashmap" resultMap="communityResultSet">
-		SELECT *
-		FROM(
-		    SELECT ROWNUM RNUM, A.*
-		    FROM (
-		        SELECT BOARD_NO, BOARD_TITLE, USER_ID, C.COUNT, C.CREATE_DATE
-		        FROM COMMUNITY C
-		        JOIN MEMBER USING (USER_NO)
-		        WHERE BOARD_TYPE = 1
-		        AND C.STATUS = 'Y'
-		        
-		        <choose>
+		       		</when>
 		        	<when test="condition == 'title'">
 		        		AND BOARD_TITLE
 		        	</when>
@@ -234,9 +206,10 @@
 		        	</otherwise>
 		        </choose>
 		        		LIKE '%' || #{keyword} || '%'
-		        ORDER BY CREATE_DATE DESC) A)
-	
+		        ORDER BY CREATE_DATE ASC) A)
+		        ORDER BY ROW_NO DESC
 	</select>
+	
 	<!-- 게시글 상세보기  -->
 	<update id="increaseCount" parameterType="_int">
 		UPDATE 
@@ -249,10 +222,10 @@
 			BOARD_NO = #{boardNo}
 	
 	</update>
-	
 	<select id="boardDetail" parameterType="_int" resultMap="communityResultSet">
 		SELECT
 			CATEGORY_NAME,
+			BOARD_NO,
 			BOARD_TYPE,
 			BOARD_TITLE, 
 			USER_ID, 
@@ -266,8 +239,6 @@
 			BOARD_NO = #{boardNo}
 		AND
 			C.STATUS = 'Y'
-		
-			
 	</select>
 	<select id="boardDetailFile" parameterType="_int" resultMap="communityFileResultSet">
 		SELECT
@@ -312,8 +283,7 @@
 			BOARD_NO,
 			ORIGIN_NAME,
 			CHANGE_NAME,
-			FILE_PATH
-		
+			FILE_PATH	
 		)
 		VALUES(
 			SEQ_COM_FILE_NO.NEXTVAL
@@ -323,7 +293,92 @@
 			,#{filePath}
 		)
 	</insert>
-	
+
+	<!-- 게시글 수정 -->
+		<update id="updateBoard" parameterType="community">
+			UPDATE
+				COMMUNITY
+			SET
+				CATEGORY_NO = #{categoryNo},
+				BOARD_TITLE = #{boardTitle},
+				BOARD_CONTENT = #{boardContent}
+			WHERE
+				BOARD_NO = #{boardNo}
+				
+		
+		</update>
+		
+		<update id="updateCoFile" parameterType="communityFile">
+			UPDATE
+				COMMUNITY_FILE
+			SET
+				ORIGIN_NAME =  #{originName},
+ 				CHANGE_NAME = #{changeName},
+ 				FILE_PATH = #{filePath}
+ 			WHERE
+ 				FILE_NO = #{fileNo}
+			
+		</update>
+		
+		<insert id="insertNewCoFile" parameterType="communityFile">
+			INSERT
+			INTO COMMUNITY_FILE(
+				FILE_NO,
+				BOARD_NO,
+				ORIGIN_NAME,
+				CHANGE_NAME,
+				FILE_PATH	
+			)
+			VALUES(
+				SEQ_COM_FILE_NO.NEXTVAL
+				,#{boardNo}
+				,#{originName}
+				,#{changeName}
+				,#{filePath}
+			)
+		</insert>
+		
+		<!-- 게시글 삭제 -->
+		<update id="deleteBoard" parameterType="_int">
+			UPDATE 
+				COMMUNITY
+			SET
+				STATUS = 'N'
+			WHERE
+				BOARD_NO = #{boardNo}
+		
+		</update>
+		<!-- 글 신고 선행 -->
+		<select id="reportCheck" parameterType="hashmap" resultType="_int">
+			SELECT COUNT(*)
+			FROM 
+				REPORT
+			WHERE 
+				USER_NO = #{UserNo}
+			AND 
+				BOARD_NO = #{boardNo}
+		
+		</select>
+		
+		<!-- 글 신고 -->
+		<insert id="reportBoard" parameterType="report">
+			INSERT 
+			INTO REPORT(
+				REPORT_NO,
+				BOARD_NO,
+				REPORT_CATE,
+				USER_NO
+			)
+			VALUES(
+				SEQ_REPORT_NO.NEXTVAL
+				,#{boardNo}
+				,#{reportCate}	
+				,#{userNo}	
+			)
+			
+		
+		</insert>
+
 	<update id="deleteMyBoard">
 		UPDATE 
 			COMMUNITY
@@ -334,5 +389,6 @@
 			#{boardNo}
 		</foreach>
 	</update>
+
   
 </mapper>
