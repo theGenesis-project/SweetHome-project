@@ -47,5 +47,10 @@ public class HouseService {
 	public ArrayList<House> houseSearchOne(){
 		return houseDao.houseSearchOne(sqlSession);
 	}
+
+
+	public House houseDetail(int hno) {
+		return houseDao.houseDetail(sqlSession, hno);
+	}
 	
 }

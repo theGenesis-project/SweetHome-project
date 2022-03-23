@@ -100,10 +100,6 @@
             line-height: 30px;
             margin-left:25px;
         }
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
         #text-box{
         	width:1500px;
         	margin:auto;
@@ -128,22 +124,23 @@
 		<hr>
 	<div id="text-box">
 					<form onsubmit="searchPlaces(); return false;">
-	   				<input type="text" id="keyword" value="이태원"class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="역 ,학교이름을 입력 해주세요"> 
+	   				<input type="text" id="keyword" value=""class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="역 ,학교이름을 입력 해주세요"> 
                    <button type="submit" id="search" class="btn btn">검색</button>
                    </form>
 		</div>
-	  <br><br>
+	  <br>
 		<div id="map" style="width:1300px;height:450px;"></div>
 	<br><br>
 		<div class="w1500">
         <ul class="house-wrap">
         	<c:forEach var="h" items="${ list }">
             <li class="house-item">
-                <a href="">
+                <div class="item-list">
                 <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
+                <div style="display:none" class="hno">${h.houseNo}</div>
                 <span class="thumb-title mtb3">${h.houseName}</span>
                 <ul class="thumb-desc mtb3">
-                    <li> 월</li>
+                    <li> ${h.houseNo }</li>
                 </ul>
                 	<c:choose>
                 	<c:when test="${ h.condition eq 'Y'}">
@@ -153,7 +150,7 @@
                 <span class="status2">입주불가</span>
                 </c:otherwise>
                 	</c:choose>
-                </a>
+                </div>
             </li>
             </c:forEach>
         </ul>
@@ -247,12 +244,7 @@
 	
 	    var keyword = document.getElementById('keyword').value;
 	
-	    if (!keyword.replace(/^\s+|\s+$/g, '')) {
-	        alert('키워드를 입력해주세요!');
-	        return false;
-	    }
-	
-	    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+	    
 	    ps.keywordSearch( keyword, placesSearchCB); 
 	}
 	
@@ -356,6 +348,11 @@
 	    };
 	}
 	
+	$(".item-list").click(function(){
+		var hno = $(this).children('.hno').text();
+	
+		location.href = "house.de?hno=" + hno; 
+	})		
 
 
 	</script>

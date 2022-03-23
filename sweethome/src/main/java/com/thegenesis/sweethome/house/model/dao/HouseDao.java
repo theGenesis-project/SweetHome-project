@@ -52,4 +52,8 @@ public class HouseDao {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch");
 	}
 
+	public House houseDetail(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.selectOne("houseMapper.houseDetail", hno);
+	}
+
 }

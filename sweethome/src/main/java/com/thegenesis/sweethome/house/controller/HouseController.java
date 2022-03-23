@@ -87,5 +87,15 @@ public class HouseController {
 		return mv;
 	}
 	
+	@RequestMapping("house.de")
+	public ModelAndView houseDetail(ModelAndView mv, int hno) {
+	
+		House house = houseService.houseDetail(hno);
+		
+		mv.addObject("house" ,house).setViewName("house/houseDetail");
+		
+		return mv;
+	}
+	
 	
 }
