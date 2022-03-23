@@ -28,6 +28,14 @@
   	<result column="BOARD_TITLE" property="boardTitle"/>
   </resultMap>
   
+  <resultMap type="communityFile" id="communityFileResultSet">
+     <result column="FILE_NO" property="fileNo"/>
+     <result column="BOARD_NO" property="boardNo"/>
+     <result column="ORIGIN_NAME" property="originName"/>
+     <result column="CHANGE_NAME" property="changeName"/>
+     <result column="FILE_PATH" property="filePath"/>
+  </resultMap>
+  
   <!-- 내 게시글 갯수 확인 -->
   <select id="myBoardListCount" parameterType="_int" resultType="_int">
   	SELECT 
