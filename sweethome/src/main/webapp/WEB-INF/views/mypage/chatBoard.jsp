@@ -11,13 +11,13 @@
 <body>
 
 	<jsp:include page="../common/header.jsp" />
-	
-	<h1>ㅎㅇㅎㅇ</h1>
+
 	<button onclick="connect()">접속</button>
 	<button onclick="disconnect()">종료</button>
+	<div class="message-wrap"></div>
 	
 	<script>
-		var socket;
+		var socket;		
 		
 		// 웹소켓 접속 함수
 		function connect() {
@@ -35,11 +35,35 @@
 				console.log("오타 내지마세요.");
 			}
 			socket.onmessage = function(m) {
-				//console.log("메세지가 도착했습니다.");
-				//console.log(m.data);
-				var div = $("<div></div>");
-				div.text("${loginUser.userName} : " + m.data);
-				$(".message-wrap").append(div);
+				var text = m.data;
+				var arr = text.split(",", 4);
+				//console.log("${loginUser.userId}" == arr[2]);
+				//console.log(arr);
+				
+				// 화면에 띄우기
+				if("${loginUser.userId}" != arr[2]) {
+					var income = $("<div class='incoming_msg'></div>");
+					var received = $("<div class='received_msg'></div>");
+					var msg = $("<div class='received_withd_msg'></div>");
+					
+					msg.html("<p>" + arr[3] + "</p> <span class='time_date'>" + arr[1] + "</span>");
+					received.append(msg);
+					income.append(received);
+					
+					$(".msg_history").append(income);				
+				}
+				
+				if("${loginUser.userId}" == arr[2]) {
+					var outgoing = $("<div class='outgoing_msg'></div>");
+					var sent = $("<div class='sent_msg'></div>");
+					
+					sent.html("<p>" + arr[3] + "</p> <span class='time_date'>" + arr[1] + "</span>");
+					outgoing.append(sent);
+					
+					$(".msg_history").append(outgoing);
+				}
+				
+				$(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
 				
 			}
 		}
@@ -49,20 +73,76 @@
 			socket.close();
 		}
 		
+		// 메시지 전송 함수
 		function send() {
-			var text = $("#chat-input").val();
+			var text = $(".write_msg").val();
+			// 텍스트 없으면 안보냄
 			if(!text) {
 				return;
 			}
-			socket.send(text);
-			$("#chat-input").val("");
 			
+			// 시간 구하기
+			var today = new Date();
+			
+			var year = today.getFullYear(); // 년도
+			var month = today.getMonth() + 1; // 월
+			var date = today.getDate(); // 날짜
+			var day = today.getDay(); // 요일
+			
+			switch(day) {
+			case 0 : day = "일";
+						break;
+			case 1 : day = "월";
+						break;
+			case 2 : day = "화";
+						break;
+			case 3 : day = "수";
+						break;
+			case 4 : day = "목";
+						break;
+			case 5 : day = "금";
+						break;
+			case 6 : day = "토";
+						break;
+			}
+			
+			var hour = today.getHours(); // 시
+			var min = today.getMinutes(); // 분
+			var ampm;
+			
+			if(hour < 12) {
+				if(hour < 10) {					
+					hour = '0' + hour;
+				}
+				ampm = "AM";
+			} else {
+				hour = hour - 12;
+				ampm = "PM";
+			}
+			
+			if(min < 10) {
+				min = '0' + min;
+			}
+			
+			// 소켓에 메세지 전송
+			socket.send(year + "년 " + month + "월 " + date + "일 " + day + "," 
+					+ hour + ":" + min + " " + ampm + "," +"${loginUser.userId}," + text);
+			// 메세지 전송 부분 비우기
+			$(".write_msg").val("");
+		}
+		
+		// 엔터키로 메시지 보내기
+		function msgSend() {
+			if(event.keyCode == 13)			
+			$(".msg_send_btn").trigger("click");
 		}
 	</script>
-	
+	<!-- 
 	<hr>
 	<input type="text" id="chat-input"> 
 	<button onclick="send()">전송</button>
+	 -->
+	
 	
 	<!-- 수신된 메시지가 출력될 영역 -->
 	<div class="messaging">
@@ -73,10 +153,12 @@
 			  <h4>Recent</h4>
 			</div>
 			<div class="srch_bar">
-			  <div class="stylish-input-group">
-				<input type="text" class="search-bar"  placeholder="Search" >
-				</div>
-			</div>
+              <div class="stylish-input-group">
+                <input type="text" class="search-bar"  placeholder="Search" >
+                <span class="input-group-addon">
+                <button type="button">🔍</button>
+                </span> </div>
+            </div>
 		  </div>
 		  <div class="inbox_chat scroll">
 			<div class="chat_list active_chat">
@@ -99,103 +181,16 @@
 				</div>
 			  </div>
 			</div>
-			<div class="chat_list">
-			  <div class="chat_people">
-				<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-				<div class="chat_ib">
-				  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-				  <p>Test, which is a new approach to have all solutions 
-					astrology under one roof.</p>
-				</div>
-			  </div>
-			</div>
-			<div class="chat_list">
-			  <div class="chat_people">
-				<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-				<div class="chat_ib">
-				  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-				  <p>Test, which is a new approach to have all solutions 
-					astrology under one roof.</p>
-				</div>
-			  </div>
-			</div>
-			<div class="chat_list">
-			  <div class="chat_people">
-				<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-				<div class="chat_ib">
-				  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-				  <p>Test, which is a new approach to have all solutions 
-					astrology under one roof.</p>
-				</div>
-			  </div>
-			</div>
-			<div class="chat_list">
-			  <div class="chat_people">
-				<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-				<div class="chat_ib">
-				  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-				  <p>Test, which is a new approach to have all solutions 
-					astrology under one roof.</p>
-				</div>
-			  </div>
-			</div>
-			<div class="chat_list">
-			  <div class="chat_people">
-				<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-				<div class="chat_ib">
-				  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-				  <p>Test, which is a new approach to have all solutions 
-					astrology under one roof.</p>
-				</div>
-			  </div>
-			</div>
 		  </div>
 		</div>
-		<div class="mesgs scroll">
+		<div class="mesgs">
 		  <div class="msg_history">
-			<div class="incoming_msg">
-			  <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-			  <div class="received_msg">
-				<div class="received_withd_msg">
-				  <p>Test which is a new approach to have all
-					solutions</p>
-				  <span class="time_date"> 11:01 AM    |    June 9</span></div>
-			  </div>
-			</div>
-			<div class="outgoing_msg">
-			  <div class="sent_msg">
-				<p>Test which is a new approach to have all
-				  solutions</p>
-				<span class="time_date"> 11:01 AM    |    June 9</span> </div>
-			</div>
-			<div class="incoming_msg">
-			  <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-			  <div class="received_msg">
-				<div class="received_withd_msg">
-				  <p>Test, which is a new approach to have</p>
-				  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-			  </div>
-			</div>
-			<div class="outgoing_msg">
-			  <div class="sent_msg">
-				<p>Apollo University, Delhi, India Test</p>
-				<span class="time_date"> 11:01 AM    |    Today</span> </div>
-			</div>
-			<div class="incoming_msg">
-			  <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-			  <div class="received_msg">
-				<div class="received_withd_msg">
-				  <p>We work directly with our designers and suppliers,
-					and sell direct to you, which means quality, exclusive
-					products, at a price anyone can afford.</p>
-				  <span class="time_date"> 11:01 AM    |    Today</span></div>
-			  </div>
-			</div>
+		  <div class="hr-sect">2022년 03월 23일</div>
 		  </div>
 		  <div class="type_msg">
 			<div class="input_msg_write">
-			  <input type="text" class="write_msg" placeholder="Type a message" />
-			  <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+			  <input type="text" class="write_msg" placeholder="Type a message" onkeypress="msgSend();"/>
+			  <button class="msg_send_btn" type="button" onclick="send()"><img src="resources/image/Daco_4358108.png" style="width: 100%;"></button>
 			</div>
 		  </div>
 		</div>

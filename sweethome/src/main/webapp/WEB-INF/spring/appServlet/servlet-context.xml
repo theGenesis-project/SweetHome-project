@@ -30,7 +30,7 @@
 	<context:component-scan base-package="com.thegenesis.sweethome" />
 	
 	<!-- 웹소켓 연결 빈 등록 -->
-	<beans:bean id="chatHandler" class="com.thegenesis.sweethome.chat.controller.chattingHandler" />
+	<beans:bean id="chatHandler" class="com.thegenesis.sweethome.chat.controller.ChattingHandler" />
 	<websocket:handlers>
 		<!-- ws://localhost:8706/sweethome/groupchat -->
 		<websocket:mapping handler="chatHandler" path="groupchat" />
