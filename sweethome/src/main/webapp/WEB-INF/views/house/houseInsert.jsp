@@ -35,6 +35,9 @@
 		font-size: 25px;
 		width: 100%;
 	}
+	.house_photo_insert_title {
+		display: flex;
+	}
 	.house_photo_insert {
 		display: flex;
 		justify-content: center;
@@ -190,10 +193,8 @@
 				<div class="photo_insert_title_02">
 					<h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4>
 				</div>
-				<div class="photo_insert_title_02">
-					<button class="button button1">파일첨부</button>
-				</div>
-			
+				
+				<br><br>
 
 				
 				<div class="house_photo_insert">
@@ -215,7 +216,13 @@
 				</div>
 
 				<div id="file-area1_1">
-					<input type="file" multiple="" id="file1_1" name="file" onchange="loadImg(this, 1);" required>
+					<input type="file" id="file1_1" name="file" onchange="loadImg(this, 1);" required>
+					<input type="file" id="file1_2" name="file" onchange="loadImg(this, 2);" >
+					<input type="file" id="file1_3" name="file" onchange="loadImg(this, 3);" >
+					<input type="file" id="file1_4" name="file" onchange="loadImg(this, 4);" >
+					<input type="file" id="file1_5" name="file" onchange="loadImg(this, 5);" >
+					<!-- onchange: input 태그의 내용물이 변경되었을 때 발생하는 이벤트 -->
+					<!-- loadImg() 함수를 호출 => 우리가 만들 함수 -->
 				</div>
 				
 				<!-- <input type="file" multiple id="gallery-photo-add" class="photo_insert_title_03">
