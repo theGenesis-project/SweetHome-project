@@ -24,18 +24,6 @@
             <td>Otto</td>
             <td><span class="badge badge-pill badge-info">승인 완료</span></td>
           </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td><span class="badge badge-pill badge-light">승인 대기</span></td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td><span class="badge badge-pill badge-danger">승인 거절</span></td>
-          </tr>
         </tbody>
     </table>
 

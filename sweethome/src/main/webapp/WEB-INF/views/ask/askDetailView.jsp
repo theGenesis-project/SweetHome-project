@@ -38,12 +38,14 @@
 						<th>작성일</th>
 						<td colspan="3">${ a.askDate }</td>
 					</tr>
-					<tr>
-						<th>첨부파일</th>
-						<td class="Qanswer" colspan="3">
-							<img src="${ aFile.filePath }" alt="첨부사진">
-						</td>
-					</tr>
+					<c:if test="${ aFile.filePath }">
+						<tr>
+							<th>첨부파일</th>
+							<td class="Qanswer" colspan="3">
+								<img src="${ aFile.filePath }" alt="첨부사진">
+							</td>
+						</tr>
+					</c:if>
 					<tr>
 						<th>내용</th>
 						<td class="Qcontent" colspan="3">

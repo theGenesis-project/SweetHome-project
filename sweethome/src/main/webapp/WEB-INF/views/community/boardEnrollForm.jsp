@@ -50,10 +50,10 @@
                 <input type="hidden" id="userNo" name="userNo" value="${loginUser.userNo }">
                     <tr>
                         <th><label for="title">제목</label></th>
-                        <c:if test="${boardType == 3 }">
-                        <td><select name="" id="" class="category">
-                            <option value="">판매</option>
-                            <option value="">구매</option>
+                        <c:if test="${boardType == 2 }">
+                        <td><select name="categoryNo" id="" class="category">
+                            <option value="2">판매</option>
+                            <option value="3">구매</option>
                             </select>
                         </td>
                         </c:if>

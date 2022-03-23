@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="interiorMapper">
+	<resultMap type="interior" id="interiorResultSet">
+	  	<result column="INTERIOR_NO" property="interiorNo"/>
+	  	<result column="INTE_CATE" property="inteCate"/>
+	  	<result column="INTERIOR_TITLE" property="interiorTitle"/>
+	  	<result column="INTERIOR_CO" property="interiorCo"/>
+	  	<result column="INTERIOR_PRICE" property="interiorPrice"/>
+	  	<result column="COUNT" property="count"/>
+	  	<result column="INTERIOR_DETAIL" property="interiorDetail"/>
+	  	<result column="SELL" property="sell"/>
+	  	<result column="STATUS" property="status"/>
+	  	<result column="INTERIOR_POST" property="interiorPost"/>
+	  	<result column="ROW_NO" property="rowNo"/>
+	  	<result column="FILE_PATH" property="filePath"/>
+  	</resultMap>
+  	
+  	<resultMap type="interiorFile" id="interiorFileResultSet">
+	  	<result column="FILE_NO" property="fileNo"/>
+	  	<result column="INTERIOR_NO" property="interiorNo"/>
+	  	<result column="ORIGIN_NAME" property="originName"/>
+	  	<result column="CHANGE_NAME" property="changeName"/>
+	  	<result column="FILE_PATH" property="filePath"/>
+	  	<result column="FILE_LEVEL" property="fileLevel"/>
+  	</resultMap>
+  
+  
+  
+  <select id="listCount" parameterType="_int" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM 
+			INTERIOR
+		WHERE
+			STATUS = 'Y'	
+		<choose>
+			<when test="inteCate != 0">
+		AND INTE_CATE = #{inteCate}			
+			</when>
+		</choose>
+	
+	</select>
+	
+	<select id="selectInteriorList" parameterType="_int" resultMap="interiorResultSet">		
+		SELECT 
+			INTERIOR_NO, INTE_CATE, INTERIOR_TITLE, INTERIOR_CO, INTERIOR_PRICE, FILE_PATH                     
+		FROM 
+			INTERIOR
+		LEFT JOIN 
+			INTERIOR_FILE USING(INTERIOR_NO)     
+		WHERE 
+			STATUS = 'Y'
+		AND 
+			INTE_CATE = #{inteCate}
+        AND FILE_LEVEL = 1
+		ORDER BY FILE_NO DESC
+				
+	</select>
+	<!-- 게시글 작성 -->
+	<insert id="insertInterior" parameterType="Interior">
+		INSERT 
+		INTO INTERIOR(
+			INTERIOR_NO,
+			INTE_CATE,
+			INTERIOR_TITLE,
+			INTERIOR_CO,
+			INTERIOR_PRICE,
+			INTERIOR_DETAIL,
+			INTERIOR_POST
+		)
+		VALUES(
+			SEQ_INT_NO.NEXTVAL,
+			#{inteCate},
+			#{interiorTitle},
+			#{interiorCo},
+			#{interiorPrice},
+			#{interiorDetail},
+			#{interiorPost}
+		)	
+	</insert>
+	
+	<insert id="insertInteriorFile" parameterType="interiorFile">
+		INSERT
+		INTO INTERIOR_FILE(
+			FILE_NO,
+			INTERIOR_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL		
+			)
+		VALUES(
+			SEQ_INT_FILE_NO.NEXTVAL,
+			SEQ_INT_NO.CURRVAL,
+			#{originName},
+			#{changeName},
+			#{filePath},
+			#{fileLevel}	
+		)
+			
+	</insert>
+	
+	<!-- 게시글 삭제 -->
+	<!-- <update id="interiorDelete" parameterType="">
+		UPDATE
+			INTERIOR
+		SET 
+			STATUS = 'N'
+		WHERE
+			INTERIOR_NO = #{}
+		
+			
+	
+	</update>
+	1-->	
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE 
+			INTERIOR
+		SET
+			COUNT = COUNT + 1
+		WHERE 
+			STATUS = 'Y'
+		AND
+			INTERIOR_NO = #{interiorNo}
+		
+	</update>
+	
+	<select id="interiorDetail" parameterType="_int" resultMap="interiorResultSet">
+		SELECT 
+			INTERIOR_NO,
+			INTE_CATE,
+			INTERIOR_TITLE,
+			INTERIOR_CO,
+			INTERIOR_PRICE,
+			INTERIOR_DETAIL,
+			INTERIOR_POST
+		FROM 
+			INTERIOR
+		WHERE
+			INTERIOR_NO = #{interiorNo}
+		AND
+			STATUS = 'Y'
+	</select>
+	
+	<select id="interiorFileDetail" parameterType="_int" resultMap="interiorFileResultSet">
+		SELECT
+			FILE_NO,
+			INTERIOR_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL
+		FROM 	
+			INTERIOR_FILE
+		WHERE
+			INTERIOR_NO = #{interior_no}
+
+	</select>
+	<!--  
+	<select id="interiorBestList" resultMap="interiorResultSet">
+		SELECT 
+			INTERIOR_NO, INTE_CATE, INTERIOR_TITLE, INTERIOR_CO, INTERIOR_PRICE, FILE_PATH                     
+		FROM 
+			INTERIOR
+		LEFT JOIN 
+			INTERIOR_FILE USING(INTERIOR_NO)     
+		WHERE 
+			STATUS = 'Y'
+		AND 
+			INTE_CATE = #{inteCate}
+        AND FILE_LEVEL = 1
+		ORDER BY FILE_NO DESC
+	</select>
+	-->
+	
+	<select id="interiorChangeHeart" parameterType="hashmap" resultType="string">
+		 SELECT 
+		 	STATUS
+        FROM 
+        	DIBS
+        WHERE
+        	USER_NO = ${userNo}
+        AND 
+            INTERIOR_NO = ${interiorNo}		
+		
+	</select>
+	
+	<insert id="changeHeartY" parameterType="hashmap">
+		INSERT INTO 
+			DIBS(USER_NO, INTERIOR_NO)
+		VALUES
+			(${userNo},
+			 ${interiorNo})
+	</insert>
+	
+	<update id="changeHeartYY" parameterType="hashmap">
+		UPDATE 
+			DIBS
+		SET
+			STATUS = 'Y'
+		WHERE 
+			USER_NO = ${userNo}
+		AND
+			INTERIOR_NO =${interiorNo}
+		
+	</update>
+	
+	<update id="changeHeartN" parameterType="hashmap">
+		UPDATE 
+			DIBS
+		SET
+			STATUS = 'N'
+		WHERE 
+			USER_NO = ${userNo}
+		AND
+			INTERIOR_NO = ${interiorNo}
+		
+	
+	</update>
+	
+	
+  
+</mapper>

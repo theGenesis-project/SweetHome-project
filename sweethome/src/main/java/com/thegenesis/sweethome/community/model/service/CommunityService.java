@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.thegenesis.sweethome.common.vo.PageInfo;
-
+import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
 
@@ -18,13 +18,11 @@ public interface CommunityService {
 	//게시글 리스트 가져오기(통합)
 	ArrayList<Community> boardList(PageInfo pi, int BoardType);
 	
-	//게시글 검색 기능(게시글 개수)
+	//게시글 검색 기능(게시글 개수/통합)
 	int searchNoticeCount(HashMap<String, String> map);
-	int searchInfoCount(HashMap<String, String> map);
 	
-	//게시글 검색 기능(게시글 리스트)
+	//게시글 검색 기능(게시글 리스트/통합)
 	ArrayList<Community> searchNoticeList(PageInfo pi, HashMap<String, String> map);
-	ArrayList<Community> searchInfoList(PageInfo pi, HashMap<String, String> map);
 	
 	//게시글 상세 보기(조회수 증가)
 	int increaseCount(int bno);
@@ -33,14 +31,14 @@ public interface CommunityService {
 	Community boardDetail(int bno);
 	CommunityFile boardDetailFile(int bno);
 
-	
 	//게시글 작성하기 
-	int insertBoard(Community cm, CommunityFile coFile);
-		
-	
-	//게시글 삭제
-	
+	int insertBoard(Community cm, CommunityFile cf);
+
 	//게시글 수정
+	int updateBoard(Community cm, CommunityFile cf);
+	//게시글 삭제
+	int deleteBoard(int boardNo);
+	
 	
 	//댓글 리스트 조회
 	
@@ -51,9 +49,10 @@ public interface CommunityService {
 	//댓글 삭제
 	
 	//글 신고
+	int reportCheck(HashMap<String, String> map);
+	int reportBoard(Report r);
 	
 	//댓글 신고
-	
 	
 	
 

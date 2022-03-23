@@ -7,6 +7,16 @@
 <meta charset="UTF-8">
 <title>게시글/댓글 관리</title>
 <link rel="stylesheet" href="resources/css/mypage.css" />
+<style type="text/css">
+    .delete-button {
+        border-radius: 5px;
+        margin: 5px;
+        border: 0;
+        height: 30px;
+        color: white;
+        background-color: rgb(247, 202, 201);
+    }
+</style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
@@ -51,6 +61,7 @@
 					<table class="table">
 					  <thead>
 					    <tr>
+					      <th><input class="all-checkbox" type="checkbox"></th>
 					      <th scope="col">번호</th>
 					      <th scope="col">제목</th>
 					      <th scope="col">조회수</th>
@@ -59,7 +70,8 @@
 					  </thead>
 					  <tbody>
 					  	<c:forEach var="b" items="${ Blist }">
-						    <tr class="list-area" onclick="listClick(${ b.boardNo });">
+						    <tr class="list-area" onclick="return listClick(${ b.boardNo });">
+						      <td><input class="checkbox" type="checkbox" value="${ b.boardNo }"></td>
 						      <th scope="row">${ b.rowNo }</th>
 						      <td>${ b.boardTitle }</td>
 						      <td>${ b.count }</td>
@@ -68,6 +80,36 @@
 					  	</c:forEach>
 					  </tbody>
 					</table>
+					<div class="button-area">
+						<button type="button" class="delete-button" data-toggle="modal" data-target="#deleteModal">삭제</button>
+					</div>
+					<!-- Modal -->
+					<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">게시글 삭제</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<p style="text-align: center;">
+					      		게시글은 삭제 후 복구할 수 없습니다. <br>
+					      		정말 삭제하시겠습니까?	
+					      	</p>
+					      	<form action="deleteBoard.my" id="deleteMyBoard">
+							    <span>&lt;삭제될 게시물&gt;</span>
+							    <ul id="deleteList"></ul>
+					      	</form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+					        <button type="submit" form="deleteMyBoard" class="btn btn-danger">삭제</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
 				
 					<div id="pagingArea">
 		                <ul class="pagination">
@@ -119,7 +161,9 @@
 					  	</c:forEach>
 					  </tbody>
 					</table>
-				
+					<c:if test="${ not empty Clist }">
+						<p style="text-align: center; font-size: 0.8em;">댓글 삭제를 위해서는 게시글 확인이 필요합니다.</p>
+					</c:if>
 					<div id="pagingArea">
 		                <ul class="pagination">
 		                	<!-- 1번 페이지일 경우 비활성화 -->
@@ -155,9 +199,60 @@
 
 	<script>
 		function listClick(a) {
-			// 게시글 상세 url 받아오기
-			location.href='?ano=' + a;
+			
+			console.log($(".list-area").children().eq(0).html() != event.target);
+			console.log($(".list-area").children().eq(0).html())
+			console.log(event.target)
+			
+			if($(".checkbox") != $(this).text()){
+				// console.log($(this).is(':checked'));
+				// $(this).prop("checked", true);
+				// return false;
+				// location.href='detail.co?bno=' + a;
+				
+			}
 		}
+		
+		$(function() {
+			// 게시글 전체 선택
+			$(".all-checkbox").on("change", function() {
+				if($(this).is(":checked")) {
+					$(".checkbox").prop("checked", true);
+				} else {
+					$(".checkbox").prop("checked", false);
+				}
+			})
+			
+			// 게시글 선택
+			$(".checkbox").change("checked", function() {
+				// 개별 전체 선택 관련 변수
+				var total = $(".checkbox").length;
+				var checked = $(".checkbox:checked").length;
+				// 삭제 관련 변수
+				var deleteNo = $(this).val();
+				var deleteTitle = $(this).parent().siblings().eq(1).text();
+				
+				// 개별 선택으로 모두 선택 시 전체선택 on || 전체 선택 후 개별 취소 시 전체선택 off
+				if(checked == total) $(".all-checkbox").prop("checked", true);
+				else $(".all-checkbox").prop("checked", false);
+				
+				// 삭제 modal에 추가
+				if($(this).is(":checked")) {
+					$("#deleteList").append("<li class='" + deleteNo + "'>" + deleteTitle + "</li>");
+					$("#deleteList").append("<input type='hidden' name='boardList' value='" + deleteNo + "'>");
+				} else {
+					$('#deleteList').find('.'+deleteNo).remove();
+				}
+			})
+			
+			// 선택된 게시물 없을 시 삭제 버튼 비활성화
+			$(".delete-button").click(function(){
+				if($("#deleteList").html() == "") {
+					alert("선택된 게시물이 없습니다. 게시글을 선택해주세요.");
+					return false;
+				}
+			})
+		})
 	</script>
 	<jsp:include page="../common/footer.jsp" />
 </body>
