@@ -30,10 +30,10 @@
 	<context:component-scan base-package="com.thegenesis.sweethome" />
 	
 	<!-- 웹소켓 연결 빈 등록 -->
-	<beans:bean id="chattingHandler" class="com.thegenesis.sweethome.chat.controller.chattingHandler" />
+	<beans:bean id="chatHandler" class="com.thegenesis.sweethome.chat.controller.chattingHandler" />
 	<websocket:handlers>
-		<websocket:mapping handler="chattingHandler" path="/chatting" />
-		<websocket:sockjs></websocket:sockjs>
+		<!-- ws://localhost:8706/sweethome/groupchat -->
+		<websocket:mapping handler="chatHandler" path="groupchat" />
 	</websocket:handlers>
 	
 	<!-- 어노테이션 기반 트랜잭션 설정 -->

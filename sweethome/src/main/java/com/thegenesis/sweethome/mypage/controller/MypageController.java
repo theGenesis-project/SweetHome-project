@@ -43,4 +43,23 @@ public class MypageController {
 		
 		return mv;
 	}
+	
+	@RequestMapping("deleteBoard.my")
+	public String deleteMyBoard(int[] boardList, HttpSession session) {
+		int result = mypageService.deleteMyBoard(boardList);
+		
+		if(result <= 0) {
+			session.setAttribute("errorMsg", "게시글 삭제에 실패했습니다. 다시 시도해주세요.");
+		}
+		
+		return "redirect:/myBoard.my";
+
+	}
+	
+	@RequestMapping("userTour.my")
+	public void MyTourList(@RequestParam(value="tpage", defaultValue="1")int currentPage, HttpSession session) {
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		
+		int listCount = mypageService.myTourListCount(userNo);
+	}
 }
