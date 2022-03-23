@@ -47,7 +47,6 @@
   	<result column="USER_NO" property="userNo"/>	
   </resultMap>
   
-
   <!-- 내 게시글 갯수 확인 -->
   <select id="myBoardListCount" parameterType="_int" resultType="_int">
   	SELECT 

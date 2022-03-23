@@ -107,7 +107,7 @@
 			<h1>하우스 등록</h1>
 		</div>
 
-		<form action="insertHouse.ho" method="post">
+		<form action="insertHouse.ho" method="post" enctype="multipart/form-data">
 
 			<div class="subtitle">
 				<div class="house_name">
@@ -187,67 +187,167 @@
 			</div>
 
 			<div class="house_photo_insert_title">
-				<div class="photo_insert_title_01"><h3>대표사진</h3></div>
-				<div class="photo_insert_title_02"><h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4></div>
-
-				<input type="file" multiple id="gallery-photo-add" class="photo_insert_title_03">
-				<div class="gallery"></div>	
+				<div class="photo_insert_title_01">
+					<h3>대표사진</h3>
+				</div>
+				<div class="photo_insert_title_02">
+					<h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4>
+				</div>
 				
-				<div ></div>
-			</div>
+				<br><br>
 
-			
-			
+				
+				<div class="house_photo_insert">
+					<div class="house_photo" id="house_photo1_1">
+						<img id="houseImg1_1" src="" alt="" width="100%" height="100%">
+					</div>
+					<div class="house_photo" id="house_photo1_2">
+						<img id="houseImg1_2" src="" alt="">
+					</div>
+					<div class="house_photo" id="house_photo1_3">
+						<img id="houseImg1_3" src="" alt="">
+					</div>
+					<div class="house_photo" id="house_photo1_4">
+						<img id="houseImg1_4" src="" alt="">
+					</div>
+					<div class="house_photo" id="house_photo1_5">
+						<img id="houseImg1_5" src="" alt="">
+					</div>
+				</div>
 
-			<script>
-				$(function() {
-					// Multiple images preview in browser
-					var imagesPreview = function(input, placeToInsertImagePreview) {
+				<div id="file-area1_1">
+					<input type="file" id="file1_1" name="file" onchange="loadImg(this, 1);" required>
+					<input type="file" id="file1_2" name="file" onchange="loadImg(this, 2);" >
+					<input type="file" id="file1_3" name="file" onchange="loadImg(this, 3);" >
+					<input type="file" id="file1_4" name="file" onchange="loadImg(this, 4);" >
+					<input type="file" id="file1_5" name="file" onchange="loadImg(this, 5);" >
+					<!-- onchange: input 태그의 내용물이 변경되었을 때 발생하는 이벤트 -->
+					<!-- loadImg() 함수를 호출 => 우리가 만들 함수 -->
+				</div>
+				
+				<!-- <input type="file" multiple id="gallery-photo-add" class="photo_insert_title_03">
+				<div class="gallery"></div>	 -->
 
-						if(input.files) {
-							var filesAmount = input.files.length;
+				<!-- <script>
+					$(function() {
+						// Multiple images preview in browser
+						var imagesPreview = function(input, placeToInsertImagePreview) {
 
-							for(i = 0; i < filesAmount; i++) {
-								var reader = new FileReader();
+							if(input.files) {
+								var filesAmount = input.files.length;
 
-								reader.onload = function(event) {
-									$($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+								for(i = 0; i < filesAmount; i++) {
+									var reader = new FileReader();
+
+									reader.onload = function(event) {
+										$($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+									}
+
+									reader.readAsDataURL(input.files[i]);
 								}
-
-								reader.readAsDataURL(input.files[i]);
 							}
-						}
 
-					};
+						};
 
-					$('#gallery-photo-add').on('change', function() {
-						imagesPreview(this, 'div.gallery');
+						$('#gallery-photo-add').on('change', function() {
+							imagesPreview(this, 'div.gallery');
+						});
 					});
-				});
-			</script>
-			
-			
-			<div class="house_photo_insert">
-				<div class="house_photo">
-					<img src="" alt="">
+				</script> -->
 
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
 
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
+				<script>
+				
+					$(function() {
+						$("#file-area1_1").hide();
+	
+						$("#house_photo1_1").click(function() {
+							$("#file1_1").click();
+						})
+	
+						$("#house_photo1_2").click(function() {
+							$("#file1_2").click();
+						})
+	
+						$("#house_photo1_3").click(function() {
+							$("#file1_3").click();
+						})
+	
+						$("#house_photo1_4").click(function() {
+							$("#file1_4").click();
+						})
 
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
+						$("#house_photo1_5").click(function() {
+							$("#file1_5").click();
+						})
+					})
+	
+					function loadImg(inputFile, num) {
+	
+	
+						// inputFile: 현재 변화가 생긴 <input type="file"> 요소 객체
+						// num: 몇번째 input 요소인지 확인 후, 해당 영역에 미리보기 하기 위한 변수
+	
+						// console.log(inputFile.files.length);
+						// inputFile.files.length: 파일 선택시 1, 파일 선택 취소시 0이 찍힘
+						// 파일의 존재 유무를 알 수 있따(inputFile.files[0]에 선택된 파일이 담겨있다)
+	
+						// files 속성: 업로드된 파일의 정보들을 배열 형식으로 여러개 묶어서 반환
+						// 				length는 배열의 크기를 의미
+	
+						if(inputFile.files.length == 1) { // 파일이 있는 경우
+							
+							// 선택된 파일을 읽어들여서 그 영역에 맞는 곳에 미리보기
+	
+							// 파일을 읽어들일 FileReader 객체 생성
+							var reader = new FileReader();
+	
+							// FileREader 객체로부터 파일을 읽어들이는 메소드를 호출
+							// 어느 파일을 읽어들이건지 인자로 넣어줘야함!!
+							reader.readAsDataURL(inputFile.files[0]);
+							// => 해당 파일을 읽어들이는 순간
+							//	  읽어들인 파일만의 고유한 url이 부여됨
+							// => 해당 url을 src 속성으로 부여할 것!! (attr)
+	
+							// 파일 읽기가 완료되었을 때 실행할 함수를 정의
+							reader.onload = function(e) {
+								// e의 target => e.target => 이벤트 당한 객체(this)
+	
+								// e의 target.result에 각 파일의 url이 담긴다.
+								// e.target.result
+	
+								// 각 영역에 맞춰서 이미지 미리보기
+								switch(num) {
+									case 1: $("#houseImg1_1").attr("src", e.target.result); break;
+									case 2: $("#houseImg1_2").attr("src", e.target.result); break;
+									case 3: $("#houseImg1_3").attr("src", e.target.result); break;
+									case 4: $("#houseImg1_4").attr("src", e.target.result); break;
+									case 5: $("#houseImg1_5").attr("src", e.target.result); break;
+								}
+	
+							}
+	
+						}
+						else {
+							switch(num) {
+								case 1: $("#houseImg1_1").attr("src", null); break;
+								case 2: $("#houseImg1_2").attr("src", null); break;
+								case 3: $("#houseImg1_3").attr("src", null); break;
+								case 4: $("#houseImg1_4").attr("src", null); break;
+								case 5: $("#houseImg1_5").attr("src", null); break;
+							}
+	
+						}
+	
+					}
+	
+	
+	
+				</script>
+	
 
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
 
-				</div>
+
 			</div>
 
 			<div class="house_photo_insert_title">
