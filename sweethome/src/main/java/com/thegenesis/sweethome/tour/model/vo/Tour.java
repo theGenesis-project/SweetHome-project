@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Tour {
 	
 	private int tourNo;
+	private int houseNo;
 	private String houseName;
 	private String roomName;
 	private String userName;
