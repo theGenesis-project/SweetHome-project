@@ -1,8 +1,8 @@
 package com.thegenesis.sweethome.interior.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,18 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
-import com.thegenesis.sweethome.community.model.vo.Community;
-import com.thegenesis.sweethome.community.model.vo.CommunityFile;
 import com.thegenesis.sweethome.interior.model.service.InteriorService;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
+import com.thegenesis.sweethome.member.model.vo.Member;
 @Controller
 public class InteriorController {
 	
@@ -95,12 +94,10 @@ public class InteriorController {
 								.filePath("resources/uploadFiles/" + changeName)
 								.fileLevel(2)
 								.build();				
-					}
-							
+					}							
 					list.add(inf);	
-				}
-					
-	}
+				}				
+		}
 		int result = interiorService.insertInterior(in, list);
 		
 		if(result>0) {
@@ -131,31 +128,68 @@ public class InteriorController {
 		  int result = interiorService.deleteInterior(checkNumbers);*/
 		return "interior/interiorList";
 	}
-	
-	@RequestMapping("detailInterior.in")
-	public ModelAndView detailInterior(ModelAndView mv, int ino) {
+	//게시판 상세보기
+	@RequestMapping("detail.in")
+	public ModelAndView detailInterior(ModelAndView mv, int ino, HttpSession session) {
 		
-		int result = interiorService.increaseCount(ino);
+		int result = interiorService.increaseCount(ino);	
+		
+		int userNo = 0;
+		if(((Member)session.getAttribute("loginUser")) != null) {
+			
+			userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+			
+		}
+		
 		
 		if(result > 0) {
 			
-			Community cm = interiorService.boardDetail(ino);
-			CommunityFile cf = interiorService.boardDetailFile(ino);
+			Interior in = interiorService.interiorDetail(ino);
+			ArrayList<InteriorFile> inf = interiorService.interiorDetailFile(ino);
 			
-			mv.addObject("cm", cm);
-			mv.addObject("cf", cf);
-			mv.setViewName("community/boardDetail");
-				
-						
-		}else {
+			int infLength = (inf.size() - 1);//Carousel를 위한 forEach문 때문에 따로 만들어줘서 넘김
 			
+			//찜 확인
+			HashMap<String, Integer> hm = new HashMap<>();
+			hm.put("interiorNo", ino);
+			hm.put("userNo", userNo);
+			
+			String idCheckHeart = interiorService.checkHeart(hm);//null/N/Y
+			System.out.println(idCheckHeart);		
+			mv.addObject("in", in).addObject("inf", inf).addObject("infLength", infLength).addObject("idCheckHeart", idCheckHeart).setViewName("interior/interiorDetail");
+			
+		}else {		
 			mv.setViewName("Redirect:/");
-			//나중에 alertMsg로 바꿔주기~
+			session.setAttribute("alertMsg", "게시글 불러오기 실패");
 		}		
+		return mv;	
+	}
+	/*
+	//인테리어 역대 베스트
+	@RequestMapping("interiorBestList.in")
+	public ModelAndView selectInteriorList(ModelAndView mv ) {
+
+		ArrayList<Interior> list = interiorService.selectInteriorBestList();	
+		
+		
 		return mv;
 		
-	}
+	}*/
+	
+	//찜기능
+	@ResponseBody
+	@RequestMapping("changeHeart.in")
+	public String changeHeart(int interiorNo, int userNo) {
+			
+		HashMap<String, Integer> hm = new HashMap<>();
+		hm.put("interiorNo", interiorNo);
+		hm.put("userNo", userNo);
 		
+		int checkHeart = interiorService.changeHeart(hm);
+		//1: 하트 등록  2: 하트 해제
+		return checkHeart == 1 ? "YY" : "NN";
+
+	}
 		
 		 
 		

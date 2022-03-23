@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.interior.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -45,10 +46,60 @@ public class InteriorDao {
 	public int deleteInterior(SqlSessionTemplate sqlSession, ArrayList<Integer> checkNumbers) {
 		
 		for(Integer arr : checkNumbers) {
-			sqlSession.update("interiorMappers.deleteInterior", arr);
+			sqlSession.update("interiorMapper.deleteInterior", arr);
 		}
 		
 		return 0;
 	}
+	//게시글 조회수 증가
+	public int increaseCount(SqlSessionTemplate sqlSession, int ino) {
+		
+		return sqlSession.update("interiorMapper.increaseCount", ino);
+	}
+	//게시글 상세보기
+	public Interior interiorDetail(SqlSessionTemplate sqlSession, int ino) {
+		
+		return sqlSession.selectOne("interiorMapper.interiorDetail", ino);
+	}
+	//게시글 상세보기(첨부파일)
+	public ArrayList interiorFileDatail(SqlSessionTemplate sqlSession, int ino) {
+		
+		return (ArrayList)sqlSession.selectList("interiorMapper.interiorFileDetail", ino);
+	}
+	//게시글 상세보기(찜)
+	public String checkHeart(SqlSessionTemplate sqlSession, HashMap<String, Integer> hm) {
+		
+		return sqlSession.selectOne("interiorMapper.interiorChangeHeart", hm);
+	}
+	//인테리어 역대 베스트
+	public ArrayList<Interior> selectInteriorBestList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("interiorMapper.interiorBestList");
+	}
+	//찜기능(찜 되어있나 확인)
+	public int changeHeart(SqlSessionTemplate sqlSession, HashMap<String, Integer> hm) {
+		
+		String check = sqlSession.selectOne("interiorMapper.interiorChangeHeart", hm);
+		System.out.println(check);
+		int result = 0;
+		
+		if(check == null) {
+			//처음으로 하트 누름
+			sqlSession.insert("interiorMapper.changeHeartY", hm);
+			result = 1;
+		}else if(check == "Y") {
+			//하트를 전에 누른 적이 있을 경우
+			sqlSession.update("interiorMapper.changeHeartYY", hm);
+			result = 1;
+		}else {
+			//하트 취소
+			sqlSession.update("interiorMapper.changeHeartN", hm);	
+			result = 2;
+		}
+		return result;
+	}
 
+
+
+	
 }

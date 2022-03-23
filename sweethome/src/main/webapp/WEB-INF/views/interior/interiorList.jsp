@@ -240,7 +240,7 @@
 		
 		$(".interior_list").click(function(){
 			location.href = 'detail.in?ino='+ $(this).children().children('.ino').text();
-			console.log($(this).children('.ino').text());
+			
 		})
 		
 		})
@@ -275,10 +275,7 @@
 	}
 	
 	
-	
-	
-	
-		
+
 
 	
 	</script>

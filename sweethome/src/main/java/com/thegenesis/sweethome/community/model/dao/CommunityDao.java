@@ -69,6 +69,7 @@ public class CommunityDao {
 	}
 	//게시글 상세보기(첨부파일)
 	public CommunityFile boardDetailFile(SqlSessionTemplate sqlSession, int bno) {
+		
 		return sqlSession.selectOne("communityMapper.boardDetailFile", bno);
 	}
 	//게시글 작성하기
