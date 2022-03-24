@@ -10,6 +10,6 @@
 <body>
 
 	<jsp:forward page="WEB-INF/views/house/houseInsert.jsp" />
-
+	
 </body>
 </html>

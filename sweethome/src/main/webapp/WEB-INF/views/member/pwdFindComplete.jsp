@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <style>
+<style>
         .content{
             /*border: 1px solid rgb(247, 202 , 201);*/
             width: 1200px;
@@ -34,14 +34,26 @@
 
         .btn1 {  
             border: none;
+            width: 180px;
+            height:40px;
+            background-color: rgb(247, 202 , 201) ; 
+            font-weight: bold;  
+        }
+
+		.btn2 {  
+            border: none;
             width: 410px;
             height:50px;
             background-color: rgb(247, 202 , 201) ; 
             font-weight: bold;  
         }
-
+        
         .findId{
             padding-left: 300px;
+        }
+
+        .complete{
+            text-align: center;
         }
     </style>
 </head>
@@ -51,17 +63,27 @@
 
     <div class="content">
         <br>
-        <div class="findId"><h3>아이디 찾기</h3></div>
+        <div class="findId"><h3>비밀번호 찾기</h3></div>
         <div class="innerOuter">
-                <br><br>
-                <form action="idFindComplete.me" method="post" id="idFind" >
-	                <div class="findForm">
-	                    <br>
-	                    <input type="text" placeholder="회원가입시 사용한 이메일을 입력해주세요" class="inputForm" id="email" name="email">
-	                    <br><br>
-	                    <button type="submit" class="btn1">아이디 찾기</button>
-	                </div>
-                </form>     
+                <br>
+                <c:choose> 
+                	<c:when test="${not empty email}"> 
+		                <div class="complete">
+		                	<br>
+		                    <h3>입력하신 이메일로 임시 비밀번호를 발송했습니다. </h3>
+		                    <br>				                 				    
+		                    <button class="btn2" onclick="location.href='loginform.me'">로그인하러 가기</button>
+		                </div> 
+	                </c:when>
+	                <c:otherwise>
+		                <div class="complete">
+		                		<br><br><br>
+			                    <h3>일치하는 정보가 없습니다. </h3>
+			                    <br>
+			                    <button class="btn2" onclick="location.href='pwdFind.me'">뒤로가기</button>  
+			            </div> 
+	                </c:otherwise>
+                </c:choose>    
         </div>
         <br><br>
     </div>

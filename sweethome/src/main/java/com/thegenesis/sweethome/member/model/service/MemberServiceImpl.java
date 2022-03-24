@@ -57,6 +57,10 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.deleteMember(sqlSession, userId);
 	}
 	
+	@Override
+	public String idFind(String email) {
+		return memberDao.idFind(sqlSession, email);
+	}
 	
 	
 

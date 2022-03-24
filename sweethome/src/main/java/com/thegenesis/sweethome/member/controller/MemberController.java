@@ -80,11 +80,6 @@ public class MemberController {
 		return "member/memberEnrollFormOwner";
 	}
 	
-	@RequestMapping("idFind.me")
-	public String idFind() {
-		return "member/idFindForm";
-	}
-	
 	@RequestMapping("insert.me")
 	public String insertMember(Member m, Model model, HttpSession session) {
 		
@@ -109,9 +104,29 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping("idFind.me")
+	public String idFind() {
+		return "member/idFindForm";
+	}
+	
 	@RequestMapping("idFindComplete.me")
-	public String idFindComplete() {
+	public String idFindComplete(String email, HttpSession session) {		
+		String userId=memberService.idFind(email);
+		//System.out.println(userId);
+		session.setAttribute("userId", userId);
+		
 		return "member/idFindComplete";
+	}
+
+	@RequestMapping("pwdFind.me")
+	public String pwdFind() {
+		return "member/pwdFindForm";
+	}
+	
+	@RequestMapping("pwdFindComplete.me")
+	public String pwdFindComplete(String email) {
+		
+		return "member/pwdFindComplete";
 	}
 
 	@RequestMapping("update.me")
