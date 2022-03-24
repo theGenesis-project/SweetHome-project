@@ -66,7 +66,7 @@ public class CommunityControler {
 		
 		int listCount = communityService.listCount(boardType);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		System.out.println(pi);
+		
 		ArrayList<Community> list = communityService.boardList(pi, boardType);
 		
 		mv.addObject("list", list).addObject("pi",pi).addObject("boardType", boardType).setViewName("community/noticeList");
@@ -265,7 +265,6 @@ public class CommunityControler {
 		
 		CommunityFile cf = null;//파일 테이블 따로 씀
 	
-	 	
 		//전달된 파일있을 경우 파일명 수정 후 서버에 업로드
 		if(!upfile.getOriginalFilename().equals("")) {//선택된 파일이 있을 경우
 						

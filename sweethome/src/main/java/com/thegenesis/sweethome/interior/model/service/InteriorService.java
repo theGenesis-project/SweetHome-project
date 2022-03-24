@@ -68,6 +68,16 @@ public class InteriorService {
 		
 		return interiorDao.changeHeart(sqlSession, hm);
 	}
+	//인테리어 검색 기능(카운트)
+	public int searchInteriorCount(HashMap<String, String> map) {
+		
+		return interiorDao.searchInteriorCount(sqlSession, map);
+	}
+	//인테리어 검색 기능
+	public ArrayList<Interior> searchInterior(PageInfo pi, HashMap<String, String> map) {
+		
+		return interiorDao.searchInterior(sqlSession, map, pi);
+	}
 	
 
 

@@ -87,6 +87,23 @@
             padding: 5px;
             float: right;         
         }
+        #updateBtn{           
+            display: flex;
+            width: 100%;
+            height: 100px;
+            margin: auto;
+        }
+        #updateBtn>form{
+            margin: auto;
+        }
+        #updateBtn>form>button{
+            background-color: rgb(247, 202, 201);
+            color: aliceblue;
+            width: 90px;
+            height: 40px;
+            border-radius: 3px;
+            border: 0ch;
+        }
         .rereply-area{
             background-color: rgb(240, 240, 240);
         }
@@ -161,16 +178,16 @@
                    		 <div class="like-order-area">
 	                        <div class="like-area">
 	                        <c:choose>
-		                        <c:when test="${ idCheckHeart eq N or idChechHeart eq null }">
+		                        <c:when test="${ idCheckHeart eq 'Y'}">
 		                            <p id="like" style="cursor:pointer;">
-		                          		  ♡
+		                          		♥
 		                            </p>
 		                        </c:when>
-		                        <c:when test="${ idCheckHeart eq Y }">
+		                        <c:otherwise>
 		                            <p id="like" style="cursor:pointer;">
-		                            	♥
+		                            	  ♡
 		                            </p>
-		                        </c:when>
+		                        </c:otherwise>
 	                         </c:choose>                                      
                         	</div>                	
                         	<div class="orderButton">
@@ -186,6 +203,13 @@
 						${ in.interiorDetail }
                     </div>
                 </div>
+            </div>
+
+            <div id="updateBtn">
+                <form method="post" action="updateInteriorDetail.in" id="postForm">
+                    <input type="hidden" name="interiorNo" value="${in.interiorNo }">               
+                    <button type="submit">수정하기</button>
+                </form>
             </div>
             
             <div id="review-area">
@@ -277,23 +301,23 @@
     </div>
 
     <script>
-    	//이미지 슬라이드
-        $(document).ready(function(){
-            // Activate Carousel
-            $("#myCarousel").carousel();
-                
-            // Enable Carousel Indicators
-            $(".item1").click(function(){
-                $("#myCarousel").carousel(0);
-            });
-            $(".item2").click(function(){
-                $("#myCarousel").carousel(1);
-            });
-            $(".item3").click(function(){
-                $("#myCarousel").carousel(2);
-            });       
-           
-        });
+        //이미지 슬라이드
+	    $(document).ready(function(){
+	        // Activate Carousel
+	        $("#myCarousel").carousel();
+	            
+	        // Enable Carousel Indicators
+	        $(".item1").click(function(){
+	            $("#myCarousel").carousel(0);
+	        });
+	        $(".item2").click(function(){
+	            $("#myCarousel").carousel(1);
+	        });
+	        $(".item3").click(function(){
+	            $("#myCarousel").carousel(2);
+	        });       
+	       
+	    });
 		//찜기능
 		
 		var likeBtn = document.getElementById("like");
@@ -313,6 +337,7 @@
 				},
 				success : function(result){
 					console.log(result);
+					
 					if(result == "NN"){
 						$("#like").html("♡");
 	                       
@@ -328,6 +353,9 @@
 			
 			
 		}
+		
+
+		
 		
 	
 	

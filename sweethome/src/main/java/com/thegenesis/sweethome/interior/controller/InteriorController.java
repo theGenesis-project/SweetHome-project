@@ -66,7 +66,7 @@ public class InteriorController {
 	//인테리어 등록
 	@RequestMapping("insertInterior.in")
 	public String insertInterior(Model model, Interior in, MultipartFile[] file, HttpSession session) {
-				
+		
 		InteriorFile inf = null;//파일 테이블
 		
 		ArrayList<InteriorFile> list = new ArrayList<>();//사진 담을 공간
@@ -138,10 +138,8 @@ public class InteriorController {
 		if(((Member)session.getAttribute("loginUser")) != null) {
 			
 			userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
-			
 		}
-		
-		
+			
 		if(result > 0) {
 			
 			Interior in = interiorService.interiorDetail(ino);
@@ -155,9 +153,9 @@ public class InteriorController {
 			hm.put("userNo", userNo);
 			
 			String idCheckHeart = interiorService.checkHeart(hm);//null/N/Y
-			System.out.println(idCheckHeart);		
-			mv.addObject("in", in).addObject("inf", inf).addObject("infLength", infLength).addObject("idCheckHeart", idCheckHeart).setViewName("interior/interiorDetail");
 			
+			mv.addObject("in", in).addObject("inf", inf).addObject("infLength", infLength).addObject("idCheckHeart", idCheckHeart).setViewName("interior/interiorDetail");
+			System.out.println(inf);
 		}else {		
 			mv.setViewName("Redirect:/");
 			session.setAttribute("alertMsg", "게시글 불러오기 실패");
@@ -187,7 +185,55 @@ public class InteriorController {
 		
 		int checkHeart = interiorService.changeHeart(hm);
 		//1: 하트 등록  2: 하트 해제
+		
+		System.out.println("ajax : " + checkHeart);
 		return checkHeart == 1 ? "YY" : "NN";
+		
+	}
+	
+	//인테리어 검색기능
+	@RequestMapping("searchInterior.in")
+	public ModelAndView searchInterior(@RequestParam(value="siPage", defaultValue="1") int currentPage, ModelAndView mv, String keyword, String condition){
+		
+		
+		HashMap<String, String> map = new HashMap<>();
+		
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int listCount = interiorService.searchInteriorCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
+		
+		ArrayList<Interior> list = interiorService.searchInterior(pi, map);
+		
+		mv.addObject("pi", pi);
+		mv.addObject("list",list);
+		mv.addObject("conditon", condition);
+		mv.addObject("keyword", keyword);
+		
+		mv.setViewName("interior/interiorSearchList");
+		
+		return mv;
+		
+	}
+	//인테리어 게시글 수정(불러오기)
+	@RequestMapping("updateInteriorDetail.in")
+	public String updateInteriorDetail(Model model, int interiorNo ) {
+		
+		//글내용 가져오기
+		Interior in = interiorService.interiorDetail(interiorNo);
+		ArrayList<InteriorFile> inf = interiorService.interiorDetailFile(interiorNo);
+		
+		int infLength = (inf.size() - 1);
+		
+		model.addAttribute("in", in);
+		model.addAttribute("inf",inf);
+		model.addAttribute("infLength", infLength);
+		
+		System.out.println(inf);
+		System.out.println(infLength);
+		return "interior/interiorUpdate";
 
 	}
 		

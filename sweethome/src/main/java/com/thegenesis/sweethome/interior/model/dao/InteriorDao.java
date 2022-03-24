@@ -80,23 +80,42 @@ public class InteriorDao {
 	public int changeHeart(SqlSessionTemplate sqlSession, HashMap<String, Integer> hm) {
 		
 		String check = sqlSession.selectOne("interiorMapper.interiorChangeHeart", hm);
-		System.out.println(check);
+		
+		//N이 나왔으면 이제 Y로 바꾸어주어야 함
+		
 		int result = 0;
 		
 		if(check == null) {
 			//처음으로 하트 누름
 			sqlSession.insert("interiorMapper.changeHeartY", hm);
 			result = 1;
-		}else if(check == "Y") {
+		}else if(check.equals("N")) {
 			//하트를 전에 누른 적이 있을 경우
 			sqlSession.update("interiorMapper.changeHeartYY", hm);
+			//Y로 바꿔줌
 			result = 1;
 		}else {
 			//하트 취소
 			sqlSession.update("interiorMapper.changeHeartN", hm);	
 			result = 2;
 		}
+		
 		return result;
+	}
+	//인테리어 검색 기능(카운트)
+	public int searchInteriorCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.selectOne("interiorMapper.searchInteriorCount", map);
+	}
+	//인테리어 검색 기능
+	public ArrayList<Interior> searchInterior(SqlSessionTemplate sqlSession, HashMap<String, String> map, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+			
+		return (ArrayList)sqlSession.selectList("interiorMapper.searchInterior", map, rowBounds);
 	}
 
 
