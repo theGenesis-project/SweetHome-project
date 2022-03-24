@@ -6,52 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>하우스 등록하기</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<!-- jQuery library -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<!-- Popper JS -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
 <%-- Daum 우편번호 서비스 --%>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 <%-- Kakao Map API: services 라이브러리 --%>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6&libraries=services"></script>
 
 <style>
 	.outer {
 		width: 1500px;
-		/* border: 1px solid red; */
 		margin: auto;
 	}
-	/* div {
+	div {
 		border: 1px solid red;
-	} */
-	.house_name {
-		display: flex;
-		font-size: 25px;
-		width: 100%;
-	}
-	.house_photo_insert_title {
-		display: flex;
-	}
-	.house_photo_insert {
-		display: flex;
-		justify-content: center;
-		width: 100%;
-		height: 250px;
-	}
-	.photo_insert_title_01 {
-		flex: none;
-	}
-	.photo_insert_title_02 {
-		flex: none;
-	}
-	.photo_insert_title_03 {
-		flex: auto;
 	}
 	.button {
 		background-color: rgb(247, 202, 201);
@@ -68,33 +34,21 @@
 		float: right;
 		border-radius: 12px;
 	}
-	/* .photo_insert_title_03>button:hover {
-		background-color: rgb(247, 202, 201);
-	} */
-	/* .photo_insert_title_03>button {
-		float: right;
-	} */
-	.house_photo {
-		display: inline-block;
-		border: 1px solid;
-		width: 20%;
-    }
 	.house_room_info {
 		text-align: center;
-		margin: auto;
-		width: 1200px;
+		/* margin: auto; */
+		/* width: 1200px; */
 	}
-	.house_intro {
-		text-align: center;
-		/* font-size: 40px; */
-		background-color: gainsboro;
+	#att_zone {
+		width: 660px;
+		min-height: 150px;
+		padding: 10px;
 	}
-	textarea {
-		width: 1000px;
-		height: 400px;
-		resize: none;
+	#att_zone:empty:before {
+		content: attr(data-placeholder);
+		color: #999;
+		font-size: .9em;
 	}
-
 </style>
 </head>
 <body>
@@ -102,27 +56,64 @@
 	<jsp:include page="../common/header.jsp" />
 
 	<div class="outer">
+		
+		<h1>하우스 등록</h1>
+		
+		
+		<script>	
+			// 각 사진에 해당하는 이름 정리
+			function filenamecheck() {
 
-		<div class="title">
-			<h1>하우스 등록</h1>
-		</div>
+				console.log($('#file' + 3));
 
-		<form action="insertHouse.ho" method="post" enctype="multipart/form-data">
+				if(!($('#file' + 3).length)) {
+					console.log("ㅎㅎㅎㅎ");
+				}
 
-			<div class="subtitle">
-				<div class="house_name">
-					<h3>하우스 이름</h3>
-					&nbsp&nbsp <input type="text" name="houseName" placeholder="하우스 이름 입력" required>
-				</div>
-			</div>
+				var file = $(':file');
 
-			<div class="house_address">
+				//console.log(file[0]);
+
+				//console.log(file.length);
+
+				// console.log($('#file1').prop('files'));
+				
+				var files = $('#file1').prop('files');
+				
+				//console.log(files[0].name);
+				
+				alert($('#file1'));
+
+				var fileArray = [ 1, 2, 3 ];
+
+				console.log(fileArray);
+				console.log()
+
+				$(".add").html("<input type='hidden' name='fileArray' value='" + fileArray + "'>");
+				// 다차원배열 사용
+				
+				alert("ㅇㅇ");
+
+				$("#insertHouse").submit();
+			}
+		</script>
+		
+
+		<form action="insertHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">
+			<div class="form-group">
+			
+				<%-- 방 이름 추가 --%>
+				<div class="add"></div>
+				
+				<h3>하우스 이름</h3>
+				<input type="text" class="form-control" name="houseName" placeholder="하우스 이름 입력" required>
+		
 				<h3>하우스 주소</h3>
 
-				<input type="text" id="postcode" placeholder="우편번호" readonly>
+				<input type="text" class="form-control" id="postcode" placeholder="우편번호" readonly>
 				<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
 
-				<input type="text" id="roadAddress" placeholder="도로명 주소" name="address">
+				<input type="text" id="roadAddress" placeholder="도로명 주소" name="address" size="60" required readonly>
 				<%-- 예상 주소 출력란 --%>
 				<%-- <span id="guide" style="color:#999;display:none"></span> --%>
 				<input type="text" id="detailAddress" placeholder="상세 주소 입력">
@@ -168,7 +159,7 @@
 								// 	guideTextBox.innerHTML = '';
 								// 	guideTextBox.style.display = 'none';
 								// }
-
+								
 								// Kakao API: 검색한 주소 정보(상세 주소 제외)에 해당하는 좌표값 요청
 								var geocoder = new kakao.maps.services.Geocoder();
 								
@@ -184,208 +175,104 @@
 						}).open();
 					}
 				</script>
-			</div>
 
-			<div class="house_photo_insert_title">
-				<div class="photo_insert_title_01">
+				<div class="house_photo_insert_title">
+
 					<h3>대표사진</h3>
-				</div>
-				<div class="photo_insert_title_02">
 					<h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4>
+					<button class="button button1">파일첨부</button>
 				</div>
 				
-				<br><br>
-
-				
-				<div class="house_photo_insert">
-					<div class="house_photo" id="house_photo1_1">
-						<img id="houseImg1_1" src="" alt="" width="100%" height="100%">
-					</div>
-					<div class="house_photo" id="house_photo1_2">
-						<img id="houseImg1_2" src="" alt="">
-					</div>
-					<div class="house_photo" id="house_photo1_3">
-						<img id="houseImg1_3" src="" alt="">
-					</div>
-					<div class="house_photo" id="house_photo1_4">
-						<img id="houseImg1_4" src="" alt="">
-					</div>
-					<div class="house_photo" id="house_photo1_5">
-						<img id="houseImg1_5" src="" alt="">
-					</div>
-				</div>
-
-				<div id="file-area1_1">
-					<input type="file" id="file1_1" name="file" onchange="loadImg(this, 1);" required>
-					<input type="file" id="file1_2" name="file" onchange="loadImg(this, 2);" >
-					<input type="file" id="file1_3" name="file" onchange="loadImg(this, 3);" >
-					<input type="file" id="file1_4" name="file" onchange="loadImg(this, 4);" >
-					<input type="file" id="file1_5" name="file" onchange="loadImg(this, 5);" >
-					<!-- onchange: input 태그의 내용물이 변경되었을 때 발생하는 이벤트 -->
-					<!-- loadImg() 함수를 호출 => 우리가 만들 함수 -->
+				<div id='image_preview'>
+					<input type='file' id='btnAtt' multiple='multiple' onchange="test1(this);">
+					<div id='att_zone' data-placeholder='파일을 첨부 하려면 파일 선택 버튼을 클릭하거나 파일을 드래그앤드롭 하세요'></div>
 				</div>
 				
-				<!-- <input type="file" multiple id="gallery-photo-add" class="photo_insert_title_03">
-				<div class="gallery"></div>	 -->
-
-				<!-- <script>
-					$(function() {
-						// Multiple images preview in browser
-						var imagesPreview = function(input, placeToInsertImagePreview) {
-
-							if(input.files) {
-								var filesAmount = input.files.length;
-
-								for(i = 0; i < filesAmount; i++) {
-									var reader = new FileReader();
-
-									reader.onload = function(event) {
-										$($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
-									}
-
-									reader.readAsDataURL(input.files[i]);
-								}
-							}
-
-						};
-
-						$('#gallery-photo-add').on('change', function() {
-							imagesPreview(this, 'div.gallery');
-						});
-					});
-				</script> -->
-
-
+				<%-- 사진 관련 스크립트 --%>
 				<script>
+
+					var attZone = document.getElementById('att_zone');
+					console.log(attZone);
+					var btnAtt = document.getElementById('btnAtt');
+					console.log(btnAtt)
+					var sel_files = [];
 				
-					$(function() {
-						$("#file-area1_1").hide();
-	
-						$("#house_photo1_1").click(function() {
-							$("#file1_1").click();
-						})
-	
-						$("#house_photo1_2").click(function() {
-							$("#file1_2").click();
-						})
-	
-						$("#house_photo1_3").click(function() {
-							$("#file1_3").click();
-						})
-	
-						$("#house_photo1_4").click(function() {
-							$("#file1_4").click();
-						})
-
-						$("#house_photo1_5").click(function() {
-							$("#file1_5").click();
-						})
-					})
-	
-					function loadImg(inputFile, num) {
-	
-	
-						// inputFile: 현재 변화가 생긴 <input type="file"> 요소 객체
-						// num: 몇번째 input 요소인지 확인 후, 해당 영역에 미리보기 하기 위한 변수
-	
-						// console.log(inputFile.files.length);
-						// inputFile.files.length: 파일 선택시 1, 파일 선택 취소시 0이 찍힘
-						// 파일의 존재 유무를 알 수 있따(inputFile.files[0]에 선택된 파일이 담겨있다)
-	
-						// files 속성: 업로드된 파일의 정보들을 배열 형식으로 여러개 묶어서 반환
-						// 				length는 배열의 크기를 의미
-	
-						if(inputFile.files.length == 1) { // 파일이 있는 경우
-							
-							// 선택된 파일을 읽어들여서 그 영역에 맞는 곳에 미리보기
-	
-							// 파일을 읽어들일 FileReader 객체 생성
-							var reader = new FileReader();
-	
-							// FileREader 객체로부터 파일을 읽어들이는 메소드를 호출
-							// 어느 파일을 읽어들이건지 인자로 넣어줘야함!!
-							reader.readAsDataURL(inputFile.files[0]);
-							// => 해당 파일을 읽어들이는 순간
-							//	  읽어들인 파일만의 고유한 url이 부여됨
-							// => 해당 url을 src 속성으로 부여할 것!! (attr)
-	
-							// 파일 읽기가 완료되었을 때 실행할 함수를 정의
-							reader.onload = function(e) {
-								// e의 target => e.target => 이벤트 당한 객체(this)
-	
-								// e의 target.result에 각 파일의 url이 담긴다.
-								// e.target.result
-	
-								// 각 영역에 맞춰서 이미지 미리보기
-								switch(num) {
-									case 1: $("#houseImg1_1").attr("src", e.target.result); break;
-									case 2: $("#houseImg1_2").attr("src", e.target.result); break;
-									case 3: $("#houseImg1_3").attr("src", e.target.result); break;
-									case 4: $("#houseImg1_4").attr("src", e.target.result); break;
-									case 5: $("#houseImg1_5").attr("src", e.target.result); break;
-								}
-	
-							}
-	
+					// 이미지와 체크 박스를 감싸고 있는 div 속성
+					var div_style = 'display:inline-block;position:relative;width:150px;height:120px;margin:5px;border:1px solid #00f;z-index:1';
+					// 미리보기 이미지 속성
+					var img_style = 'width:100%;height:100%;z-index:none';
+					// 이미지안에 표시되는 체크박스의 속성
+					var chk_style = 'width:30px;height:30px;position:absolute;font-size:24px;right:0px;bottom:0px;z-index:999;background-color:rgba(255,255,255,0.1);color:#f00';
+					
+					function test1(inputFile){
+						console.log(inputFile.files);
+						var files = inputFile.files;
+						var fileArr = Array.prototype.slice.call(files)
+						for(f of fileArr){
+							imageLoader(f);
 						}
-						else {
-							switch(num) {
-								case 1: $("#houseImg1_1").attr("src", null); break;
-								case 2: $("#houseImg1_2").attr("src", null); break;
-								case 3: $("#houseImg1_3").attr("src", null); break;
-								case 4: $("#houseImg1_4").attr("src", null); break;
-								case 5: $("#houseImg1_5").attr("src", null); break;
-							}
-	
-						}
-	
 					}
-	
-	
-	
+
+					/* 첨부된 이미리즐을 배열에 넣고 미리보기 */
+					imageLoader = function(file) {
+						sel_files.push(file);
+						var reader = new FileReader();
+						
+						reader.onload = function(ee) {
+							let img = document.createElement('img')
+							img.setAttribute('style', img_style)
+							img.src = ee.target.result;
+							console.log(attZone);
+							attZone.appendChild(makeDiv(img, file));
+						}
+						
+						reader.readAsDataURL(file);
+					}
+
+					/* 첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+					makeDiv = function(img, file) {
+						var div = document.createElement('div')
+						div.setAttribute('style', div_style)
+						
+						var btn = document.createElement('input')
+						btn.setAttribute('type', 'button')
+						btn.setAttribute('value', 'x')
+						btn.setAttribute('delFile', file.name);
+						btn.setAttribute('style', chk_style);
+						
+						btn.onclick = function(ev) {
+							var ele = ev.srcElement;
+							var delFile = ele.getAttribute('delFile');
+							
+							for(var i = 0; i < sel_files.length; i++) {
+								if(delFile == sel_files[i].name) {
+									sel_files.splice(i, 1);
+								}
+							}
+							
+							dt = new DataTransfer();
+							
+							for(f in sel_files) {
+								var file = sel_files[f];
+								dt.items.add(file);
+							}
+							
+							btnAtt.files = dt.files;
+							var p = ele.parentNode;
+							attZone.removeChild(p)
+						}
+						
+						div.appendChild(img)
+						div.appendChild(btn)
+						
+						return div;
+					}
 				</script>
-	
 
-
-
-			</div>
-
-			<div class="house_photo_insert_title">
-				<div class="photo_insert_title_01"><h3>방 이름</h3></div>
-				<div class="photo_insert_title_02"><button class="button button1">파일첨부</button></div>
-			</div>
-
-			<div class="house_photo_insert">
-				<div class="house_photo">
-					<img src="" alt="">
-
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
-
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
-
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
-
-				</div>
-				<div class="house_photo">
-					<img src="" alt="">
-
-				</div>
-			</div>
-
-			<button type="button">방 추가</button>
-
-
-			<div>
-				<div class="title">
-					<h2>방 정보 등록</h2>
-				</div>
-
+				<button type="button">방 추가</button>
+				
+				<h2>방 정보 등록</h2>
+				
 				<table class="house_room_info table table-hover">
 					<thead>
 						<tr>
@@ -417,76 +304,34 @@
 							</tr>
 					</tbody>
 				</table>
-			</div>
-
-			<div>
 				
-				<div class="title">
-					<h2>하우스 소개</h2>
-				</div>
-
-				<div class="house_intro">
-					<textarea name="houseTitle" placeholder="간략한 하우스 소개를 입력해주세요." required></textarea>
-				</div>
-
-
-				<div>
-					<textarea name="houseIntroduce" placeholder="하우스에 대한 정보를 자세히 입력해주세요." required></textarea>
-				</div>
-
-				<div>
-					<div class="title">
-						<h2>제공 서비스</h2>
-					</div>
-
-					<table>
-						<tr>
-							<td>공용공간</td>
-						</tr>
-						<tr>
-							<textarea name="shareSpace"></textarea>
-						</tr>
-						<tr>
-							개인공간
-
-						</tr>
-						<tr>
-							<textarea name="personalSpace"></textarea>
-						</tr>
-					</table>
-				</div>
-
-				<div>
-					<div class="title">
-						<h2>위치/편의시설</h2>
-					</div>
-
-					<table>
-						<tr>
-							교통시설/접근성
-						</tr>
-						<tr>
-							<textarea name="traffic"></textarea>
-						</tr>
-						<tr>
-							편의시설
-
-						</tr>
-						<tr>
-							<textarea name="convenience"></textarea>
-						</tr>
-					</table>
-				</div>
+				<h2>하우스 소개</h2>
+				<textarea name="houseTitle" class="form-control" placeholder="간략한 하우스 소개를 입력해주세요." style="resize: none;" required></textarea>
+				<textarea name="houseIntroduce" class="form-control" placeholder="하우스에 대한 정보를 자세히 입력해주세요." style="resize: none;" required></textarea>
 				
-				<div>
-					<button type="submit">등록 및 결제</button>
-					<button type="reset">취소</button>
+				<h2>제공 서비스</h2>
+
+				<h4>공용공간</h4>
+				<textarea name="shareSpace" class="form-control" style="resize: none;"></textarea>
+				<h4>개인공간</h4>
+				<textarea name="personalSpace" class="form-control" style="resize: none;"></textarea>
+
+				<h2>위치/편의시설</h2>
+
+				<h4>교통시설/접근성</h4>
+				<textarea name="traffic" class="form-control" style="resize: none;"></textarea>
+				<h4>편의시설</h4>
+				<textarea name="convenience" class="form-control" style="resize: none;"></textarea>
+
+				<div class="btn-group">
+					<button class="btn btn-warning" onclick="filenamecheck()">등록 및 결제</button>
+					<button class="btn btn-danger" type="reset">취소</button>
 				</div>
+
 			</div>
 		</form>
 	</div>
 
-	
 	<jsp:include page="../common/footer.jsp" />
 
 </body>
