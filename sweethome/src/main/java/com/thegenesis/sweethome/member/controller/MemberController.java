@@ -1,15 +1,23 @@
 package com.thegenesis.sweethome.member.controller;
 
+import java.io.IOException;
+
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thegenesis.sweethome.common.template.Certification;
@@ -29,11 +37,37 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
+	@Autowired
+	private GoogleConnectionFactory googleConnectionFactory;
+
+	@Autowired
+	private OAuth2Parameters googleOAuth2Parameters;
+	
+	
 	
 	@RequestMapping("loginform.me")
-	public String loginFormView() {
+	public String loginFormView(Model model, HttpSession session) throws Exception {
+		
+		/* 구글code 발행 */
+	  	OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		
+	  	/* 로그인페이지 이동 url생성 */
+	  	String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+
+	  	model.addAttribute("google_url", url);
+
+	  	/* 생성한 인증 URL을 Model에 담아서 전달 */
 		return "member/loginForm";
 	}
+	
+	// 구글 Callback호출 메소드
+	  @RequestMapping(value = "oauth2callback.do", method = { RequestMethod.GET, RequestMethod.POST })
+	  public String googleCallback(Model model, @RequestParam String code) throws IOException {
+
+	    //System.out.println("Google login success");
+
+	    return "redirect:/";
+	  }
 	
 	@RequestMapping("login.me")
 	public String loginMember(Member m, HttpSession session) {
@@ -230,5 +264,8 @@ public class MemberController {
 			return "mypage/memberInfo";
 		}
 	}
+	
+	
+	
 
 }
