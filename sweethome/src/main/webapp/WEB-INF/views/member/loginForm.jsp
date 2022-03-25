@@ -84,7 +84,7 @@
                 <div class="sLogin">
                 <a href="${google_url}"><img src="http://ojsfile.ohmynews.com/STD_IMG_FILE/2015/0902/IE001866788_STD.jpg" width="200px" height="100px" style="margin-left:50px;"></a>   
                 <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-                <div class="g-signin2" data-theme="dark" onclick="onSignIn();"></div>
+                <!--<div class="g-signin2" data-theme="dark" onclick="onSignIn();"></div>-->
                 </div>       
             
             </div>
@@ -115,10 +115,10 @@
     <script>
     		function onSignIn(googleUser){
     			var profile = googleUser.getBasicProfile();
-    			console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    			console.log('ID: ' + profile.getId()); 
     			console.log('Name: ' + profile.getName());
     			console.log('Image URL: ' + profile.getImageUrl());
-    			console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    			console.log('Email: ' + profile.getEmail()); 
     		
     			var id_token = googleUser.getAuthResponse().id_token;
     			console.log("ID Token : " + id_token);
