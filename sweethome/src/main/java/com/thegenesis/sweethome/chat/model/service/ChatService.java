@@ -22,4 +22,12 @@ public class ChatService {
 		return chatDao.selectRoomList(sqlSession, userNo);
 	}
 
+	public ArrayList<Chat> selectChatHistory(int roomNo) {
+		return chatDao.selectChatHistory(sqlSession, roomNo);
+	}
+
+	public int insertChatMessage(Chat c) {
+		return chatDao.insertChatMessage(sqlSession, c);
+	}
+
 }

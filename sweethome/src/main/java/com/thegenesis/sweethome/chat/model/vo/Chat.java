@@ -18,4 +18,7 @@ public class Chat {
 	int messageNo;
 	String message;
 	Date sendTime;
+	
+	String formatDate;
+	String formatTime;
 }

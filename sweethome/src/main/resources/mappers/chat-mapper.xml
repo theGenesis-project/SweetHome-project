@@ -21,4 +21,37 @@
 		 WHERE
 		 		USER_NO = #{userNo}
 	</select>
+	
+	<select id="selectChatHistory" resultMap="chatResultMap">
+		SELECT 
+				MESSAGE_NO
+			  , USER_NO
+			  , ROOM_NO
+			  , MESSAGE
+			  , SEND_TIME
+		  FROM 
+		  		MESSAGE
+		 WHERE
+		 		ROOM_NO = #{roomNo}
+		 ORDER BY
+		 		SEND_TIME ASC
+	</select>
+	
+	<insert id="insertChatMessage" parameterType="chat">
+		INSERT INTO MESSAGE
+			   (
+				MESSAGE_NO,
+				USER_NO,
+				ROOM_NO,
+				MESSAGE,
+				SEND_TIME
+			   )
+		VALUES (
+				SEQ_MES_NO.NEXTVAL,
+				#{userNo},
+				#{roomNo},
+				#{message},
+				SYSDATE
+			   )
+	</insert>
 </mapper>
