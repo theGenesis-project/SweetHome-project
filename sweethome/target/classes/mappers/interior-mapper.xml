@@ -24,7 +24,34 @@
 	  	<result column="FILE_PATH" property="filePath"/>
 	  	<result column="FILE_LEVEL" property="fileLevel"/>
   	</resultMap>
-  
+  	
+  	<resultMap type="orderInfo" id="orderInfoResultSet">
+  		<result column="ORDER_NO" property="orderNo"/>
+  		<result column="USER_NO" property="userNo"/>
+  		<result column="ORDER_RE" property="orderRe"/>
+  		<result column="ORDER_PHONE" property="orderPhone"/>
+  		<result column="ORDER_ADD" property="roadAddress"/>
+  		<result column="ORDER_REQ" property="orderReQ"/>
+  		<result column="ORDER_STATUS" property="orderStatus"/>
+  		<result column="INTERIOR_NO" property="interiorNo"/>
+  		<result column="ORDER_NUMBER" property="orderNumber"/>
+  		<result column="POSTCODE" property="postCode"/>
+  		<result column="ORDER_DATE" property="orderDate"/>
+  		<result column="SUMPRICE" property="sumPrice"/>
+  		<result column="ORDER_ADD2" property="detailAddress"/>
+  		<result column="SENDER_NAME" property="senderName"/>
+  		<result column="SENDER_PHONE" property="senderPhone"/>
+  		<result column="SENDER_EMAIL" property="senderEmail"/>
+  		
+  		
+  		<result column="ORDER_QUANTITY" property="orderQuantity"/>
+  		<result column="INTE_CATE" property="inteCate"/>
+  		<result column="INTERIOR_TITLE" property="interiorTitle"/>
+  		<result column="INTERIOR_POST" property="interiorPost"/>
+  		
+  		
+  	</resultMap>
+ 
   
   
   <select id="listCount" parameterType="_int" resultType="_int">
@@ -329,13 +356,17 @@
 			,POSTCODE
 			,ORDER_DATE
 			,SUMPRICE
+			,ORDER_ADD2
+			,SENDER_NAME
+			,SENDER_PHONE
+			,SENDER_EMAIL
 			)
 		VALUES(
 			SEQ_ORDER_NO.NEXTVAL
 			,#{userNo}
 			,#{orderRe}
 			,#{orderPhone}
-			,#{orderAddress}
+			,#{roadAddress}
 			,#{orderReQ}
 			,#{orderStatus}
 			,#{interiorNo}
@@ -343,6 +374,10 @@
 			,#{postCode}
 			,SYSDATE
 			,#{sumPrice}
+			,#{detailAddress}
+			,#{senderName}
+			,#{senderPhone}
+			,#{senderEmail}
 			)
 	
 	</insert>
@@ -364,8 +399,48 @@
 			,SYSDATE
 		)
 		
-	
 	</insert>
+	<!-- 주문 내역 상세보기 -->
+	<select id="orderInfoDetail" parameterType="_int" resultMap="orderInfoResultSet">
+		SELECT
+			ORDER_NO
+			,USER_NO
+			,ORDER_RE
+			,ORDER_PHONE
+			,ORDER_ADD
+			,ORDER_REQ
+			,ORDER_STATUS
+			,I.INTERIOR_NO
+			,ORDER_NUMBER
+			,POSTCODE
+			,O.ORDER_DATE
+			,SUMPRICE
+			,ORDER_QUANTITY     
+            ,INTE_CATE
+            ,INTERIOR_TITLE
+			,INTERIOR_POST
+			,ORDER_ADD2
+			,SENDER_NAME
+			,SENDER_PHONE
+			,SENDER_EMAIL
+		FROM 		
+			ORDER_INFO O
+		JOIN INTERIOR I ON(O.INTERIOR_NO = I.INTERIOR_NO)
+		JOIN PAYMENT USING(ORDER_NO)
+		WHERE
+			ORDER_NO = #{orderNo}
+
+	</select>
+	
+	<update id="orderStatusUpdate" parameterType="hashmap">
+		UPDATE 
+			ORDER_INFO
+		SET 
+			ORDER_STATUS = #{orderStatus}
+		WHERE
+			ORDER_NO = #{orderNo}
+	
+	</update>
 	
 	
   

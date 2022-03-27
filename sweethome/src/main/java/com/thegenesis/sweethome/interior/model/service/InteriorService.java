@@ -96,6 +96,14 @@ public class InteriorService {
 	public int insertOrderInfo(OrderInfo orderInfo, Payment payment) {
 		return interiorDao.insertOrderInfo(sqlSession, orderInfo, payment);
 	}
+	//주문 내역 상세 보기
+	public OrderInfo orderInfoDetail(int orderNo) {
+		return interiorDao.orderInfoDetail(sqlSession, orderNo);
+	}
+	//주문 상태 변경
+	public int orderStatusUpdate(HashMap<String, Integer> map) {
+		return interiorDao.orderStatusUpdate(sqlSession, map);
+	}
 
 	
 

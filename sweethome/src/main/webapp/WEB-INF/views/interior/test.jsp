@@ -14,7 +14,7 @@
 <script>
 	function orderInfoDetail(){
 		
-		location.href = "orderInfoDetail.in";
+		location.href = "orderInfoDetail.in?orderNo=3";
 		
 		
 	}

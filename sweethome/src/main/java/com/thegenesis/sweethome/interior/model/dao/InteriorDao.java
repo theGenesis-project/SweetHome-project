@@ -146,18 +146,24 @@ public class InteriorDao {
 		return result;
 	}
 	//주문 내역 등록
-
 	public int insertOrderInfo(SqlSessionTemplate sqlSession, OrderInfo orderInfo, Payment payment) {
-		System.out.println("넘어온 orderInfo" + orderInfo);
-		System.out.println("넘어온 payment" + payment);
+	
 		//주문 내역 등록
 		int result = sqlSession.insert("interiorMapper.insertOrderInfo", orderInfo);
-		
+		//주문자 결제 내역
 		if(result > 0) {
 			result = sqlSession.insert("interiorMapper.insertPayment", payment);
 		}
 		
 		return result;
+	}
+	//주문 내역 상세 보기
+	public OrderInfo orderInfoDetail(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.selectOne("interiorMapper.orderInfoDetail", orderNo);
+	}
+	//주문 상태 변경
+	public int orderStatusUpdate(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("interiorMapper.orderStatusUpdate", map);
 	}
 	
 

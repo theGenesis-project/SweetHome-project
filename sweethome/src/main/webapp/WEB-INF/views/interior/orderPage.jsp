@@ -82,15 +82,15 @@
                     <table>
                         <tr>
                             <td style="width:100px;">이름 </td>
-                            <td><input type="text" name="userId" value="${loginUser.userName }" readonly></td>
+                            <td><input type="text" name="userName" id="userName" value="${loginUser.userName }" readonly></td>
                         </tr>
                         <tr>
                             <td>이메일</td>
-                            <td><input type="email" name="email" value="${loginUser.email }"readonly></td>
+                            <td><input type="email" name="email" id="email" value="${loginUser.email }"readonly></td>
                         </tr>
                         <tr>
                             <td>휴대전화</td>
-                            <td><input type="text" name="phone" value="${loginUser.phone }" readonly></td>
+                            <td><input type="text" name="phone" id="phone" value="${loginUser.phone }" readonly></td>
                         </tr>
 
                     </table>
@@ -114,10 +114,10 @@
                         </tr>
                         <tr>
                             <td rowspan="2"></td>
-                            <td><input type="text" name="postcode" id="postcode" placeholder="우편번호"></td>
+                            <td><input type="text" name="postcode" id="postcode" placeholder="우편번호" readonly></td>
                         </tr>
                         <tr>                	
-                        	<td><input type="text" name="roadAddress" id="roadAddress" placeholder="주소"></td>
+                        	<td><input type="text" name="roadAddress" id="roadAddress" placeholder="주소" readonly></td>
                         </tr>
                         <tr>
                         	<td></td>              
@@ -130,10 +130,9 @@
           
                     </table>
                 </div>
-                <script>
-                
                
-                    
+                <script>
+                              
 					// Daum 우편번호 서비스
 					function execDaumPostcode() {
 						new daum.Postcode({
@@ -188,6 +187,7 @@
 							    </td>
                                 <td style="width: 150px;" class="interiorPrice">
                                 	<input type="text" value="${in.interiorPrice }" id="interiorNo" hidden=hidden readonly/>
+                                	<input type="text" value="${in.interiorPrice }" id="interiorNo_number" hidden=hidden readonly/>
            							<input type="text" value="${in.interiorPrice }" id="interiorNo_view" readonly />
                                 	원
                                 </td>
@@ -241,6 +241,8 @@
 	    	 total_count_view.value = cn0;
 	    	 interiorNo_view.value = cn1;
 	    	 
+	    	 console.log("뭐지" + $("#userName").val());
+	    	 
 	    	
 	    })
 	   
@@ -261,6 +263,7 @@
             console.log(typeof(n1))
             console.log(typeof(parseInt(interiorPost.value)))
             
+            interiorNo_number = n1;
             interiorNo_view.value = cn1;
             total_count_view.value= cn2;
 	    }
@@ -314,21 +317,24 @@
 					console.log("결제 성공");
 					
 						var result = {
+									        	
 								merchant_uid : rsp.merchant_uid,//주문번호
 				        		interiorTitle : rsp.name,		        		
 				        		amount : rsp.paid_amount,//배송비 포함 금액
 				        		userNo : ${loginUser.userNo},
 				        		orderRe : $("#orderRe").val(),
 				        		orderPhone : $("#orderPhone").val(),
-				        		address1: $("#roadAddress").val(),
-				        		address2: $("#detailAddress").val(),
+				        		roadAddress: $("#roadAddress").val(),
+				        		detailAddress: $("#detailAddress").val(),
 				        		orderReQ : $("#orderReQ").val(),
 				        		interiorNo : ${in.interiorNo},
 				        		postCode : $("#postcode").val(),
 				        		orderQuantity : $(".orderQuantity").val(),//개수
-				        		interiorPost : ${in.interiorPost},//배송비
-				        		sumPrice : $('#interiorNo_view').val()//배송비 제외 총 가격
-				        		
+				        		interiorPost : ${in.interiorPost}, //배송비
+				        		sumPrice : $('#interiorNo_number').val(),//배송비 제외 총 가격	
+				        		senderName : $("#userName").val(),
+				        		senderPhone : $("#phone").val(),
+				        		senderEmail : $("#email").val()        		
 								}
 					
 					

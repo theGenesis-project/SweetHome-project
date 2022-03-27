@@ -311,7 +311,6 @@ public class InteriorController {
 	@RequestMapping("orderForm.in")
 	public String orderForm(Model model, Interior in, int interiorNo, int interiorPrice, String interiorTitle, String interiorPost, int inteCate) {
 		
-		DecimalFormat f = new DecimalFormat("###,###");
 		
 		in = Interior.builder()
 			.interiorNo(interiorNo)
@@ -350,19 +349,20 @@ public class InteriorController {
 							.userNo(pList.getUserNo())
 							.orderRe(pList.getOrderRe())
 							.orderPhone(pList.getOrderPhone())
-							.orderAddress(pList.getAddress1() + pList.getAddress2())
+							.roadAddress(pList.getRoadAddress())
+							.detailAddress(pList.getDetailAddress())
 							.orderReQ(pList.getOrderReQ())
 							.interiorNo(pList.getInteriorNo())
 							.orderNumber(pList.getMerchant_uid())
 							.postCode(pList.getPostCode())
 							.sumPrice(pList.getSumPrice())
+							.senderName(pList.getSenderName())
+							.senderPhone(pList.getSenderPhone())
+							.senderEmail(pList.getSenderEmail())
 							.build();
 		//orderNo : seq, orderstatus : default,  					
 		System.out.println("orderInfo 확인용 " + orderInfo);
-		
-		
-		
-		
+
 		Payment payment = null;
 		
 		payment = Payment.builder()						
@@ -388,6 +388,46 @@ public class InteriorController {
 	
 	//주문 내역 확인
 	@RequestMapping("orderInfoDetail.in")
+	public ModelAndView orderInfoDetail(ModelAndView mv, HttpSession session/*, int orderNo*/) {
+		
+		//Member m = (Member)session.getAttribute("loginUser");
+		
+		//int userNo = m.getUserNo();
+		int orderNo = 3;//임시
+		
+		//HashMap<String, Integer> map = new HashMap<String, Integer>();
+		//map.put("userNo", userNo);
+		//map.put("orderNo", orderNo);
+		
+		//OrderInfo orderInfo =  interiorService.orderInfoDetail(map);
+		OrderInfo orderInfo =  interiorService.orderInfoDetail(orderNo);
+		
+		mv.addObject("oi", orderInfo);
+		mv.setViewName("interior/orderPageDetail");
+		
+		return mv;
+		
+	}
+	//주문 상태 변경
+	@RequestMapping("orderStatusUpdate.in")
+	public String orderStatusUpdate(int orderStatus, int orderNo, HttpSession session) {
+			
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("orderStatus", orderStatus);
+		map.put("orderNo", orderNo);
+		
+		int result = interiorService.orderStatusUpdate(map);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "변경 선공");
+			return "redirect:/orderInfoDetail.in";
+		}else {
+			session.setAttribute("alertMsg", "변경 실패");
+			return "interior/orderPageDetail";
+		}
+		
+	}
 	
 
 
