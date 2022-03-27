@@ -20,6 +20,7 @@
 		<typeAlias type="com.thegenesis.sweethome.community.model.vo.Category" alias="category"/>
 		<typeAlias type="com.thegenesis.sweethome.tour.model.vo.Tour" alias="tour"/>
 		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat"/>
+		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Interior" alias="interior"/>
 	</typeAliases>
 	
 	<mappers>
@@ -31,5 +32,6 @@
 		<mapper resource="/mappers/community-mapper.xml"/>
 		<mapper resource="/mappers/tour-mapper.xml"/>
 		<mapper resource="/mappers/chat-mapper.xml"/>
+		<mapper resource="/mappers/interior-mapper.xml"/>
 	</mappers>
 </configuration>

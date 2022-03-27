@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>찜 내역 관리</title>
 <link rel="stylesheet" href="resources/css/mypage.css" />
-<link rel="stylesheet" href="resources/css/house.css" />
+<link rel="stylesheet" href="resources/css/dibs.css" />
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
@@ -31,8 +31,8 @@
 			// 페이지 들어오자마자 myHouse 클릭
 			$('.myHouse').trigger("click");
 		})
-		
-		// 더보기 버튼 클릭 시 추가되는 게시물에 대한 함수
+
+		// 더보기 버튼 클릭 시 추가되는 하우스에 대한 함수
 		function moreHouse(id, limit) {
 			// 현재 페이지에 있는 content 갯수
 			var list_length = $("." + id).children('li').length
@@ -41,7 +41,6 @@
 				url: "getMoreHouse.my",
 				type: "post",
 				data: {
-					"listCount": ${listCount},
 					"callLength": list_length,
 					"limit": limit
 				}, 
@@ -82,17 +81,69 @@
 					if(list.remain == 0){ 
 						$(".more_btn_area").hide();
 					}
-				}, error: function(result){
+				}, error: function(){
 					alert("게시글을 불러오는데 실패했습니다. 다시 시도해주세요.");
 				}
 			})
 		}
+		
+		// 더보기 버튼 클릭 시 추가되는 인테리어에 대한 함수
+		function moreInterior(id, limit) {
+			// 현재 페이지에 있는 content 갯수
+			var list_length = $("#" + id).children('div').length
+
+			$.ajax({
+				url: "getMoreInterior.my",
+				data: {
+					"callLength": list_length,
+					"limit": limit
+				}, 
+				success: function(result){
+					// 게시물 추가
+					for(let j in result.data) {
+						var interior_list = $('<div class="interior_list"></div>');
+						var input = $('<input type="checkbox">');
+						
+						var thumbnail_area = $('<div class="thumbnail-area"></div>');
+						thumbnail_area.html('<img src="'+result.data[j].filePath+'" alt="사진 준비중...🖼️">');
+						
+						var interior_com = $('<div class="interior_com"></div>');
+						interior_com.html("<p>"+result.data[j].interiorCo+"</p>");
+						
+						var interior_title = $('<div class="interior_title"></div>');
+						interior_title.html('<p class="target">'+result.data[j].interiorTitle+'</p>');
+						
+						var interior_price = $('<div class="interior_price"></div>');
+						interior_price.html('<p>'+result.data[j].won+'</p>')
+						
+						interior_list.append(input);
+						interior_list.append(thumbnail_area);
+						interior_list.append(interior_com);
+						interior_list.append(interior_title);
+						interior_list.append(interior_price);
+						
+						$('#interior-area').append(interior_list);
+					}
+					// 더이상 보여줄 게시물 없으면 더보기버튼 없애기
+					if(list.remain == 0){ 
+						$(".more_btn_area").hide();
+					}
+				}, error: function() {
+					alert("게시글을 불러오는데 실패했습니다. 다시 시도해주세요.");
+				}
+			})
+
+		}
 	</script>
 	<div class="sweethome-container">
+	<!-- 서브네비 -->
 		<div class="sub-nav">
 			<jsp:include page="../common/mypageNavi.jsp"/>
 		</div>
+	<!-- 서브네비끝 -->
+	<!-- 마이페이지 시작 -->
 		<div class="mypage"> 
+			<!-- 이너네비 시작 -->
 			<div class="inner-nav">
 				<div class="inner-nav-area">
 					<div class="myHouse inner-nav-content">	
@@ -104,8 +155,21 @@
 					<div class="end"></div>
 				</div>
 			</div>
+			<!-- 이너네비 끝 -->
+			<!-- 이너바디 시작 -->
 			<div class="inner-body">
+				<!-- 하우스 찜 시작 -->
 				<div class="house">
+					<!-- 하우스리스트가 없을 경우 -->
+					<c:if test="${ empty Hlist }">
+			        	<div class="empty-list">
+			        		<p>
+			        			아직 찜한 집이 없습니다😢<br>
+			        			<a href=""><b>하우스 보러가기>></b></a>
+			        		</p>
+			        	</div>
+			        </c:if>
+			        <!-- 하우스 리스트  -->
 			        <ul class="myhouse-wrap">
 			        <c:forEach var="h" items="${ Hlist }">
 			        	<li class="myhouse-item">
@@ -128,21 +192,64 @@
 			            </li>
 			        </c:forEach>
 			        </ul>
+			        <!-- 하우스 리스트 끝 -->
 			        <br>
-			        <!-- 추가 게시물이 더 있을 때 -->
-			        <c:if test="${ listCount gt 0 }">
+			        <!-- 더보기 버튼 -->
+			        <c:if test="${ HlistCount gt 0 }">
 						<div class="more_btn_area" align="center">
 							<button class="btn btn-outline-info" type="button" 
 								onclick="moreHouse('myhouse-wrap', 6)">더보기(More)</button>
 						</div>
 			        </c:if>
-					
+			        <!-- 더보기 버튼 끝 -->
 				</div>
+				<!-- 하우스 찜 끝 -->
+				<!-- 인테리어 찜 시작 -->
 				<div class="interior">
-				인테리어
+					<!-- 하우스리스트가 없을 경우 -->
+					<c:if test="${ empty Ilist }">
+			        	<div class="empty-list">
+			        		<p>
+			        			아직 찜한 인테리어가 없습니다😢<br>
+			        			<a href=""><b>인테리어 보러가기>></b></a>
+			        		</p>
+			        	</div>
+			        </c:if>
+					<!-- 인테리어 리스트 -->
+					<div id="interior-area">
+						<c:forEach var="I" items="${ Ilist }">
+							<div class="interior_list">
+								<input type="checkbox">
+							       <div class="thumbnail-area">
+							           <img src="${ I.filePath }" alt="사진 준비중...🖼️">
+							       </div>
+							       <div class="interior_com">
+							           <p>${ I.interiorCo }</p>
+							       </div>
+							       <div class="interior_title">
+							           <p class="target">${ I.interiorTitle }</p>
+							       </div>
+							       <div class="interior_price">
+							           <p>${ I.won }</p>
+							       </div>
+							</div>
+						</c:forEach>
+		            </div>
+		            <!-- 인테리어 리스트 끝 -->
+			        <!-- 더보기 버튼 -->
+					<c:if test="${ IlistCount gt 0 }">
+						<div class="more_btn_area" align="center">
+							<button class="btn btn-outline-info" type="button" 
+								onclick="moreInterior('interior-area', 8)">더보기(More)</button>
+						</div>
+					</c:if>
+					<!-- 더보기 버튼 끝 -->
 				</div>
+				<!-- 인테리어 찜 끝 -->
 			</div>
+			<!-- 이너바디 끝 -->
 		</div>
+		<!-- 마이페이지 끝 -->
 		<div class="end">
 		</div>
 	</div>

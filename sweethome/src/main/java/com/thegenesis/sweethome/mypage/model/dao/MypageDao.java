@@ -10,6 +10,7 @@ import com.thegenesis.sweethome.common.vo.MoreVO;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
+import com.thegenesis.sweethome.interior.model.vo.Interior;
 
 @Repository
 public class MypageDao {
@@ -55,6 +56,16 @@ public class MypageDao {
 		RowBounds rowBounds = new RowBounds(m.getCallLength(), m.getLimit());
 		
 		return (ArrayList)sqlSession.selectList("houseMapper.selectDibsHouses", userNo, rowBounds);
+	}
+
+	public int myDibsInteriorCount(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("interiorMapper.myDibsInteriorCount", userNo);
+	}
+
+	public ArrayList<Interior> selectMyInteriorList(SqlSessionTemplate sqlSession, MoreVO m, int userNo) {
+		RowBounds rowBounds = new RowBounds(m.getCallLength(), m.getLimit());
+		
+		return (ArrayList)sqlSession.selectList("interiorMapper.selectDibsInteriors", userNo, rowBounds);
 	}
 
 }

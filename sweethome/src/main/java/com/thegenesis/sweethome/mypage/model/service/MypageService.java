@@ -10,6 +10,7 @@ import com.thegenesis.sweethome.common.vo.MoreVO;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
+import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.mypage.model.dao.MypageDao;
 
 @Service
@@ -51,5 +52,13 @@ public class MypageService {
 
 	public ArrayList<House> selectMyHouseList(MoreVO m, int userNo) {
 		return mypageDao.selectMyHouseList(sqlSession, m, userNo);
+	}
+
+	public int myDibsInteriorCount(int userNo) {
+		return mypageDao.myDibsInteriorCount(sqlSession, userNo);
+	}
+
+	public ArrayList<Interior> selectMyInteriorList(MoreVO m, int userNo) {
+		return mypageDao.selectMyInteriorList(sqlSession, m, userNo);
 	}
 }

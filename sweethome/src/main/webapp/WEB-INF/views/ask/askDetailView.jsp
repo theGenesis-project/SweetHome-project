@@ -38,7 +38,7 @@
 						<th>작성일</th>
 						<td colspan="3">${ a.askDate }</td>
 					</tr>
-					<c:if test="${ aFile.filePath }">
+					<c:if test="${ !empty aFile.filePath }">
 						<tr>
 							<th>첨부파일</th>
 							<td class="Qanswer" colspan="3">
