@@ -60,3 +60,8 @@
 	width: fit-content; 
 	margin: auto;
 }
+/* 게시글이 비어있는 경우 */
+.empty-list {
+	margin-top: 10vw;
+	text-align: center;
+}

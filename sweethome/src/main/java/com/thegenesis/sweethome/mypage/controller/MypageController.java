@@ -168,9 +168,11 @@ public class MypageController {
 	
 	
 	@RequestMapping("userTour.my")
-	public void MyTourList(@RequestParam(value="tpage", defaultValue="1")int currentPage, HttpSession session) {
+	public String MyTourList(@RequestParam(value="tpage", defaultValue="1")int currentPage, HttpSession session) {
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		
 		int listCount = mypageService.myTourListCount(userNo);
+		
+		return "mypage/tourList";
 	}
 }

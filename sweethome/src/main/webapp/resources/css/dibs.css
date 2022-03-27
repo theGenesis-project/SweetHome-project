@@ -1,8 +1,4 @@
 @charset "UTF-8";
-.empty-list {
-	margin-top: 10vw;
-	text-align: center;
-}
 /* 하우스 부분 */
 ul { 
     list-style: none;

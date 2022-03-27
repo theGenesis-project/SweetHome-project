@@ -46,7 +46,9 @@
 		<div class="sub-nav">
 			<jsp:include page="../common/mypageNavi.jsp" />
 		</div>
+		<!-- 마이페이지 시작 -->
 		<div class="mypage">
+			<!-- 이너네비 시작 -->
 			<div class="inner-nav">
 				<div class="inner-nav-area">
 					<div class="myboard inner-nav-content">
@@ -58,144 +60,183 @@
 					<div class="end"></div>
 				</div>
 			</div>
+			<!-- 이너네비 끝 -->
+			<!-- 이너바디 시작 -->
 			<div class="inner-body">
+				<!-- 게시글 영역 시작 -->
 				<div class="board">
-					<table class="table">
-					  <thead>
-					    <tr>
-					      <th><input class="all-checkbox" type="checkbox"></th>
-					      <th scope="col">번호</th>
-					      <th scope="col">제목</th>
-					      <th scope="col">조회수</th>
-					      <th scope="col">작성일</th>	      
-					    </tr>
-					  </thead>
-					  <tbody>
-					  	<c:forEach var="b" items="${ Blist }">
-						    <tr class="list-area" onclick="return listClick(${ b.boardNo });">
-						      <td><input class="checkbox" type="checkbox" value="${ b.boardNo }"></td>
-						      <th scope="row">${ b.rowNo }</th>
-						      <td>${ b.boardTitle }</td>
-						      <td>${ b.count }</td>
-						      <td>${ b.createDate }</td>
-						    </tr>
-					  	</c:forEach>
-					  </tbody>
-					</table>
-					<div class="button-area">
-						<button type="button" class="delete-button" data-toggle="modal" data-target="#deleteModal">삭제</button>
-					</div>
-					<!-- Modal -->
-					<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel">게시글 삭제</h5>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-					      </div>
-					      <div class="modal-body">
-					      	<p style="text-align: center;">
-					      		게시글은 삭제 후 복구할 수 없습니다. <br>
-					      		정말 삭제하시겠습니까?	
-					      	</p>
-					      	<form action="deleteBoard.my" id="deleteMyBoard">
-							    <span>&lt;삭제될 게시물&gt;</span>
-							    <ul id="deleteList"></ul>
-					      	</form>
-					      </div>
-					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					        <button type="submit" form="deleteMyBoard" class="btn btn-danger">삭제</button>
-					      </div>
-					    </div>
-					  </div>
-					</div>
-				
-					<div id="pagingArea">
-		                <ul class="pagination">
-		                	<!-- 1번 페이지일 경우 비활성화 -->
-		                	<c:choose>
-		                		<c:when test="${Bpi.currentPage eq 1}">
-			                	    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-		                		</c:when>
-		                		<c:otherwise>
-		                			<li class="page-item"><a class="page-link" href="myBoard.my?bpage=${Bpi.currentPage - 1}">Previous</a></li>
-		                		</c:otherwise>
-		                   	</c:choose> 
-		                   
-		                    <c:forEach var="p" begin="${ Bpi.startPage }" end="${ Bpi.endPage }">
-		                    	<li class="page-item"><a class="page-link" href="myBoard.my?bpage=${ p }">${ p }</a></li>
-		                    </c:forEach>
-		                    
-		                    <!-- 마지막 페이지일 경우 비활성화 -->
-		                    <c:choose>
-								<c:when test="${Bpi.currentPage eq Bpi.maxPage}">
-				                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item"><a class="page-link" href="myBoard.my?bpage=${Bpi.currentPage + 1}">Next</a></li>
-								</c:otherwise>
-		                    </c:choose>
-		                </ul>
-	            	</div>
+					<%-- 작성한 게시글이 없을 경우 --%>
+				  	<c:choose>
+						<c:when test="${ empty Blist }">
+				        	<div class="empty-list">
+				        		<p>
+				        			아직 작성한 게시글이 없습니다😢<br>
+				        			<a href="info.co"><b>게시글 작성하러 가기>></b></a>
+				        		</p>
+				        	</div>
+				        </c:when>
+				        <c:otherwise>
+							<%-- 게시글 리스트 시작 --%>
+							<table class="table">
+							  <thead>
+							    <tr>
+							      <th><input class="all-checkbox" type="checkbox"></th>
+							      <th scope="col">번호</th>
+							      <th scope="col">제목</th>
+							      <th scope="col">조회수</th>
+							      <th scope="col">작성일</th>	      
+							    </tr>
+							  </thead>
+							  <tbody>
+							  	<c:forEach var="b" items="${ Blist }">
+								    <tr class="list-area" onclick="return listClick(${ b.boardNo });">
+								      <td><input class="checkbox" type="checkbox" value="${ b.boardNo }"></td>
+								      <th scope="row">${ b.rowNo }</th>
+								      <td>${ b.boardTitle }</td>
+								      <td>${ b.count }</td>
+								      <td>${ b.createDate }</td>
+								    </tr>
+							  	</c:forEach>
+							  </tbody>
+							</table>
+							<%-- 게시글 리스트 끝 --%>
+							<%-- 삭제 버튼 시작 --%>
+							<div class="button-area">
+								<button type="button" class="delete-button" data-toggle="modal" data-target="#deleteModal">삭제</button>
+							</div>
+							<%-- 삭제 버튼 끝 --%>
+							<%-- 삭제 모달 시작 --%>
+							<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">게시글 삭제</h5>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							      	<p style="text-align: center;">
+							      		게시글은 삭제 후 복구할 수 없습니다. <br>
+							      		정말 삭제하시겠습니까?	
+							      	</p>
+							      	<form action="deleteBoard.my" id="deleteMyBoard">
+									    <span>&lt;삭제될 게시물&gt;</span>
+									    <ul id="deleteList"></ul>
+							      	</form>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+							        <button type="submit" form="deleteMyBoard" class="btn btn-danger">삭제</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							<%-- 삭제 모달 끝 --%>
+							<%-- 페이징 처리 시작 --%>
+							<div id="pagingArea">
+				                <ul class="pagination">
+				                	<!-- 1번 페이지일 경우 비활성화 -->
+				                	<c:choose>
+				                		<c:when test="${Bpi.currentPage eq 1}">
+					                	    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+				                		</c:when>
+				                		<c:otherwise>
+				                			<li class="page-item"><a class="page-link" href="myBoard.my?bpage=${Bpi.currentPage - 1}">Previous</a></li>
+				                		</c:otherwise>
+				                   	</c:choose> 
+				                   
+				                    <c:forEach var="p" begin="${ Bpi.startPage }" end="${ Bpi.endPage }">
+				                    	<li class="page-item"><a class="page-link" href="myBoard.my?bpage=${ p }">${ p }</a></li>
+				                    </c:forEach>
+				                    
+				                    <!-- 마지막 페이지일 경우 비활성화 -->
+				                    <c:choose>
+										<c:when test="${Bpi.currentPage eq Bpi.maxPage}">
+						                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link" href="myBoard.my?bpage=${Bpi.currentPage + 1}">Next</a></li>
+										</c:otherwise>
+				                    </c:choose>
+				                </ul>
+			            	</div>
+			            	<%-- 페이징처리 끝 --%>
+	            		</c:otherwise>
+	            	</c:choose>
 				</div>
-				
+				<!-- 게시글 영역 끝 -->
+				<!-- 댓글 영역 시작 -->
 				<div class="comment">
-					<table class="table">
-					  <thead>
-					    <tr>
-					      <th scope="col">번호</th>
-					      <th scope="col">글제목</th>
-					      <th scope="col">댓글내용</th>
-					      <th scope="col">작성일</th>	      
-					    </tr>
-					  </thead>
-					  <tbody>
-					  	<c:forEach var="b" items="${ Clist }">
-						    <tr class="list-area" onclick="listClick(${ c.boardNo });">
-						      <th scope="row">${ c.rowNo }</th>
-						      <td>${ c.boardTitle }</td>
-						      <td>${ c.replyContent }</td>
-						      <td>${ c.createDate }</td>
+					<%-- 작성한 댓글이 없을 경우 --%>
+				  	<c:choose>
+						<c:when test="${ empty Clist }">
+				        	<div class="empty-list">
+				        		<p>
+				        			아직 작성한 댓글이 없습니다😢<br>
+				        			<a href="notice.co"><b>댓글 달러 가기>></b></a>
+				        		</p>
+				        	</div>
+				        </c:when>
+				        <c:otherwise>
+						<table class="table">
+						  <thead>
+						    <tr>
+						      <th scope="col">번호</th>
+						      <th scope="col">글제목</th>
+						      <th scope="col">댓글내용</th>
+						      <th scope="col">작성일</th>	      
 						    </tr>
-					  	</c:forEach>
-					  </tbody>
-					</table>
-					<c:if test="${ not empty Clist }">
+						  </thead>
+						  <tbody>
+						  	<c:forEach var="b" items="${ Clist }">
+							    <tr class="list-area" onclick="listClick(${ c.boardNo });">
+							      <th scope="row">${ c.rowNo }</th>
+							      <td>${ c.boardTitle }</td>
+							      <td>${ c.replyContent }</td>
+							      <td>${ c.createDate }</td>
+							    </tr>
+						  	</c:forEach>
+						  </tbody>
+						</table>
 						<p style="text-align: center; font-size: 0.8em;">댓글 삭제를 위해서는 게시글 확인이 필요합니다.</p>
-					</c:if>
-					<div id="pagingArea">
-		                <ul class="pagination">
-		                	<!-- 1번 페이지일 경우 비활성화 -->
-		                	<c:choose>
-		                		<c:when test="${Cpi.currentPage eq 1}">
-			                	    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-		                		</c:when>
-		                		<c:otherwise>
-		                			<li class="page-item"><a class="page-link" href="myBoard.my?cpage=${Cpi.currentPage - 1}">Previous</a></li>
-		                		</c:otherwise>
-		                   	</c:choose> 
-		                   
-		                    <c:forEach var="p" begin="${ Cpi.startPage }" end="${ Cpi.endPage }">
-		                    	<li class="page-item"><a class="page-link" href="myBoard.my?cpage=${ p }">${ p }</a></li>
-		                    </c:forEach>
-		                    
-		                    <!-- 마지막 페이지일 경우 비활성화 -->
-		                    <c:choose>
-								<c:when test="${Cpi.currentPage eq Cpi.maxPage}">
-				                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-								</c:when>
-								<c:otherwise>
-									<li class="page-item"><a class="page-link" href="myBoard.my?cpage=${Cpi.currentPage + 1}">Next</a></li>
-								</c:otherwise>
-		                    </c:choose>
-		                </ul>
-	            	</div>
+						<%-- 페이징바 시작 --%>
+						<div id="pagingArea">
+			                <ul class="pagination">
+			                	<!-- 1번 페이지일 경우 비활성화 -->
+			                	<c:choose>
+			                		<c:when test="${Cpi.currentPage eq 1}">
+				                	    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+			                		</c:when>
+			                		<c:otherwise>
+			                			<li class="page-item"><a class="page-link" href="myBoard.my?cpage=${Cpi.currentPage - 1}">Previous</a></li>
+			                		</c:otherwise>
+			                   	</c:choose> 
+			                   
+			                    <c:forEach var="p" begin="${ Cpi.startPage }" end="${ Cpi.endPage }">
+			                    	<li class="page-item"><a class="page-link" href="myBoard.my?cpage=${ p }">${ p }</a></li>
+			                    </c:forEach>
+			                    
+			                    <!-- 마지막 페이지일 경우 비활성화 -->
+			                    <c:choose>
+									<c:when test="${Cpi.currentPage eq Cpi.maxPage}">
+					                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item"><a class="page-link" href="myBoard.my?cpage=${Cpi.currentPage + 1}">Next</a></li>
+									</c:otherwise>
+			                    </c:choose>
+			                </ul>
+		            	</div>
+		            	<%-- 페이징바 끝 --%>
+						</c:otherwise>
+					</c:choose>
 				</div>
+				<!-- 댓글 영역 끝 -->
 			</div>
+			<!-- 이너바디 끝 -->
 		</div>
+		<!-- 마이페이지 끝 -->
 		<div class="end"></div>
 	</div>
 
