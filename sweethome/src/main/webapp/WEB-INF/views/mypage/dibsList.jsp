@@ -125,7 +125,7 @@
 						$('#interior-area').append(interior_list);
 					}
 					// 더이상 보여줄 게시물 없으면 더보기버튼 없애기
-					if(list.remain == 0){ 
+					if(result.remain == 0){ 
 						$(".more_btn_area").hide();
 					}
 				}, error: function() {
@@ -145,22 +145,26 @@
 		<div class="mypage"> 
 			<!-- 이너네비 시작 -->
 			<div class="inner-nav">
-				<div class="inner-nav-area">
-					<div class="myHouse inner-nav-content">	
-						<b>하우스🏡</b>
+				<!-- 메이트인 경우 찜 목록 두 개 보이기 -->
+				<c:if test ="${ loginUser.userType eq 'M'}">
+					<div class="inner-nav-area">
+							<div class="myHouse inner-nav-content">	
+								<b>하우스🏡</b>
+							</div>
+							<div class="myInterior inner-nav-content">
+								<b>인테리어🛋️</b>
+							</div>
+							<div class="end"></div>
 					</div>
-					<div class="myInterior inner-nav-content">
-						<b>인테리어🛋️</b>
-					</div>
-					<div class="end"></div>
-				</div>
+				</c:if>
 			</div>
 			<!-- 이너네비 끝 -->
 			<!-- 이너바디 시작 -->
 			<div class="inner-body">
 				<!-- 하우스 찜 시작 -->
+				<c:if test="${ loginUser.userType eq 'M'}">
 				<div class="house">
-					<!-- 하우스리스트가 없을 경우 -->
+					<%-- 하우스리스트가 없을 경우 --%>
 					<c:if test="${ empty Hlist }">
 			        	<div class="empty-list">
 			        		<p>
@@ -169,7 +173,7 @@
 			        		</p>
 			        	</div>
 			        </c:if>
-			        <!-- 하우스 리스트  -->
+			        <%-- 하우스 리스트 --%>
 			        <ul class="myhouse-wrap">
 			        <c:forEach var="h" items="${ Hlist }">
 			        	<li class="myhouse-item">
@@ -192,17 +196,18 @@
 			            </li>
 			        </c:forEach>
 			        </ul>
-			        <!-- 하우스 리스트 끝 -->
+			        <%-- 하우스 리스트 끝 --%>
 			        <br>
-			        <!-- 더보기 버튼 -->
+			        <%-- 더보기 버튼 --%>
 			        <c:if test="${ HlistCount gt 0 }">
 						<div class="more_btn_area" align="center">
 							<button class="btn btn-outline-info" type="button" 
 								onclick="moreHouse('myhouse-wrap', 6)">더보기(More)</button>
 						</div>
 			        </c:if>
-			        <!-- 더보기 버튼 끝 -->
-				</div>
+			        <%-- 더보기 버튼 끝 --%>
+			    </div>
+				</c:if>
 				<!-- 하우스 찜 끝 -->
 				<!-- 인테리어 찜 시작 -->
 				<div class="interior">
