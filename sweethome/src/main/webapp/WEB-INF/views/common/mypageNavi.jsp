@@ -79,7 +79,7 @@
 		        </div>
 	        </c:otherwise>
         </c:choose>
-        <div class="sub-nav-list" onclick="location.href=''">
+        <div class="sub-nav-list" onclick="location.href='dibsList.my'">
         	찜 내역 관리
          </div>
          <div class="sub-nav-list" onclick="location.href='myBoard.my'">

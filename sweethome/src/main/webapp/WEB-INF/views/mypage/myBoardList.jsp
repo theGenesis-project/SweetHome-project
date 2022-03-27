@@ -22,6 +22,7 @@
 	<jsp:include page="../common/header.jsp" />
 	<script>
 		$(function(){
+			// 클릭 시 css 변경 및 내용 변경
 			$('.myboard').bind("click", function(){
 				$('.myboard').css("background-color", "rgb(247, 201, 202)");
 				$('.mycomment').css("background-color", "");
@@ -36,6 +37,7 @@
 				$('.comment').show();
 			})
 			
+			// 페이지 들어오자마자 myBoard 클릭
 			$('.myboard').trigger("click");
 		})
 		
