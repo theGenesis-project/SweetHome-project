@@ -181,9 +181,9 @@
         FROM 
         	DIBS
         WHERE
-        	USER_NO = ${userNo}
+        	USER_NO = #{userNo}
         AND 
-            INTERIOR_NO = ${interiorNo}		
+            INTERIOR_NO = #{interiorNo}		
 		
 	</select>
 	
@@ -191,8 +191,8 @@
 		INSERT INTO 
 			DIBS(USER_NO, INTERIOR_NO)
 		VALUES
-			(${userNo},
-			 ${interiorNo})
+			(#{userNo},
+			 #{interiorNo})
 	</insert>
 	
 	<update id="changeHeartYY" parameterType="hashmap">
@@ -201,9 +201,9 @@
 		SET
 			STATUS = 'Y'
 		WHERE 
-			USER_NO = ${userNo}
+			USER_NO = #{userNo}
 		AND
-			INTERIOR_NO =${interiorNo}
+			INTERIOR_NO = #{interiorNo}
 		
 	</update>
 	
@@ -213,12 +213,12 @@
 		SET
 			STATUS = 'N'
 		WHERE 
-			USER_NO = ${userNo}
+			USER_NO = #{userNo}
 		AND
-			INTERIOR_NO = ${interiorNo}
+			INTERIOR_NO = #{interiorNo}
 		
 	</update>
-	
+	<!-- 인테리어 검색 기능 -->
 	<select id="searchInteriorCount" parameterType="hashmap" resultType="_int">
 		SELECT 
 			COUNT(*)
@@ -259,9 +259,113 @@
 		</choose>		
      		LIKE '%' || #{keyword} || '%'
 		ORDER BY FILE_NO DESC
-	
-	
+
 	</select>
+	<!-- 인테리어 게시글 수정 -->
+	<!-- 글수정 -->
+	<update id="updateInterior" parameterType="Interior">
+		UPDATE
+			INTERIOR
+		SET 	
+			INTE_CATE = #{inteCate},
+			INTERIOR_TITLE = #{interiorTitle},
+			INTERIOR_CO = #{interiorCo},
+			INTERIOR_PRICE = #{interiorPrice},
+			INTERIOR_DETAIL = #{interiorDetail},
+			INTERIOR_POST = #{interiorPost}
+		WHERE
+			INTERIOR_NO = #{interiorNo}
+		
+	</update>
+	<!-- 첨부파일 삭제 -->
+	<select id="selectInteriorFile" parameterType="_int" resultMap="interiorFileResultSet">
+		SELECT *
+		FROM INTERIOR_FILE
+		WHERE INTERIOR_NO = ${interiorNo}
+	</select>
+	<!-- 첨부파일삭제 -->
+	<delete id="deleteInteriorFileInfo" parameterType="_int">
+		DELETE 
+		FROM INTERIOR_FILE
+		WHERE INTERIOR_NO = #{interiorNo}
+	
+	</delete>
+	
+	<!-- 첨부파일 재등록 -->
+	<insert id="updateInteriorFile" parameterType="interiorFile">
+		INSERT
+		INTO INTERIOR_FILE(
+			FILE_NO,
+			INTERIOR_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL		
+			)
+		VALUES(
+			SEQ_INT_FILE_NO.NEXTVAL,
+			#{interiorNo},
+			#{originName},
+			#{changeName},
+			#{filePath},
+			#{fileLevel}	
+		)
+
+	</insert>
+	
+	<!-- 주문 내역 등록 -->
+	<insert id="insertOrderInfo" parameterType="orderInfo">
+		INSERT
+		INTO ORDER_INFO(
+			ORDER_NO
+			,USER_NO
+			,ORDER_RE
+			,ORDER_PHONE
+			,ORDER_ADD
+			,ORDER_REQ
+			,ORDER_STATUS
+			,INTERIOR_NO
+			,ORDER_NUMBER
+			,POSTCODE
+			,ORDER_DATE
+			,SUMPRICE
+			)
+		VALUES(
+			SEQ_ORDER_NO.NEXTVAL
+			,#{userNo}
+			,#{orderRe}
+			,#{orderPhone}
+			,#{orderAddress}
+			,#{orderReQ}
+			,#{orderStatus}
+			,#{interiorNo}
+			,#{orderNumber}
+			,#{postCode}
+			,SYSDATE
+			,#{sumPrice}
+			)
+	
+	</insert>
+	
+	<insert id="insertPayment" parameterType="payment">
+		INSERT 
+		INTO PAYMENT(
+			PAYMENT_NO
+			,ORDER_NO
+			,INTERIOR_NO
+			,ORDER_QUANTITY
+			,ORDER_DATE
+		)
+		VALUES(
+			SEQ_PAY_NO.NEXTVAL
+			,SEQ_ORDER_NO.CURRVAL
+			,#{interiorNo}
+			,#{orderQuantity}
+			,SYSDATE
+		)
+		
+	
+	</insert>
 	
 	
   

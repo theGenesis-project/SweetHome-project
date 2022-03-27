@@ -323,7 +323,7 @@ public class CommunityControler {
 		if(!reupfile.getOriginalFilename().equals("")) {
 			//기존 첨부파일이 있는 경우
 			//첨부 파일 삭제
-			new File(session.getServletContext().getRealPath(cf.getChangeName())).delete();
+			new File(session.getServletContext().getRealPath(cf.getFilePath())).delete();
 			//새로운 첨부파일 등록
 			String changeName = saveFile.changeFileName(reupfile, session);
 			
@@ -340,12 +340,12 @@ public class CommunityControler {
 		
 		if(result > 0) {//성공
 			session.setAttribute("alertMsg", "게시글 수정 성공");
-			return "redirect:detail.co?bno=" + cf.getBoardNo();
+			return "redirect:detail.co?bno=" + cm.getBoardNo();
 			
 			
 		}else {//실패
 			session.setAttribute("alertMsg", "게시글 수정 실패");
-			return "redirect:detail.co?bno=" + cf.getBoardNo();
+			return "redirect:detail.co?bno=" + cm.getBoardNo();
 		}
 
 	}

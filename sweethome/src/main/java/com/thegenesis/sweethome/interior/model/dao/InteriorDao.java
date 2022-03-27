@@ -11,6 +11,8 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
+import com.thegenesis.sweethome.interior.model.vo.Payment;
 @Repository
 public class InteriorDao {
 
@@ -117,6 +119,50 @@ public class InteriorDao {
 			
 		return (ArrayList)sqlSession.selectList("interiorMapper.searchInterior", map, rowBounds);
 	}
+	//인테리어 사진 목록 불러오기(인테리어 파일 삭제용)
+	public ArrayList<InteriorFile> selectInteriorFile(SqlSessionTemplate sqlSession, int interiorNo) {
+		
+		ArrayList<InteriorFile> result = (ArrayList)sqlSession.selectList("interiorMapper.selectInteriorFile", interiorNo);
+		
+		return result;
+	}
+	//인테리어 파일 삭제용(오라클 내)
+	public int deleteInteriorFileInfo(SqlSessionTemplate sqlSession, int interiorNo) {
+		return sqlSession.delete("interiorMapper.deleteInteriorFileInfo", interiorNo) ;
+	}
+
+	//인테리어 게시글 수정
+	public int updateInterior(SqlSessionTemplate sqlSession, Interior in, ArrayList<InteriorFile> list) {
+		
+		int result = sqlSession.insert("interiorMapper.updateInterior", in);
+		
+		//게시글 작성 후 파일(필수!!)
+		if(result>0) {
+			for(InteriorFile inf : list) {
+				sqlSession.insert("interiorMapper.updateInteriorFile", inf);
+				
+			}			
+		}
+		return result;
+	}
+	//주문 내역 등록
+
+	public int insertOrderInfo(SqlSessionTemplate sqlSession, OrderInfo orderInfo, Payment payment) {
+		System.out.println("넘어온 orderInfo" + orderInfo);
+		System.out.println("넘어온 payment" + payment);
+		//주문 내역 등록
+		int result = sqlSession.insert("interiorMapper.insertOrderInfo", orderInfo);
+		
+		if(result > 0) {
+			result = sqlSession.insert("interiorMapper.insertPayment", payment);
+		}
+		
+		return result;
+	}
+	
+
+	
+	
 
 
 

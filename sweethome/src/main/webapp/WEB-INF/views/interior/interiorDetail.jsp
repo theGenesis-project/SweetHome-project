@@ -172,7 +172,7 @@
 	                        <hr>
 	                    </div>
 	                    <div class="interior_post">
-	                        <p>배송업체 : ${in.interiorPost }</p>
+	                        <p>배송비 : ${in.interiorPost }</p>
 	                        <hr>
 	                    </div>
                    		 <div class="like-order-area">
@@ -191,7 +191,15 @@
 	                         </c:choose>                                      
                         	</div>                	
                         	<div class="orderButton">
-                          	 	<button>구매하기</button>
+                        		<form method="post" action="orderForm.in">
+                        			<input type="hidden" name="interiorNo" value="${in.interiorNo }">
+                        			<input type="hidden" name="interiorTitle" value="${in.interiorTitle }" >
+                        			<input type="hidden" name="interiorPrice" value="${in.interiorPrice }" >
+                        			<input type="hidden" name="interiorPost" value="${in.interiorPost }" >
+                        			<input type="hidden" name="inteCate" value="${in.inteCate }">                    			
+                          	 		<button type="submit">구매하기</button>
+                          	 	</form>
+                          	 	
                         	</div>
                     	</div>
                 	</div>

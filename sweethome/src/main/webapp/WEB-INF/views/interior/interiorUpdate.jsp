@@ -88,7 +88,8 @@
          
         <!--메인 시작!!!!!!!!!!!!--------------------------------------------------------->
     <div class="content2">
-        <form action="insertInterior.in" method="post" enctype="multipart/form-data">
+        <form action="updateInterior.in" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="interiorNo" value="${in.interiorNo }">
             <div class="content3_1">
                 <div class="content4_1">
                     <img src="${inf.get(0).filePath }" id="titleImg" width="450px" height="450px"><!--썸네일-->
@@ -125,33 +126,28 @@
             </div>
             <div class="content3_2">
                 <div class="content4_3">
-                    <div class="img-content">
-                  
-	                        <img id=contentImg1 width="150" height="150">
-	                        <img src="null" id=contentImg2 width="150" height="150">
-	                        <img src="null" id=contentImg3 width="150" height="150">
-	                    
-	               
+                    <div class="img-content">                
+	                        <img src="${inf.get(1).filePath }" id=contentImg1 width="150" height="150">
+	                        <img src="${inf.get(2).filePath }" id=contentImg2 width="150" height="150">
+	                        <img src="${inf.get(3).filePath }" id=contentImg3 width="150" height="150">
+	                              
                     </div>
-                    <script>
-                    	
                     
-                    </script>
                     
                     <div class="interior-content">
                        <textarea name="interiorDetail" id="interiorDetail" rows="10" required>${in.interiorDetail}</textarea>         
                     </div>
                     
                     <div id="file-area">
-						<input type="file" id="file1" name="file" onchange="loadImg(this,1);" required>								
-						<input type="file" id="file2" name="file" onchange="loadImg(this,2);">
-						<input type="file" id="file3" name="file" onchange="loadImg(this,3);">
-						<input type="file" id="file4" name="file" onchange="loadImg(this,4);">				
+						<input type="file" id="file1" name="reupfile" onchange="loadImg(this,1);" required>								
+						<input type="file" id="file2" name="reupfile" onchange="loadImg(this,2);">
+						<input type="file" id="file3" name="reupfile" onchange="loadImg(this,3);">
+						<input type="file" id="file4" name="reupfile" onchange="loadImg(this,4);">				
 					</div>
                 </div>
             </div>
             <div class="button">
-                <button type="submit" id="insertInterior">글작성</button>
+                <button type="submit" id="updateInterior">글작성</button>
             </div>
         </form>
     </div>   
@@ -179,7 +175,7 @@
 			
 		$(function(){
 			
-			$("#insertInterior").click(function(){
+			$("#updateInterior").click(function(){
 				// 에디터의 내용이 textarea에 적용된다.
 				 oEditors.getById["interiorDetail"].exec("UPDATE_CONTENTS_FIELD", []);
 				 
@@ -189,6 +185,9 @@
 			})
 			
 		})
+
+   
+			
 			
 			
 		$(function(){
@@ -243,21 +242,7 @@
 					}
 				}
 		
-				$(function(){
-					
-					var filePath1 = ${inf.get(1).filePath};
-					
-					if(filePath1){
-						$("#contentImg1").attr("src",${inf.get(1).filePath});
-					}else if(${inf.get(2).filePath} !=0){
-						$("#contentImg2").attr("src",${inf.get(2).filePath});
-					}else if(${inf.get(3).filePath} !=0){
-						$("#contentImg3").attr("src",${inf.get(3).filePath});
-					}
-					
-					console.log(inf.get(1).filePath});
-				}
-			
+				
 	 
 	</script>
 

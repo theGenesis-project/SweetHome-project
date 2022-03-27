@@ -1,5 +1,7 @@
 package com.thegenesis.sweethome.interior.controller;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +25,9 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.interior.model.service.InteriorService;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
+import com.thegenesis.sweethome.interior.model.vo.PayList;
+import com.thegenesis.sweethome.interior.model.vo.Payment;
 import com.thegenesis.sweethome.member.model.vo.Member;
 @Controller
 public class InteriorController {
@@ -217,7 +224,7 @@ public class InteriorController {
 		return mv;
 		
 	}
-	//인테리어 게시글 수정(불러오기)
+	//인테리어 게시글 수정(불러오기)//미완
 	@RequestMapping("updateInteriorDetail.in")
 	public String updateInteriorDetail(Model model, int interiorNo ) {
 		
@@ -231,15 +238,157 @@ public class InteriorController {
 		model.addAttribute("inf",inf);
 		model.addAttribute("infLength", infLength);
 		
-		System.out.println(inf);
-		System.out.println(infLength);
 		return "interior/interiorUpdate";
 
 	}
+	//인테리어 게시글 수정
+	@RequestMapping("updateInterior.in")
+	public String updateInterior(Interior in, Model model, HttpSession session, MultipartFile[] reupfile) {
+			
+		ArrayList<InteriorFile> list = new ArrayList<>();////새로 첨부파일이 날아온 경우 사진 담을 공간
 		
-		 
+		InteriorFile inf = null;
+		
+		
+		//기존 첨부파일 불러오기
+		int interiorNo = in.getInteriorNo();
+	
+		
+		ArrayList<InteriorFile> InteriorFileList = interiorService.selectInteriorFile(interiorNo);
+		System.out.println("가져온 인테리어 사진 리스트" + InteriorFileList);
+		System.out.println("가져온 인테리어 사이즈 : " + InteriorFileList.size());
+		System.out.println("가져온 인테리어 filePath:" + InteriorFileList.get(0).getFilePath());
+		
+		for(int i = 0; i< InteriorFileList.size(); i++) {
+			//기존 첨부파일 삭제(파일 자체)			
+			new File(session.getServletContext().getRealPath(InteriorFileList.get(i).getFilePath())).delete();
+			//기존 첨부파일 삭제(오라클 내의 정보 삭제)
+			interiorService.deleteInteriorFileInfo(interiorNo);
+		}
+		//새로운 첨부파일 등록
+		for(int i=0; i<reupfile.length; i++) {
+			
+			if(!reupfile[i].getOriginalFilename().equals("")) {//선택한 파일이 있을 경우
+			
+								
+					String changeName = saveFile.changeFileName(reupfile[i], session);
+													
+						if(i == 0) {
+							inf = InteriorFile.builder()
+									.interiorNo(interiorNo)
+									.originName(reupfile[i].getOriginalFilename())
+									.changeName(changeName)
+									.filePath("resources/uploadFiles/" + changeName)
+									.fileLevel(1)
+									.build();
+							
+						}else {
+							inf = InteriorFile.builder()
+									.interiorNo(interiorNo)
+									.originName(reupfile[i].getOriginalFilename())
+									.changeName(changeName)
+									.filePath("resources/uploadFiles/" + changeName)
+									.fileLevel(2)
+									.build();				
+						}							
+						list.add(inf);	
+				}				
+			}
+			//글 수정하기
+			int result = interiorService.updateInterior(in, list);
+			
+			if(result > 0) {
+				session.setAttribute("alertMsg", "게시글 수정 성공");
+				return "redirect:detail.in?ino=" + in.getInteriorNo();
+			}else {
+				session.setAttribute("alertMsg", "게시글 수정 실패");
+				return "redirect:detail.in?ino=" + in.getInteriorNo();
+			}
+
+	}
+	
+	//주문페이지
+	@RequestMapping("orderForm.in")
+	public String orderForm(Model model, Interior in, int interiorNo, int interiorPrice, String interiorTitle, String interiorPost, int inteCate) {
+		
+		DecimalFormat f = new DecimalFormat("###,###");
+		
+		in = Interior.builder()
+			.interiorNo(interiorNo)
+			.interiorTitle(interiorTitle)
+			.interiorPrice(interiorPrice)
+			.interiorPost(interiorPost)
+			.inteCate(inteCate)
+			.build();
 		
 	
 		
+		model.addAttribute("in", in);
+		
+		
+		return "interior/orderPage";
+		
+	}
+	
+	@RequestMapping("test.in")
+	public String test() {
+		
+		return "interior/test";
+	}
+
+	//주문 내역 등록
+	@ResponseBody
+	@RequestMapping(value= "payment.in",  method = RequestMethod.POST)
+	public String payment(@RequestBody PayList pList, ModelAndView mv, HttpSession session) {
+		
+		System.out.println("넘어오나? :"  );
+		System.out.println(pList);	
+		
+		OrderInfo orderInfo = null;
+		
+		orderInfo = OrderInfo.builder()
+							.userNo(pList.getUserNo())
+							.orderRe(pList.getOrderRe())
+							.orderPhone(pList.getOrderPhone())
+							.orderAddress(pList.getAddress1() + pList.getAddress2())
+							.orderReQ(pList.getOrderReQ())
+							.interiorNo(pList.getInteriorNo())
+							.orderNumber(pList.getMerchant_uid())
+							.postCode(pList.getPostCode())
+							.sumPrice(pList.getSumPrice())
+							.build();
+		//orderNo : seq, orderstatus : default,  					
+		System.out.println("orderInfo 확인용 " + orderInfo);
+		
+		
+		
+		
+		Payment payment = null;
+		
+		payment = Payment.builder()						
+						.interiorNo(pList.getInteriorNo())
+						.orderQuantity(pList.getOrderQuantity())
+						.build();
+		//paymentNo : seq, orderNo : seq currval, orderDate : sysdate
+		System.out.println("payment 확인용 : " + payment);
+		
+		//ArrayList<Payment> list = null; 여러개 오면 
+		
+		int result = interiorService.insertOrderInfo(orderInfo, payment);
+		System.out.println("결과보기" + result);
+		if(result > 0) {		
+			return "test.in";
+		}else {
+			session.setAttribute("alertMsg", "주문 실패");
+			return "test.in";
+		}
+		
+		
+	}
+	
+	//주문 내역 확인
+	@RequestMapping("orderInfoDetail.in")
+	
+
 
 }

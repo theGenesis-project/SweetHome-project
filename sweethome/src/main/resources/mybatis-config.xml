@@ -21,6 +21,7 @@
 		<typeAlias type="com.thegenesis.sweethome.common.vo.Report" alias="report"/>
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Interior" alias="interior"/>
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.InteriorFile" alias="interiorFile"/>
+		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.OrderInfo" alias="orderInfo"/>
 		<typeAlias type="com.thegenesis.sweethome.tour.model.vo.Tour" alias="tour"/>
 
 	</typeAliases>
