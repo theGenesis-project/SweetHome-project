@@ -144,5 +144,11 @@
 	           USER_ID = #{checkId}
 	</select>
   
+  	<!-- 아이디 찾기 -->
+	<select id="idFind" resultType="String" parameterType="member">
+		SELECT USER_ID
+		  FROM MEMBER 
+		 WHERE EMAIL = #{email}
+	</select>
 </mapper>
 

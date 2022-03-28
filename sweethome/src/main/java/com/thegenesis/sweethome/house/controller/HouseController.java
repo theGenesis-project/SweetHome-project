@@ -1,10 +1,12 @@
 package com.thegenesis.sweethome.house.controller;
 
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.thegenesis.sweethome.ask.model.vo.Ask;
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.house.model.service.HouseService;
 import com.thegenesis.sweethome.house.model.vo.House;
-import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.house.model.vo.HouseFile;
 import com.thegenesis.sweethome.room.model.service.RoomService;
 import com.thegenesis.sweethome.room.model.vo.Room;
@@ -40,21 +40,21 @@ public class HouseController {
 		return "house/houseInsert";
 	}
 	
+	@RequestMapping("test")
+	public String test() {
+		return "house/test";
+	}
+	
 	/**
 	 * 하우스 등록
 	 */
 	@RequestMapping("insertHouse.ho")
-	public ModelAndView insertHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, HttpSession session, ModelAndView mv) {
+	public ModelAndView insertHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, HttpSession session, ModelAndView mv, HashMap<Object, Object> fileObj) {
 		
-		System.out.println(upfile);
-		System.out.println(upfile.length);
-		
-		// 이미지 파일이 있는 확인
-		if(upfile != null) {
-			
-//			setFile(hf, upfile, session);
-		}
-		
+		System.out.println("찍힘?");
+		System.out.println(fileObj);
+		System.out.println("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
+
 		
 		
 		

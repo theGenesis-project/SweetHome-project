@@ -37,5 +37,6 @@
 		<mapper resource="/mappers/community-mapper.xml"/>
 		<mapper resource="/mappers/interior-mapper.xml"/>	
 		<mapper resource="/mappers/tour-mapper.xml"/>
+		<mapper resource="/mappers/admin-mapper.xml"/>
 	</mappers>
 </configuration>
