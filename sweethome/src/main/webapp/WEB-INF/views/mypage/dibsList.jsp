@@ -177,7 +177,7 @@
 			        <ul class="myhouse-wrap">
 			        <c:forEach var="h" items="${ Hlist }">
 			        	<li class="myhouse-item">
-			                <a href="">
+			                <a href="house.d?houseNo=${ h.houseNo }">
 			                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
 			                <span class="thumb-title mtb3">${ h.houseName }</span>
 			                <ul class="thumb-desc mtb3">
