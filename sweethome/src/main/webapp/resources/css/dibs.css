@@ -1,0 +1,115 @@
+@charset "UTF-8";
+/* 하우스 부분 */
+ul { 
+    list-style: none;
+    padding: 0;
+}
+.myhouse-wrap {
+	width: 1050px;
+	display: flex;
+    flex-wrap: wrap;
+	margin: 0 auto 0 auto;
+}
+
+.myhouse-item {
+	width: 250px;
+    display: inline-block;
+	margin: 30px 50px 0 50px;
+	text-align: center;
+}
+.mtb3{
+    margin: 3px 0;
+}
+.house-item {
+    width: 250px;
+    display: inline-block;
+    margin-right: 198px;
+    margin-left: 29px;
+    margin-top:30px;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 150px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+}
+.thumb-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.thumb-desc li:first-child {
+    font-weight: bold;
+    border-right: 1px solid #aaa;
+    padding-right: 8px;
+}
+.thumb-desc li {
+    display: inline-block;
+}
+.status1 {
+    display: inline-block;
+    width: 80%;
+    height: 30px;
+    background-color: rgb(247, 202, 201);
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+}
+.status2 {
+    display: inline-block;
+    width: 80%;
+    height: 30px;
+    background: none;
+    border-radius: 15px;
+    border: 1px solid rgba(0,211,170,1);
+    color: rgba(0,211,170,1);
+    text-align: center;
+    line-height: 30px;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+/* 하우스 끝 */
+/* 인테리어 부분 */
+#interior-area{
+    width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.interior_list{
+    width: 25%;
+    height: auto;
+    padding: 15px 50px;
+    display: inline-block;
+}
+.thumbnail-area{
+    width: 100%;  
+}
+.thumbnail-area>img{
+    width: 100%;
+    min-height: 200px;
+}
+#interior_title{
+    margin: 3px;
+}
+.target{       
+    overflow: hidden;       
+    white-space: nowrap;    
+    text-overflow: ellipsis;      
+}
+.interior_com>p{
+    font-size: 13px;
+    font-weight: 600;
+    display: inline;
+}
+.interior_price>p{
+    color: rgb(247, 202, 201);
+    font-weight: 600;
+}
+.interior_title>p{
+	margin: 0;
+}
+/* 인테리어 끝 */

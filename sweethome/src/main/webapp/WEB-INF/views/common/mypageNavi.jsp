@@ -64,7 +64,7 @@
         <div class="sub-nav-list" onclick="location.href='myPage.me'">
           	 회원정보 관리
         </div>
-        <div class="sub-nav-list" onclick="location.href=''">
+        <div class="sub-nav-list" onclick="window.open('chat', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')">
         	하우스 톡톡
         </div>
         <c:choose>
@@ -79,7 +79,7 @@
 		        </div>
 	        </c:otherwise>
         </c:choose>
-        <div class="sub-nav-list" onclick="location.href=''">
+        <div class="sub-nav-list" onclick="location.href='dibsList.my'">
         	찜 내역 관리
          </div>
          <div class="sub-nav-list" onclick="location.href='myBoard.my'">

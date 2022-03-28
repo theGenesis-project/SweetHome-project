@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatMapper">
+	<resultMap type="chat" id="chatResultMap">
+		<result column="ROOM_NO" property="roomNo"/>
+		<result column="ROOM_NAME" property="roomName"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="MESSAGE_NO" property="messageNo"/>
+		<result column="MESSAGE" property="message"/>
+		<result column="SEND_TIME" property="sendTime"/>
+	</resultMap>
+	
+	<select id="selectRoomList" resultMap="chatResultMap">
+		SELECT 
+				ROOM_NO
+			  , ROOM_NAME
+		  FROM 
+		  		CHATROOM
+		  JOIN
+		  		CHATINFO USING (ROOM_NO)
+		 WHERE
+		 		USER_NO = #{userNo}
+	</select>
+	
+	<select id="selectChatHistory" resultMap="chatResultMap">
+		SELECT 
+				MESSAGE_NO
+			  , USER_NO
+			  , ROOM_NO
+			  , MESSAGE
+			  , SEND_TIME
+		  FROM 
+		  		MESSAGE
+		 WHERE
+		 		ROOM_NO = #{roomNo}
+		 ORDER BY
+		 		SEND_TIME ASC
+	</select>
+	
+	<insert id="insertChatMessage" parameterType="chat">
+		INSERT INTO MESSAGE
+			   (
+				MESSAGE_NO,
+				USER_NO,
+				ROOM_NO,
+				MESSAGE,
+				SEND_TIME
+			   )
+		VALUES (
+				SEQ_MES_NO.NEXTVAL,
+				#{userNo},
+				#{roomNo},
+				#{message},
+				SYSDATE
+			   )
+	</insert>
+</mapper>

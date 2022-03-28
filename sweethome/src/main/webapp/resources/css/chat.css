@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+div{
+    box-sizing: border-box;         
+}
+
 .inbox_people {
 	background: #fff;
 	float: left;
@@ -132,6 +136,7 @@
 .received_msg {
 	display: inline-block;
 	padding: 0 0 0 10px;
+	margin-bottom: 20px;
 	vertical-align: top;
 	width: 92%;
 }
@@ -144,13 +149,13 @@
 	margin: 0;
 	padding: 5px 10px 5px 12px;
 	width: 100%;
+	display: block;
 }
 
 .time_date {
 	color: #747474;
-	display: block;
 	font-size: 12px;
-	margin: 8px 0 0;
+	margin: 8px 0 0 0;
 }
 
 .received_withd_msg {
@@ -219,4 +224,38 @@
 .msg_history {
 	height: 516px;
 	overflow-y: auto;
+}
+
+/* 글자 양옆에 선 그어주기 */
+.hr-sect {
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 12px;
+  margin: 8px 0px;
+}
+.hr-sect::before,
+.hr-sect::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.35);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
+}
+
+/* 이미지 가운데 정렬 */
+.empty-msg {
+	height: 516px;
+	align-items:center;
+	display: flex;
+	justify-content: center;
+}
+
+.empty-msg img {
+	opacity: 0.5;
+	width: 250px;
+	vertival-align: middle;
 }

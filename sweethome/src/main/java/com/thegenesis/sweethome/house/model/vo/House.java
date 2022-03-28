@@ -25,5 +25,8 @@ public class House {
 	private String address;
 	private String latitude;
 	private String longitude;
+	private int userNo;
 	
+	private String houseGender;
+	private String monthly;
 }

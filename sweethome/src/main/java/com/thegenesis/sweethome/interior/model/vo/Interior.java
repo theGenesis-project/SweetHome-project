@@ -1,6 +1,5 @@
 package com.thegenesis.sweethome.interior.model.vo;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +19,12 @@ public class Interior {
 	private String interiorPost;
 	
 	private int rowNo;
+	private int fileNo;
+	private String originName;
+	private String changeName;
 	private String filePath;
+	private int fileLevel;
+	
+	// 가격 원으로 변경
+	private String won;
 }
