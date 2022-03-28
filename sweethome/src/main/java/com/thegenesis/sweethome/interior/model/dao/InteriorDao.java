@@ -11,6 +11,8 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
+import com.thegenesis.sweethome.interior.model.vo.Payment;
 @Repository
 public class InteriorDao {
 
@@ -80,24 +82,93 @@ public class InteriorDao {
 	public int changeHeart(SqlSessionTemplate sqlSession, HashMap<String, Integer> hm) {
 		
 		String check = sqlSession.selectOne("interiorMapper.interiorChangeHeart", hm);
-		System.out.println(check);
+		
+		//N이 나왔으면 이제 Y로 바꾸어주어야 함
+		
 		int result = 0;
 		
 		if(check == null) {
 			//처음으로 하트 누름
 			sqlSession.insert("interiorMapper.changeHeartY", hm);
 			result = 1;
-		}else if(check == "Y") {
+		}else if(check.equals("N")) {
 			//하트를 전에 누른 적이 있을 경우
 			sqlSession.update("interiorMapper.changeHeartYY", hm);
+			//Y로 바꿔줌
 			result = 1;
 		}else {
 			//하트 취소
 			sqlSession.update("interiorMapper.changeHeartN", hm);	
 			result = 2;
 		}
+		
 		return result;
 	}
+	//인테리어 검색 기능(카운트)
+	public int searchInteriorCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		
+		return sqlSession.selectOne("interiorMapper.searchInteriorCount", map);
+	}
+	//인테리어 검색 기능
+	public ArrayList<Interior> searchInterior(SqlSessionTemplate sqlSession, HashMap<String, String> map, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+			
+		return (ArrayList)sqlSession.selectList("interiorMapper.searchInterior", map, rowBounds);
+	}
+	//인테리어 사진 목록 불러오기(인테리어 파일 삭제용)
+	public ArrayList<InteriorFile> selectInteriorFile(SqlSessionTemplate sqlSession, int interiorNo) {
+		
+		ArrayList<InteriorFile> result = (ArrayList)sqlSession.selectList("interiorMapper.selectInteriorFile", interiorNo);
+		
+		return result;
+	}
+	//인테리어 파일 삭제용(오라클 내)
+	public int deleteInteriorFileInfo(SqlSessionTemplate sqlSession, int interiorNo) {
+		return sqlSession.delete("interiorMapper.deleteInteriorFileInfo", interiorNo) ;
+	}
+
+	//인테리어 게시글 수정
+	public int updateInterior(SqlSessionTemplate sqlSession, Interior in, ArrayList<InteriorFile> list) {
+		
+		int result = sqlSession.insert("interiorMapper.updateInterior", in);
+		
+		//게시글 작성 후 파일(필수!!)
+		if(result>0) {
+			for(InteriorFile inf : list) {
+				sqlSession.insert("interiorMapper.updateInteriorFile", inf);
+				
+			}			
+		}
+		return result;
+	}
+	//주문 내역 등록
+	public int insertOrderInfo(SqlSessionTemplate sqlSession, OrderInfo orderInfo, Payment payment) {
+	
+		//주문 내역 등록
+		int result = sqlSession.insert("interiorMapper.insertOrderInfo", orderInfo);
+		//주문자 결제 내역
+		if(result > 0) {
+			result = sqlSession.insert("interiorMapper.insertPayment", payment);
+		}
+		
+		return result;
+	}
+	//주문 내역 상세 보기
+	public OrderInfo orderInfoDetail(SqlSessionTemplate sqlSession, int orderNo) {
+		return sqlSession.selectOne("interiorMapper.orderInfoDetail", orderNo);
+	}
+	//주문 상태 변경
+	public int orderStatusUpdate(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
+		return sqlSession.update("interiorMapper.orderStatusUpdate", map);
+	}
+	
+
+	
+	
 
 
 

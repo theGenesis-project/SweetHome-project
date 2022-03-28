@@ -66,7 +66,7 @@ public class CommunityControler {
 		
 		int listCount = communityService.listCount(boardType);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		System.out.println(pi);
+		
 		ArrayList<Community> list = communityService.boardList(pi, boardType);
 		
 		mv.addObject("list", list).addObject("pi",pi).addObject("boardType", boardType).setViewName("community/noticeList");
@@ -265,7 +265,6 @@ public class CommunityControler {
 		
 		CommunityFile cf = null;//파일 테이블 따로 씀
 	
-	 	
 		//전달된 파일있을 경우 파일명 수정 후 서버에 업로드
 		if(!upfile.getOriginalFilename().equals("")) {//선택된 파일이 있을 경우
 						
@@ -324,7 +323,7 @@ public class CommunityControler {
 		if(!reupfile.getOriginalFilename().equals("")) {
 			//기존 첨부파일이 있는 경우
 			//첨부 파일 삭제
-			new File(session.getServletContext().getRealPath(cf.getChangeName())).delete();
+			new File(session.getServletContext().getRealPath(cf.getFilePath())).delete();
 			//새로운 첨부파일 등록
 			String changeName = saveFile.changeFileName(reupfile, session);
 			
@@ -341,12 +340,12 @@ public class CommunityControler {
 		
 		if(result > 0) {//성공
 			session.setAttribute("alertMsg", "게시글 수정 성공");
-			return "redirect:detail.co?bno=" + cf.getBoardNo();
+			return "redirect:detail.co?bno=" + cm.getBoardNo();
 			
 			
 		}else {//실패
 			session.setAttribute("alertMsg", "게시글 수정 실패");
-			return "redirect:detail.co?bno=" + cf.getBoardNo();
+			return "redirect:detail.co?bno=" + cm.getBoardNo();
 		}
 
 	}
