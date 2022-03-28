@@ -54,13 +54,14 @@
         <div class="findId"><h3>아이디 찾기</h3></div>
         <div class="innerOuter">
                 <br><br>
-                <div class="findForm">
-                    <input type="text" placeholder="아이디" class="inputForm"> <br>
-                    <br>
-                    <input type="text" placeholder="회원가입시 사용한 이메일을 입력해주세요" class="inputForm">
-                    <br><br>
-                    <button type="button" class="btn1" onclick="location.href='idFindComplete.me'">아이디 찾기</button>
-                </div>     
+                <form action="idFindComplete.me" method="post" id="idFind" >
+	                <div class="findForm">
+	                    <br>
+	                    <input type="text" placeholder="회원가입시 사용한 이메일을 입력해주세요" class="inputForm" id="email" name="email">
+	                    <br><br>
+	                    <button type="submit" class="btn1">아이디 찾기</button>
+	                </div>
+                </form>     
         </div>
         <br><br>
     </div>

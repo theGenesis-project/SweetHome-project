@@ -139,15 +139,16 @@
 	<!-- search-area -->
 	<div id="search2">
         <div id="search-area">
+        <form id="searchForm" action="searchInterior.in" method="get">
             <div id="search">
-                <select name="" id="">
-                    <option value="">전체</option>
-                    <option value="">작성자</option>
-                    <option value="">내용</option>
+                <select name="condition">
+                    <option value="company">가구사</option>
+                    <option value="productName">제품명</option>
                 </select>
-                <input type="text" id="" name="search">
-                <button>검색</button>
+                <input type="search" name="keyword">
+                <button type="submit">검색</button>
             </div>
+        </form>
         </div>
     </div>
 	
@@ -206,8 +207,7 @@
 		                        
 		                    </div>
 		                    <div class="interior_title">
-		                        <p>${i.interiorTitle }</p>
-		                        
+		                        <p>${i.interiorTitle }</p>		                        
 		                    </div>
 		                  	<div class="ino2">
 		                  		<p class="ino">${i.interiorNo }</p>

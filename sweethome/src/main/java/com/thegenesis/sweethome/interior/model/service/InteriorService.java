@@ -12,6 +12,8 @@ import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.interior.model.dao.InteriorDao;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
+import com.thegenesis.sweethome.interior.model.vo.Payment;
 
 @Service
 public class InteriorService {
@@ -68,6 +70,41 @@ public class InteriorService {
 		
 		return interiorDao.changeHeart(sqlSession, hm);
 	}
+	//인테리어 검색 기능(카운트)
+	public int searchInteriorCount(HashMap<String, String> map) {
+		
+		return interiorDao.searchInteriorCount(sqlSession, map);
+	}
+	//인테리어 검색 기능
+	public ArrayList<Interior> searchInterior(PageInfo pi, HashMap<String, String> map) {
+		
+		return interiorDao.searchInterior(sqlSession, map, pi);
+	}
+	//인테리어 글 수정하기
+	public int updateInterior(Interior in, ArrayList<InteriorFile> list) {
+		return interiorDao.updateInterior(sqlSession, in, list);
+	}
+	//인테리어 사진 목록 불러오기(인테리어 파일 삭제용)
+	public ArrayList<InteriorFile> selectInteriorFile(int interiorNo) {
+		return interiorDao.selectInteriorFile(sqlSession, interiorNo);
+	}
+	//오라클 내 사진 정보 삭제
+	public int deleteInteriorFileInfo(int interiorNo) {
+		return interiorDao.deleteInteriorFileInfo(sqlSession, interiorNo);
+	}
+	//주문 내역 등록
+	public int insertOrderInfo(OrderInfo orderInfo, Payment payment) {
+		return interiorDao.insertOrderInfo(sqlSession, orderInfo, payment);
+	}
+	//주문 내역 상세 보기
+	public OrderInfo orderInfoDetail(int orderNo) {
+		return interiorDao.orderInfoDetail(sqlSession, orderNo);
+	}
+	//주문 상태 변경
+	public int orderStatusUpdate(HashMap<String, Integer> map) {
+		return interiorDao.orderStatusUpdate(sqlSession, map);
+	}
+
 	
 
 
