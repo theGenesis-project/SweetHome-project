@@ -110,8 +110,10 @@ public class HouseController {
 	
 		House house = houseService.houseDetail(hno);
 		
+
 		mv.addObject("house" ,house).setViewName("house/houseDetail");
 		
+
 		return mv;
 		
 	}	
