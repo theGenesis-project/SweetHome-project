@@ -70,37 +70,21 @@
 			// 각 사진에 해당하는 이름 정리
 			function filenamecheck() {
 
-				console.log($('#file' + 3));
+				console.log(sel_files_obj);
+				console.log(sel_files_obj[0][0].name);
 
-				if(!($('#file' + 3).length)) {
-					console.log("ㅎㅎㅎㅎ");
-				}
 
-				var file = $(':file');
 
-				//console.log(file[0]);
 
-				//console.log(file.length);
 
-				// console.log($('#file1').prop('files'));
-				
-				var files = $('#file1').prop('files');
-				
-				//console.log(files[0].name);
-				
-				alert($('#file1'));
 
-				var fileArray = [ 1, 2, 3 ];
 
-				console.log(fileArray);
-				console.log()
-
-				$(".add").html("<input type='hidden' name='fileArray' value='" + fileArray + "'>");
+				$(".add").html("<input type='hidden' name='fileObj' value='" + sel_files_obj + "'>");
 				// 다차원배열 사용
 				
 				alert("ㅇㅇ");
 
-				$("#insertHouse").submit();
+				// $("#insertHouse").submit();
 			}
 		</script>
 
@@ -171,14 +155,14 @@
 				<h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4>
 
 				<a class="button btn1">사진 첨부</a>
-				<input type='file' id='insert-image-0' multiple='multiple' onchange='insertImage(this)'>
+				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)'>
 				<div id='image-0' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
 
 				<h3>방 사진</h3>
 				<input type='text' name='roomName' class='form-control' placeholder='해당 방 이름을 입력하세요'>
 
 				<a class='button btn1'>사진 첨부</a>
-				<input type='file' id='insert-image-1' multiple='multiple' onchange='insertImage(this);'>
+				<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);'>
 				<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
 
 				<%-- 방 추가 버튼 클릭시, 추가 요소 생성 영역 --%>
@@ -199,7 +183,7 @@
 							var addRoom = "<h3>방 사진</h3>"
 								+ "<input type='text' name='roomName' class='form-control' placeholder='해당 방 이름을 입력하세요'>"
 								+ "<a class='button btn1'>사진 첨부</a>"
-								+ "<input type='file' id='insert-image-" + imageNum + "' multiple='multiple' onchange='insertImage(this);'>"
+								+ "<input type='file' id='insert-image-" + imageNum + "' name='upfile' multiple='multiple' onchange='insertImage(this);'>"
 								+ "<div id='image-" + imageNum + "' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>";
 
 							$("#insert-room").append(addRoom);

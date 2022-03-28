@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -47,22 +49,12 @@ public class HouseController {
 	 * 하우스 등록
 	 */
 	@RequestMapping("insertHouse.ho")
-	public ModelAndView insertHouse(House h, HouseFile hf, Room r, MultipartFile[] file, HttpSession session, ModelAndView mv, int[] fileArray) {
+	public ModelAndView insertHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, HttpSession session, ModelAndView mv, HashMap<Object, Object> fileObj) {
 		
-		System.out.println(fileArray[0]);
-		
-		
-		System.out.println(file[0]);
-		System.out.println(file.length);
-		
-		file[0].getOriginalFilename();
-		
-		// 이미지 파일이 있는 확인
-		if(file != null) {
-			
-//			setFile(hf, upfile, session);
-		}
-		
+		System.out.println("찍힘?");
+		System.out.println(fileObj);
+		System.out.println("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
+
 		
 		
 		
