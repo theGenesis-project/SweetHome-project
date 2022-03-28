@@ -79,8 +79,8 @@
 	<jsp:include page="../common/interiorNavi.jsp" />
 	
 	<div class="content">
-        <form action="" method="" name="" id="">
-        <!--메인 시작!!!!!!!!!!!!--------------------------------------------------------->
+       
+            <!--메인 시작!!!!!!!!!!!!--------------------------------------------------------->
             <div id="content2">
                 <div id="content2_1">
                     <h2>주문/결제</h2>
@@ -88,17 +88,16 @@
                     <table>
                         <tr>
                             <td style="width:100px;">이름 </td>
-                            <td><input type="text" name="" id=""></td>
+                            <td><input type="text" name="senderName" value="${oi.senderName }" readonly></td>
                         </tr>
                         <tr>
                             <td>이메일</td>
-                            <td><input type="email" name="" id=""></td>
+                            <td><input type="email"name="senderEmail" value="${oi.senderEmail }"readonly></td>
                         </tr>
                         <tr>
                             <td>휴대전화</td>
-                            <td><input type="text" name="" id=""></td>
+                            <td><input type="text" name="senderPhone" value="${oi.senderPhone }" readonly></td>
                         </tr>
-
                     </table>
                 </div>
 
@@ -108,11 +107,11 @@
                     <table>
                         <tr>
                             <td style="width:100px;">받는 사람 </td>
-                            <td><input type="text" name="" id=""></td>
+                            <td><input type="text" name="orderRe" id="orderRe" value="${oi.orderRe}"></td>
                         </tr>
                         <tr>
                             <td style="height:30px">연락처</td>
-                            <td><input type="text" name="" id=""></td>  
+                            <td><input type="text" name="orderPhone" id="orderPhone" value="${oi.orderPhone }"></td>  
                         </tr>
                         <tr>
                             <td>주소</td>
@@ -120,16 +119,19 @@
                         </tr>
                         <tr>
                             <td rowspan="2"></td>
-                            <td><input type="text" name="" id=""></td>
+                            <td><input type="text" name="postCode" id="postCode" value="${oi.postCode }"></td>
                         </tr>
-                        <tr>                     
-                            <td><input type="text" name="" id="" placeholder="상세주소"></td>
+                         <tr>                	
+                        	<td><input type="text" name="roadAddress" id="roadAddress" value="${oi.roadAddress }" placeholder="주소"></td>
+                        </tr>
+                        <tr>
+                        	<td></td>              
+                            <td><input type="text" name="detailAddress" id="detailAddress" value="${detailAddress }" placeholder="상세주소"></td>
                         </tr>
                         <tr>
                             <td>배송요청</td>
-                            <td><textarea style="width:250px;"></textarea></td>
-                        </tr>
-          
+                            <td><textarea style="width:250px;" id="orderReQ" name="orderReQ">${oi.orderReQ }</textarea></td>
+                        </tr>         
                     </table>
                 </div>
 
@@ -139,24 +141,35 @@
                     <table>
                         <thead>
                             <tr>
-                                <td style="width: 100px;">침대</td>
-                                <td style="width: 600px;">정말 좋고 튼튼하고 비싸고 오래가는 침대</td>
-                                <td style="width: 150px;">1,000,000원</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 100px;">침대</td>
-                                <td style="width: 600px;">정말 좋고 튼튼하고 비싸고 오래가는 침대</td>
-                                <td style="width: 150px;">1,000,000원</td>
+                               <td style="width: 100px;">분류</td>
+                               <td style="width: 600px;">상품 </td>
+                               <td style="width: 100px;">개수</td>
+                               <td style="width: 150px;">가격</td>
                             </tr>
                         </thead>
                         <tbody>
+                        	<tr>
+                        		<td>${oi.inteCate} </td>
+                        		<td>${oi.interiorTitle}</td>
+                                <td>${oi.orderQuantity}</td>
+                                <td>${oi.sumPrice}</td>                         	
+                        	</tr>                       	
+                        	<tr>
+                            	<td></td>
+                            	<td>빨라 택배</td>
+                            	<td></td>
+                            	<td>                          		
+                            		${oi.interiorPost} 원                                           	
+                            	</td>
+                            </tr>     
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td style="color: rgb(247, 202, 201);">합계</td>
+                                <td colspan="3" style="height: 50px">합계</td>                             
+                                <td>${oi.sumPrice} + ${oi.interiorPost } 원</td>
                             </tr>
                         </tbody>
+             
                     </table>
+                    
                 </div>
 
                 <div id="content2_4">
@@ -165,14 +178,19 @@
                     <table>
                         <tr>
                             <td style="width:150px;">주문 접수일</td>
-                            <td>2020/03/11</td>
+                            <td>${oi.orderDate }</td>
                         </tr>
                         <tr>
                             <td>상태</td>
-                            <td>주문 완료</td>
-                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                변경하기
-                              </button></td><!--관리자만 보임-->
+                            <td id="orderStatus">${oi.orderStatus }</td>
+                            <c:if test="${loginUser.userId == 'admin' }">
+                            	<!--관리자만 보임-->
+	                            <td>
+	                            	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+	                                	변경하기
+	                              	</button>
+	                           </td>
+                           </c:if>
                         </tr>
                     </table>
                 </div>
@@ -181,44 +199,65 @@
                     <button>돌아가기</button>
                 </div>
             </div>
-        </form> 
-         
-        
-       
+
     </div>
 
       <!-- The Modal -->
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
-        <div class="modal-content">
+            <div class="modal-content">
         
-            <!-- Modal Header -->
-            <div class="modal-header">
-            <h4 class="modal-title">주문 조회</h4>
-            <button type="button" class="close" data-dismiss="modal">×</button>
-            </div>
-            
-            <!-- Modal body -->
-            <div class="modal-body">
-            <form action="" method="">
-                주문완료 -> 
-                <select>
-                    <option value="">주문완료</option>
-                    <option value="">출고완료</option>
-                    <option value="">배송중</option>
-                    <option value="">배송완료</option>
-                    <option value="">환불 신청</option>
-                    <option value="">환불 완료</option>
-                </select>
-            </div>
-            <button type="submit" id="modal-button">상태 변경</button>
-            </form>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                <h4 class="modal-title">주문 조회</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="modal-body">
+	                <form action="orderStatusUpdate.in" method="post">
+	                	<input type="hidden" name="orderNo" value="${oi.orderNo }">
+	                   	 주문완료 -> 
+	                    <select name="orderStatus">
+	                        <option value="0">주문완료</option>
+	                        <option value="1">출고완료</option>
+	                        <option value="2">배송중</option>
+	                        <option value="3">배송완료</option>
+	                        <option value="4">환불 신청</option>
+	                        <option value="5">환불 완료</option>
+	                    </select>
+	                	<button type="submit" id="modal-button">상태 변경</button>
+	                </form>
+                </div>
             
            
             
-        </div>
+            </div>
         </div>
     </div>
+    
+    <script>
+    	$(function(){
+    		
+    		var test = $('#orderStatus').html();
+    		console.log(test);
+    		if(test == 0){
+    			$('#orderStatus').html("주문 완료");
+    		}else if(test == 1){
+    			$('#orderStatus').html("출고완료");
+    		}else if(test == 2){
+    			$('#orderStatus').html("배송중");
+    		}else if(test == 3){
+    			$('#orderStatus').html("배송완료");
+    		}else if(test == 4){
+    			$('#orderStatus').html("환불 신청");
+    		}else{
+    			$('#orderStatus').html("환불 완료");
+    		}
+    	})
+    
+    
+    </script>
 	
 	<!--메인 끝!!!----------------------------------------------------------->
 	

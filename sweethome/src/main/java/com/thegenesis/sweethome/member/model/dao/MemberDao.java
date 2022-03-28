@@ -47,5 +47,9 @@ public class MemberDao {
 	public int idCheck(SqlSessionTemplate sqlSession, String checkId) {
 		return sqlSession.selectOne("memberMapper.idCheck", checkId);
 	}
+	
+	public String idFind(SqlSessionTemplate sqlSession, String email) {
+		return sqlSession.selectOne("memberMapper.idFind", email);
+	}
 }
 

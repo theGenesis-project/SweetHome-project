@@ -103,8 +103,8 @@
                 	</c:otherwise>
                 </c:choose>
                     <li><a href="notice.co">커뮤니티</a></li>
-                    <li><a href="">인테리어</a></li>
-                    <li><a href="">하우스</a></li>
+                    <li><a href="interior.in">인테리어</a></li>
+					<li><a href="house.se">하우스</a></li>
                 </ul>
 
             </div>

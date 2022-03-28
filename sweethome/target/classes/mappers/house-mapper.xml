@@ -23,6 +23,25 @@
 		<result column="MONTHLY" property="monthly"/>
 	</resultMap>
 
+	<resultMap type="house" id="houseResultSet">
+		<result property="houseNo" column="HOUSE_NO"/>
+		<result property="houseName" column="HOUSE_NAME"/>
+		<result property="houseTitle" column="HOUSE_TITLE"/>
+		<result property="houseIntroduce" column="HOUSE_INTRODUCE"/>
+		<result property="shareSpace" column="SHARE_SPACE"/>
+		<result property="personalSpace" column="PERSONAL_SPACE"/>
+		<result property="traffic" column="TRAFFIC"/>
+		<result property="convenience" column="CONVENIENCE"/>
+		<result property="condition" column="CONDITION"/>
+		<result property="status" column="STATUS"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="latitude" column="LATITUDE"/>
+		<result property="longitude" column="LONGITUDE"/>
+		
+	</resultMap>
+
+
+
 	<!-- 하우스 등록 쿼리문 -->
 	<insert id="insertHouse" parameterType="house">
   		INSERT INTO
@@ -64,7 +83,7 @@
 	<select id="selectHouse" parameterType="string" resultType="house">
 		SELECT * FROM HOUSE WHERE HOUSE_NAME = #{houseName}
 	</select>
-	
+
 	<!-- 내가 찜한 하우스 갯수 -->
 	<select id="myDibsHouseCount" parameterType="_int" resultType="_int">
 		SELECT 
@@ -131,4 +150,21 @@
 		ORDER BY 
 				HOUSE_NO DESC
 	</select>
+
+	<select id="houseSearch" resultMap="houseResultSet">
+		SELECT * FROM HOUSE WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="selectHouseCount" resultType="_int">
+  		SELECT 
+  				COUNT(*)
+  		  FROM 
+  		  		HOUSE
+  		 WHERE
+  		 		STATUS = 'Y'
+  	</select>
+  	
+  	<select id="houseDetail" resultMap="houseResultSet">
+  		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}
+  	</select>
 </mapper>

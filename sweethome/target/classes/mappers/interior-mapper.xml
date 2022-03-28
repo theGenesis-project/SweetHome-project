@@ -11,7 +11,9 @@
 		<result column="INTERIOR_DETAIL" property="interiorDetail"/>
 		<result column="SELL" property="sell"/>
 		<result column="STATUS" property="status"/>
+		<result column="INTERIOR_POST" property="interiorPost"/>
 		
+	  	<result column="ROW_NO" property="rowNo"/>
 		<result column="FILE_NO" property="fileNo"/>
 		<result column="ORIGIN_NAME" property="originName"/>
 		<result column="CHANGE_NAME" property="changeName"/>
@@ -20,6 +22,40 @@
 
 		<result column="WON" property="won"/>
 	</resultMap>
+	
+	<resultMap type="interiorFile" id="interiorFileResultSet">
+	  	<result column="FILE_NO" property="fileNo"/>
+	  	<result column="INTERIOR_NO" property="interiorNo"/>
+	  	<result column="ORIGIN_NAME" property="originName"/>
+	  	<result column="CHANGE_NAME" property="changeName"/>
+	  	<result column="FILE_PATH" property="filePath"/>
+	  	<result column="FILE_LEVEL" property="fileLevel"/>
+  	</resultMap>
+  	
+	<resultMap type="orderInfo" id="orderInfoResultSet">
+  		<result column="ORDER_NO" property="orderNo"/>
+  		<result column="USER_NO" property="userNo"/>
+  		<result column="ORDER_RE" property="orderRe"/>
+  		<result column="ORDER_PHONE" property="orderPhone"/>
+  		<result column="ORDER_ADD" property="roadAddress"/>
+  		<result column="ORDER_REQ" property="orderReQ"/>
+  		<result column="ORDER_STATUS" property="orderStatus"/>
+  		<result column="INTERIOR_NO" property="interiorNo"/>
+  		<result column="ORDER_NUMBER" property="orderNumber"/>
+  		<result column="POSTCODE" property="postCode"/>
+  		<result column="ORDER_DATE" property="orderDate"/>
+  		<result column="SUMPRICE" property="sumPrice"/>
+  		<result column="ORDER_ADD2" property="detailAddress"/>
+  		<result column="SENDER_NAME" property="senderName"/>
+  		<result column="SENDER_PHONE" property="senderPhone"/>
+  		<result column="SENDER_EMAIL" property="senderEmail"/>
+  		
+  		
+  		<result column="ORDER_QUANTITY" property="orderQuantity"/>
+  		<result column="INTE_CATE" property="inteCate"/>
+  		<result column="INTERIOR_TITLE" property="interiorTitle"/>
+  		<result column="INTERIOR_POST" property="interiorPost"/>
+  	</resultMap>
 
   	<!-- 내가 찜한 인테리어 갯수 -->
 	<select id="myDibsInteriorCount" parameterType="_int" resultType="_int">
@@ -35,6 +71,7 @@
 		   		STATUS = 'Y'
 	</select>
 	
+	<!-- 찜한 인테리어 리스트 -->
 	<select id="selectDibsInteriors" resultMap="interiorResultSet">
 		SELECT 
 				INTERIOR_NO
@@ -58,5 +95,392 @@
 		   AND 
 		   		D.STATUS = 'Y'
 	</select>
+
+  	<select id="listCount" parameterType="_int" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM 
+			INTERIOR
+		WHERE
+			STATUS = 'Y'	
+		<choose>
+			<when test="inteCate != 0">
+		AND INTE_CATE = #{inteCate}			
+			</when>
+		</choose>
 	
+	</select>
+	
+	<select id="selectInteriorList" parameterType="_int" resultMap="interiorResultSet">		
+		SELECT 
+			INTERIOR_NO, INTE_CATE, INTERIOR_TITLE, INTERIOR_CO, INTERIOR_PRICE, FILE_PATH                     
+		FROM 
+			INTERIOR
+		LEFT JOIN 
+			INTERIOR_FILE USING(INTERIOR_NO)     
+		WHERE 
+			STATUS = 'Y'
+		AND 
+			INTE_CATE = #{inteCate}
+        AND FILE_LEVEL = 1
+		ORDER BY FILE_NO DESC
+				
+	</select>
+	<!-- 게시글 작성 -->
+	<insert id="insertInterior" parameterType="Interior">
+		INSERT 
+		INTO INTERIOR(
+			INTERIOR_NO,
+			INTE_CATE,
+			INTERIOR_TITLE,
+			INTERIOR_CO,
+			INTERIOR_PRICE,
+			INTERIOR_DETAIL,
+			INTERIOR_POST
+		)
+		VALUES(
+			SEQ_INT_NO.NEXTVAL,
+			#{inteCate},
+			#{interiorTitle},
+			#{interiorCo},
+			#{interiorPrice},
+			#{interiorDetail},
+			#{interiorPost}
+		)	
+	</insert>
+	
+	<insert id="insertInteriorFile" parameterType="interiorFile">
+		INSERT
+		INTO INTERIOR_FILE(
+			FILE_NO,
+			INTERIOR_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL		
+			)
+		VALUES(
+			SEQ_INT_FILE_NO.NEXTVAL,
+			SEQ_INT_NO.CURRVAL,
+			#{originName},
+			#{changeName},
+			#{filePath},
+			#{fileLevel}	
+		)
+			
+	</insert>
+	
+	<!-- 게시글 삭제 -->
+	<!-- <update id="interiorDelete" parameterType="">
+		UPDATE
+			INTERIOR
+		SET 
+			STATUS = 'N'
+		WHERE
+			INTERIOR_NO = #{}
+		
+			
+	
+	</update>
+	1-->	
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE 
+			INTERIOR
+		SET
+			COUNT = COUNT + 1
+		WHERE 
+			STATUS = 'Y'
+		AND
+			INTERIOR_NO = #{interiorNo}
+		
+	</update>
+	
+	<select id="interiorDetail" parameterType="_int" resultMap="interiorResultSet">
+		SELECT 
+			INTERIOR_NO,
+			INTE_CATE,
+			INTERIOR_TITLE,
+			INTERIOR_CO,
+			INTERIOR_PRICE,
+			INTERIOR_DETAIL,
+			INTERIOR_POST
+		FROM 
+			INTERIOR
+		WHERE
+			INTERIOR_NO = #{interiorNo}
+		AND
+			STATUS = 'Y'
+	</select>
+	
+	<select id="interiorFileDetail" parameterType="_int" resultMap="interiorFileResultSet">
+		SELECT
+			FILE_NO,
+			INTERIOR_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL
+		FROM 	
+			INTERIOR_FILE
+		WHERE
+			INTERIOR_NO = #{interior_no}
+
+	</select>
+	<!--  
+	<select id="interiorBestList" resultMap="interiorResultSet">
+		SELECT 
+			INTERIOR_NO, INTE_CATE, INTERIOR_TITLE, INTERIOR_CO, INTERIOR_PRICE, FILE_PATH                     
+		FROM 
+			INTERIOR
+		LEFT JOIN 
+			INTERIOR_FILE USING(INTERIOR_NO)     
+		WHERE 
+			STATUS = 'Y'
+		AND 
+			INTE_CATE = #{inteCate}
+        AND FILE_LEVEL = 1
+		ORDER BY FILE_NO DESC
+	</select>
+	-->
+	<!-- 찜기능 -->
+	<select id="interiorChangeHeart" parameterType="hashmap" resultType="string">
+		 SELECT 
+		 	STATUS
+        FROM 
+        	DIBS
+        WHERE
+        	USER_NO = #{userNo}
+        AND 
+            INTERIOR_NO = #{interiorNo}		
+		
+	</select>
+	
+	<insert id="changeHeartY" parameterType="hashmap">
+		INSERT INTO 
+			DIBS(USER_NO, INTERIOR_NO)
+		VALUES
+			(#{userNo},
+			 #{interiorNo})
+	</insert>
+	
+	<update id="changeHeartYY" parameterType="hashmap">
+		UPDATE 
+			DIBS
+		SET
+			STATUS = 'Y'
+		WHERE 
+			USER_NO = #{userNo}
+		AND
+			INTERIOR_NO = #{interiorNo}
+		
+	</update>
+	
+	<update id="changeHeartN" parameterType="hashmap">
+		UPDATE 
+			DIBS
+		SET
+			STATUS = 'N'
+		WHERE 
+			USER_NO = #{userNo}
+		AND
+			INTERIOR_NO = #{interiorNo}
+		
+	</update>
+	<!-- 인테리어 검색 기능 -->
+	<select id="searchInteriorCount" parameterType="hashmap" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			INTERIOR
+		WHERE
+			STATUS = 'Y'
+		<choose>
+			<when test="condition == 'productName'">
+				AND INTERIOR_TITLE
+			</when>
+			<when test="condition == 'company'">
+				AND INTERIOR_CO			
+			</when>
+		</choose>		
+     		LIKE '%' || #{keyword} || '%'
+			
+	</select>
+	
+	<select id="searchInterior" parameterType="hashmap" resultMap="interiorResultSet">
+		SELECT 
+			INTERIOR_NO, INTE_CATE, INTERIOR_TITLE, INTERIOR_CO, INTERIOR_PRICE, FILE_PATH                     
+		FROM 
+			INTERIOR
+		LEFT JOIN 
+			INTERIOR_FILE USING(INTERIOR_NO)     
+		WHERE 
+			STATUS = 'Y'	
+        AND 
+        	FILE_LEVEL = 1
+        <choose>
+			<when test="condition == 'productName'">
+				AND INTERIOR_TITLE
+			</when>
+			<when test="condition == 'company'">
+				AND INTERIOR_CO			
+			</when>
+		</choose>		
+     		LIKE '%' || #{keyword} || '%'
+		ORDER BY FILE_NO DESC
+
+	</select>
+	<!-- 인테리어 게시글 수정 -->
+	<!-- 글수정 -->
+	<update id="updateInterior" parameterType="Interior">
+		UPDATE
+			INTERIOR
+		SET 	
+			INTE_CATE = #{inteCate},
+			INTERIOR_TITLE = #{interiorTitle},
+			INTERIOR_CO = #{interiorCo},
+			INTERIOR_PRICE = #{interiorPrice},
+			INTERIOR_DETAIL = #{interiorDetail},
+			INTERIOR_POST = #{interiorPost}
+		WHERE
+			INTERIOR_NO = #{interiorNo}
+		
+	</update>
+	<!-- 첨부파일 삭제 -->
+	<select id="selectInteriorFile" parameterType="_int" resultMap="interiorFileResultSet">
+		SELECT *
+		FROM INTERIOR_FILE
+		WHERE INTERIOR_NO = ${interiorNo}
+	</select>
+	<!-- 첨부파일삭제 -->
+	<delete id="deleteInteriorFileInfo" parameterType="_int">
+		DELETE 
+		FROM INTERIOR_FILE
+		WHERE INTERIOR_NO = #{interiorNo}
+	
+	</delete>
+	
+	<!-- 첨부파일 재등록 -->
+	<insert id="updateInteriorFile" parameterType="interiorFile">
+		INSERT
+		INTO INTERIOR_FILE(
+			FILE_NO,
+			INTERIOR_NO,
+			ORIGIN_NAME,
+			CHANGE_NAME,
+			FILE_PATH,
+			FILE_LEVEL		
+			)
+		VALUES(
+			SEQ_INT_FILE_NO.NEXTVAL,
+			#{interiorNo},
+			#{originName},
+			#{changeName},
+			#{filePath},
+			#{fileLevel}	
+		)
+
+	</insert>
+	
+	<!-- 주문 내역 등록 -->
+	<insert id="insertOrderInfo" parameterType="orderInfo">
+		INSERT
+		INTO ORDER_INFO(
+			ORDER_NO
+			,USER_NO
+			,ORDER_RE
+			,ORDER_PHONE
+			,ORDER_ADD
+			,ORDER_REQ
+			,ORDER_STATUS
+			,INTERIOR_NO
+			,ORDER_NUMBER
+			,POSTCODE
+			,ORDER_DATE
+			,SUMPRICE
+			,ORDER_ADD2
+			,SENDER_NAME
+			,SENDER_PHONE
+			,SENDER_EMAIL
+			)
+		VALUES(
+			SEQ_ORDER_NO.NEXTVAL
+			,#{userNo}
+			,#{orderRe}
+			,#{orderPhone}
+			,#{roadAddress}
+			,#{orderReQ}
+			,#{orderStatus}
+			,#{interiorNo}
+			,#{orderNumber}
+			,#{postCode}
+			,SYSDATE
+			,#{sumPrice}
+			,#{detailAddress}
+			,#{senderName}
+			,#{senderPhone}
+			,#{senderEmail}
+			)
+	
+	</insert>
+	
+	<insert id="insertPayment" parameterType="payment">
+		INSERT 
+		INTO PAYMENT(
+			PAYMENT_NO
+			,ORDER_NO
+			,INTERIOR_NO
+			,ORDER_QUANTITY
+			,ORDER_DATE
+		)
+		VALUES(
+			SEQ_PAY_NO.NEXTVAL
+			,SEQ_ORDER_NO.CURRVAL
+			,#{interiorNo}
+			,#{orderQuantity}
+			,SYSDATE
+		)
+		
+	</insert>
+	<!-- 주문 내역 상세보기 -->
+	<select id="orderInfoDetail" parameterType="_int" resultMap="orderInfoResultSet">
+		SELECT
+			ORDER_NO
+			,USER_NO
+			,ORDER_RE
+			,ORDER_PHONE
+			,ORDER_ADD
+			,ORDER_REQ
+			,ORDER_STATUS
+			,I.INTERIOR_NO
+			,ORDER_NUMBER
+			,POSTCODE
+			,O.ORDER_DATE
+			,SUMPRICE
+			,ORDER_QUANTITY     
+            ,INTE_CATE
+            ,INTERIOR_TITLE
+			,INTERIOR_POST
+			,ORDER_ADD2
+			,SENDER_NAME
+			,SENDER_PHONE
+			,SENDER_EMAIL
+		FROM 		
+			ORDER_INFO O
+		JOIN INTERIOR I ON(O.INTERIOR_NO = I.INTERIOR_NO)
+		JOIN PAYMENT USING(ORDER_NO)
+		WHERE
+			ORDER_NO = #{orderNo}
+
+	</select>
+	
+	<update id="orderStatusUpdate" parameterType="hashmap">
+		UPDATE 
+			ORDER_INFO
+		SET 
+			ORDER_STATUS = #{orderStatus}
+		WHERE
+			ORDER_NO = #{orderNo}
+	
+	</update>
 </mapper>

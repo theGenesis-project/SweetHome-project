@@ -51,7 +51,7 @@
 		<ul id="manage">
 			<li><div class="home" onclick="location.href='#'" style="pointer-events:none;"><img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FewshBz%2Fbtru1asrG4F%2FD4bgCQcDjVHeVEm5ii1KX0%2Fimg.png" alt="스위트홈"></div></li>
 			<li>
-                <div onclick="location.href=''">회원관리</div>
+                <div onclick="location.href='memberList.me?mpage=1'">회원관리</div>
             </li>
 			<li>
 				<div onclick="location.href=''">하우스관리</div>

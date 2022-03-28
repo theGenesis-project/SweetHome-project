@@ -7,11 +7,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	/*search-area*/
+	#search-area{
+		margin : auto;
+		width:"100%";
+		height:"20%";
+	}
 	/*navi2 시작----------------------------------------*/
         #interiorCategory{
             width: 20%;
-            height: 100%;
-            
+            height: 100%;          
         }    
         #interiorCategory>ul{
             margin-top: 50px;
@@ -24,9 +29,41 @@
             color: black;
             font-size: 20px;           
         }
-
-
-        /*navi2 끝-------------------------------------------*/
+     /*navi2 끝-------------------------------------------*/
+     /*search-area 시작*/
+     #search2{
+            display: flex;
+            width: 1500px;
+            height: 150px;
+            margin: auto;
+        }
+        #search{
+            margin : auto;
+            height: 40px;
+            width: fit-content;
+            
+        }
+        #search>select{
+            height: 100%;  
+            width: 100px;        
+        }
+        #search>input[name=search]{
+            box-sizing: border-box;
+            height: 100%;
+            width: 300px;
+        }
+        #search>button{
+            border: 0ch;
+            border-radius: 3px;
+            color: white;
+            background-color: rgb(247, 202, 201);
+            padding: 3px 20px 3px 20px;
+            height: 40px;
+        }
+        #search-area{
+            margin: auto;
+        }
+     /*search-area 끝*/
 	 /*main부분!!!_---------------------------------------*/
         .content{
             margin: auto;
@@ -52,17 +89,17 @@
             font-size: 15px;
             font-weight: 500;
             height: 35px;
-        }
-       
+        }     
         #interior-area{
             padding: 40px;
         }
-        .interior_list{
-            width: 27%;
+        .interior_checkbox{
+        	width: 27%;
             height: auto;
             margin: 15px 10px;
             display: inline-block;
         }
+     
         .thumbnail-area{
             width: 100%;
             height: 100%;
@@ -90,65 +127,46 @@
             color: rgb(247, 202, 201);
             font-weight: 600;
         }
-       
-        #paging-area{
-            margin: 50px 0px;
+        .ino2{
+        	display:none;
         }
-        #paging{
-            margin-top: 50px;
-            width:fit-content; 
-            margin: auto;
-        }
-        #paging button{
-            background-color: rgb(221, 221, 221);
-            color: rgb(87, 87, 87);
-            padding: 7px;
-            border: 0ch;
-            border-radius: 3px;
-        }
-
-        #search-area{
-            margin: 50px 0px;
-        }
-        #search{
-            margin : auto;
-            height: 30px;
-            width: fit-content;
-        }
-        #search>select{
-            height: 100%;          
-        }
-        #search>input[name=search]{
-            box-sizing: border-box;
-            height: 100%;
-        }
-        #search>button{
-            border: 0ch;
-            border-radius: 3px;
-            color: white;
-            background-color: rgb(247, 202, 201);
-            padding: 3px 10px 3px 10px;
-        }
+     
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/interiorNavi.jsp" />
+	<!-- search-area -->
+	<div id="search2">
+        <div id="search-area">
+        <form id="searchForm" action="searchInterior.in" method="get">
+            <div id="search">
+                <select name="condition">
+                    <option value="company">가구사</option>
+                    <option value="productName">제품명</option>
+                </select>
+                <input type="search" name="keyword">
+                <button type="submit">검색</button>
+            </div>
+        </form>
+        </div>
+    </div>
 	
-	 <div class="content">
+    <div class="content">
+	 	
          <!--네비2 시작~!!------------------------------------------------------------------>
         <div id="interiorCategory">
             <ul>
                 <li style="font-size: 30px;">카테고리</li><br>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 침대</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 매트리스</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 쇼파</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 테이블</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 거실장</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 조명</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 화장대</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 거울</a></li>
-                <li><a href=""><svg class="icon" width="12" height="12" fill="currentColor" viewBox="0 0 12 12" preserveAspectRatio="xMidYMid meet"><path d="M6.07 7.56l4.39-4.55.87.87-5.25 5.45L.67 3.9 1.53 3z"></path></svg> 파티션</a></li>
+                <li><a href="interiorList.in?intCate=1&inpage=1">침대</a></li>
+                <li><a href="interiorList.in?intCate=2&inpage=1">매트리스</a></li>
+                <li><a href="interiorList.in?intCate=3&inpage=1">쇼파</a></li>
+                <li><a href="interiorList.in?intCate=4&inpage=1">테이블</a></li>
+                <li><a href="interiorList.in?intCate=5&inpage=1">거실장</a></li>
+                <li><a href="interiorList.in?intCate=6&inpage=1">조명</a></li>
+                <li><a href="interiorList.in?intCate=7&inpage=1">화장대</a></li>
+                <li><a href="interiorList.in?intCate=8&inpage=1">거울</a></li>
+                <li><a href="interiorList.in?intCate=9&inpage=1">파티션</a></li>
 
             </ul>
 
@@ -156,113 +174,112 @@
         <!--네비2 끝~!!------------------------------------------------------------------>
         <!--메인 시작!!!!!!!!!!!!--------------------------------------------------------->
         <div id="content2">
-            <div id="title-area">
-                <h2>침대</h2>
+        
+            <div id="title-area">   	        	
+                <h2>${inteCate }</h2>        	
             </div>
-
+		
             <div id="buttons">
                 <!--only 관리자만 보임-->
-                <button>가구등록</button>
-                <button>가구삭제</button>
+                <button onclick="location.href='insertInteriorView.in'">가구등록</button>
+                <button onclick="checkboxArr()">가구삭제</button>
             </div>
-            <div id="interior-area">
-             <div class="interior_list">
-                    <div class="thumbnail-area">
-                        <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                    </div>
-                    <div class="interior_com">
-                        <p>오트밀 하우스</p>
-                        <input type="checkbox">
-                    </div>
-                    <div class="interior_title">
-                        <p class="target">수납/원목/LED/무헤드/벙커타입 침대 수납/원목/LED/무헤드/벙커타입 침대</p>
-                    </div>
-                    <div class="interior_price">
-                        <p>1,000,000 원</p>
-                    </div>
-                </div>
-
-                <div class="interior_list">
-                    <div class="thumbnail-area">
-                        <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                    </div>
-                    <div class="interior_com">
-                        <p>오트밀 하우스</p>
-                        <input type="checkbox">
-                    </div>
-                    <div class="interior_title">
-                        <p>수납/원목/LED/무헤드/벙커타입 침대</p>
-                    </div>
-                    <div class="interior_price">
-                        <p>1,000,000 원</p>
-                    </div>
-                </div>
-
-                <div class="interior_list">
-                    <div class="thumbnail-area">
-                        <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                    </div>
-                    <div class="interior_com">
-                        <p>오트밀 하우스</p>
-                        <input type="checkbox">
-                    </div>
-                    <div class="interior_title">
-                        <p>수납/원목/LED/무헤드/벙커타입 침대</p>
-                    </div>
-                    <div class="interior_price">
-                        <p>1,000,000 원</p>
-                    </div>
-                </div>
-
-                <div class="interior_list">
-                    <div class="thumbnail-area">
-                        <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                    </div>
-                    <div class="interior_com">
-                        <p>오트밀 하우스</p>
-                        <input type="checkbox">
-                    </div>
-                    <div class="interior_title">
-                        <p>수납/원목/LED/무헤드/벙커타입 침대</p>
-                    </div>
-                    <div class="interior_price">
-                        <p>1,000,000 원</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div id="paging-area">
-                <div id="paging">
-                    <button>&lt;</button> 
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>4</button>
-                    <button>&gt;</button>
-                </div>
-            </div>
-
-            <div id="search-area">
-                <div id="search">
-                    <select name="" id="">
-                        <option value="">제목</option>
-                        <option value="">작성자</option>
-                        <option value="">내용</option>
-                    </select>
-                    <input type="text" id="" name="search">
-                    <button>검색</button>
-                </div>
-            </div>
-
-        </div>
-        
-       
+         
+            <c:choose>
+	            <c:when test="${empty list }">
+		            <div class="interior-area">
+		             <div class="interior_list">
+		               	등록되어 있는 가구가 없습니다.
+		             </div>
+		            </div>
+	             </c:when>
+	             <c:otherwise>
+	             	<c:forEach var="i" items="${list}">
+	             		<div class="interior_checkbox">
+	             		<input type="checkbox" name="checkList" value="${i.interiorNo}">
+	             	
+	             		<div class="interior_list">
+		                    <div class="thumbnail-area">
+		                        <img src="${i.filePath }" alt="interior">
+		                    </div>
+		                    <div class="interior_com">
+		                        <p>${i.interiorCo }</p>
+		                        
+		                    </div>
+		                    <div class="interior_title">
+		                        <p>${i.interiorTitle }</p>		                        
+		                    </div>
+		                  	<div class="ino2">
+		                  		<p class="ino">${i.interiorNo }</p>
+		                  	</div>
+		                  		        
+		                    <div class="interior_price">
+		                        <p>${i.interiorPrice } 원</p>
+		                    </div>
+	                	</div> 
+	                	</div>           	
+	             	</c:forEach>
+	             </c:otherwise>
+             </c:choose>
+      
+       </div>
     </div>
 	
 	<!--메인 끝!!!----------------------------------------------------------->
+	<script>
+	$(function(){
+		
+		var test = $('#title-area>h2').html();
+		console.log(test);
+		if(test == 1){
+			$('#title-area>h2').html("침대");
+		}else if(test == 2){
+			$('#title-area>h2').html("매트리스");
+		}
+		
+		
+		$(".interior_list").click(function(){
+			location.href = 'detail.in?ino='+ $(this).children().children('.ino').text();
+			
+		})
+		
+		})
+	
+	 /* 체크박스 선택 시  값이 잘 넘어가는지 확인*/
+       $(function(){
+           $("input:checkbox[name=checkList]").on('click', function(){
+               var uno = $(this).val();
+               console.log(uno);
+               
+           })
+        })
+        
+    function checkboxArr() {
+
+	    var checkArr = [];     // 배열 초기화
+	
+	    $("input[name='chekboxList']:checked").each(function(i) {
+	        checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
+	    })
+	
+	    $.ajax({
+	
+	        url: 'deleteInterior.in'
+	        , type: 'post'
+	        , data: {
+	           valueArrTest : checkArr
+	        }
+	
+	    });
+
+	}
 	
 	
+
+
+	
+	</script>
+
 	
 	<jsp:include page="../common/footer.jsp" />
 
