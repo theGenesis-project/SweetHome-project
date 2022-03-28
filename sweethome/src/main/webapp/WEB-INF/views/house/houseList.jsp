@@ -23,12 +23,16 @@
 			margin-left: 120px;
 			width:300px;
 			float:left;
+			height:30px;
 		}
 		#search{
 			margin-left:10px;
+			height:30px;
 			background-color: rgb(247, 202, 201) !important;
-			border: 0;
+			width:60px;
 			color:white;
+			outline:none;
+     		border:none;
 		}
 		.img-box{
 			width: 150px;
@@ -57,8 +61,11 @@
             margin-right: 198px;
             margin-left: 29px;
             margin-top:30px;
+            
         }
-        
+        .house-item:hover{
+        	cursor: pointer;
+        }
         
         .thumbnail {
             width: 100%;
@@ -130,12 +137,12 @@
 		</div>
 	  <br>
 		<div id="map" style="width:1300px;height:450px;"></div>
-	<br><br>
+	  <br><br>
 		<div class="w1500">
         <ul class="house-wrap">
         	<c:forEach var="h" items="${ list }">
             <li class="house-item">
-                <div class="item-list">
+                <div class="item-list" style="display:block">
                 <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
                 <div style="display:none" class="hno">${h.houseNo}</div>
                 <span class="thumb-title mtb3">${h.houseName}</span>
@@ -200,19 +207,24 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6&libraries=services"></script>
 	<script>
 	
+	
 	var x = [];
 	var y = [];
 	var houseName = [];
+	var houseNo = [];
 	
 	<% for(House h: list1) { %>
     	x.push(<%= h.getLatitude() %>);
     	y.push(<%= h.getLongitude() %>);
     	houseName.push("<%= h.getHouseName() %>");
+    	houseNo.push("<%=h.getHouseNo() %>");
  	<% } %>
  	
 	
-	
-	
+    
+    
+    
+    
  	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 	
 	var markers = [];
@@ -220,12 +232,14 @@
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
 	        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-	        level: 3 // 지도의 확대 레벨
+	        level: 10 // 지도의 확대 레벨
 	    };  
 	
 	// 지도를 생성합니다    
 	var map = new kakao.maps.Map(mapContainer, mapOption); 
 	
+	
+
 	map.setMinLevel(3);
 	map.setMaxLevel(9);	
 
@@ -236,8 +250,6 @@
 	// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
 	var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 	
-	// 키워드로 장소를 검색합니다
-	searchPlaces();
 	
 	// 키워드 검색을 요청하는 함수입니다
 	function searchPlaces() {
@@ -246,6 +258,9 @@
 	
 	    
 	    ps.keywordSearch( keyword, placesSearchCB); 
+	    
+	    
+	    
 	}
 	
 	// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
@@ -274,11 +289,9 @@
 	// 검색 결과 목록과 마커를 표출하는 함수입니다
 	function displayPlaces(places) {
 	
-	    var fragment = document.createDocumentFragment(), 
-	    bounds = new kakao.maps.LatLngBounds(), 
-	    listStr = '';
+		var bounds = new kakao.maps.LatLngBounds();
+		
 	    
-
 	    // 지도에 표시되고 있는 마커를 제거합니다
 	    removeMarker();
 	    
@@ -296,11 +309,26 @@
 	
 	    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
 	    map.setBounds(bounds);
+	    console.log(bounds);
+	    
+	    
+	    var bounds1 = map.getBounds();
+	    console.log(bounds1);
+	    for(var i = 0; i < x.length; i++){
+			//if(bounds1.pa < y[i] > bounds1.qa  &&  bounds1.ha < x[i] > bounds1.oa){
+			//	console.log(1);
+			//}
+	    }
 	}
+	 
+	 
+	 
 	
 	for(var i = 0; i < x.length; i++){
 		
 		// 마커 이미지의 이미지 크기 입니다
+		var hno = houseNo[i];
+		
 	    var imageSize = new kakao.maps.Size(24, 35); 
 	    
 	    // 마커 이미지를 생성합니다    
@@ -312,7 +340,7 @@
 			image : markerImage // 마커 이미지 
 		});
 		
-		var iwContent = '<a href=""><img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지"><span class="thumb-title mtb3">' + houseName[i] + '</span><ul class="thumb-desc mtb3"><li> 월</li></ul></a>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		var iwContent = '<div class="item-list"><img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지"><span class="thumb-title mtb3">' + houseName[i] + '</span><ul class="thumb-desc mtb3"><li> 월</li></ul></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 	    iwPosition = new kakao.maps.LatLng(y[i], x[i]); //인포윈도우 표시 위치입니다
 
 		// 인포윈도우를 생성합니다
@@ -323,7 +351,7 @@
 	    
 		kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 	    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-	    
+	    kakao.maps.event.addListener(marker, 'click', makeClickListener( hno));
 	}
 	// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 	function removeMarker() {
@@ -346,6 +374,12 @@
 	    return function() {
 	        infowindow.close();
 	    };
+	}
+	
+	function makeClickListener(hno){
+		return function(){
+			location.href = "house.de?hno=" + hno; 
+		}
 	}
 	
 	$(".item-list").click(function(){
