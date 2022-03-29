@@ -42,7 +42,7 @@
   		<result column="ORDER_STATUS" property="orderStatus"/>
   		<result column="INTERIOR_NO" property="interiorNo"/>
   		<result column="ORDER_NUMBER" property="orderNumber"/>
-  		<result column="POSTCODE" property="postCode"/>
+  		<result column="POSTCODE" property="postcode"/>
   		<result column="ORDER_DATE" property="orderDate"/>
   		<result column="SUMPRICE" property="sumPrice"/>
   		<result column="ORDER_ADD2" property="detailAddress"/>
@@ -55,6 +55,21 @@
   		<result column="INTE_CATE" property="inteCate"/>
   		<result column="INTERIOR_TITLE" property="interiorTitle"/>
   		<result column="INTERIOR_POST" property="interiorPost"/>
+  	</resultMap>
+  	
+  	
+  	<resultMap type="review" id="reviewResultSet">
+  		<result column="REVIEW_NO" property="reviewNo"/>
+  		<result column="INTERIOR_NO" property="interiorNo"/>
+  		<result column="ORDER_RE" property="userNo"/>
+  		<result column="REVIEW_CONTENT" property="reviewContent"/>
+  		<result column="CREATE_DATE" property="createDate"/>
+  		<result column="MODITY_DATE" property="modifyDate"/>
+  		<result column="STATUS" property="status"/>
+  		<result column="REREVIEW" property="reReview"/>
+  		<result column="REPORT" property="report"/>
+  		
+  		<result column="USER_ID" property="userId"/> 	
   	</resultMap>
 
   	<!-- 내가 찜한 인테리어 갯수 -->
@@ -171,18 +186,16 @@
 	</insert>
 	
 	<!-- 게시글 삭제 -->
-	<!-- <update id="interiorDelete" parameterType="">
+	 <update id="deleteInterior" parameterType="hashmap">
 		UPDATE
 			INTERIOR
 		SET 
 			STATUS = 'N'
 		WHERE
-			INTERIOR_NO = #{}
-		
-			
-	
+			INTERIOR_NO = #{interiorNo}
+
 	</update>
-	1-->	
+	
 	
 	<update id="increaseCount" parameterType="_int">
 		UPDATE 
@@ -413,7 +426,7 @@
 			,#{orderStatus}
 			,#{interiorNo}
 			,#{orderNumber}
-			,#{postCode}
+			,#{postcode}
 			,SYSDATE
 			,#{sumPrice}
 			,#{detailAddress}
@@ -473,7 +486,7 @@
 			ORDER_NO = #{orderNo}
 
 	</select>
-	
+	<!-- 주문 상태 변경 -->
 	<update id="orderStatusUpdate" parameterType="hashmap">
 		UPDATE 
 			ORDER_INFO
@@ -483,4 +496,53 @@
 			ORDER_NO = #{orderNo}
 	
 	</update>
+	
+	<!-- 주문 페이지 수정 -->
+	<update id="orderPageUpdate" parameterType="orderInfo">
+		UPDATE 
+			ORDER_INFO
+		SET
+			ORDER_RE = #{orderRe}
+			,ORDER_PHONE = #{orderPhone}
+			,ORDER_ADD = #{roadAddress}
+			,ORDER_ADD2 = #{detailAddress}
+			,ORDER_REQ = #{orderReQ}
+			,POSTCODE = #{postcode}
+		WHERE
+			ORDER_NO = #{orderNo}
+
+	</update>
+	<!-- 리뷰 리스트 불러오기 -->
+	<select id="selectReviewList" parameterType="_int" resultMap="reviewResultSet">
+		SELECT
+			REVIEW_NO
+			,INTERIOR_NO
+			,USER_NO
+			,REVIEW_CONTENT
+			,CREATE_DATE
+			,USER_ID
+		FROM 
+			REVIEW
+		JOIN 
+			MEMBER USING(USER_NO)
+		WHERE
+			INTERIOR_NO = #{interiorNo}
+	</select>
+	<!-- 리뷰 작성 -->
+	<insert id="insertReview" parameterType="review">
+		INSERT
+		INTO REVIEW(
+			REVIEW_NO
+			,INTERIOR_NO
+			,USER_NO
+			,REVIEW_CONTENT	
+		)
+		VALUES(
+			SEQ_REV_NO.NEXTVAL
+			,#{interiorNo}
+			,#{userNo}
+			,#{reviewContent}	
+		)
+
+	</insert>
 </mapper>

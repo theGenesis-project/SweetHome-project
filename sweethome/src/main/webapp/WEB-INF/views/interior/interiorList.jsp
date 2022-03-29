@@ -167,9 +167,7 @@
                 <li><a href="interiorList.in?intCate=7&inpage=1">화장대</a></li>
                 <li><a href="interiorList.in?intCate=8&inpage=1">거울</a></li>
                 <li><a href="interiorList.in?intCate=9&inpage=1">파티션</a></li>
-
             </ul>
-
         </div>
         <!--네비2 끝~!!------------------------------------------------------------------>
         <!--메인 시작!!!!!!!!!!!!--------------------------------------------------------->
@@ -194,31 +192,31 @@
 		            </div>
 	             </c:when>
 	             <c:otherwise>
+	             <form action="" method="post">
 	             	<c:forEach var="i" items="${list}">
 	             		<div class="interior_checkbox">
-	             		<input type="checkbox" name="checkList" value="${i.interiorNo}">
-	             	
-	             		<div class="interior_list">
-		                    <div class="thumbnail-area">
-		                        <img src="${i.filePath }" alt="interior">
-		                    </div>
-		                    <div class="interior_com">
-		                        <p>${i.interiorCo }</p>
-		                        
-		                    </div>
-		                    <div class="interior_title">
-		                        <p>${i.interiorTitle }</p>		                        
-		                    </div>
-		                  	<div class="ino2">
-		                  		<p class="ino">${i.interiorNo }</p>
-		                  	</div>
-		                  		        
-		                    <div class="interior_price">
-		                        <p>${i.interiorPrice } 원</p>
-		                    </div>
-	                	</div> 
+	             			<input type="hidden" name="checkBoxList" id="checkBoxList">
+	             			<input type="checkbox" name="checkList" value="${i.interiorNo}">       		
+		             		<div class="interior_list">
+			                    <div class="thumbnail-area">
+			                        <img src="${i.filePath }" alt="interior">
+			                    </div>
+			                    <div class="interior_com">
+			                        <p>${i.interiorCo }</p>	                        
+			                    </div>
+			                    <div class="interior_title">
+			                        <p>${i.interiorTitle }</p>		                        
+			                    </div>
+			                  	<div class="ino2">
+			                  		<p class="ino">${i.interiorNo }</p>
+			                  	</div>                  		        
+			                    <div class="interior_price">
+			                        <p>${i.interiorPrice } 원</p>
+			                    </div>
+		                	</div> 
 	                	</div>           	
 	             	</c:forEach>
+	             	</form>
 	             </c:otherwise>
              </c:choose>
       
@@ -230,7 +228,7 @@
 	$(function(){
 		
 		var test = $('#title-area>h2').html();
-		console.log(test);
+		
 		if(test == 1){
 			$('#title-area>h2').html("침대");
 		}else if(test == 2){
@@ -254,24 +252,20 @@
            })
         })
         
-    function checkboxArr() {
+    function checkboxArr() {//checkbox으로 삭제할 interior의 interiorNo넘겨주기
 
-	    var checkArr = [];     // 배열 초기화
+	    var checkArr = [];
 	
-	    $("input[name='chekboxList']:checked").each(function(i) {
-	        checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
-	    })
-	
-	    $.ajax({
-	
-	        url: 'deleteInterior.in'
-	        , type: 'post'
-	        , data: {
-	           valueArrTest : checkArr
-	        }
-	
+	    $("input[name='checkList']:checked").each(function() {//체크된 체크박스의 value 값을 가지고 온다.
+	        checkArr.push($(this).val());// 체크된 것만 값을 뽑아서 배열에 push
+	        //console.log(checkArr);
+	        
 	    });
-
+	    console.log(checkArr);
+	    $("#checkBoxList").val(checkArr);
+	    $("form").attr("action", "deleteInterior.in");
+	    $("form").submit();
+	    
 	}
 	
 	

@@ -227,59 +227,51 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th colspan="3">
+                            <th>${loginUser.userId }</th>
+                            <th colspan="2">
                                 <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
                             </th>
-                            <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;">댓글등록</button></th>
+                            <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;" onclick="addReview()">리뷰등록</button></th>
                         </tr>                      
                     </thead>
                     <tbody>
-                        <tr>
-                            <th></th>
-                            <th>user02</th>
-                            <td width="600">ㅋㅋㅋㅋ</td>
-                            <td width="130">2020-03-12</td>
-                            <td class="buttons">
-                                <!--본인 작성 댓글일 경우 수정하기/삭제하기 아닌 경우 신고하기만!-->
-                                <button type="button" class="btn" data-toggle="modal" data-target="#updateReview">수정</button>
-                                <button>삭제</button>
-                                <button type="button" class="btn" data-toggle="modal" data-target="#rereply">댓글</button><!--관리자만 리뷰 리댓 쓸 수 있음-->
-                            </td>
-                        </tr>
+                       
+                        <!--  
                         <tr class="rereply-area">
                             <th>⤷</th>
                             <th>admin</th>
                             <td width="550">뭐</td>
                             <td width="130">2020-03-12</td>             
                         </tr>     
+                        -->
                     </tbody>
                 </table>
             </div>
-
+	<!-- 
             <div class="modal" id="rereply">
                 <div class="modal-dialog">
                   <div class="modal-content">
               
-                    <!-- Modal Header -->
+                    -- Modal Header 
                     <div class="modal-header">
                       <h4 class="modal-title">리뷰 댓글쓰기</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
               
-                    <!-- Modal body -->
+                    <!-- Modal body 
                     <div class="modal-body">
                         <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;">
                             	리뷰 댓글 작성하는 곳
                         </textarea>
                     </div>           
-                    <!-- Modal footer -->
+                    <!-- Modal footer 
                     <div class="modal-footer">
                       <button type="button" class="btn" data-dismiss="modal">확인</button>
                     </div>           
                   </div>
                 </div>
             </div>
-
+ 		-->
             <div class="modal" id="updateReview">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -292,7 +284,7 @@
               
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;">
+                        <textarea class="form-control mContent" name="" cols="55" rows="2" style="resize:none; width:100%;">
                         		댓글 내용 들어있음
                         </textarea>
                     </div>
@@ -323,8 +315,7 @@
 	        });
 	        $(".item3").click(function(){
 	            $("#myCarousel").carousel(2);
-	        });       
-	       
+	        });       	       
 	    });
 		//찜기능
 		
@@ -348,23 +339,96 @@
 					
 					if(result == "NN"){
 						$("#like").html("♡");
-	                       
-						
+	                       					
 					}else{
 						$("#like").html("♥");
-					}
-				
-				}
-				
-				
-			})
-			
-			
+					}				
+				}								
+			})						
 		}
 		
-
+		$(function(){
+			selectReviewList();
+		})
+			
+		function addReview(){//댓글 작성용
+			//아무것도 없을 때 요청 불가능하게!
+			
+			if($("#content").val().trim() != 0 ){			
+					$.ajax({					
+						url : "reviewInsert.in",
+						data : {
+							interiorNo : ${ in.interiorNo },
+	    					reviewContent : $("#content").val(), 
+	    					userNo : ${loginUser.userNo }	
+						},
+						success : function(result){
+							if(result == "YY"){
+	    						console.log("성공했나?");
+								selectReviewList();
+	    						$("#content").val("");
+							}else{
+								console.log("???")
+							}
+						},
+						error : function(){
+							console.log("댓글 작성 실패");
+						}
+					})//ajax끝
+				}else{
+					alertify.alert("댓글을 올바르게 입력해주세요.");			
+				}
+			}
 		
+			function selectReviewList(){//리뷰 리스트 불러오기
+				$.ajax({
+					url : "reviewList.in",
+					data : {
+						interiorNo : ${in.interiorNo}
+					},
+					success : function(list){
+						console.log(list)
+						let value = "";
+						for(let i in list){
+							value += "<tr>"
+									+"<th>" + "</th>"
+									+"<th class='reviewUserId'>" + list[i].userId +"</th>"
+									+"<td width='600' class='reviewContent'>" + list[i].reviewContent + "</td>"
+									+"<td width='130' class='createDate'>" + list[i].createDate + "</td>"
+									+"<td class='buttons'>" 
+										+ "<button type='button' class='btn updateContent' data-toggle='modal' data-target='#updateReview'>" + "수정"  +"</button>"
+										+ "<button class='deleteContent'>" + "삭제" + "</button>"		
+									+ "</td>"
+									+"</tr>"
+						}
+						$("#replyArea tbody").html(value);
+					},
+					error : function(){
+						console.log("조회 실패")
+					}				
+				})
+			}
 		
+			$(function(){
+				
+				console.log($(".deleteContent").parents(".reviewUserId").eq(0).text());
+				$(".deleteContent").click(function(){
+					
+					$(this).parents(".reviewUserId").text();
+				})
+				
+				$(".updateContent").click(function(){
+					var reviewUserId = $(this).parents(".reviewUserId").val()
+					var reviewContent = $(this).parents(".reviewContent").val()
+					var createDate = $(this).parents(".createDate").val()
+					
+					console.log(reviewUserId);
+					
+				})
+				
+			})
+		
+	
 	
 	
         </script>

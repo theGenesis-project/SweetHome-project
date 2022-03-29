@@ -123,7 +123,7 @@
                         <hr>
                         </div>
                         <div class="interior_post">
-                           		 택배사 : <input type="text" id="interiorPost" name="interiorPost">
+                           		 택배비: <input type="text" id="interiorPost" name="interiorPost">
                             <hr>
                         </div>      
                     </div>

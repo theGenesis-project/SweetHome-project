@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
@@ -28,6 +29,7 @@ import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
 import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
 import com.thegenesis.sweethome.interior.model.vo.PayList;
 import com.thegenesis.sweethome.interior.model.vo.Payment;
+import com.thegenesis.sweethome.interior.model.vo.Review;
 import com.thegenesis.sweethome.member.model.vo.Member;
 @Controller
 public class InteriorController {
@@ -38,6 +40,8 @@ public class InteriorController {
 	
 	@RequestMapping("interior.in")
 	public String interiorList() {
+		
+		
 		
 		return "interior/interiorList";
 	}
@@ -61,6 +65,7 @@ public class InteriorController {
 		ArrayList<Interior> list = interiorService.selectInteriorList(pi, inteCate);	
 		
 		mv.addObject("list", list).addObject("pi", pi).addObject("inteCate",inteCate).setViewName("interior/interiorList");
+		
 		return mv;
 		
 	}
@@ -114,25 +119,41 @@ public class InteriorController {
 		}else {
 			session.setAttribute("alertMsg", "인테리어 등록 실패");
 			return "interior/interiorList";
-		}
-		
-		
+		}	
 		
 	}
 	//인테리어 삭제
 	@RequestMapping("deleteInterior.in")
-	public String deleteInterior(@RequestParam(value = "valueArrTest[]") List<String> valueArrTest) {
+	public String deleteInterior(@RequestParam HashMap<String, Object> checkBoxList, HttpSession session) {
 		
-		System.out.println(valueArrTest);
-		 //ArrayList<Integer> checkNumbers = new ArrayList<Integer>();
-		  
-		/*  for(int i = 0; i < checkList.length; i++) { 
-			  
-			  checkNumbers.add(checkList[i]); 
-		  }
-		  System.out.println(checkNumbers);
-	
-		  int result = interiorService.deleteInterior(checkNumbers);*/
+		
+		String[] checkListArr = null;
+		String interiorNoArr = (String) checkBoxList.get("checkBoxList");
+		
+		checkListArr = interiorNoArr.split(",");//가져온 배열 나열
+		
+		int[] interiorNo_array = new int[checkListArr.length];
+		
+		for(int i = 0; i< checkListArr.length; i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("interiorNo", checkListArr[i]);
+			
+			int result = interiorService.deleteInterior(map);
+			
+			if(result>0) {//삭제 했을 경우 사진 삭제 진행		
+				
+					ArrayList<InteriorFile> InteriorFileList = interiorService.selectInteriorFile(Integer.parseInt(checkListArr[i]));
+					
+					for(int j = 0; j< InteriorFileList.size(); j++) {
+						//기존 첨부파일 삭제(파일 자체)			
+						new File(session.getServletContext().getRealPath(InteriorFileList.get(j).getFilePath())).delete();
+						//기존 첨부파일 삭제(오라클 내의 정보 삭제)
+						interiorService.deleteInteriorFileInfo(Integer.parseInt(checkListArr[j]));
+					}
+			}
+		}
+		session.setAttribute("alertMsg", "게시글 삭제 완료");
 		return "interior/interiorList";
 	}
 	//게시판 상세보기
@@ -169,17 +190,18 @@ public class InteriorController {
 		}		
 		return mv;	
 	}
-	/*
+	
 	//인테리어 역대 베스트
 	@RequestMapping("interiorBestList.in")
 	public ModelAndView selectInteriorList(ModelAndView mv ) {
-
+		
 		ArrayList<Interior> list = interiorService.selectInteriorBestList();	
 		
 		
+				
 		return mv;
 		
-	}*/
+	}
 	
 	//찜기능
 	@ResponseBody
@@ -247,8 +269,7 @@ public class InteriorController {
 			
 		ArrayList<InteriorFile> list = new ArrayList<>();////새로 첨부파일이 날아온 경우 사진 담을 공간
 		
-		InteriorFile inf = null;
-		
+		InteriorFile inf = null;	
 		
 		//기존 첨부파일 불러오기
 		int interiorNo = in.getInteriorNo();
@@ -309,8 +330,7 @@ public class InteriorController {
 	
 	//주문페이지
 	@RequestMapping("orderForm.in")
-	public String orderForm(Model model, Interior in, int interiorNo, int interiorPrice, String interiorTitle, String interiorPost, int inteCate) {
-		
+	public String orderForm(Model model, Interior in, int interiorNo, int interiorPrice, String interiorTitle, String interiorPost, int inteCate) {		
 		
 		in = Interior.builder()
 			.interiorNo(interiorNo)
@@ -321,10 +341,8 @@ public class InteriorController {
 			.build();
 		
 	
-		
 		model.addAttribute("in", in);
-		
-		
+			
 		return "interior/orderPage";
 		
 	}
@@ -340,7 +358,6 @@ public class InteriorController {
 	@RequestMapping(value= "payment.in",  method = RequestMethod.POST)
 	public String payment(@RequestBody PayList pList, ModelAndView mv, HttpSession session) {
 		
-		System.out.println("넘어오나? :"  );
 		System.out.println(pList);	
 		
 		OrderInfo orderInfo = null;
@@ -354,14 +371,13 @@ public class InteriorController {
 							.orderReQ(pList.getOrderReQ())
 							.interiorNo(pList.getInteriorNo())
 							.orderNumber(pList.getMerchant_uid())
-							.postCode(pList.getPostCode())
+							.postcode(pList.getPostcode())
 							.sumPrice(pList.getSumPrice())
 							.senderName(pList.getSenderName())
 							.senderPhone(pList.getSenderPhone())
 							.senderEmail(pList.getSenderEmail())
 							.build();
 		//orderNo : seq, orderstatus : default,  					
-		System.out.println("orderInfo 확인용 " + orderInfo);
 
 		Payment payment = null;
 		
@@ -370,12 +386,11 @@ public class InteriorController {
 						.orderQuantity(pList.getOrderQuantity())
 						.build();
 		//paymentNo : seq, orderNo : seq currval, orderDate : sysdate
-		System.out.println("payment 확인용 : " + payment);
 		
 		//ArrayList<Payment> list = null; 여러개 오면 
 		
 		int result = interiorService.insertOrderInfo(orderInfo, payment);
-		System.out.println("결과보기" + result);
+
 		if(result > 0) {		
 			return "test.in";
 		}else {
@@ -411,8 +426,7 @@ public class InteriorController {
 	//주문 상태 변경
 	@RequestMapping("orderStatusUpdate.in")
 	public String orderStatusUpdate(int orderStatus, int orderNo, HttpSession session) {
-			
-		
+					
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("orderStatus", orderStatus);
 		map.put("orderNo", orderNo);
@@ -428,6 +442,51 @@ public class InteriorController {
 		}
 		
 	}
+	//주문 페이지 정보 수정
+	@RequestMapping("orderPageUpdate.in")
+	public String orderPageUpdate(OrderInfo oi, HttpSession session){
+		
+		int result = interiorService.orderPageUpdate(oi);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "수정 완료");
+			return "interior/orderPageDetail";/*?ono=oi.getOrderNo()*/
+		}else {
+			session.setAttribute("alertMsg", "수정 실패");
+			return "interior/orderPageDetail";
+		}
+		
+		
+	}
+	//환불
+	/*@ResponseBody
+	@RequestMapping("cancelPay.in")
+	public String cancelPay(String merchan_in, int cancel_request_amount ) {
+		
+		
+		return
+		
+	}*/
+	//리뷰 리스트
+	@ResponseBody
+	@RequestMapping(value="reviewList.in", produces="application/json; charset=UTF-8")
+	public String ajaxSelectReviewList(int interiorNo) {
+	
+		ArrayList<Review> reviewList = interiorService.selectReviewList(interiorNo);
+				
+		return new Gson().toJson(reviewList);
+	}
+		
+	//리뷰 작성
+	@ResponseBody
+	@RequestMapping(value="reviewInsert.in")
+	public String ajaxInsertReview(Review rv) {
+		
+		int result = interiorService.insertReview(rv);		
+		
+		return (result > 0 ? "YY" : "NN");
+	}
+	
 	
 
 

@@ -12,6 +12,7 @@ import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.dao.CommunityDao;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
+import com.thegenesis.sweethome.community.model.vo.Reply;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -83,8 +84,6 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 	
 	
-	
-	
 	//게시글 신고 선행
 	@Override
 	public int reportCheck(HashMap<String, String> map) {
@@ -94,6 +93,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int reportBoard(Report r) {
 		return communityDao.reportBoard(sqlSession, r);
+	}
+	//댓글 불러오기
+	@Override
+	public ArrayList<Reply> selectReplyList(int boardNo) {
+		return communityDao.selectReplyList(sqlSession, boardNo);
+	}
+	//댓글 작성
+	@Override
+	public int insertReply(Reply rp) {
+		return communityDao.insertReplyList(sqlSession, rp);
 	}
 	
 	

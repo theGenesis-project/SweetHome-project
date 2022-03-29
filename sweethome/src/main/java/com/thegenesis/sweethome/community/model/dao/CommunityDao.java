@@ -11,6 +11,7 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
+import com.thegenesis.sweethome.community.model.vo.Reply;
 
 @Repository
 public class CommunityDao {
@@ -118,6 +119,14 @@ public class CommunityDao {
 	public int reportCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		
 		return sqlSession.selectOne("communityMapper.reportCheck", map);
+	}
+	//댓글 불러오기
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int boardNo) {
+		return (ArrayList)sqlSession.selectList("communityMapper.selectReplyList", boardNo);
+	}
+	//댓글 작성
+	public int insertReplyList(SqlSessionTemplate sqlSession, Reply rp) {
+		return sqlSession.insert("communityMapper.insertReply", rp);
 	}
 
 	

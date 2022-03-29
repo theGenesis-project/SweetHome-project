@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
@@ -21,6 +23,8 @@ import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.service.CommunityService;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
+import com.thegenesis.sweethome.community.model.vo.Reply;
+import com.thegenesis.sweethome.interior.model.vo.Review;
 
 @Controller
 public class CommunityControler {
@@ -411,9 +415,31 @@ public class CommunityControler {
 			session.setAttribute("alertMsg", "이미 신고하셨습니다.");
 			return "redirect:detail.co?bno=" + boardNo;
 		}
-		
-		
+				
 	}
+	
+	//리뷰 리스트
+		@ResponseBody
+		@RequestMapping(value="replyList.co", produces="application/json; charset=UTF-8")
+		public String ajaxSelectReplyList(int boardNo) {
+		
+			ArrayList<Reply> replyList = communityService.selectReplyList(boardNo);
+					
+			return new Gson().toJson(replyList);
+		}
+			
+		//리뷰 작성
+		@ResponseBody
+		@RequestMapping(value="replyInsert.co")
+		public String ajaxInsertReply(Reply rp) {
+			System.out.println("제대로 들어오는지 확인" + rp);
+			int result = communityService.insertReply(rp);		
+			
+			return (result > 0 ? "YY" : "NN");
+		}
+		
+		
+	
 	
 	
 

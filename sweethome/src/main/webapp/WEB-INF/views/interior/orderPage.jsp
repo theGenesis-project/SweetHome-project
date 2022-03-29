@@ -285,9 +285,6 @@
 	    }
 	    
 	    
-    	
-    
-    
     
     	//페이시작!
 		$(document).ready(function(){
@@ -328,7 +325,7 @@
 				        		detailAddress: $("#detailAddress").val(),
 				        		orderReQ : $("#orderReQ").val(),
 				        		interiorNo : ${in.interiorNo},
-				        		postCode : $("#postcode").val(),
+				        		postcode : $("#postcode").val(),
 				        		orderQuantity : $(".orderQuantity").val(),//개수
 				        		interiorPost : ${in.interiorPost}, //배송비
 				        		sumPrice : $('#interiorNo_number').val(),//배송비 제외 총 가격	

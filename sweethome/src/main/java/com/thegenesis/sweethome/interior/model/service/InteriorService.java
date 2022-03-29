@@ -14,6 +14,7 @@ import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
 import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
 import com.thegenesis.sweethome.interior.model.vo.Payment;
+import com.thegenesis.sweethome.interior.model.vo.Review;
 
 @Service
 public class InteriorService {
@@ -38,10 +39,12 @@ public class InteriorService {
 		
 		return interiorDao.insertInterior(sqlSession, in, list);
 	}
-	//게시글 삭제(보류)
-	public int deleteInterior(ArrayList<Integer> checkNumbers) {
-		return interiorDao.deleteInterior(sqlSession, checkNumbers);
+	//게시글 삭제
+	public int deleteInterior(HashMap<String, Object> map) {
+	
+		return interiorDao.deleteInterior(sqlSession, map);
 	}
+
 	//게시글 조회수 증가
 	public int increaseCount(int ino) {
 		return interiorDao.increaseCount(sqlSession, ino);
@@ -104,7 +107,19 @@ public class InteriorService {
 	public int orderStatusUpdate(HashMap<String, Integer> map) {
 		return interiorDao.orderStatusUpdate(sqlSession, map);
 	}
-
+	//주문페이지 수정
+	public int orderPageUpdate(OrderInfo oi) {
+		return interiorDao.orderPageUpdate(sqlSession, oi);
+	}
+	//리뷰 작성
+	public int insertReview(Review rv) {
+		return interiorDao.insertReview(sqlSession, rv);
+	}
+	//리뷰 리스트 불러오기
+	public ArrayList<Review> selectReviewList(int interiorNo) {
+		return interiorDao.selectReviewList(sqlSession, interiorNo);
+	}
+	
 	
 
 

@@ -12,9 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Document</title>
     <style>
-        div{
-            border: red 1px solid;
-        }
+      
         #nav{
             width: 1500px;
             height: 50px;

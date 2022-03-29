@@ -29,6 +29,8 @@
   	<result column="REREPLY" property="rereply"/>
   	<result column="REPORT" property="report"/>
   	<result column="BOARD_TITLE" property="boardTitle"/>
+  	
+  	<result column="USER_ID" property="userId"/>
   </resultMap>
   
   <resultMap type="communityFile" id="communityFileResultSet">
@@ -387,6 +389,44 @@
 			#{boardNo}
 		</foreach>
 	</update>
+	
+	
+	<!-- 댓글 리스트 불러오기 -->
+	<select id="selectReplyList" parameterType="_int" resultMap="replyResultSet">
+		SELECT
+			REPLY_NO
+			,BOARD_NO
+			,USER_NO
+			,REPLY_CONTENT
+			,CREATE_DATE
+			,USER_ID
+		FROM 
+			REPLY
+		JOIN 
+			MEMBER USING(USER_NO)
+		WHERE
+			BOARD_NO = #{boardNo}
+
+	</select>
+	
+	<!-- 댓글 작성 -->
+	<insert id="insertReply" parameterType="reply">
+		INSERT
+		INTO REPLY(
+			REPLY_NO
+			,BOARD_NO
+			,USER_NO
+			,REPLY_CONTENT
+		)
+		VALUES(
+			SEQ_REP_NO.NEXTVAL
+			,#{boardNo}
+			,#{userNo}
+			,#{replyContent}	
+		)
+
+	</insert>
+	
 
   
 </mapper>

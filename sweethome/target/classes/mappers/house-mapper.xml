@@ -22,7 +22,7 @@
 		<result column="HOUSE_GENDER" property="houseGender"/>
 		<result column="MONTHLY" property="monthly"/>
 	</resultMap>
-
+<!--  
 	<resultMap type="house" id="houseResultSet">
 		<result property="houseNo" column="HOUSE_NO"/>
 		<result property="houseName" column="HOUSE_NAME"/>
@@ -39,7 +39,7 @@
 		<result property="longitude" column="LONGITUDE"/>
 		
 	</resultMap>
-
+-->
 
 
 	<!-- 하우스 등록 쿼리문 -->

@@ -180,37 +180,15 @@
                         <th colspan="4">
                             <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
                         </th>
-                        <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;">등록하기</button></th>
+                        <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;" onclick="addReply()">등록하기</button></th>
                     </tr>
                     <tr>
-                        <td colspan="4">댓글(<span id="rcount">3</span>)</td>
+                        <td colspan="4">댓글</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    	
-                        <th colspan="2">user02</th>
-                        <td width="600">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ꿀잼</td>
-                        <td width="80">2020-03-12</td>
-                        <td class="buttons">
-                                <!--본인 작성 댓글일 경우 수정하기/삭제하기 아닌 경우 신고하기만!-->
-                                <button type="button" class="btn" data-toggle="modal" data-target="#updateReview">수정</button>
-                                <button>삭제</button>
-                                <button type="button" class="btn" data-toggle="modal" data-target="#rereply">댓글</button>
-                         </td>
-                         
-                    </tr>
-                     <tr class="rereply-area">
-                            <th width="30">⤷</th>
-                            <th>admin</th>
-                            <td>뭐</td>
-                            <td width="130">2020-03-12</td>
-                            <td class="buttons">
-                                <!--본인 작성 댓글일 경우 수정하기/삭제하기 아닌 경우 신고하기만!-->
-                                <button type="button" class="btn" data-toggle="modal" data-target="#updateReview">수정</button>
-                                <button>삭제</button>
-                         	</td>              
-                        </tr>
+                    
+                     
                 </tbody>
             </table>
             </c:if>
@@ -246,6 +224,70 @@
         </div>
         </div>
     </div>
+    
+    <script>
+	    $(function(){
+			selectReplyList();
+		})
+    	
+		function addReply(){//댓글 작성용
+			//아무것도 없을 때 요청 불가능하게!		
+			if($("#content").val().trim() != 0 ){			
+					$.ajax({					
+						url : "replyInsert.co",
+						data : {
+							boardNo : ${ cm.boardNo },
+	    					replyContent : $("#content").val(), 
+	    					userNo : ${loginUser.userNo }	
+						},
+						success : function(result){
+							if(result == "YY"){
+	    						console.log("성공했나?");
+								selectReplyList();
+	    						$("#content").val("");
+							}else{
+								console.log("???")
+							}
+						},
+						error : function(){
+							console.log("댓글 작성 실패");
+						}
+					})//ajax끝
+				}else{
+					alertify.alert("댓글을 올바르게 입력해주세요.");			
+				}
+			}
+	    
+	    function selectReplyList(){//댓글 불러오기
+			$.ajax({
+				url : "replyList.co",
+				data : {
+					boardNo : ${cm.boardNo}
+				},
+				success : function(list){
+					console.log(list)
+					let value = "";
+					for(let i in list){
+						value += "<tr>"
+									+ "<th colspan='2'>" + list[i].userId + "</th>"
+									+ "<td width='600'>" + list[i].replyContent+ "</td>"
+									+ "<td width='100'>" + list[i].createDate+ "</td>"
+									+ "<td class='buttons'>" 
+										+ "<button type='button' class='btn' data-toggle='modal' data-target='#updateReview'>" + "수정"  + "</button>"
+										+ "<button>" + "삭제"  + "</button>"
+ 									+ " </td>"
+								+"</tr>"
+					}
+					$("#replyArea tbody").html(value);
+				},
+				error : function(){
+					console.log("조회 실패")
+				}				
+			})
+		}
+    
+    
+    </script>
 	 
 	
 	  
