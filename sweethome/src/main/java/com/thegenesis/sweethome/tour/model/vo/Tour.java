@@ -21,5 +21,7 @@ public class Tour {
 	private String phone;
 	private String email;
 	private String askContent;
+	private String tourTime;
+	private String STATUS;
 	
 }

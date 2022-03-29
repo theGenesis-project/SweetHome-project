@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.house.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -37,23 +38,15 @@ public class HouseDao {
 		return sqlSession.selectOne("houseMapper.selectHouseCount");
 	}
 	
-	public ArrayList<House> houseSearch(SqlSessionTemplate sqlSession, PageInfo pi) {
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		int limit = pi.getBoardLimit();
-		
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch", null, rowBounds);
-	}
-
-	public ArrayList<House> houseSearchOne(SqlSessionTemplate sqlSession){
-		
+	public ArrayList<House> houseSearch(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch");
 	}
 
-	public House houseDetail(SqlSessionTemplate sqlSession, int hno) {
-		return sqlSession.selectOne("houseMapper.houseDetail", hno);
+
+	public ArrayList<House> keywordSearch(SqlSessionTemplate sqlSession, String keyword) {
+		return (ArrayList)sqlSession.selectList("houseMapper.keywordSearch",keyword);
 	}
+
+
 
 }

@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList" %>
+
+<% 
+	ArrayList<Room> room = (ArrayList)request.getAttribute("room");
+	
+%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,6 +123,19 @@
      margin:auto;
      padding:5px;
 	}
+	.tour1{
+     width: 80%;
+     height: 40px;
+     background-color:rgb(210, 210, 210);
+     border-radius: 15px;
+     vertical-align:middle;
+     color: white;
+     margin:auto;
+     padding:5px;
+	}
+	.tour:hover{
+        	cursor: pointer;
+        }
 	.house-title{
 	 width:1400px;
 	 font-size:30px;
@@ -263,7 +283,16 @@
 	<br>
 	<hr>
 	<div style="width:1500px;margin:auto;text-align:right;">
-	<button type="button" class="btn btn-primary">정보수정</button>
+	
+	
+	<c:choose>
+		<c:when test ="${ loginUser.userType eq 'M'}">
+		<button type="button" class="btn btn-danger">하우스신고</button>
+		</c:when>
+		<c:otherwise>
+		<button type="button" class="btn btn-primary">정보수정</button>
+		</c:otherwise>
+	</c:choose>
 	</div>	
 	<div class="content">
 			<div class="sub-nav-area">
@@ -350,74 +379,60 @@
 				<th>선불공과금</th>	
 				<th>입주가능일</th>	
 			</thead>
-			<tbody>
-				<td><div class="tour"><span class="span">투어신청</span></div></td>
-				<td>301호</td>
-				<td>남성</td>
-				<td>1인실</td>
-				<td>m2</td>
-				<td>100000원</td>
-				<td>100000원</td>	
-				<td>100000원</td>	
-				<td>100000원</td>	
-				<td>2222-02-22</td>	
-			</tbody>
-				<tbody>
-				<td><div class="tour"><span class="span">투어신청</span></div></td>
-				<td>301호</td>
-				<td>남성</td>
-				<td>1인실</td>
-				<td>m2</td>
-				<td>100000원</td>
-				<td>100000원</td>	
-				<td>100000원</td>	
-				<td>100000원</td>	
-				<td>2222-02-22</td>	
-			</tbody>
-				<tbody>
-				<td><div class="tour"><span class="span">투어신청</span></div></td>
-				<td>301호</td>
-				<td>남성</td>
-				<td>1인실</td>
-				<td>m2</td>
-				<td>100000원</td>
-				<td>100000원</td>	
-				<td>100000원</td>	
-				<td>100000원</td>	
-				<td>2222-02-22</td>	
-			</tbody>
+				<c:forEach var="r" items="${ room }">
+				<tbody >
+						<c:choose>
+							
+							
+						<c:when test="${r.status eq 'N'}">
+							<td><div class="tour1"><span class="span">투어불가</span></div></td>
+						</c:when>
+						<c:otherwise>
+							<td><div class="tour" onclick="tourForm(this);"><span class="span">투어신청</span></div></td>
+						</c:otherwise>
+						</c:choose>
+							<td>${r.roomName}</td>
+						<c:choose>
+						<c:when test="${r.gender eq 'M'}">
+							<td>남성</td>
+						</c:when>
+						<c:otherwise>
+							<td>여성</td>
+						</c:otherwise>
+						</c:choose>
+							<td>${ r.people }인실</td>
+							<td>${ r.area }</td>
+							<td>${ r.deposit }</td>
+							<td>${ r.rent }만원</td>	
+							<td>${ r.expense }만원</td>	
+							<td>${ r.utility }만원</td>	
+							<td>${ r.availableDate }</td>	
+							<td class="rno" style="display:none">${ r.roomNo }</td>	
+							<td class="hno" style="display:none">${ r.houseNo }</td>	
+				</tbody>
+				</c:forEach>
+	
+			
 		</table>
 		<br>
 		<div class="content">
 			<p style="font-size:15px;font-weight:bold;">
 			- 투어신청은 입주가능일 30일 전부터 신청 가능합니다. <br>
-			- 대기신청을 하시면 입주 신청이 가능한 시기에 문자로 연락을 드립니다.
 			</p>
 		</div>
 		<br><br>
+		<c:forEach var="r" items="${ room }" begin="0" end="0">
 		<div class="content" style="font-size:30px;font-weight: bold;color:rgb(247, 202, 201);">
 		지점소개
 		</div>
 		<div class="house-title">	
-			<div id="house-title">소개소개 소 개 소개 소개 소개</div>
+			
+			<div id="house-title"> ${ r.houseTitle }</div>
 		</div>
 		<div class="house-introduce">
 		<br>
 		<p style="font-size:15px;font-weight:bold;">
-		함께 살고싶은 즐거움, 프리미엄 쉐어하우스 스위트홈 1호점<br>
-		<br>
-		+ 합리적인 비용으로 최고의 주거지 제공<br>
-		+ 넓은 공용공간, 풀옵션, 아늑하고 편안한 방<br>
-		+ 높은 보증금 No, 중개수수료 Zero<br>
-		+ 주 1회 지점매니저가 방문하여 세심한 관리 운영<br>
-		+ 지점내 실시간방송 및 VOD 다시보기 무료 제공<br>
-		<br>
-		▶ 연세대 정문에서 도보 10분!<br>
-		▶ 신촌역 도보 10분 내외!<br>
-		▶ 다락 스타일의 2층 구조로 마치 펜션같은 집<br>
-		▶ 다양한 문화생활(쇼핑, 영화, 맛집 등) 가능!<br>
-		<br>
-		※ 보증금 1,000만원 추가시, 매월 월임대료 4만원 할인(최대 5천만원까지)<br>
+			${ r.houseIntroduce }
 		</p>
 		</div>
 		<br>
@@ -440,13 +455,7 @@
 			   </div>
 			   <div class="space2">
 			   		<p style="font-size:15px;font-weight:bold;">
-			   			<br><br><br><br>
-			   			▶ 공용 가전 : 세탁기와 거실 에어컨 <br>
-						▶ 부엌 가전 : 냉장고 / 전자레인지 / 밥솥 등 <br>
-						▶ 부엌 집기류(냄비 / 수저 등) <br>
-						▶ 공용 테이블(식탁) & 의자(쇼파) <br>
-						▶ 정수기 / WIFI / 보안시설 제공 <br>
-						▶ 공용 소모품 : 휴지 / 세제 / 종량제봉투 등 <br>
+			   			${r.shareSpace}
 					</p style="font-size:15px;font-weight:bold;">
 			   </div>
 			   <div class="space1">
@@ -464,12 +473,7 @@
 			   	</div>
 			   <div class="space2">
 			   		<p style="font-size:15px;font-weight:bold;">
-			   			<br><br><br><br>
-			   			▶ 룸당 벽걸이 에어컨 <br>
-						▶ 개인 수납형 침대 <br>
-						▶ 옷장 또는 서랍장 & 전신거울 <br>
-						▶ 책상 & 의자 & 서랍 <br>
-						▶ 기타 : 창문커튼 <br>
+			   			${r.personalSpace }
 			   		</p>
 			   </div>
 		</div>
@@ -485,19 +489,13 @@
 				<div class="traffic1">교통시설 / 접근성</div>
 				<div class="traffic2">
 					<p style="font-size:15px;font-weight:bold;">
-			   			▶ 신촌역 도보 10분 / 홍대입구역 도보 10분<br>
-						▶ 동교동삼거리 버스 : 270/271/602 외 다수노선<br>
-						▶ 연세대학교앞 버스 : 153/272/470 외 다수노선<br>
-						▶ 연세대학교 정문 도보 10분<br>
-						▶ 이화여자대학교 정문 도보 15분<br>
-						▶ 서강대학교 도보 18분<br>
+			   			${r.traffic }
 			   		</p>
 				</div>
 				<div class="traffic1">편의시설</div>
 				<div class="traffic2">
 					<p style="font-size:15px;font-weight:bold;">
-			   			▶ 다양한 문화생활(쇼핑, 영화, 맛집 등)<br>
-						▶ 기초 생활을 위한 편의점, 대형마트 인접<br>
+			   			${r.convenience }
 			   		</p>
 				</div>
 			</div>
@@ -600,7 +598,7 @@
 		<button id="return">다른 하우스 찾기</button>
 		
 	</div>
-	
+	</c:forEach>
 	
 	
 	
@@ -610,10 +608,22 @@
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6"></script>
 		<script>
+		
+		function tourForm(e){
+			 
+
+			var hno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+
+			
+			var rno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+
+			 location.href="tour.re?hno=" + hno + "&rno="+ rno;
+		}
+		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 			 mapOption = { 
-			     center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-			     level: 3 // 지도의 확대 레벨
+			     center: new kakao.maps.LatLng(<%=room.get(0).getLongitude()%>, <%=room.get(0).getLatitude()%>), // 지도의 중심좌표
+			     level: 5 // 지도의 확대 레벨
 			  };
 			
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -622,7 +632,7 @@
 		map.setMaxLevel(6);	
 		
 			// 마커가 표시될 위치입니다 
-		var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
+		var markerPosition  = new kakao.maps.LatLng(<%=room.get(0).getLongitude()%>, <%=room.get(0).getLatitude()%>); 
 			
 			// 마커를 생성합니다
 		var marker = new kakao.maps.Marker({
@@ -632,7 +642,7 @@
 		// 마커가 지도 위에 표시되도록 설정합니다
 		marker.setMap(map);
 			
-		var iwContent = '<div style="padding:5px;">Hello World!</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		var iwContent = '<div style="padding:5px;width:280px;">' + ("<%=room.get(0).getAddress() %>") + '</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
 		// 인포윈도우를 생성합니다
 		var infowindow = new kakao.maps.InfoWindow({

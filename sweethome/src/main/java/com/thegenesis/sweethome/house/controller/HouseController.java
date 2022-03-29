@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.house.model.service.HouseService;
@@ -31,8 +33,7 @@ public class HouseController {
 	@Autowired
 	private HouseService houseService;
 	
-	@Autowired
-	private RoomService roomService;
+
 	
 	// 테스트용
 	@RequestMapping("houseInsert")
@@ -83,40 +84,28 @@ public class HouseController {
 	}
 	
 	@RequestMapping("house.se")
-	public ModelAndView askListView(@RequestParam(value="cpage", defaultValue="1") int currentPage, HttpSession session, ModelAndView mv) {
+	public ModelAndView houseSearch(ModelAndView mv) {
 		
-		PageInfo pi = null;
-		
-		int listCount = houseService.selectHouseCount();
+	
+		ArrayList<House> list = houseService.houseSearch();
 
-		pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
-		
-		ArrayList<House> list = houseService.houseSearch(pi);
-		
-		
-		ArrayList<House> list1 = houseService.houseSearchOne();
-		
 	
-		mv.addObject("list", list).addObject("pi",  pi).addObject("list1", list1).setViewName("house/houseList");
+		mv.addObject("list", list).setViewName("house/houseList");
 		
-		
-	
 		
 		return mv;
 	}
 	
-	@RequestMapping("house.de")
-	public ModelAndView houseDetail(ModelAndView mv, int hno) {
 	
-		House house = houseService.houseDetail(hno);
+	
+	@ResponseBody
+	@RequestMapping(value = "keyword.se", produces="application/json; charset=utf-8")
+	public String keywordSearch(String keyword) {
 		
+		ArrayList<House> list1 = houseService.keywordSearch(keyword);
 
-		mv.addObject("house" ,house).setViewName("house/houseDetail");
-		
-
-		return mv;
-		
-	}	
+		return new Gson().toJson(list1);
+	}
 	/**
 	 * 하우스 이미지 파일 처리
 	 * @param hf

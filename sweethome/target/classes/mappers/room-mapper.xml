@@ -4,5 +4,37 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="roomMapper">
 
+	<resultMap type="room" id="RoomResultSet">
+		<result column="ROOM_NO" property="roomNo"/>
+		<result column="HOUSE_NO" property="houseNo"/>
+		<result column="ROOM_NAME" property="roomName"/>
+		<result column="GENDER" property="gender"/>
+		<result column="PEOPLE" property="people"/>
+		<result column="AREA" property="area"/>
+		<result column="DEPOSIT" property="deposit"/>
+		<result column="RENT" property="rent"/>
+		<result column="EXPENSE" property="expense"/>
+		<result column="UTILITY" property="utility"/>
+		<result column="AVAILABLE_DATE" property="availableDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="HOUSE_NAME" property="houseName"/>
+		<result column="HOUSE_TITLE" property="houseTitle"/>
+		<result column="HOUSE_INTRODUCE" property="houseIntroduce"/>
+		<result column="SHARE_SPACE" property="shareSpace"/>
+		<result column="PERSONAL_SPACE" property="personalSpace"/>
+		<result column="TRAFFIC" property="traffic"/>
+		<result column="CONVENIENCE" property="convenience"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="LATITUDE" property="latitude"/>
+		<result column="LONGITUDE" property="longitude"/>
+	</resultMap>
 
+
+	<select id="houseDetail" resultMap="RoomResultSet">
+			SELECT * 
+			FROM ROOM 
+			LEFT JOIN HOUSE USING(HOUSE_NO)
+			WHERE HOUSE_NO = #{hno}
+			
+  	</select>
 </mapper>

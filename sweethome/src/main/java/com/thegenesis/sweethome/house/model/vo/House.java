@@ -26,7 +26,12 @@ public class House {
 	private String latitude;
 	private String longitude;
 	private int userNo;
+	private String roomName;
 	
 	private String houseGender;
 	private String monthly;
+	
+	private int roomNo;
+	private String filePath;
+	private int fileLevel;
 }
