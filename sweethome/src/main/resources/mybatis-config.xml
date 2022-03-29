@@ -31,7 +31,6 @@
 		<mapper resource="/mappers/member-mapper.xml" />
 		<mapper resource="/mappers/ask-mapper.xml"	/>
 		<mapper resource="/mappers/house-mapper.xml"/>
-		<mapper resource="/mappers/house-file-mapper.xml"/>
 		<mapper resource="/mappers/room-mapper.xml"/>
 		<mapper resource="/mappers/community-mapper.xml"/>
 		<mapper resource="/mappers/interior-mapper.xml"/>	

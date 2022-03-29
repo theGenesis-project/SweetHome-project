@@ -15,9 +15,9 @@
 		width: 1500px;
 		margin: auto;
 	}
-	div {
+	/* div {
 		border: 1px solid red;
-	}
+	} */
 	.button {
 		background-color: rgb(247, 202, 201);
   		border: none;
@@ -65,34 +65,42 @@
 		
 		<h1>하우스 등록</h1>
 		
-		
-		<script>	
+		<script>
 			// 각 사진에 해당하는 이름 정리
-			function filenamecheck() {
+			function fileNumberCheck() {
 
-				console.log(sel_files_obj);
-				console.log(sel_files_obj[0][0].name);
+				// console.log(sel_files_obj);
+				// console.log(sel_files_obj[0][0].name);
+				// console.log(Object.keys(sel_files_obj).length);
+				// console.log(sel_files_obj[0].length);
+
+				var sel_files_obj_length = Object.keys(sel_files_obj).length;
+
+				var fileNumber = []
 
 
 
+				// 하우스 수정용
+				for(var i = 0; i < sel_files_obj_length; i++) {
+					fileNumber.push(sel_files_obj[i].length);
+				}
+
+				console.log(fileNumber);
 
 
-
-
-				$(".add").html("<input type='hidden' name='fileObj' value='" + sel_files_obj + "'>");
-				// 다차원배열 사용
+				$(".add").html("<input type='hidden' name='fileNumber' value='" + fileNumber + "'>");
 				
-				alert("ㅇㅇ");
+				// alert("ㅇㅇ");
 
 				// $("#insertHouse").submit();
+				$("#submit-click").click();
 			}
 		</script>
-
 
 		<form action="insertHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">
 			<div class="form-group">
 			
-				<%-- 방 이름 추가 --%>
+				<%-- 방별 파일 개수 확인 --%>
 				<div class="add"></div>
 				
 				<h3>하우스 이름</h3>
@@ -151,56 +159,190 @@
 					}
 				</script>
 
-				<h3>대표사진</h3>
-				<h4>(첫번째 사진이 대표사진으로 지정됩니다)</h4>
+				<!-- 하우스 대표 사진 -->
+				<h3>대표 사진</h3>
 
 				<a class="button btn1">사진 첨부</a>
-				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)'>
+				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)' required>
 				<div id='image-0' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
 
-				<h3>방 사진</h3>
-				<input type='text' name='roomName' class='form-control' placeholder='해당 방 이름을 입력하세요'>
+				<!-- 방 정보 등록 -->
+				<h2>방 정보 등록</h2>
 
-				<a class='button btn1'>사진 첨부</a>
-				<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);'>
-				<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
+				<div id='room-1'>
+					<h3>방 사진</h3>
+
+					<a class='button btn1'>사진 첨부</a>
+					<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);' required>
+					<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
+
+					<h3>방 정보</h3>
+					<table>
+						<tr>
+							<td>방 이름(호수 등)</td>
+							<td><input type='text' name='roomNameArr' class='form-control' required></td>
+						</tr>
+						<tr>
+							<td>성별</td>
+							<td>
+								<div class='form-check-inline'>
+									<label class='form-check-label'>
+										<input type='radio' class='form-check-input' name='genderArr' value='M' require>남성
+									</label>
+								</div>
+								<div class='form-check-inline'>
+									<label class='form-check-label'>
+										<input type='radio' class='form-check-input' name='genderArr' value='F' required>여성
+									</label>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>타입</td>
+							<td><input type='number' name='peopleArr' class='form-control' min='1' required></td>
+							<td>인실</td>
+						</tr>
+						<tr>
+							<td>면적</td>
+							<td><input type='number' name='areaArr' class='form-control' min='1' required></td>
+							<td>m2</td>
+						</tr>
+						<tr>
+							<td>보증금</td>
+							<td><input type='number' name='depositArr' class='form-control' min='1' required></td>
+							<td>원</td>
+						</tr>
+						<tr>
+							<td>월임대료</td>
+							<td><input type='number' name='rentArr' class='form-control' min='1' required></td>
+							<td>원</td>
+						</tr>
+						<tr>
+							<td>관리비</td>
+							<td><input type='number' name='expenseArr' class='form-control' min='1' required></td>
+							<td>원</td>
+						</tr>
+						<tr>
+							<td>선불공과금</td>
+							<td><input type='number' name='utilityArr' class='form-control' min='1' required></td>
+							<td>원</td>
+						</tr>
+						<tr>
+							<td>입주가능일</td>
+							<td><input type='date' name='availableDateArr' class='form-control' required></td>
+						</tr>
+					</table>
+				</div>
 
 				<%-- 방 추가 버튼 클릭시, 추가 요소 생성 영역 --%>
 				<div id='insert-room'></div>
 
-				<a class='btn' id='insert-room-btn'>방추가</a>
-
+				<div class="btn-group">
+					<button type="button" class='btn btn-primary' id='insert-room-btn'>방 추가</button>
+					<button type="button" class='btn btn-danger' id='remove-room-btn'>방 삭제</button>
+				</div>
 
 				<%-- 사진 관련 스크립트 --%>
 				<script>
 
 					// 방 추가 버튼 클릭시 몇 번째 방인지 확인
-					var imageNum = 2;
+					var roomNum = 2;
 
 					// 방 추가 버튼
 					$(function() {
 						$("#insert-room-btn").click(function() {
-							var addRoom = "<h3>방 사진</h3>"
-								+ "<input type='text' name='roomName' class='form-control' placeholder='해당 방 이름을 입력하세요'>"
+							var addRoom = "<div id='room-" + roomNum + "'>"
+								+ "<h3>방 사진</h3>"
 								+ "<a class='button btn1'>사진 첨부</a>"
-								+ "<input type='file' id='insert-image-" + imageNum + "' name='upfile' multiple='multiple' onchange='insertImage(this);'>"
-								+ "<div id='image-" + imageNum + "' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>";
+								+ "<input type='file' id='insert-image-" + roomNum + "' name='upfile' multiple='multiple' onchange='insertImage(this);' required>"
+								+ "<div id='image-" + roomNum + "' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>"
+								+ "<h3>방 정보</h3>"
+								+ "<table>"
+								+ "<tr>"
+								+ "<td>방 이름(호수 등)</td>"
+								+ "<td><input type='text' name='roomNameArr' class='form-control' required></td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>성별</td>"
+								+ "<td>"
+								+ "<div class='form-check-inline'>"
+								+ "<label class='form-check-label'>"
+								+ "<input type='radio' class='form-check-input' name='genderArr' value='M' require>남성"
+								+ "</label>"
+								+ "</div>"	
+								+ "<div class='form-check-inline'>"
+								+ "<label class='form-check-label'>"
+								+ "<input type='radio' class='form-check-input' name='genderArr' value='F' required>여성"
+								+ "</label>"
+								+ "</div>"
+								+ "</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>타입</td>"
+								+ "<td><input type='number' name='peopleArr' class='form-control' min='1' required></td>"
+								+ "<td>인실</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>면적</td>"
+								+ "<td><input type='number' name='areaArr' class='form-control' min='1' required></td>"
+								+ "<td>m2</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>보증금</td>"
+								+ "<td><input type='number' name='depositArr' class='form-control' min='1' required></td>"
+								+ "<td>원</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>월임대료</td>"
+								+ "<td><input type='number' name='rentArr' class='form-control' min='1' required></td>"
+								+ "<td>원</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>관리비</td>"
+								+ "<td><input type='number' name='expenseArr' class='form-control' min='1' required></td>"
+								+ "<td>원</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>선불공과금</td>"
+								+ "<td><input type='number' name='utilityArr' class='form-control' min='1' required></td>"
+								+ "<td>원</td>"
+								+ "</tr>"
+								+ "<tr>"
+								+ "<td>입주가능일</td>"
+								+ "<td><input type='date' name='availableDateArr' class='form-control' required></td>"
+								+ "</tr>"
+								+ "</table>"
+								+ "</div>";
 
 							$("#insert-room").append(addRoom);
-							imageNum++;
+							roomNum++;
 						})
 					})
 					
-					var attImage = "";
+					// 방 삭제 버튼		
+					$("#remove-room-btn").click(function() {
+						if(roomNum> 2) {
+							console.log(typeof(roomNum));
+							roomNum--;
+							var rommNo = "room-" + roomNum;
+							
+							$("#" + rommNo).remove();
+							
+							console.log(roomNum);
+						}
+					})
+					
 					var imageBtn = "";
+					var attImage = "";
+
 					var sel_files = [];
 					var sel_files_obj = {};
 					
 					// 사진 첨부 버튼 클릭
 					$(function() {
 						$("body").on("click", "a", function() {
-							attImage = ($(this).next().next())[0];
 							imageBtn = ($(this).next())[0];
+							attImage = ($(this).next().next())[0];
 							// 사진 첨부 버튼 다음 input[type=file] 요소 클릭
 							$(this).next().click();
 						})
@@ -223,12 +365,13 @@
 						}
 
 						// 파일 새로 추가시 기존 미리보기 삭제
-						var getId = inputFiles.getAttribute("id");
-						var currentNum = getId.substring(getId.length - 1, getId.length);
-						var name = "image-" + currentNum;
+						var inputFilesId = inputFiles.getAttribute("id");
+						var currentNum = inputFilesId.substring(inputFilesId.length - 1, inputFilesId.length);
+						var attImageName = "image-" + currentNum;
 
-						$("#" + name).children().remove();
+						$("#" + attImageName).children().remove();
 
+						// 추가하고자 하는 파일의 배열 만들기
 						var files = inputFiles.files;
 						var fileArr = Array.prototype.slice.call(files);
 
@@ -236,12 +379,13 @@
 							imageLoader(f, currentNum);
 						}
 						
+						// 몇 번째 방의 파일인지 확인하는 객체 추가
 						sel_files_obj[currentNum] = sel_files;
 						sel_files = [];
 
 					}
 
-					/* 첨부된 이미지들을 배열에 넣고 미리보기 */
+					// 첨부된 이미지들을 배열에 넣고 미리보기
 					imageLoader = function(file, currentNum) {
 						sel_files.push(file);
 						var reader = new FileReader();
@@ -256,7 +400,7 @@
 						reader.readAsDataURL(file);
 					}
 
-					/* 첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+					// 첨부된 파일이 있는 경우 checkbox와 함께 attImage에 추가할 div를 만들어 반환
 					makeDiv = function(img, file, currentNum) {
 						var div = document.createElement('div');
 						div.setAttribute('style', div_style);
@@ -271,8 +415,6 @@
 						btn.onclick = function(ev) {
 							var ele = ev.srcElement;
 							var delFile = ele.getAttribute('delFile');
-
-							console.log(ele);
 							
 							for(var i = 0; i < sel_files_obj[currentNum].length; i++) {
 								if(delFile == sel_files_obj[currentNum][i].name) {
@@ -286,8 +428,6 @@
 								var file = sel_files_obj[currentNum][f];
 								dt.items.add(file);
 							}
-
-							console.log("왜 들어옴");
 
 							var className = ele.getAttribute("class");
 							attImage = ($("." + className).parent().parent())[0];
@@ -309,39 +449,7 @@
 				</script>
 
 				
-				<h2>방 정보 등록</h2>
-				
-				<table class="house_room_info table table-hover">
-					<thead>
-						<tr>
-							<th>구분</th>
-							<th>성별</th>
-							<th>타입</th>
-							<th>면적</th>
-							<th>보증금</th>
-							<th>월임대료</th>
-							<th>관리비</th>
-							<th>선불공과금</th>
-							<th>입주가능일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><input type="text" name="roomName" required></td>
-							<td>
-								<input type="radio" name="gender" value="M" required>남성
-								<input type="radio" name="gender" value="F" required>여성
-							</td>
-							<td><input type="text" name="people" required>인실</td>
-							<td><input type="text" name="area" required>m2</td>
-							<td><input type="text" name="deposit" required>원</td>
-							<td><input type="text" name="rent" required>원</td>
-							<td><input type="text" name="expense" required>원</td>
-							<td><input type="text" name="utility" required>원</td>
-							<td><input type="date" name="date" required></td>
-							</tr>
-					</tbody>
-				</table>
+
 				
 				<h2>하우스 소개</h2>
 				<textarea name="houseTitle" class="form-control" placeholder="간략한 하우스 소개를 입력해주세요." style="resize: none;" required></textarea>
@@ -362,9 +470,16 @@
 				<textarea name="convenience" class="form-control" placeholder="편의시설 소개를 입력해주세요." style="resize: none;"></textarea>
 
 				<div class="btn-group">
-					<button class="btn btn-warning" onclick="filenamecheck()">등록 및 결제</button>
+					<button type="button" class="btn btn-warning" onclick="fileNumberCheck()">등록 및 결제</button>
 					<button class="btn btn-danger" type="reset">취소</button>
+					<button type="submit" id="submit-click"></button>
 				</div>
+
+				<script>
+					$(function() {
+						$("#submit-click").hide();
+					})
+				</script>
 
 			</div>
 		</form>

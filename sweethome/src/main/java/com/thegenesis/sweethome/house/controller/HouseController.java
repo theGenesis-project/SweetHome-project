@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,10 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.thegenesis.sweethome.common.template.Pagination;
+import com.thegenesis.sweethome.common.template.jsonParser;
+import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.house.model.service.HouseService;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.house.model.vo.HouseFile;
+import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.room.model.service.RoomService;
 import com.thegenesis.sweethome.room.model.vo.Room;
 
@@ -49,16 +51,26 @@ public class HouseController {
 	 * 하우스 등록
 	 */
 	@RequestMapping("insertHouse.ho")
-	public ModelAndView insertHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, HttpSession session, ModelAndView mv, HashMap<Object, Object> fileObj) {
+	public String insertHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, int[] fileNumber, HttpSession session) {
 		
-		System.out.println("찍힘?");
-		System.out.println(fileObj);
-		System.out.println("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ");
-
+		// 로그인 유저 번호 입력
+		if(session.getAttribute("loginUser") != null) {
+			h.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());			
+		} else {
+			session.setAttribute("errorMsg", "로그인하시기 바랍니다.");
+			return "redirect:/";
+		}
 		
+		System.out.println("로그인 유저 번호: " + h.getUserNo());
+		System.out.println("하우스 정보: " + h);
+		System.out.println("하우스 파일 정보: " + hf);
+		System.out.println("방 정보: " + r);
 		
+		int resultHouse = 0; // 하우스 등록 결과
+		int resultRoom = 0; // 방 등록 결과
+		int resultHouseFile = 0; // 하우스 파일 등록 결과
 		
-		// textarea 줄바꿈 => <br> 처리
+		// 하우스 정보 textarea 줄바꿈 <br> 처리
 		h.setHouseTitle(h.getHouseTitle().replace(System.lineSeparator(), "<br>"));
 		h.setHouseIntroduce(h.getHouseIntroduce().replace(System.lineSeparator(), "<br>"));
 		h.setShareSpace(h.getShareSpace().replace(System.lineSeparator(), "<br>"));
@@ -66,19 +78,100 @@ public class HouseController {
 		h.setTraffic(h.getTraffic().replace(System.lineSeparator(), "<br>"));
 		h.setConvenience(h.getConvenience().replace(System.lineSeparator(), "<br>"));
 		
-		int result = houseService.insertHouse(h);
-		
-		
-		House h2 = houseService.selectHouse(h.getHouseName());
-		
+		// 하우스 등록
+		resultHouse = houseService.insertHouse(h);
 
+//		// 하우스 등록 성공한 번호 가져오기
+//		int houseNo = houseService.selectHouseNo();
+//		System.out.println("현재 하우스 번호: " + houseNo);
+//		System.out.println("리절트 하우스: " + resultHouse);
 		
+		// 방 등록 성공한 방 번호 리스트
+		ArrayList<Integer> roomNoArr = new ArrayList<>(); // 방 번호 리스트
 		
-		mv.addObject("h2", h2).setViewName("main");
+		// 하우스 등록 성공시 방 등록
+		if(resultHouse > 0) {
+			int roomNum = r.getRoomNameArr().length; // 입력된 방 개수
+			int resultTempRoom = 0; // 임시 방 등록 결과
+			
+			// 순차적으로 방 입력
+			for(int i = 0; i < roomNum; i ++) {
+				Room tempRoom = Room.builder()
+//									.houseNo(houseNo)
+									.roomName(r.getRoomNameArr()[i])
+									.gender(r.getGenderArr()[i])
+									.people(r.getPeopleArr()[i])
+									.area(r.getAreaArr()[i])
+									.deposit(r.getDepositArr()[i])
+									.rent(r.getRentArr()[i])
+									.expense(r.getExpenseArr()[i])
+									.utility(r.getUtilityArr()[i])
+									.availableDate(r.getAvailableDateArr()[i])
+									.build();
+				
+				System.out.println("tempRoom: " + tempRoom);
+				
+				
+				// 임시 방 입력
+				resultTempRoom = roomService.insertRoom(tempRoom);
+				
+				// 임시 방 등록 성공시 방 번호 리스트에 추가
+				if(resultTempRoom > 0) {
+					roomNoArr.add(roomService.selectRoomNo() - 1);
+				} else {
+					break;
+				}
+			}
+			
+			// 입력된 방 개수와 임시 방 등록 성공한 방 번호 리스트 일치 확인
+			if(roomNoArr.size() == roomNum) {
+				resultRoom = 1;
+			}
+			
+			// 방 등록 성공시 하우스 파일 등록
+			if(resultRoom > 0) {
+				int fileCheck = 0; // 하우스 파일 순서 확인
+				int fileLevel = 1; // 이미지 종류 확인
+				ArrayList<HouseFile> hfList = new ArrayList<>(); // 하우스 파일 등록용 ArrayList
+				
+				// 하우스 이미지 파일 저장
+				for(int i = 0; i < fileNumber.length; i++) { // i = 방 번호 확인
+					for(int j = 0; j < fileNumber[i]; j++) { // j = 파일 개수 확인
+						
+						if(i > 0) { // 대표이미지가 아닐 경우
+							fileLevel = 2;
+						}
+						
+						// 서버 업로드용 파일명 변경
+						String changeName = saveFile.changeFileName(upfile[fileCheck], session);
+						
+						// 해당 하우스 이미지 파일 리스트로 저장
+						hfList.add(HouseFile.builder()
+											.roomNo(roomNoArr.get(i))
+											.originName(upfile[fileCheck].getOriginalFilename())
+											.changeName(changeName)
+											.filePath("resources/uploadFiles/" + changeName)
+											.fileLevel(fileLevel)
+											.build());
+						
+						fileCheck++;
+					}
+				}
+				
+				System.out.println("하우스 파일: " + hfList);
+				
+				// 하우스 파일 등록
+				resultHouseFile = houseService.insertHouseFile(hfList);
+			}
+		}
 		
-		
-		
-		return mv;
+		if(resultHouse * resultRoom * resultHouseFile > 0) {
+			session.setAttribute("alertMsg", "하우스 등록에 성공하였습니다.");
+			return "redirect:/";
+		} else {
+			session.setAttribute("errorMsg", "하우스 등록에 실패하였습니다.");
+			return "redirect:/";
+		}
 		
 	}
 	

@@ -21,7 +21,6 @@ public class HouseService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	
 	/**
 	 * 하우스 등록
 	 * @param h
@@ -51,6 +50,23 @@ public class HouseService {
 
 	public House houseDetail(int hno) {
 		return houseDao.houseDetail(sqlSession, hno);
+	}
+	
+	/**
+	 * 현재 하우스 번호 확인
+	 * @return
+	 */
+	public int selectHouseNo() {
+		return houseDao.selectHouseNo(sqlSession);
+	}
+	
+	/**
+	 * 하우스 파일 등록
+	 * @param hfList
+	 * @return
+	 */
+	public int insertHouseFile(ArrayList<HouseFile> hfList) {
+		return houseDao.insertHouseFile(sqlSession, hfList);
 	}
 	
 }
