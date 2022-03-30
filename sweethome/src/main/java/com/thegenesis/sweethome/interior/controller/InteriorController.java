@@ -40,9 +40,7 @@ public class InteriorController {
 	
 	@RequestMapping("interior.in")
 	public String interiorList() {
-		
-		
-		
+
 		return "interior/interiorList";
 	}
 	//게시글 개수
@@ -127,9 +125,9 @@ public class InteriorController {
 	public String deleteInterior(@RequestParam HashMap<String, Object> checkBoxList, HttpSession session) {
 		
 		
-		String[] checkListArr = null;
 		String interiorNoArr = (String) checkBoxList.get("checkBoxList");
 		
+		String[] checkListArr = null;		
 		checkListArr = interiorNoArr.split(",");//가져온 배열 나열
 		
 		int[] interiorNo_array = new int[checkListArr.length];
@@ -193,14 +191,19 @@ public class InteriorController {
 	
 	//인테리어 역대 베스트
 	@RequestMapping("interiorBestList.in")
-	public ModelAndView selectInteriorList(ModelAndView mv ) {
+	public String selectInteriorList() {
+			
+		return "interior/interiorBest";
+		
+	}
+	//역대 베스트
+	@ResponseBody
+	@RequestMapping(value="bestList.in", produces="application/json; charset-UTF-8")
+	public String ajaxBestInteriorList() {
 		
 		ArrayList<Interior> list = interiorService.selectInteriorBestList();	
 		
-		
-				
-		return mv;
-		
+		return new Gson().toJson(list);
 	}
 	
 	//찜기능
@@ -215,7 +218,6 @@ public class InteriorController {
 		int checkHeart = interiorService.changeHeart(hm);
 		//1: 하트 등록  2: 하트 해제
 		
-		System.out.println("ajax : " + checkHeart);
 		return checkHeart == 1 ? "YY" : "NN";
 		
 	}
@@ -238,7 +240,7 @@ public class InteriorController {
 		
 		mv.addObject("pi", pi);
 		mv.addObject("list",list);
-		mv.addObject("conditon", condition);
+		mv.addObject("condition", condition);
 		mv.addObject("keyword", keyword);
 		
 		mv.setViewName("interior/interiorSearchList");
@@ -350,15 +352,13 @@ public class InteriorController {
 	@RequestMapping("test.in")
 	public String test() {
 		
-		return "interior/test";
+		return "interior/orderPagePasser";
 	}
 
 	//주문 내역 등록
 	@ResponseBody
 	@RequestMapping(value= "payment.in",  method = RequestMethod.POST)
-	public String payment(@RequestBody PayList pList, ModelAndView mv, HttpSession session) {
-		
-		System.out.println(pList);	
+	public String payment(@RequestBody PayList pList, ModelAndView mv, HttpSession session) {	
 		
 		OrderInfo orderInfo = null;
 		
@@ -390,12 +390,14 @@ public class InteriorController {
 		//ArrayList<Payment> list = null; 여러개 오면 
 		
 		int result = interiorService.insertOrderInfo(orderInfo, payment);
-
-		if(result > 0) {		
-			return "test.in";
+		int orderNo = orderInfo.getOrderNo();
+		
+		if(result > 0) {	
+			
+			return "dibsList.my";//나중에 주문 페이지로 바꿔주기
 		}else {
 			session.setAttribute("alertMsg", "주문 실패");
-			return "test.in";
+			return "dibsList.my";
 		}
 		
 		
@@ -486,6 +488,39 @@ public class InteriorController {
 		
 		return (result > 0 ? "YY" : "NN");
 	}
+	//리뷰 수정
+	@RequestMapping("updateReview.in")
+	public String updateReview(Review rv, HttpSession session) {
+		
+		int interiorNo = rv.getInteriorNo();
+	
+		int result = interiorService.updateReview(rv);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "리뷰 수정 성공");
+			return "redirect:detail.in?ino=" + interiorNo;
+		}else {
+			session.setAttribute("alertMsg", "리뷰 수정 실패");
+			return "redirect:detail.in?ino=" + interiorNo;
+		}
+
+	}
+	//리뷰 삭제
+	@RequestMapping(value="deleteReview.in",  method = RequestMethod.GET)
+	public String deleteReview(@RequestParam(value="reviewNo") int reviewNo, @RequestParam(value="interiorNo")int interiorNo, HttpSession session) {
+		
+		int result = interiorService.deleteReview(reviewNo);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "리뷰 삭제 성공");
+			return "redirect:detail.in?ino=" + interiorNo;
+		}else {
+			session.setAttribute("alertMsg", "리뷰 삭제 실패");
+			return "redirect:detail.in?ino=" + interiorNo;
+		}
+
+	}
+	
 	
 	
 

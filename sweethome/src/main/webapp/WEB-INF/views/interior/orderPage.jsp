@@ -342,10 +342,10 @@
 				        headers: {"Content-Type": "application/json"},				        
 				        success: function(result){//ajax 통신 성공시
 				        	
-				        	console.log(result);
-				        	console.log("ajax 통신 성공")
+				        	console.log(result);//myPage 주문목록으로
+				        	console.log("ajax 통신 성공");
 				        	
-				        	location.href = result;        	
+				        	location.href = result        	
 				         
 				        },
 				        error:function(){//ajax 통신 실패시

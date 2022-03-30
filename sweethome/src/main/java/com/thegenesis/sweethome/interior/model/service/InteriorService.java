@@ -44,7 +44,6 @@ public class InteriorService {
 	
 		return interiorDao.deleteInterior(sqlSession, map);
 	}
-
 	//게시글 조회수 증가
 	public int increaseCount(int ino) {
 		return interiorDao.increaseCount(sqlSession, ino);
@@ -118,6 +117,14 @@ public class InteriorService {
 	//리뷰 리스트 불러오기
 	public ArrayList<Review> selectReviewList(int interiorNo) {
 		return interiorDao.selectReviewList(sqlSession, interiorNo);
+	}
+	//리뷰 수정
+	public int updateReview(Review rv) {
+		return interiorDao.updateReview(sqlSession, rv);
+	}
+	//리뷰 삭제
+	public int deleteReview(int reviewNo) {
+		return interiorDao.deleteReview(sqlSession, reviewNo);
 	}
 	
 	

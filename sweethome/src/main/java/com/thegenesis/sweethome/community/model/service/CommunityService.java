@@ -45,14 +45,18 @@ public interface CommunityService {
 	//댓글 작성
 	int insertReply(Reply rp);
 	//댓글 수정
-	
+	int updateReply(Reply rp);
 	//댓글 삭제
+	int deleteReply(int boardNo);
 	
 	//글 신고
 	int reportCheck(HashMap<String, String> map);
 	int reportBoard(Report r);
-
+		
 	//댓글 신고
+	int reportCheckReply(HashMap<String, String> map);
+	int reportReply(Report r);
+
 	
 	
 

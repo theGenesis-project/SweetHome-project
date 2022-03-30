@@ -174,6 +174,14 @@ public class InteriorDao {
 	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, int interiorNo) {
 		return (ArrayList)sqlSession.selectList("interiorMapper.selectReviewList", interiorNo);
 	}
+	//리뷰수정
+	public int updateReview(SqlSessionTemplate sqlSession, Review rv) {
+		return sqlSession.update("interiorMapper.updateReview", rv);
+	}
+	//리뷰삭제
+	public int deleteReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return sqlSession.update("interiorMapper.deleteReview", reviewNo);
+	}
 
 	
 

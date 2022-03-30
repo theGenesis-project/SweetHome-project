@@ -124,14 +124,35 @@
                     </div>      
                 </div>
             </div>
+            
+             <script>
+                    	$(function(){
+                    		var inf_array = ${inf.size()};
+                    		
+                    		console.log(${inf.size()});
+                    		console.log(inf.get(1).filePath)
+                    		console.log(inf.get(2).filePath)
+                    		console.log(inf.get(3).filePath)
+                    		
+                    		for(var i = 1 ; i< ${inf.size()} ; i++){
+                    			if(inf.get(i).filePath == null){
+                    				$('img').attr("src",null);
+                    			}
+                    		}                   			
+                    	})
+                    </script>
+            
+           
             <div class="content3_2">
                 <div class="content4_3">
                     <div class="img-content">                
 	                        <img src="${inf.get(1).filePath }" id=contentImg1 width="150" height="150">
 	                        <img src="${inf.get(2).filePath }" id=contentImg2 width="150" height="150">
-	                        <img src="${inf.get(3).filePath }" id=contentImg3 width="150" height="150">
-	                              
+	                        <img src="${inf.get(3).filePath }" id=contentImg3 width="150" height="150">                      
                     </div>
+                    
+                    
+                   
                     
                     
                     <div class="interior-content">
@@ -144,6 +165,8 @@
 						<input type="file" id="file3" name="reupfile" onchange="loadImg(this,3);">
 						<input type="file" id="file4" name="reupfile" onchange="loadImg(this,4);">				
 					</div>
+					
+					 
                 </div>
             </div>
             <div class="button">

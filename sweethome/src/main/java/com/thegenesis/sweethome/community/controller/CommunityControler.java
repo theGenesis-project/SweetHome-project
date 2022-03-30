@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ import com.thegenesis.sweethome.community.model.service.CommunityService;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
 import com.thegenesis.sweethome.community.model.vo.Reply;
-import com.thegenesis.sweethome.interior.model.vo.Review;
+
 
 @Controller
 public class CommunityControler {
@@ -41,7 +42,7 @@ public class CommunityControler {
 	}
 	//글 상세보기
 	@RequestMapping("detail.co")
-	public ModelAndView boardDetail(ModelAndView mv, int bno) {
+	public ModelAndView boardDetail(ModelAndView mv, int bno, HttpSession session) {
 			
 		int result = communityService.increaseCount(bno);		
 			
@@ -57,8 +58,8 @@ public class CommunityControler {
 						
 		}else {
 			
-			mv.setViewName("Redirect:/");
-			//나중에 alertMsg로 바꿔주기~
+			session.setAttribute("alertMsg", "상세조회 실패");
+			mv.setViewName("community/noticeList");
 		}		
 		return mv;
 	}
@@ -322,17 +323,19 @@ public class CommunityControler {
 	@RequestMapping("update.co")
 	public String updateBoard(Community cm, CommunityFile cf, Model model, HttpSession session, MultipartFile reupfile ) {
 		
-		
 		//새로 첨부파일이 넘어온 경우
 		if(!reupfile.getOriginalFilename().equals("")) {
-			//기존 첨부파일이 있는 경우
-			//첨부 파일 삭제
-			new File(session.getServletContext().getRealPath(cf.getFilePath())).delete();
+			if(cf.getOriginName() !=null) {
+				//기존 첨부파일이 있는 경우--> 첨부 파일 삭제				
+				new File(session.getServletContext().getRealPath(cf.getFilePath())).delete();
+			}
+			
 			//새로운 첨부파일 등록
 			String changeName = saveFile.changeFileName(reupfile, session);
 			
 			cf = CommunityFile.builder().originName(reupfile.getOriginalFilename())
 						.fileNo(cf.getFileNo())
+						.boardNo(cm.getBoardNo())
 						.originName(reupfile.getOriginalFilename())
 						.changeName(changeName)
 						.filePath("resources/uploadFiles/" + changeName)
@@ -383,8 +386,7 @@ public class CommunityControler {
 	}
 	//게시글 신고
 	@RequestMapping("reportBoard.co")
-	public String reportBoard(int boardNo, int reportCate, int userNo, HttpSession session) {
-		
+	public String reportBoard(int boardNo, int reportCate, int userNo, HttpSession session) {		
 		
 		HashMap<String, String> map = new HashMap<>(); 
 		map.put("boardNo", Integer.toString(boardNo));
@@ -418,7 +420,7 @@ public class CommunityControler {
 				
 	}
 	
-	//리뷰 리스트
+		//댓글 리스트
 		@ResponseBody
 		@RequestMapping(value="replyList.co", produces="application/json; charset=UTF-8")
 		public String ajaxSelectReplyList(int boardNo) {
@@ -428,15 +430,91 @@ public class CommunityControler {
 			return new Gson().toJson(replyList);
 		}
 			
-		//리뷰 작성
+		//댓글 작성
 		@ResponseBody
 		@RequestMapping(value="replyInsert.co")
 		public String ajaxInsertReply(Reply rp) {
-			System.out.println("제대로 들어오는지 확인" + rp);
+			
 			int result = communityService.insertReply(rp);		
 			
 			return (result > 0 ? "YY" : "NN");
 		}
+		
+		//댓글 수정
+		@RequestMapping("updateReply.co")
+		public String updateReply(Reply rp, HttpSession session) {
+			System.out.println(rp);
+			
+			int boardNo = rp.getBoardNo();
+			
+			int result = communityService.updateReply(rp);
+			
+			if(result>0) {
+				session.setAttribute("alertMsg", "댓글 수정 성공");
+				return "redirect:detail.co?bno=" + boardNo;
+			}else {
+				session.setAttribute("alertMsg", "댓글 수정 실패");
+				return "redirect:detail.co?bno=" + boardNo;
+			}
+			
+		}
+		
+		//댓글 삭제
+		@RequestMapping(value="deleteReply.co",  method = RequestMethod.GET)
+		public String deleteReply(@RequestParam(value="replyNo") int replyNo, @RequestParam(value="boardNo")int boardNo, HttpSession session) {
+			
+			int result = communityService.deleteReply(replyNo);
+			
+			if(result>0) {
+				session.setAttribute("alertMsg", "댓글 삭제 성공");
+				return "redirect:detail.co?bno=" + boardNo;
+			}else {
+				session.setAttribute("alertMsg", "댓글 삭제 실패");
+				return "redirect:detail.co?bno=" + boardNo;
+			}
+
+		}
+		//댓글 신고
+		@RequestMapping("reportReply.co")
+		public String reportReply(int boardNo, int replyNo, int reportCate, int userNo, HttpSession session) {
+			
+			System.out.println(boardNo);
+			
+			HashMap<String, String> map = new HashMap<>(); 
+			map.put("replyNo", Integer.toString(replyNo));
+			map.put("UserNo", Integer.toString(userNo));
+			
+			int check = communityService.reportCheckReply(map);//신고여부체크
+				
+			if(check == 0) {
+				Report r = new Report();
+				
+				r = Report.builder()
+						.replyNo(replyNo)
+						.reportCate(reportCate)
+						.userNo(userNo)
+						.build();
+			
+				
+				int result = communityService.reportReply(r);
+				
+				System.out.println(result);
+				
+				if(result>0) {
+					session.setAttribute("alertMsg", "신고완료");
+					return "redirect:detail.co?bno=" + boardNo;
+				}else {
+					session.setAttribute("alertMsg", "신고 실패");
+					return "redirect:detail.co?bno=" + boardNo;
+				}
+				
+			}else {
+				session.setAttribute("alertMsg", "이미 신고하셨습니다.");
+				return "redirect:detail.co?bno=" + boardNo;
+			}
+					
+		}
+		
 		
 		
 	

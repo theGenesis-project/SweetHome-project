@@ -240,22 +240,32 @@
 			INTERIOR_NO = #{interior_no}
 
 	</select>
-	<!--  
+	<!-- 인테리어 베스트 -->
 	<select id="interiorBestList" resultMap="interiorResultSet">
-		SELECT 
-			INTERIOR_NO, INTE_CATE, INTERIOR_TITLE, INTERIOR_CO, INTERIOR_PRICE, FILE_PATH                     
-		FROM 
-			INTERIOR
-		LEFT JOIN 
-			INTERIOR_FILE USING(INTERIOR_NO)     
-		WHERE 
-			STATUS = 'Y'
-		AND 
-			INTE_CATE = #{inteCate}
-        AND FILE_LEVEL = 1
-		ORDER BY FILE_NO DESC
+		SELECT *
+		FROM(
+			SELECT 
+				I.INTERIOR_NO
+				,INTE_CATE
+				,INTERIOR_TITLE
+				,FILE_PATH
+				,INTERIOR_CO
+				,INTERIOR_PRICE			
+				,(SELECT COUNT(*)
+					FROM PAYMENT P
+					WHERE P.INTERIOR_NO = I.INTERIOR_NO )SELL
+			FROM 
+				INTERIOR I
+			JOIN 
+				INTERIOR_FILE F ON (I.INTERIOR_NO = F.INTERIOR_NO)
+			WHERE 
+				FILE_LEVEL = 1
+			AND 
+				STATUS = 'Y'
+			ORDER BY SELL DESC)
+		WHERE ROWNUM BETWEEN 1 AND 6
 	</select>
-	-->
+	
 	<!-- 찜기능 -->
 	<select id="interiorChangeHeart" parameterType="hashmap" resultType="string">
 		 SELECT 
@@ -522,11 +532,14 @@
 			,CREATE_DATE
 			,USER_ID
 		FROM 
-			REVIEW
+			REVIEW R
 		JOIN 
 			MEMBER USING(USER_NO)
 		WHERE
 			INTERIOR_NO = #{interiorNo}
+		AND
+			R.STATUS = 'Y'
+		
 	</select>
 	<!-- 리뷰 작성 -->
 	<insert id="insertReview" parameterType="review">
@@ -545,4 +558,25 @@
 		)
 
 	</insert>
+	<!-- 리뷰 수정 -->
+	<update id="updateReview" parameterType="review">
+		UPDATE 
+			REVIEW
+		SET
+			REVIEW_CONTENT = #{reviewContent}
+			,MODITY_DATE = SYSDATE
+		WHERE
+			REVIEW_NO = #{reviewNo}
+	</update>
+	
+	<!-- 리뷰 삭제 -->
+	<update id="deleteReview" parameterType="_int">
+		UPDATE
+			REVIEW
+		SET
+			STATUS = 'N'
+		WHERE
+			REVIEW_NO = #{reviewNo}
+		
+	</update>
 </mapper>

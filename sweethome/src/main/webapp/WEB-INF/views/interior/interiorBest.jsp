@@ -17,11 +17,18 @@
             margin-top: 50px;
             margin-bottom: 50px;
         }
-        .title>p{
+        .title>.bestTitle{
             margin: 30px 30px;
             color: rgb(99, 99, 99);
             margin: auto;
             font-size: 35px;
+        }
+        .title>.bestTitle2{
+            margin: 30px 30px;
+            color: rgb(247, 202, 201);
+            margin: auto;
+            margin-top: 5px;
+            font-size: 14px;
         }
        
         #interior-area{
@@ -60,6 +67,7 @@
         .interior_price>p{
             color: rgb(247, 202, 201);
             font-weight: 600;
+            display : inline-block;
         }
 </style>
 </head>
@@ -67,88 +75,70 @@
 	<jsp:include page="../common/header.jsp" />
 	<jsp:include page="../common/interiorNavi.jsp" />
 	
-	<div class="content">
-       
+	<div class="content">      
         <div id="interior-area">
             <div class="title">
-                <p>역대 베스트</p>
+                <p class="bestTitle">역대 베스트</p>
+                <p class="bestTitle2">(역대 베스트는 판매량으로 결정됩니다.)</p>
             </div>
-            <div class="interior_list">
-                   <div class="thumbnail-area">
-                       <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                   </div>
-                   <div class="interior_com">
-                       <p>오트밀 하우스</p>
-                   </div>
-                   <div class="interior_title">
-                       <p class="target">수납/원목/LED/무헤드/벙커타입 침대 수납/원목/LED/무헤드/벙커타입 침대</p>
-                   </div>
-                   <div class="interior_price">
-                       <p>1,000,000 원</p>
-                   </div>
-            </div>
-
-            <div class="interior_list">
-                <div class="thumbnail-area">
-                    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                </div>
-                <div class="interior_com">
-                    <p>오트밀 하우스</p>
-                </div>
-                <div class="interior_title">
-                    <p class="target">수납/원목/LED/무헤드/벙커타입 침대 수납/원목/LED/무헤드/벙커타입 침대</p>
-                </div>
-                <div class="interior_price">
-                    <p>1,000,000 원</p>
-                </div>
-            </div>
-
-            <div class="interior_list">
-                <div class="thumbnail-area">
-                    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                </div>
-                <div class="interior_com">
-                    <p>오트밀 하우스</p>
-                </div>
-                <div class="interior_title">
-                    <p class="target">수납/원목/LED/무헤드/벙커타입 침대 수납/원목/LED/무헤드/벙커타입 침대</p>
-                </div>
-                <div class="interior_price">
-                    <p>1,000,000 원</p>
-                </div>
-            </div>
-
-            <div class="interior_list">
-                <div class="thumbnail-area">
-                    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-                </div>
-                <div class="interior_com">
-                    <p>오트밀 하우스</p>
-                </div>
-                <div class="interior_title">
-                    <p class="target">수납/원목/LED/무헤드/벙커타입 침대 수납/원목/LED/무헤드/벙커타입 침대</p>
-                </div>
-                <div class="interior_price">
-                    <p>1,000,000 원</p>
-                </div>
-         </div>
-
-         <div class="interior_list">
-            <div class="thumbnail-area">
-                <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZEhc6%2FbtrvwiEgZqP%2F7M7x4VKdhIZnkKB6EkNREK%2Fimg.jpg" alt="">
-            </div>
-            <div class="interior_com">
-                <p>오트밀 하우스</p>
-            </div>
-            <div class="interior_title">
-                <p class="target">수납/원목/LED/무헤드/벙커타입 침대 수납/원목/LED/무헤드/벙커타입 침대</p>
-            </div>
-            <div class="interior_price">
-                <p>1,000,000 원</p>
-            </div>
-     	</div>      
-      </div>
+            
+            <div id="bestInteriorList">
+       		</div>
+     	</div>
     </div>
+    
+    <script>
+    	$(function(){
+    		BestInteriorList();
+    	})
+    	
+    	function BestInteriorList(){		
+    		$.ajax({
+    			
+    		url : "bestList.in",
+    		success : function(data){ 
+    			
+    			let value="";
+    			for(let i in data){
+    				value += "<div class='interior_list'>" 
+    							+"<div class='thumbnail-area'>" 
+    								+ "<img src=" + data[i].filePath  + ">"
+    							+"</div>"
+    							+"<div class='interior_com'>"
+    								+ "<p>" + data[i].interiorCo +"</p>"
+    							+"</div>"
+    							+"<div class='interior_title'>"
+    								+ "<p class='target'>" + data[i].interiorTitle  +"</p>"
+    							+"</div>"
+    							+"<div class='ino2'>"
+									+ "<p class='ino'style='display: none;'>" + data[i].interiorNo  +"</p>" 
+								+"</div>"
+    							+"<div class='interior_price'>"
+    								+ "<p>" + data[i].interiorPrice  +"</p>" + " 원"
+    							+"</div>"	
+    						 +"</div>"
+    				}
+    			$("#bestInteriorList").html(value);		
+    		},
+    		error : function(){
+    			console.log("에러발생!");
+    			} 		
+    		}) 
+    	}
+    	
+ 
+    	
+    	$(function(){
+    		
+    		$(document).on("click", ".interior_list", function(){
+    			location.href = 'detail.in?ino='+ $(this).children().children('.ino').text();
+   			
+    		})
+  
+    	})
+    	
+   
+    </script>
 	
 	<jsp:include page="../common/footer.jsp" />
 	

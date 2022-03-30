@@ -379,53 +379,108 @@
 		
 		</insert>
 
-	<update id="deleteMyBoard">
+		<update id="deleteMyBoard">
+			UPDATE 
+				COMMUNITY
+			SET
+				STATUS = 'N'
+			WHERE BOARD_NO IN
+			<foreach collection="array" item="boardNo" open="(" close=")" separator=",">		
+				#{boardNo}
+			</foreach>
+		</update>
+	
+	
+		<!-- 댓글 리스트 불러오기 -->
+		<select id="selectReplyList" parameterType="_int" resultMap="replyResultSet">
+			SELECT
+				REPLY_NO
+				,BOARD_NO
+				,USER_NO
+				,REPLY_CONTENT
+				,CREATE_DATE
+				,USER_ID
+			FROM 
+				REPLY R
+			JOIN 
+				MEMBER USING(USER_NO)
+			WHERE
+				BOARD_NO = #{boardNo}
+			AND
+				R.STATUS = 'Y'
+	
+		</select>
+		
+		<!-- 댓글 작성 -->
+		<insert id="insertReply" parameterType="reply">
+			INSERT
+			INTO REPLY(
+				REPLY_NO
+				,BOARD_NO
+				,USER_NO
+				,REPLY_CONTENT
+			)
+			VALUES(
+				SEQ_REP_NO.NEXTVAL
+				,#{boardNo}
+				,#{userNo}
+				,#{replyContent}	
+			)
+	
+		</insert>
+		
+		<!-- 댓글 수정 -->
+		<update id="updateReply" parameterType="reply">
 		UPDATE 
-			COMMUNITY
+			REPLY
+		SET
+			REPLY_CONTENT = #{replyContent}
+			,MODITY_DATE = SYSDATE
+		WHERE
+			REPLY_NO = #{replyNo}
+		</update>
+		
+		<!-- 댓글 삭제 -->
+		<update id="deleteReply" parameterType="_int">
+		UPDATE
+			REPLY
 		SET
 			STATUS = 'N'
-		WHERE BOARD_NO IN
-		<foreach collection="array" item="boardNo" open="(" close=")" separator=",">		
-			#{boardNo}
-		</foreach>
-	</update>
-	
-	
-	<!-- 댓글 리스트 불러오기 -->
-	<select id="selectReplyList" parameterType="_int" resultMap="replyResultSet">
-		SELECT
-			REPLY_NO
-			,BOARD_NO
-			,USER_NO
-			,REPLY_CONTENT
-			,CREATE_DATE
-			,USER_ID
-		FROM 
-			REPLY
-		JOIN 
-			MEMBER USING(USER_NO)
 		WHERE
-			BOARD_NO = #{boardNo}
-
-	</select>
-	
-	<!-- 댓글 작성 -->
-	<insert id="insertReply" parameterType="reply">
-		INSERT
-		INTO REPLY(
-			REPLY_NO
-			,BOARD_NO
-			,USER_NO
-			,REPLY_CONTENT
-		)
-		VALUES(
-			SEQ_REP_NO.NEXTVAL
-			,#{boardNo}
-			,#{userNo}
-			,#{replyContent}	
-		)
-
-	</insert>
+			REPLY_NO = #{replyNo}
+		
+		</update>
+		
+		<!-- 댓글 신고 선행 -->
+		<select id="reportCheckReply" parameterType="hashmap" resultType="_int">
+			SELECT COUNT(*)
+			FROM 
+				REPORT
+			WHERE 
+				USER_NO = #{UserNo}
+			AND 
+				REPLY_NO = #{replyNo}
+		
+		</select>
+		
+		<!-- 댓글 신고 -->
+		<insert id="reportReply" parameterType="report">
+			INSERT 
+			INTO REPORT(
+				REPORT_NO,
+				REPLY_NO,
+				REPORT_CATE,
+				USER_NO
+			)
+			VALUES(
+				SEQ_REPORT_NO.NEXTVAL
+				,#{replyNo}
+				,#{reportCate}	
+				,#{userNo}	
+			)
+		</insert>
+		
+		
 	
 
   

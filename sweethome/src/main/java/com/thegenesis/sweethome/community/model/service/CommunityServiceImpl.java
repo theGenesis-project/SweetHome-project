@@ -49,7 +49,6 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.searchNoticeList(sqlSession, pi, map);
 	}
 
-
 	//게시글 상세보기(조회수 증가)
 	@Override
 	public int increaseCount(int bno) {
@@ -81,9 +80,7 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int deleteBoard(int bno) {
 		return communityDao.deleteBoard(sqlSession, bno);
-	}
-	
-	
+	}		
 	//게시글 신고 선행
 	@Override
 	public int reportCheck(HashMap<String, String> map) {
@@ -102,7 +99,27 @@ public class CommunityServiceImpl implements CommunityService {
 	//댓글 작성
 	@Override
 	public int insertReply(Reply rp) {
-		return communityDao.insertReplyList(sqlSession, rp);
+		return communityDao.insertReply(sqlSession, rp);
+	}
+	//댓글 수정
+	@Override
+	public int updateReply(Reply rp) {
+		return communityDao.updatetReply(sqlSession, rp);
+	}
+	//댓글 삭제
+	@Override
+	public int deleteReply(int boardNo) {
+		return communityDao.updatetReply(sqlSession, boardNo);
+	}
+	//댓글 신고 선행
+	@Override
+	public int reportCheckReply(HashMap<String, String> map) {
+		return communityDao.reportCheckReply(sqlSession, map);
+	}
+	//댓글 신고
+	@Override
+	public int reportReply(Report r) {
+		return communityDao.reportReply(sqlSession, r);
 	}
 	
 	
