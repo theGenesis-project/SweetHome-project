@@ -15,9 +15,6 @@
 		width: 1500px;
 		margin: auto;
 	}
-	/* div {
-		border: 1px solid red;
-	} */
 	.button {
 		background-color: rgb(247, 202, 201);
   		border: none;
@@ -37,11 +34,6 @@
   		color: white;
   		text-decoration: none;
 	}
-	.house_room_info {
-		text-align: center;
-		/* margin: auto; */
-		/* width: 1200px; */
-	}
 	.att-image {
 		width: 100%;
 		min-height: 150px;
@@ -52,9 +44,9 @@
 		color: #999;
 		font-size: .9em;
 	}
-	/* input[type=file]{
+	input[type=file]{
 		display: none;
-	} */
+	}
 </style>
 </head>
 <body>
@@ -64,38 +56,6 @@
 	<div class="outer">
 		
 		<h1>하우스 등록</h1>
-		
-		<script>
-			// 각 사진에 해당하는 이름 정리
-			function fileNumberCheck() {
-
-				// console.log(sel_files_obj);
-				// console.log(sel_files_obj[0][0].name);
-				// console.log(Object.keys(sel_files_obj).length);
-				// console.log(sel_files_obj[0].length);
-
-				var sel_files_obj_length = Object.keys(sel_files_obj).length;
-
-				var fileNumber = []
-
-
-
-				// 하우스 수정용
-				for(var i = 0; i < sel_files_obj_length; i++) {
-					fileNumber.push(sel_files_obj[i].length);
-				}
-
-				console.log(fileNumber);
-
-
-				$(".add").html("<input type='hidden' name='fileNumber' value='" + fileNumber + "'>");
-				
-				// alert("ㅇㅇ");
-
-				// $("#insertHouse").submit();
-				$("#submit-click").click();
-			}
-		</script>
 
 		<form action="insertHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">
 			<div class="form-group">
@@ -448,9 +408,6 @@
 					}
 				</script>
 
-				
-
-				
 				<h2>하우스 소개</h2>
 				<textarea name="houseTitle" class="form-control" placeholder="간략한 하우스 소개를 입력해주세요." style="resize: none;" required></textarea>
 				<textarea name="houseIntroduce" class="form-control" placeholder="하우스에 대한 정보를 자세히 입력해주세요." style="resize: none;" required></textarea>
@@ -474,13 +431,28 @@
 					<button class="btn btn-danger" type="reset">취소</button>
 					<button type="submit" id="submit-click"></button>
 				</div>
-
+						
 				<script>
+					// 등록 버튼 숨기기
 					$(function() {
 						$("#submit-click").hide();
 					})
-				</script>
 
+					// 각 사진에 해당하는 이름 정리
+					function fileNumberCheck() {
+
+						var sel_files_obj_length = Object.keys(sel_files_obj).length;
+						var fileNumber = []
+
+						// 하우스 수정용
+						for(var i = 0; i < sel_files_obj_length; i++) {
+							fileNumber.push(sel_files_obj[i].length);
+						}
+
+						$(".add").html("<input type='hidden' name='fileNumber' value='" + fileNumber + "'>");
+						$("#submit-click").click();
+					}
+				</script>
 			</div>
 		</form>
 	</div>
