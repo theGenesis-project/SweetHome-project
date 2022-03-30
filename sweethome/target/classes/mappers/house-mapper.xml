@@ -177,7 +177,13 @@
 			INTO HOUSE_FILE(
 								 FILE_NO
 								,HOUSE_NO
-								,ROOM_NO
+								<choose>
+									<when test="roomNo != 0">
+										,ROOM_NO
+									</when>
+									<otherwise>
+									</otherwise>
+								</choose>
 								,ORIGIN_NAME
 								,CHANGE_NAME
 								,FILE_PATH
@@ -186,7 +192,13 @@
 					VALUES(
 								 SEQ_HOUSE_FILE_NO.NEXTVAL
 								,SEQ_HOUSE_NO.CURRVAL
-								,#{roomNo}
+								<choose>
+									<when test="roomNo != 0">
+										,#{roomNo}
+									</when>
+									<otherwise>
+									</otherwise>
+								</choose>
 								,#{originName}
 								,#{changeName}
 								,#{filePath}

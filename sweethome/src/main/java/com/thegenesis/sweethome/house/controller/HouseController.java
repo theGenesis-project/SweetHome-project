@@ -1,11 +1,6 @@
 package com.thegenesis.sweethome.house.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.thegenesis.sweethome.common.template.Pagination;
-import com.thegenesis.sweethome.common.template.jsonParser;
 import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.house.model.service.HouseService;
@@ -61,11 +54,6 @@ public class HouseController {
 			return "redirect:/";
 		}
 		
-		System.out.println("로그인 유저 번호: " + h.getUserNo());
-		System.out.println("하우스 정보: " + h);
-		System.out.println("하우스 파일 정보: " + hf);
-		System.out.println("방 정보: " + r);
-		
 		int resultHouse = 0; // 하우스 등록 결과
 		int resultRoom = 0; // 방 등록 결과
 		int resultHouseFile = 0; // 하우스 파일 등록 결과
@@ -80,14 +68,10 @@ public class HouseController {
 		
 		// 하우스 등록
 		resultHouse = houseService.insertHouse(h);
-
-//		// 하우스 등록 성공한 번호 가져오기
-//		int houseNo = houseService.selectHouseNo();
-//		System.out.println("현재 하우스 번호: " + houseNo);
-//		System.out.println("리절트 하우스: " + resultHouse);
 		
 		// 방 등록 성공한 방 번호 리스트
 		ArrayList<Integer> roomNoArr = new ArrayList<>(); // 방 번호 리스트
+		roomNoArr.add(0); // 대표이미지용
 		
 		// 하우스 등록 성공시 방 등록
 		if(resultHouse > 0) {
@@ -97,9 +81,9 @@ public class HouseController {
 			// 순차적으로 방 입력
 			for(int i = 0; i < roomNum; i ++) {
 				Room tempRoom = Room.builder()
-//									.houseNo(houseNo)
 									.roomName(r.getRoomNameArr()[i])
-									.gender(r.getGenderArr()[i])
+//									.gender(r.getGenderArr()[i])
+									.gender(r.getGenderArr()[0])
 									.people(r.getPeopleArr()[i])
 									.area(r.getAreaArr()[i])
 									.deposit(r.getDepositArr()[i])
@@ -108,9 +92,6 @@ public class HouseController {
 									.utility(r.getUtilityArr()[i])
 									.availableDate(r.getAvailableDateArr()[i])
 									.build();
-				
-				System.out.println("tempRoom: " + tempRoom);
-				
 				
 				// 임시 방 입력
 				resultTempRoom = roomService.insertRoom(tempRoom);
@@ -124,7 +105,7 @@ public class HouseController {
 			}
 			
 			// 입력된 방 개수와 임시 방 등록 성공한 방 번호 리스트 일치 확인
-			if(roomNoArr.size() == roomNum) {
+			if(roomNoArr.size() == roomNum + 1) {
 				resultRoom = 1;
 			}
 			
@@ -157,8 +138,6 @@ public class HouseController {
 						fileCheck++;
 					}
 				}
-				
-				System.out.println("하우스 파일: " + hfList);
 				
 				// 하우스 파일 등록
 				resultHouseFile = houseService.insertHouseFile(hfList);
@@ -209,81 +188,6 @@ public class HouseController {
 
 		return mv;
 		
-	}	
-	/**
-	 * 하우스 이미지 파일 처리
-	 * @param hf
-	 * @param session
-	 * @return
-	 */
-	public String setFile(HouseFile hf, MultipartFile[] upfile, HttpSession session) {
-		
-		
-		if(!upfile[0].getOriginalFilename().equals("")) { // getOriginalFilename() == filename 필드의 값을 반환함
-			/*
-			// 파일명 수정 작업 후 서버에 업로드 시키기 ("bono.png" => "2022022115374012135.png")
-			String originName = upfile.getOriginalFilename(); // 첨부파일의 원본명("bono.png")
-			
-			// "20220221153740" (연월일시분초)
-			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-			// 13232(5자리 랜덤값)
-			int ranNum = (int)(Math.random() * 90000 + 10000);
-			// 확장자
-			String ext = originName.substring(originName.lastIndexOf("."));
-			
-			String changeName = currentTime + ranNum + ext;
-			
-			// 업로드 시키고자 하는 폴더의 물리적인 경로 알아내기
-			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-			
-			try {
-				upfile.transferTo(new File(savePath + changeName));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			*/
-			String changeName = saveFile(upfile, session);
-			
-			b.setOriginName(upfile[0].getOriginalFilename()); // 원본명
-			b.setChangeName("resources/uploadFiles/" + changeName);
-			
-		}
-		
-		
-		return null;
-	}
-	
-	/**
-	 * 이미지 파일 이름 변경 후 업로드
-	 * @param upfile
-	 * @param session
-	 * @return
-	 */
-	public String saveFile(MultipartFile[] upfile, HttpSession session) { // 실제 넘어온 파일을 이름을 변경해서 서버에 업로드하는 역할 밖에 하지 않음
-		
-		// 파일명 수정 작업 후 서버에 업로드 시키기 ("bono.png" => "2022022115374012135.png")
-		String originName = upfile.getOriginalFilename(); // 첨부파일의 원본명("bono.png")
-		
-		// "20220221153740" (연월일시분초)
-		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		// 13232(5자리 랜덤값)
-		int ranNum = (int)(Math.random() * 90000 + 10000);
-		// 확장자
-		String ext = originName.substring(originName.lastIndexOf("."));
-		
-		String changeName = currentTime + ranNum + ext;
-		
-		// 업로드 시키고자 하는 폴더의 물리적인 경로 알아내기
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-		
-		try {
-			upfile.transferTo(new File(savePath + changeName));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return changeName;
-
 	}
 	
 	
