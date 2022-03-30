@@ -87,6 +87,26 @@ public class HouseDao {
 	public int deleteHouse(SqlSessionTemplate sqlSession, HashMap<String, Integer> userInfo) {
 		return sqlSession.update("houseMapper.deleteHouse", userInfo);
 	}
+
+	/**
+	 * 해당 하우스 파일 목록 가져오기
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectHouseFile(SqlSessionTemplate sqlSession, int hno) {
+		return (ArrayList)sqlSession.selectList("houseMapper.selectHouseFile", hno);
+	}
+
+	/**
+	 * 해당 하우스 파일 삭제
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public int deleteHouseFile(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.delete("houseMapper.deleteHouseFile", hno);
+	}
 	
 
 }

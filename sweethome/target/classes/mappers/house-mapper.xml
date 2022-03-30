@@ -217,7 +217,24 @@
   			AND
   				USER_NO = #{userNo}
   	</update>
-
+  	
+  	<!-- 해당 하우스 파일 목록 가져오기 -->
+  	<select id="selectHouseFile" parameterType="_int" resultMap="houseFileResultSet">
+  		SELECT
+  				FILE_PATH
+  		FROM
+  				HOUSE_FILE
+  		WHERE
+  				HOUSE_NO = #{hno}
+  	</select>
+  	
+  	<!-- 해당 하우스 파일 삭제 -->
+  	<delete id="deleteHouseFile" parameterType="_int">
+  		DELETE FROM
+  					HOUSE_FILE
+  		WHERE
+  					HOUSE_NO = #{hno}
+  	</delete>
   	
   	
 </mapper>

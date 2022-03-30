@@ -33,8 +33,13 @@ public class RoomService {
 		return roomDao.selectRoomNo(sqlSession);
 	}
 
-	public int deleteHouse(int hno) {
-		return 0;
+	/**
+	 * 방 삭제
+	 * @param hno
+	 * @return
+	 */
+	public int deleteRoom(int hno) {
+		return roomDao.deleteRoom(sqlSession, hno);
 	}
 
 }

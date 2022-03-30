@@ -79,4 +79,22 @@ public class HouseService {
 		return houseDao.deleteHouse(sqlSession, userInfo);
 	}
 	
+	/**
+	 * 해당 하우스 파일 목록 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectHouseFile(int hno) {
+		return houseDao.selectHouseFile(sqlSession, hno);
+	}
+	
+	/**
+	 * 해당 하우스 파일 삭제
+	 * @param hno
+	 * @return
+	 */
+	public int deleteHouseFile(int hno) {
+		return houseDao.deleteHouseFile(sqlSession, hno);
+	}
+	
 }

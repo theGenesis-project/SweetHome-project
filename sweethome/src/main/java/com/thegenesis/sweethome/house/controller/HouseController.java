@@ -1,5 +1,6 @@
 package com.thegenesis.sweethome.house.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.thegenesis.sweethome.common.template.Pagination;
 import com.thegenesis.sweethome.common.template.saveFile;
 import com.thegenesis.sweethome.common.vo.PageInfo;
@@ -180,15 +182,42 @@ public class HouseController {
 		// 유저 정보 입력
 		HashMap<String, Integer> userInfo = new HashMap<>();
 		
+		userInfo.put("userNo", userNo);
+		userInfo.put("houseNo", hno);
+		
+		System.out.println("userInfo: " + userInfo);
+		
 		// 하우스 삭제
 		resultHouse = houseService.deleteHouse(userInfo);
 		
-		// 방 삭제
-		resultRoom = roomService.deleteHouse(hno);
+		System.out.println("하우스 삭제 성공");
 		
+		if(resultHouse > 0) { // 하우스 삭제 성공 시 해당 하우스 방 모두 삭제
+			// 방 삭제
+			resultRoom = roomService.deleteRoom(hno);
+			
+			System.out.println("방 삭제 성공");
+			
+			if(resultRoom > 0) { // 방 모두 삭제 성공 시 하우스 모든 이미지 삭제
+				// 하우스의 모든 이미지 파일 경로 가져오기
+				ArrayList<HouseFile> hfList = houseService.selectHouseFile(hno);
+				
+				System.out.println("모든 이미지 파일 경로 가져오기 성공");
+				
+				// 서버에 저장된 실제 이미지 삭제
+				for(HouseFile hf: hfList) {
+					new File(session.getServletContext().getRealPath(hf.getFilePath())).delete();
+					System.out.println("삭제 성공: " + hf.getFilePath());
+				}
+				
+				// 실제 이미지 삭제 후 DB 삭제
+				resultHouseFile = houseService.deleteHouseFile(hno);
+				
+				System.out.println("하우스 파일 삭제 성공");
+			}
+		}
 		
-		
-		if(result > 0) {
+		if(resultHouse * resultRoom * resultHouseFile > 0) {
 			session.setAttribute("alertMsg", "하우스가 정상 삭제되었습니다.");
 			return "redirect:/";			
 		} else {

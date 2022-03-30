@@ -27,4 +27,14 @@ public class RoomDao {
 		return sqlSession.selectOne("roomMapper.selectRoomNo");
 	}
 
+	/**
+	 * 방 삭제
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public int deleteRoom(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.update("roomMapper.deleteRoom", hno);
+	}
+
 }

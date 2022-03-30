@@ -60,6 +60,16 @@
 		WHERE 
 		        SEQUENCE_NAME = 'SEQ_ROOM_NO'
   	</select>
+  	
+  	<!-- 방 삭제 -->
+  	<update id="deleteRoom" parameterType="_int">
+    	UPDATE
+  				ROOM
+  		SET
+  				STATUS = 'N'
+  		WHERE
+  				HOUSE_NO = #{hno}
+  	</update>
 	
 	
 
