@@ -76,7 +76,7 @@
 					</div>
 				</div>
 
-				<input type="text" id="roadAddress" class="form-control" placeholder="도로명 주소" name="address" size="60" required readonly>
+				<input type="text" id="roadAddress" class="form-control" placeholder="도로명 주소" size="60" required readonly>
 				<input type="text" id="detailAddress" class="form-control" placeholder="상세 주소 입력">
 
 				<%-- 위도/경도 자동 입력 --%>
@@ -108,8 +108,8 @@
 								
 								var callback = function(result, status) {
 									if (status === kakao.maps.services.Status.OK) {
-										document.getElementById('latitude').value = result[0].x
-										document.getElementById('longitude').value = result[0].y
+										document.getElementById('latitude').value = result[0].x;
+										document.getElementById('longitude').value = result[0].y;
 									}
 								};
 
@@ -421,7 +421,7 @@
 				<textarea name="convenience" class="form-control" placeholder="편의시설 소개를 입력해주세요." style="resize: none;"></textarea>
 
 				<div class="btn-group">
-					<button type="button" class="btn btn-warning" onclick="fileNumberCheck()">등록 및 결제</button>
+					<button type="button" class="btn btn-warning" onclick="formCheck()">등록 및 결제</button>
 					<button class="btn btn-danger" type="reset">취소</button>
 					<button type="submit" id="submit-click"></button>
 				</div>
@@ -431,10 +431,16 @@
 					$(function() {
 						$("#submit-click").hide();
 					})
+					
+					// 등록 및 결제 전 확인
+					function formCheck() {
+						// 도로명 주소 + 상세 주소 합치기
+						var address = document.getElementById("roadAddress").value + " " + document.getElementById("detailAddress").value;
+						var addressHtml = "<input type='hidden' name='address' value='"+ address +"'>";
 
-					// 각 사진에 해당하는 이름 정리
-					function fileNumberCheck() {
+						$(".add").append(addressHtml);
 
+						// 각 사진에 해당하는 이름 정리
 						var sel_files_obj_length = Object.keys(sel_files_obj).length;
 						var fileNumber = []
 
@@ -443,7 +449,9 @@
 							fileNumber.push(sel_files_obj[i].length);
 						}
 
-						$(".add").html("<input type='hidden' name='fileNumber' value='" + fileNumber + "'>");
+						var fileNumberHtml = "<input type='hidden' name='fileNumber' value='" + fileNumber + "'>";
+						$(".add").append(fileNumberHtml);
+
 						$("#submit-click").click();
 					}
 				</script>
