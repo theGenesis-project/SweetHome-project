@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.house.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -75,6 +76,16 @@ public class HouseDao {
 		}
 		
 		return result;
+	}
+
+	/**
+	 * 하우스 삭제
+	 * @param sqlSession
+	 * @param userInfo
+	 * @return
+	 */
+	public int deleteHouse(SqlSessionTemplate sqlSession, HashMap<String, Integer> userInfo) {
+		return sqlSession.update("houseMapper.deleteHouse", userInfo);
 	}
 	
 

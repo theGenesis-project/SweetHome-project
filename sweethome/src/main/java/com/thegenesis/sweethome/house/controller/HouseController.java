@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.house.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -46,7 +47,7 @@ public class HouseController {
 	@RequestMapping("insertHouse.ho")
 	public String insertHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, int[] fileNumber, HttpSession session) {
 		
-		// 로그인 유저 번호 입력
+		// 로그인 유저 번호 확인
 		if(session.getAttribute("loginUser") != null) {
 			h.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());			
 		} else {
@@ -82,7 +83,7 @@ public class HouseController {
 			for(int i = 0; i < roomNum; i ++) {
 				Room tempRoom = Room.builder()
 									.roomName(r.getRoomNameArr()[i])
-//									.gender(r.getGenderArr()[i])
+									.gender(r.getGenderArr()[i])
 									.gender(r.getGenderArr()[0])
 									.people(r.getPeopleArr()[i])
 									.area(r.getAreaArr()[i])
@@ -145,10 +146,53 @@ public class HouseController {
 		}
 		
 		if(resultHouse * resultRoom * resultHouseFile > 0) {
-			session.setAttribute("alertMsg", "하우스 등록에 성공하였습니다.");
+			session.setAttribute("alertMsg", "하우스가 정상 등록되었습니다.");
 			return "redirect:/";
 		} else {
 			session.setAttribute("errorMsg", "하우스 등록에 실패하였습니다.");
+			return "redirect:/";
+		}
+		
+	}
+	
+	/**
+	 * 하우스 삭제
+	 * @param session
+	 * @param hno
+	 * @return
+	 */
+	@RequestMapping("deleteHouse.ho")
+	public String deleteHouse(HttpSession session, int hno) {
+		
+		int userNo = 0; // 하우스 유저 번호
+		int resultHouse = 0; // 하우스 등록 결과
+		int resultRoom = 0; // 방 등록 결과
+		int resultHouseFile = 0; // 하우스 파일 등록 결과
+		
+		// 로그인 유저 번호 확인
+		if(session.getAttribute("loginUser") != null) {
+			userNo = ((Member)session.getAttribute("loginUser")).getUserNo();			
+		} else {
+			session.setAttribute("errorMsg", "로그인하시기 바랍니다.");
+			return "redirect:/";
+		}
+		
+		// 유저 정보 입력
+		HashMap<String, Integer> userInfo = new HashMap<>();
+		
+		// 하우스 삭제
+		resultHouse = houseService.deleteHouse(userInfo);
+		
+		// 방 삭제
+		resultRoom = roomService.deleteHouse(hno);
+		
+		
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "하우스가 정상 삭제되었습니다.");
+			return "redirect:/";			
+		} else {
+			session.setAttribute("errorMsg", "하우스 삭제에 실패하였습니다.");
 			return "redirect:/";
 		}
 		

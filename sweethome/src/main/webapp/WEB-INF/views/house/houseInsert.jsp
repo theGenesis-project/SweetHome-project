@@ -119,14 +119,14 @@
 					}
 				</script>
 
-				<!-- 하우스 대표 사진 -->
+				<%-- 하우스 대표 사진 --%>
 				<h3>대표 사진</h3>
 
 				<a class="button btn1">사진 첨부</a>
 				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)' required>
 				<div id='image-0' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
 
-				<!-- 방 정보 등록 -->
+				<%-- 방 정보 등록 --%>
 				<h2>방 정보 등록</h2>
 
 				<div id='room-1'>
@@ -145,15 +145,11 @@
 						<tr>
 							<td>성별</td>
 							<td>
-								<div class='form-check-inline'>
-									<label class='form-check-label'>
-										<input type='radio' class='form-check-input' name='genderArr' value='M' require>남성
-									</label>
-								</div>
-								<div class='form-check-inline'>
-									<label class='form-check-label'>
-										<input type='radio' class='form-check-input' name='genderArr' value='F' required>여성
-									</label>
+								<div class='form-group'>
+									<select class='form-control' name='genderArr'>
+										<option value='M'>남성</option>
+										<option value='F'>여성</option>
+									</select>
 								</div>
 							</td>
 						</tr>
@@ -205,12 +201,13 @@
 				<%-- 사진 관련 스크립트 --%>
 				<script>
 
-					// 방 추가 버튼 클릭시 몇 번째 방인지 확인
+					// 방 추가 버튼 클릭시 몇 번째 방인지 확인용 변수
 					var roomNum = 2;
 
-					// 방 추가 버튼
+					// 방 추가 버튼 클릭시 '#insert-room'에 추가되는 요소
 					$(function() {
 						$("#insert-room-btn").click(function() {
+
 							var addRoom = "<div id='room-" + roomNum + "'>"
 								+ "<h3>방 사진</h3>"
 								+ "<a class='button btn1'>사진 첨부</a>"
@@ -225,15 +222,11 @@
 								+ "<tr>"
 								+ "<td>성별</td>"
 								+ "<td>"
-								+ "<div class='form-check-inline'>"
-								+ "<label class='form-check-label'>"
-								+ "<input type='radio' class='form-check-input' name='genderArr' value='M' require>남성"
-								+ "</label>"
-								+ "</div>"	
-								+ "<div class='form-check-inline'>"
-								+ "<label class='form-check-label'>"
-								+ "<input type='radio' class='form-check-input' name='genderArr' value='F' required>여성"
-								+ "</label>"
+								+ "<div class='form-group'>"
+								+ "<select class='form-control' name='genderArr'>"
+								+ "<option value='M'>남성</option>"
+								+ "<option value='F'>여성</option>"
+								+ "</select>"
 								+ "</div>"
 								+ "</td>"
 								+ "</tr>"
@@ -279,48 +272,49 @@
 						})
 					})
 					
-					// 방 삭제 버튼		
+					// 방 삭제 버튼 클릭시 마지막에 생성된 방 정보 등록 요소 삭제
 					$("#remove-room-btn").click(function() {
 						if(roomNum> 2) {
-							console.log(typeof(roomNum));
 							roomNum--;
+
+							// 삭제할 div의 아이디 생성용 변수
 							var rommNo = "room-" + roomNum;
 							
 							$("#" + rommNo).remove();
-							
-							console.log(roomNum);
 						}
 					})
 					
-					var imageBtn = "";
-					var attImage = "";
+					var imageBtn = ""; // 클릭한 [input=file] 버튼 요소
+					var attImage = ""; // 클릭한 [input=file]에 선택된 이미지의 미리보기 영역 요소
 
 					var sel_files = [];
 					var sel_files_obj = {};
 					
-					// 사진 첨부 버튼 클릭
+					// 사진 첨부 버튼 클릭시
 					$(function() {
 						$("body").on("click", "a", function() {
+
+							// 클릭된 사진 첨부 버튼 아래 [input=file] & 미리보기 생성 영역 가져오기
 							imageBtn = ($(this).next())[0];
 							attImage = ($(this).next().next())[0];
-							// 사진 첨부 버튼 다음 input[type=file] 요소 클릭
+							
 							$(this).next().click();
 						})
 					})
 
-					// 이미지와 체크 박스를 감싸고 있는 div 속성
+					// 이미지와 체크박스를 감싸는 div의 속성
 					var div_style = 'display: inline-block; position: relative; width: 150px; height: 120px; margin: 5px; border: 1px; solid #00f; z-index: 1;';
 					// 미리보기 이미지 속성
 					var img_style = 'width: 100%; height: 100%; z-index: none;';
-					// 이미지안에 표시되는 체크박스의 속성
+					// 이미지 안 표시되는 체크 박스 속성
 					var chk_style = 'width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;';
 					
-					// <input type='file'> 태그 변화 감지시
+					// [input=file] 요소가 변경될 경우
 					function insertImage(inputFiles) {
 
-						// 업로드 하려는 이미지가 5개 이하인지 확인
+						// 선택된 이미지가 5개 이하인지 확인
 						if(inputFiles.files.length > 5) {
-							alert("사진은 5개 이내로 업로드할 수 있습니다.");
+							alert("사진은 5개 이하만 선택할 수 있습니다.");
 							return inputFiles.value = "";
 						}
 

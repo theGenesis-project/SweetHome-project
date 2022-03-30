@@ -206,7 +206,17 @@
 							)
   	</insert>
   	
-  	
+  	<!-- 하우스 삭제 -->
+  	<update id="deleteHouse" parameterType="hashMap">
+  		UPDATE
+  				HOUSE
+  		SET
+  				STATUS = 'N'
+  		WHERE
+  				HOUSE_NO = #{houseNo}
+  			AND
+  				USER_NO = #{userNo}
+  	</update>
 
   	
   	
