@@ -24,8 +24,10 @@ public class Tour {
 	private String phone;
 	private String email;
 	private String askContent;
+
 	private Date tourTime;
 	private String status;
+
 	
 	private int userNo;
 	private int roomNo;

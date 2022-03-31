@@ -1,5 +1,9 @@
 package com.thegenesis.sweethome.room.model.dao;
 
+
+import java.util.ArrayList;
+
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +12,10 @@ import com.thegenesis.sweethome.room.model.vo.Room;
 @Repository
 public class RoomDao {
 
+
+	public ArrayList<Room> houseDetail(SqlSessionTemplate sqlSession, int hno) {
+		return (ArrayList)sqlSession.selectList("roomMapper.houseDetail", hno);
+	}
 	/**
 	 * 방 등록
 	 * @param sqlSession
@@ -35,6 +43,7 @@ public class RoomDao {
 	 */
 	public int deleteRoom(SqlSessionTemplate sqlSession, int hno) {
 		return sqlSession.update("roomMapper.deleteRoom", hno);
+
 	}
 
 }

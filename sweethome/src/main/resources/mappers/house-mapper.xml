@@ -19,8 +19,15 @@
 		<result column="LATITUDE" property="latitude"/>
 		<result column="LONGITUDE" property="longitude"/>
 		<result column="USER_NO" property="userNo"/>
+		<result column="ROOM_NAME" property="roomName"/>		
 		<result column="HOUSE_GENDER" property="houseGender"/>
 		<result column="MONTHLY" property="monthly"/>
+		<result column="ROOM_NO" property="roomNo"/>
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="FILE_LEVEL" property="fileLevel"/>
+
+
+		
 	</resultMap>
 
 	<resultMap type="house" id="houseResultSet">
@@ -110,7 +117,7 @@
 	<!-- 내가 찜한 하우스 목록 -->
 	<select id="selectDibsHouses" resultMap="houseResultSet">
 		SELECT 
-				HOUSE_NO, HOUSE_NAME, HOUSE_GENDER, MIN(MONTHLY) MONTHLY, H.STATUS
+				HOUSE_NO, HOUSE_NAME, HOUSE_GENDER, MIN(MONTHLY) MONTHLY, H.STATUS 
 		FROM 
 				HOUSE H
 		JOIN 
@@ -161,8 +168,94 @@
 	</select>
 
 	<select id="houseSearch" resultMap="houseResultSet">
-		SELECT * FROM HOUSE WHERE STATUS = 'Y'
+		    SELECT HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, MIN(MONTHLY) MONTHLY, H.STATUS 
+                FROM HOUSE h
+		            JOIN  (
+						    SELECT 
+						    		HOUSE_NO
+						    	  , DECODE(G_NUM, '2', '남녀공용', '1', DECODE(GENDER, 'M', '남성전용', 'W', '여성전용')) AS "HOUSE_GENDER"
+						    FROM 
+						    		ROOM
+						    JOIN 
+						    	(
+							    SELECT 
+							    		HOUSE_NO, COUNT(*) AS "G_NUM"
+							    FROM
+								    	(
+								        SELECT 
+								        		HOUSE_NO, GENDER
+								        FROM 
+								        		ROOM
+								 		GROUP BY
+								        		HOUSE_NO, GENDER
+									    ) 
+								GROUP BY 
+										HOUSE_NO
+							    ) USING(HOUSE_NO)
+						) USING(HOUSE_NO)
+		    
+				      JOIN   (
+				            SELECT HOUSE_NO, MIN(MONTHLY) MONTHLY
+				            FROM HOUSE h
+				            JOIN    (
+								    SELECT 
+								    		HOUSE_NO, ROOM_NO, SUM(RENT + EXPENSE) MONTHLY
+								    FROM 
+								    		ROOM 
+								    GROUP BY 
+								    		ROOM_NO, HOUSE_NO
+				                    ) USING(HOUSE_NO)
+				                    GROUP BY HOUSE_NO
+				            )USING(HOUSE_NO)
+				    WHERE STATUS = 'Y'
+				    GROUP BY 
+				    HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, H.STATUS
 	</select>
+	
+		<select id="keywordSearch" resultMap="houseResultSet">
+		SELECT HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, MIN(MONTHLY) MONTHLY, H.STATUS 
+		FROM HOUSE h
+		            JOIN  (
+						    SELECT 
+						    		HOUSE_NO
+						    	  , DECODE(G_NUM, '2', '남녀공용', '1', DECODE(GENDER, 'M', '남성전용', 'W', '여성전용')) AS "HOUSE_GENDER"
+						    FROM 
+						    		ROOM
+						    JOIN 
+						    	(
+							    SELECT 
+							    		HOUSE_NO, COUNT(*) AS "G_NUM"
+							    FROM
+								    	(
+								        SELECT 
+								        		HOUSE_NO, GENDER
+								        FROM 
+								        		ROOM
+								 		GROUP BY
+								        		HOUSE_NO, GENDER
+									    ) 
+								GROUP BY 
+										HOUSE_NO
+							    ) USING(HOUSE_NO)
+						) USING(HOUSE_NO)
+		    
+				      JOIN   (
+				            SELECT HOUSE_NO, MIN(MONTHLY) MONTHLY
+				            FROM HOUSE h
+				            JOIN    (
+								    SELECT 
+								    		HOUSE_NO, ROOM_NO, SUM(RENT + EXPENSE) MONTHLY
+								    FROM 
+								    		ROOM 
+								    GROUP BY 
+								    		ROOM_NO, HOUSE_NO
+				                    ) USING(HOUSE_NO)
+				                    GROUP BY HOUSE_NO
+				            )USING(HOUSE_NO)
+				    WHERE STATUS = 'Y' and address like '%' || #{keyword} || '%'
+				    GROUP BY 
+				    HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, H.STATUS 
+		</select>
 	
 	<select id="selectHouseCount" resultType="_int">
   		SELECT 
@@ -173,6 +266,7 @@
   		 		STATUS = 'Y'
   	</select>
   	
+
   	<select id="houseDetail" resultMap="houseResultSet">
   		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}
   	</select>
@@ -253,4 +347,5 @@
   	</delete>
   	
   	
+
 </mapper>

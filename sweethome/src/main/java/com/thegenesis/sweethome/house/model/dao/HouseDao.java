@@ -3,11 +3,9 @@ package com.thegenesis.sweethome.house.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.house.model.vo.HouseFile;
 
@@ -33,24 +31,15 @@ public class HouseDao {
 		return sqlSession.selectOne("houseMapper.selectHouseCount");
 	}
 	
-	public ArrayList<House> houseSearch(SqlSessionTemplate sqlSession, PageInfo pi) {
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		int limit = pi.getBoardLimit();
-		
-		RowBounds rowBounds = new RowBounds(offset, limit);
-		
-		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch", null, rowBounds);
-	}
-
-	public ArrayList<House> houseSearchOne(SqlSessionTemplate sqlSession){
-		
+	public ArrayList<House> houseSearch(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearch");
 	}
 
-	public House houseDetail(SqlSessionTemplate sqlSession, int hno) {
-		return sqlSession.selectOne("houseMapper.houseDetail", hno);
+
+	public ArrayList<House> keywordSearch(SqlSessionTemplate sqlSession, String keyword) {
+		return (ArrayList)sqlSession.selectList("houseMapper.keywordSearch",keyword);
 	}
+
 
 	/**
 	 * 현재 하우스 번호 확인
