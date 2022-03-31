@@ -231,9 +231,10 @@ public class HouseController {
 		
 	
 		ArrayList<House> list = houseService.houseSearch();
-
+		
+		ArrayList<House> list1= houseService.houseSearchOne();
 	
-		mv.addObject("list", list).setViewName("house/houseList");
+		mv.addObject("list", list).addObject("list1", list1).setViewName("house/houseList");
 		
 		
 		return mv;

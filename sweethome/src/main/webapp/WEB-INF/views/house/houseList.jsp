@@ -4,6 +4,7 @@
 
 <% 
 	ArrayList<House> list = (ArrayList)request.getAttribute("list");
+	ArrayList<House> list1 = (ArrayList)request.getAttribute("list1");
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -169,7 +170,7 @@
 	var condition = [];
 	var gender = [];
 	var monthly = [];
-	
+	var userNo = [];
 	<% for(House h: list) { %>
     	x.push(<%= h.getLatitude() %>);
     	y.push(<%= h.getLongitude() %>);
@@ -179,7 +180,13 @@
     	gender.push("<%= h.getHouseGender()%>");
     	monthly.push("<%= h.getMonthly() %>");
  	<% } %>
-
+ 	
+ 	
+ 	<% for(House hh: list1){ %>
+ 	
+ 		userNo.push("<%= hh.getUserNo()%>");
+ 		
+ 	<% } %>
  	
  	for ( var i=0; i<x.length; i++ ) {
 			
@@ -187,6 +194,7 @@
 				+				'<div class="item-list" onclick="houseDetail(this);">'
 				+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
 				+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
+				+  					'<div style="display:none" class="uno">' + userNo[i] + '</div>'
 	            +  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
 	            +  					'<ul class="thumb-desc mtb3">'
 	            +  					'<li>월'+ monthly[i] +'만원~</li>';
@@ -387,6 +395,9 @@
 		
 		// 마커 이미지의 이미지 크기 입니다
 		var hno = houseNo[i];
+		var uno = userNo[i];
+		
+		console.log(uno);
 		
 	    var imageSize = new kakao.maps.Size(24, 35); 
 	    
@@ -458,7 +469,7 @@
 	
 	function makeClickListener(hno){
 		return function(){
-			location.href = "house.de?hno=" + hno; 
+			location.href = "house.de?hno=" + hno + "&uno=" + uno; 
 		}
 	}
 	
@@ -467,7 +478,9 @@
 		
 		var hno = e.getElementsByClassName('hno')[0].innerText;
 		
-		location.href = "house.de?hno=" + hno; 
+		var uno = e.getElementsByClassName('uno')[0].innerText;
+		
+		location.href = "house.de?hno=" + hno + "&uno=" + uno; 
 		
 	}
 

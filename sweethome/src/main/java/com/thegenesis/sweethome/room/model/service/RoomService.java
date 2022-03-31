@@ -1,13 +1,13 @@
 package com.thegenesis.sweethome.room.model.service;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.room.model.dao.RoomDao;
 import com.thegenesis.sweethome.room.model.vo.Room;
 
@@ -50,6 +50,30 @@ public class RoomService {
 	
 	public ArrayList<Room> houseDetail(int hno) {
 		return roomDao.houseDetail(sqlSession, hno);
+	}
+
+	public Room houseDetailOne(int hno) {
+		return roomDao.houseDetailOne(sqlSession, hno);
+	}
+
+	public int reportCheck(HashMap<String, String> map) {
+		return roomDao.reportCheck(sqlSession, map);
+	}
+
+	public int reportRoom(Report r) {
+		return roomDao.reportRoom(sqlSession, r);
+	}
+
+	public int increaseCount(int hno) {
+		return roomDao.increaseCount(sqlSession,hno);
+	}
+
+	public String checkHeart(HashMap<String, Integer> hm) {
+		return roomDao.checkHeart(sqlSession,hm);
+	}
+
+	public int changeHeart(HashMap<String, Integer> hm) {
+		return roomDao.changeHeart(sqlSession, hm);
 	}
 
 

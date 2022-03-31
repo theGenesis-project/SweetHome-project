@@ -25,6 +25,7 @@
 		<result column="ROOM_NO" property="roomNo"/>
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="FILE_LEVEL" property="fileLevel"/>
+		
 	</resultMap>
   
 	<resultMap type="houseFile" id="houseFileResultSet">
@@ -326,7 +327,12 @@
   		WHERE
   					HOUSE_NO = #{hno}
   	</delete>
+  	<select id="houseSearchOne" resultMap="houseResultSet">
+  		SELECT HOUSE_NO,USER_NO
+			 FROM HOUSE
+			 JOIN MEMBER USING(USER_NO)
   	
+  	</select>
   	
 
 </mapper>

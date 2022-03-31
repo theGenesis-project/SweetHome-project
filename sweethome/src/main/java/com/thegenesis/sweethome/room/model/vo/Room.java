@@ -23,6 +23,7 @@ public class Room {
 	private int rent;
 	private int expense;
 	private int utility;
+	private String userId;
 	private Date availableDate;
 
 	private String status;

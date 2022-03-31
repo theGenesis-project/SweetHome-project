@@ -4,6 +4,7 @@
 
 <% 
 	ArrayList<Room> room = (ArrayList)request.getAttribute("room");
+	Room room1 = (Room)request.getAttribute("room1");
 	
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -209,7 +210,7 @@
 	background-color:rgb(230, 230, 230);
 	margin:auto;
 	}
-	.like{
+	#like{
 	font-size:50px;
 	margin-left: 50px;
 	}
@@ -275,6 +276,23 @@
      outline:none;
      margin-left:1350px;
      }
+    .modal-body>form{
+     text-align:center;
+    }
+     #modal-button{
+     width: 90px;
+     height: 35px;
+     margin: auto;
+     margin-top: 20px;
+     margin-bottom: 20px;
+     color: white;
+     background-color: rgb(247, 202, 201);
+     border-radius: 3px;
+     border: 0ch;
+    }
+	#modal-body{
+     margin: auto;
+    }
 	
 </style>
 </head>
@@ -284,15 +302,46 @@
 	<hr>
 	<div style="width:1500px;margin:auto;text-align:right;">
 	
+	<c:if test="${!empty loginUser }">
+		<c:choose>
+			<c:when test="${(loginUser.userId eq room1.userId) || (loginUser.userId eq 'admin')}">   
+			<button type="button" class="btn btn-primary">정보수정</button>
+			</c:when>
+			<c:otherwise>
+			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">신고하기</button>
+			</c:otherwise>
+		</c:choose>
+	</c:if>
 	
-	<c:choose>
-		<c:when test ="${ loginUser.userType eq 'M'}">
-		<button type="button" class="btn btn-danger">하우스신고</button>
-		</c:when>
-		<c:otherwise>
-		<button type="button" class="btn btn-primary">정보수정</button>
-		</c:otherwise>
-	</c:choose>
+	<!-- 글 신고 -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+	            <h4 class="modal-title">신고하기</h4>
+	            <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form action="reportRoom.ho" method="post">
+               	<input type="hidden" name="houseNo" value="${room1.houseNo }">
+               	<input type="hidden" name="userNo" value="${loginUser.userNo }">
+                <select name="reportCate">
+                    <option value="1">스팸, 홍보, 도배글</option>
+                    <option value="2">욕설 및 음란물</option>
+                    <option value="3">불법정보</option>
+                    <option value="4">개인정보 노출 게시물</option>
+                </select>
+            </div>
+            	<button type="submit" id="modal-button">신고하기</button>
+            </form> 
+            
+        </div>
+        </div>
+    </div>
 	</div>	
 	<div class="content">
 			<div class="sub-nav-area">
@@ -311,7 +360,18 @@
 	    	</div>
 				<div id="house-name" >
 		        	스위트홈 1호점
-		        	<span class="like">♡</span>
+	                        <c:choose>
+		                        <c:when test="${ idCheckHeart eq 'Y'}">
+		                            <span id="like" style="cursor:pointer;">
+		                          		♥
+		                            </span>
+		                        </c:when>
+		                        <c:otherwise>
+		                            <span id="like" style="cursor:pointer;">
+		                            	  ♡
+		                            </span>
+		                        </c:otherwise>
+	                        </c:choose>                                      
 		        </div>
 			<div class="content">
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" >
@@ -590,12 +650,12 @@
   · 계약금으로 보증금을 수령하며, 계약종료 후 퇴실시 반환됩니다.           · 계약기간 만료 이전에 중도퇴실할 경우, 절차에 따라 위약금이 발생됩니다.</pre>
 			</div>
 			<div class="box4">
-				<button id="chat" type="button">스위트홈 1:1 문의 ></button>
+				<button id="chat" type="button">오너와 채팅하기 ></button>
 			</div>
 		</div>
 		<br><br>
 		
-		<button id="return">다른 하우스 찾기</button>
+		<button id="return" onclick="location.href='house.se'">다른 하우스 찾기</button>
 		
 	</div>
 	</c:forEach>
@@ -608,6 +668,35 @@
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6"></script>
 		<script>
+		
+		
+	var likeBtn = document.getElementById("like");
+	likeBtn.onclick = function(){
+	changeHeart();
+	}	
+		
+	
+	
+	function changeHeart(){
+				
+				$.ajax({
+					url : "changeHeart.ho",
+					data : {
+						houseNo : ${room1.houseNo},
+						userNo : ${loginUser.userNo}					
+					},
+					success : function(result){
+						
+						if(result == "NN"){
+							$("#like").text("♡");
+		                       					
+						}else{
+							$("#like").text("♥");
+						}				
+					}								
+				})						
+			}
+		
 		
 		function tourForm(e){
 			 
