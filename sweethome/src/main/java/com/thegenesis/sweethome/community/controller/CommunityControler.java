@@ -244,7 +244,6 @@ public class CommunityControler {
 	}
 	
 	
-	
 	//게시글 쓰기(글작성 폼 띄워줌)
 	@RequestMapping("insertBoardView.co")
 	public ModelAndView insertBoardView(ModelAndView mv, int bType) {
@@ -443,7 +442,6 @@ public class CommunityControler {
 		//댓글 수정
 		@RequestMapping("updateReply.co")
 		public String updateReply(Reply rp, HttpSession session) {
-			System.out.println(rp);
 			
 			int boardNo = rp.getBoardNo();
 			

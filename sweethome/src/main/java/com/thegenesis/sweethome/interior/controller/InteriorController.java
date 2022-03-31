@@ -112,11 +112,11 @@ public class InteriorController {
 		
 		if(result>0) {
 			session.setAttribute("alertMsg","인테리어 등록 성공");
-			return "interior/interiorList";
+			return "redirect:interiorList.in?intCate=1&inpage=1";
 			
 		}else {
 			session.setAttribute("alertMsg", "인테리어 등록 실패");
-			return "interior/interiorList";
+			return "redirect:interiorList.in?intCate=1&inpage=1";
 		}	
 		
 	}
@@ -152,7 +152,7 @@ public class InteriorController {
 			}
 		}
 		session.setAttribute("alertMsg", "게시글 삭제 완료");
-		return "interior/interiorList";
+		return "interiorList.in?intCate=1&inpage=1";
 	}
 	//게시판 상세보기
 	@RequestMapping("detail.in")

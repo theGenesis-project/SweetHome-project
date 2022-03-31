@@ -237,7 +237,7 @@
 			                  		<p class="ino">${i.interiorNo }</p>
 			                  	</div>                  		        
 			                    <div class="interior_price">
-			                        <p>${i.interiorPrice }</p> 원
+			                        <p class="interior_price_view">${i.interiorPrice }</p> 원
 			                    </div>
 		                	</div> 
 	                	</div>           	
@@ -331,6 +331,24 @@
 	    $("form").submit();
 	    
 	}
+
+    $(function(){
+                     //가격
+                    var interiorPrice =  document.getElementByclassName("interior_price_view").innerHTML
+                    console.log(interiorPrice)
+                    n1 = parseInt('interiorPrice');   	
+                    console.log(n1)
+                    cn1 = n1.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");//number format
+                    
+                    document.getElementsByClassName("interior_price_view").innerHTML = cn1;
+
+                 
+	   
+          
+
+            })
+		
+	
 	
 	
 

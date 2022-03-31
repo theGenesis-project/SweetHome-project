@@ -195,11 +195,11 @@
 	                        <p>${in.interiorTitle }</p>
 	                    </div>
 	                    <div class="interior_price">
-	                        <p>${in.interiorPrice }</p> 원
+	                        <p id="interior_price_view"></p> 원
 	                        <hr>
 	                    </div>
 	                    <div class="interior_post">
-	                        <p>배송비 : ${in.interiorPost }</p> 원
+	                        배송비 : <p id="interior_post_view"> </p> 원
 	                        <hr>
 	                    </div>
                    		 <div class="like-order-area">
@@ -428,17 +428,17 @@
 									+"<th class='reviewNo' style='display:none'>" + list[i].reviewNo + "</th>"
 									+"<th class='reviewUserId'>" + list[i].userId +"</th>"
 									+"<td width='600' class='reviewContent'>" + list[i].reviewContent + "</td>"
-									+"<td width='130' class='createDate'>" + list[i].createDate + "</td>"
+									+"<td width='130' class='createDate'>" + list[i].createDate + "</td>";
 									
-									
+									if(("${loginUser.userId}" == list[i].userId) || ("${loginUser.userId}" == 'admin' )){
 																	
-									+"<td class='buttons'>" 
+									value += "<td class='buttons'>" 
 										+ "<button type='button' class='btn updateContent' data-toggle='modal' data-target='#updateReview'>" + "수정"  +"</button>"
 										+ "<button class='deleteContent'>" + "삭제" + "</button>"		
-									+ "</td>"
+									+ "</td>";
+									}
 									
-									
-									+"</tr>"
+									value += "</tr>";
 						}
 						$("#replyArea tbody").html(value);
 					},
@@ -472,6 +472,25 @@
 	    		})
 	
 			})
+
+            $(function(){
+                     //가격
+                    n1 = parseInt('${in.interiorPrice }');   	
+                    cn1 = n1.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");//number format
+                    
+                    document.getElementById("interior_price_view").innerHTML = cn1;
+
+                    //배송비
+                    n2 = parseInt('${in.interiorPost}');
+                    cn2 = n2.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");//number format
+
+                    document.getElementById("interior_post_view").innerHTML = cn2;
+               
+                
+	   
+          
+
+            })
 		
 	
 	

@@ -45,10 +45,24 @@
             font-size: 20px;
         }
         
-        #orderQuntity{
-        	width: 50px;
+        #count{
+        	width: 100px;
         }
+		#interiorNo_view, #total_count_view, #interiorNo_view, #interiorPost {
+			width: 150px;
+		}
+		#total_count_view{
+			font-size: 20px;
+			color: rgb(247, 202, 201);
+			font-weight: 600;
+		}
+		#searchPost{
+			color: white;
+            background-color: rgb(247, 202, 201);
+            border: 0ch;
+            padding: 5px;    
 
+		}
 
         #pay-button{
             margin-top: 30px;
@@ -63,6 +77,7 @@
         #content2_1>table input{
         	background-color : rgb(240, 240, 240);
         }
+		
     
 
 </style>
@@ -110,7 +125,7 @@
                         </tr>
                         <tr>
                             <td>주소</td>
-                            <td><button type="button" onclick="execDaumPostcode()">주소찾기</button></td>
+                            <td><button type="button" onclick="execDaumPostcode()" id="searchPost">주소찾기</button></td>
                         </tr>
                         <tr>
                             <td rowspan="2"></td>
@@ -173,13 +188,13 @@
                             <tr>
                                 <td style="width: 100px;">분류</td>
                                 <td style="width: 600px;">상품 </td>
-                                <td style="width: 100px">개수</td>
-                                <td style="width: 150px;">가격</td>
+                                <td style="width: 200px">개수</td>
+                                <td style="width: 200px;">가격</td>
                             </tr>                         
                         </thead>
                         <tbody>
                          	<tr>
-                                <td>${in.inteCate }</td>
+                                <td id="interiorCategory">${in.inteCate }</td>
                                 <td>${in.interiorTitle }</td>
                                 <td><input type="text" size="25" value="1" id="count" class="orderQuantity" readonly>
 							          <input type="button" value="-" id="minus" onclick="minus()">
@@ -197,14 +212,14 @@
                             	<td>빨라 택배</td>
                             	<td></td>
                             	<td>                          		
-                            		<input type="text" id="interiorPost" value="${in.interiorPost }">원                                               	
+                            		<input type="text" id="interiorPost" value="${in.interiorPost }"> 원                                               	
                             	</td>
                             </tr>     
                             <tr>
                                 <td colspan="3" style="height: 50px">합계</td>                             
                                 <td>
 									<input type="text" value="" id="total_count" hidden=hidden readonly>
-									<input type="text" value="" id="total_count_view" readonly>
+									<input type="text" value="" id="total_count_view" readonly> 원
 								
 								</td>
                             </tr>
@@ -283,6 +298,30 @@
                 total_count_view.value= cn4;
 	        }  
 	    }
+
+		$(function(){
+			var test = $('#interiorCategory').html();
+		
+			if(test == 1){
+				$('#interiorCategory').html("침대");
+			}else if(test == 2){
+				$('#interiorCategory').html("매트리스");
+			}else if(test == 3){
+				$('#interiorCategory').html("쇼파");
+			}else if(test == 4){
+				$('#interiorCategory').html("테이블");
+			}else if(test == 5){
+				$('#interiorCategory').html("거실장");
+			}else if(test == 6){
+				$('#interiorCategory').html("조명");
+			}else if(test == 7){
+				$('#interiorCategory').html("화장대");
+			}else if(test == 8){
+				$('#interiorCategory').html("거울");
+			}else if(test == 9){
+				$('#interiorCategory').html("파티션");
+			}
+		})
 	    
 	    
     

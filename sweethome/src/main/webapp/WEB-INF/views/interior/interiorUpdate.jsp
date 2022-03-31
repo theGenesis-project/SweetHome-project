@@ -58,14 +58,21 @@
     }
     .interior_com{
         margin-top: 20px;
-    }  
-    .buttons button{
+    } 
+    .interior-content{
+            margin-top: 30px;
+        }
+    .content3_2{
+            height: 100%;
+        } 
+    .button>button{
         color: rgb(255, 255, 255);
         background-color: rgb(247, 202, 201);
         border: 0ch;
         border-radius: 3px;
         font-size: 13px;
         padding: 5px;
+        float : right;
         
     }
     button:hover{
@@ -77,6 +84,13 @@
         background-color: rgb(247, 202, 201);
         border: 0ch;
         border-radius: 3px;
+    }
+    #file-area{
+    	height : 50px;
+    	margin-top : 30px;
+    }
+    .button{
+    	height : 50px;
     }
 
 </style>
@@ -109,38 +123,23 @@
                 				</select>
                 	</div>
                     <div class="interior_com">
-                       		 가구사 : <input type="text" id="interiorCo" name="interiorCo" value="${in.interiorCo }">
+                       		 가구사 : <input type="text" id="interiorCo" name="interiorCo" value="${in.interiorCo }" required>
                     </div>
                     <div class="interior_title">
-                        	게시글 제목 : <input type="text" id="interiorTitle" name="interiorTitle" value="${in.interiorTitle }">
+                        	게시글 제목 : <input type="text" id="interiorTitle" name="interiorTitle" value="${in.interiorTitle }" required>
                     </div>
                     <div class="interior_price">
-                       		 가격 : <input type="text" id="interiorPrice" name="interiorPrice" value="${in.interiorPrice }">
+                       		 가격 : <input type="text" id="interiorPrice" name="interiorPrice" value="${in.interiorPrice }" required>
                     <hr>
                     </div>
                     <div class="interior_post">
-                       		 택배사 : <input type="text" id="interiorPost" name="interiorPost" value="${ in.interiorPost}">
+                       		 택배비 : <input type="text" id="interiorPost" name="interiorPost" value="${ in.interiorPost}" required>
                         <hr>
                     </div>      
                 </div>
             </div>
             
-             <script>
-                    	$(function(){
-                    		var inf_array = ${inf.size()};
-                    		
-                    		console.log(${inf.size()});
-                    		console.log(inf.get(1).filePath)
-                    		console.log(inf.get(2).filePath)
-                    		console.log(inf.get(3).filePath)
-                    		
-                    		for(var i = 1 ; i< ${inf.size()} ; i++){
-                    			if(inf.get(i).filePath == null){
-                    				$('img').attr("src",null);
-                    			}
-                    		}                   			
-                    	})
-                    </script>
+            
             
            
             <div class="content3_2">
@@ -150,27 +149,23 @@
 	                        <img src="${inf.get(2).filePath }" id=contentImg2 width="150" height="150">
 	                        <img src="${inf.get(3).filePath }" id=contentImg3 width="150" height="150">                      
                     </div>
-                    
-                    
-                   
-                    
-                    
+        
                     <div class="interior-content">
                        <textarea name="interiorDetail" id="interiorDetail" rows="10" required>${in.interiorDetail}</textarea>         
                     </div>
-                    
+                    <hr>
                     <div id="file-area">
+                    	<p>선택된 파일 목록</p>
 						<input type="file" id="file1" name="reupfile" onchange="loadImg(this,1);" required>								
-						<input type="file" id="file2" name="reupfile" onchange="loadImg(this,2);">
-						<input type="file" id="file3" name="reupfile" onchange="loadImg(this,3);">
-						<input type="file" id="file4" name="reupfile" onchange="loadImg(this,4);">				
+						<input type="file" id="file2" name="reupfile" onchange="loadImg(this,2);" required>
+						<input type="file" id="file3" name="reupfile" onchange="loadImg(this,3);" required>
+						<input type="file" id="file4" name="reupfile" onchange="loadImg(this,4);" required>				
 					</div>
-					
-					 
+							 
                 </div>
             </div>
             <div class="button">
-                <button type="submit" id="updateInterior">글작성</button>
+                <button type="submit" id="updateInterior" onclick="return validate();">글작성</button>
             </div>
         </form>
     </div>   
@@ -200,8 +195,7 @@
 			
 			$("#updateInterior").click(function(){
 				// 에디터의 내용이 textarea에 적용된다.
-				 oEditors.getById["interiorDetail"].exec("UPDATE_CONTENTS_FIELD", []);
-				 
+				 oEditors.getById["interiorDetail"].exec("UPDATE_CONTENTS_FIELD", []);			 
 				// 에디터의 내용에 대한 값 검증은 이곳에서
 				// document.getElementById("ir1").value를 이용해서 처리한다.
 	
@@ -209,12 +203,9 @@
 			
 		})
 
-   
-			
-			
-			
+
 		$(function(){
-						$("#file-area").hide();
+						//$("#file-area").hide();
 
 						$("#titleImg").click(function(){
 							$("#file1").click();
@@ -231,6 +222,7 @@
 						$("#contentImg3").click(function(){
 							$("#file4").click();
 						})
+	
 					})
 			
 					
@@ -265,7 +257,18 @@
 					}
 				}
 		
-				
+		function validate(){
+			 if ($("input[type=file]:checked").val() == "True") {
+	             
+	                var selectedFile = $('#file1').val();
+	                if (selectedFile == "") {
+	                    alert('please select valid image logo for marketplace');
+	                    return false;
+	                }
+			 }
+		}
+		
+		
 	 
 	</script>
 
