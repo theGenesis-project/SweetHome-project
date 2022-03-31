@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,11 +86,13 @@
 				<input type="text" id="email" class="rounded" placeholder="이메일 *">
 				<input type="text" id="date" class="rounded" placeholder="희망일자" >
 				<input type="text" id="askContent" class="rounded" placeholder="문의 사항을 입력해주세요">
+				<span style="display:none"><c:out value="${param.hno }"/></span>
+				<span style="display:none"><c:out value="${param.rno }"/></span>
 				<button type="submit" class="submit">신청하기</button><button class="return"onclick="">취소</button>
 			</div>
 		</form>
 	
-	
+		
 	
 	
 	</div>

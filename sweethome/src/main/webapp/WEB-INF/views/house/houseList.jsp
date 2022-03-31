@@ -214,8 +214,7 @@
 				
     	}
 			
-	
-   
+
     
     
  	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
