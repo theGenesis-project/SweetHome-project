@@ -25,25 +25,6 @@
 		<result column="ROOM_NO" property="roomNo"/>
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="FILE_LEVEL" property="fileLevel"/>
-
-
-		
-	</resultMap>
-
-	<resultMap type="house" id="houseResultSet">
-		<result property="houseNo" column="HOUSE_NO"/>
-		<result property="houseName" column="HOUSE_NAME"/>
-		<result property="houseTitle" column="HOUSE_TITLE"/>
-		<result property="houseIntroduce" column="HOUSE_INTRODUCE"/>
-		<result property="shareSpace" column="SHARE_SPACE"/>
-		<result property="personalSpace" column="PERSONAL_SPACE"/>
-		<result property="traffic" column="TRAFFIC"/>
-		<result property="convenience" column="CONVENIENCE"/>
-		<result property="condition" column="CONDITION"/>
-		<result property="status" column="STATUS"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="latitude" column="LATITUDE"/>
-		<result property="longitude" column="LONGITUDE"/>
 	</resultMap>
   
 	<resultMap type="houseFile" id="houseFileResultSet">
