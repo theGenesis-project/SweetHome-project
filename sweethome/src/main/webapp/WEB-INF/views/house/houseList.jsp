@@ -4,8 +4,6 @@
 
 <% 
 	ArrayList<House> list = (ArrayList)request.getAttribute("list");
-    ArrayList<House> list1 = (ArrayList)request.getAttribute("list1");
-
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -42,12 +40,15 @@
 			display: inline-block;
 		}
 		.house-wrap{
-            width:1500px;
-			margin-left: 75px;
+            width:1480px;
+			
         }
         .w1500 {
             width: 1500px;
+            height:600px;
             margin: auto;
+			overflow:auto;
+            
         }
         ul { 
             list-style: none;
@@ -58,10 +59,13 @@
         .house-item {
             width: 250px;
             display: inline-block;
-            margin-right: 198px;
-            margin-left: 29px;
+            margin-right: 100px;
+            margin-left: 125px;
             margin-top:30px;
             
+        }
+        .item-list{
+        	float:left;
         }
         .house-item:hover{
         	cursor: pointer;
@@ -76,7 +80,7 @@
             font-size: 18px;
             font-weight: bold;
         }
-        .thumb-desc li:first-child {
+        .thumb-desc li {
             font-weight: bold;
             border-right: 1px solid #aaa;
             padding-right: 8px;
@@ -138,65 +142,15 @@
 	  <br>
 		<div id="map" style="width:1300px;height:450px;"></div>
 	  <br><br>
-		<div class="w1500">
-        <ul class="house-wrap">
-        	<c:forEach var="h" items="${ list }">
-            <li class="house-item">
-                <div class="item-list" style="display:block">
-                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
-                <div style="display:none" class="hno">${h.houseNo}</div>
-                <span class="thumb-title mtb3">${h.houseName}</span>
-                <ul class="thumb-desc mtb3">
-                    <li> ${h.houseNo }</li>
-                </ul>
-                	<c:choose>
-                	<c:when test="${ h.condition eq 'Y'}">
-                <span class="status1">입주가능</span>
-                </c:when>
-                <c:otherwise>
-                <span class="status2">입주불가</span>
-                </c:otherwise>
-                	</c:choose>
-                </div>
-            </li>
-            </c:forEach>
-        </ul>
+		<div class="w1500" >
+	        <ul class="house-wrap" >
+	            
+	        </ul>
         <br>
 
     </div>
     
-    <div id="pagingArea">
-        <ul class="pagination pagination-lg">
-        <c:choose>
-            <c:when test="${ pi.currentPage eq 1 }">
-            <li class="disabled" style="display:none"><span aria-hidden="true">&laquo;</span></a></li><!-- 1번 페이지일경우 -->
-            </c:when>
-            <c:otherwise>
-            <li class="page-item"><a class="page-link" href="house.se?cpage=${ pi.currentPage - 1 }">&laquo;</a></li>
-            </c:otherwise>
-        </c:choose>
-            <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-            <c:choose >
-            <c:when test="${ p ne pi.currentPage }">
-            	<li class="page-item "><a class="page-link" href="house.se?cpage=${ p }">${ p }</a></li>
-            </c:when>
-            <c:otherwise>
-            	<li class="page-item disabled" class="page-link" ><a class="page-link" href="house.se?cpage=${ p }">${ p }</a></li>
-            </c:otherwise>
-            </c:choose>
-            </c:forEach>
-            
-            
-        <c:choose>
-            <c:when test="${ pi.currentPage eq pi.maxPage }">
-            <li class="disabled" style="display:none"><span aria-hidden="true">&raquo;</span></a></li>
-            </c:when>
-            <c:otherwise>
-            <li class="page-item"><a class="page-link" href="house.se?cpage=${ pi.currentPage + 1 }">&raquo;</a></li>
-            </c:otherwise>
-        </c:choose>
-        </ul>
-    </div>
+   
     
 	
     
@@ -212,17 +166,55 @@
 	var y = [];
 	var houseName = [];
 	var houseNo = [];
+	var condition = [];
+	var gender = [];
+	var monthly = [];
 	
-	<% for(House h: list1) { %>
+	<% for(House h: list) { %>
     	x.push(<%= h.getLatitude() %>);
     	y.push(<%= h.getLongitude() %>);
     	houseName.push("<%= h.getHouseName() %>");
     	houseNo.push("<%=h.getHouseNo() %>");
+    	condition.push("<%= h.getCondition()%>");
+    	gender.push("<%= h.getHouseGender()%>");
+    	monthly.push("<%= h.getMonthly() %>");
  	<% } %>
+
  	
-	
-    
-    
+ 	for ( var i=0; i<x.length; i++ ) {
+			
+	 		var house = '<li class="house-item">'
+				+				'<div class="item-list" onclick="houseDetail(this);">'
+				+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+				+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
+	            +  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
+	            +  					'<ul class="thumb-desc mtb3">'
+	            +  					'<li>월'+ monthly[i] +'만원~</li>';
+				if(gender[i] == '남성전용'){
+	       	 	house +=			'<li>남성전용</li>'
+					+  			'</ul>'
+				}else if(gender[i] == '여성전용'){
+				house +=			'<li>남녀공용</li>'
+		              +  			'</ul>'
+				}else if(gender[i] == '남녀공용'){
+					house +=			'<li>남녀공용</li>'
+			              +  			'</ul>'
+			    }
+				if(condition[i] == 'Y'){
+		        house +=  			'<span class="status1">입주가능</span>'
+					  +  			'</div>'
+					  + 	'</li>' ;
+		        }else{
+		        house +=  			'<span class="status2">입주불가</span>'
+					  +  			'</div>'
+					  + 	'</li>' ;
+	            }
+			
+			$(".house-wrap").append(house);	
+				
+    	}
+			
+
     
     
  	var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
@@ -253,13 +245,14 @@
 	
 	// 키워드 검색을 요청하는 함수입니다
 	function searchPlaces() {
-	
+		
 	    var keyword = document.getElementById('keyword').value;
-	
-	    
+	  
+	    if (!keyword.replace(/^\s+|\s+$/g, '')) {
+	        alert('키워드를 입력해주세요!');
+	        return false;
+	    }
 	    ps.keywordSearch( keyword, placesSearchCB); 
-	    
-	    
 	    
 	}
 	
@@ -288,37 +281,103 @@
 	
 	// 검색 결과 목록과 마커를 표출하는 함수입니다
 	function displayPlaces(places) {
-	
+		
+		
 		var bounds = new kakao.maps.LatLngBounds();
 		
-	    
-	    // 지도에 표시되고 있는 마커를 제거합니다
-	    removeMarker();
-	    
-	    for ( var i=0; i<places.length; i++ ) {
-	
-	        // 마커를 생성하고 지도에 표시합니다
-	        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x)
-		
-	        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-	        // LatLngBounds 객체에 좌표를 추가합니다
-	        bounds.extend(placePosition);
-	
-	
-	    }
-	
-	    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-	    map.setBounds(bounds);
-	    console.log(bounds);
-	    
-	    
-	    var bounds1 = map.getBounds();
-	    console.log(bounds1);
-	    for(var i = 0; i < x.length; i++){
-			//if(bounds1.pa < y[i] > bounds1.qa  &&  bounds1.ha < x[i] > bounds1.oa){
-			//	console.log(1);
-			//}
-	    }
+		$.ajax({
+				url : "keyword.se",
+				data : { keyword: $("#keyword").val()},
+				success : function(list1){
+					if(Array.isArray(list1)&&list1.length != 0){
+						for ( var i=0; i<list1.length; i++ ) {
+							
+					        // 마커를 생성하고 지도에 표시합니다
+					        var placePosition = new kakao.maps.LatLng(list1[i].longitude, list1[i].latitude)
+						
+					        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+					        // LatLngBounds 객체에 좌표를 추가합니다
+					        bounds.extend(placePosition);
+					        
+					        map.setBounds(bounds);
+
+					    }
+						
+						var bound = map.getBounds();
+							
+						$(".house-item").remove();
+						
+						for ( var i=0; i<list1.length; i++ ) {
+							
+							if(bound.ha< list1[i].latitude < bound.oa && bound.qa < list1[i].longitude < bound.pa){
+								
+							
+									
+								var house = '<li class="house-item">'
+									+				'<div class="item-list" onclick="houseDetail(this);">'
+									+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+									+  					'<div style="display:none" class="hno">' + list1[i].houseNo + '</div>'
+						            +  					'<span class="thumb-title mtb3">' + list1[i].houseName+ '</span>'
+						            +  					'<ul class="thumb-desc mtb3">'
+						            +  					'<li>월'+ list1[i].monthly +'만원~</li>';
+									if(list1[i].houseGender == '남성전용'){
+						       	 	house +=			'<li>남성전용</li>'
+										+  			'</ul>'
+									}else if(list1[i].houseGender == '여성전용'){
+									house +=			'<li>남녀공용</li>'
+							              +  			'</ul>'
+									}else if(list1[i].houseGender == '남녀공용'){
+										house +=			'<li>남녀공용</li>'
+								              +  			'</ul>'
+								    }
+									if(list1[i].condition == 'Y'){
+							        house +=  			'<span class="status1">입주가능</span>'
+										  +  			'</div>'
+										  + 	'</li>' ;
+							        }else{
+							        house +=  			'<span class="status2">입주불가</span>'
+										  +  			'</div>'
+										  + 	'</li>' ;
+						            }
+						           
+								
+								$(".house-wrap").append(house);	
+									
+				        	}
+								
+						}
+						
+						
+							
+							
+						
+						
+					
+
+				    
+					}else if(Array.isArray(list1)&&list1.length == 0){
+							
+						for ( var i=0; i<places.length; i++ ) {
+							
+					        // 마커를 생성하고 지도에 표시합니다
+					        var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+						
+					        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+					        // LatLngBounds 객체에 좌표를 추가합니다
+					        bounds.extend(placePosition);
+					        
+					        map.setBounds(bounds);	
+					        
+					        $(".item-list").css("display","none");
+						}
+							
+							
+					}
+					
+				}
+				
+			})
+
 	}
 	 
 	 
@@ -340,8 +399,35 @@
 			image : markerImage // 마커 이미지 
 		});
 		
-		var iwContent = '<div class="item-list"><img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지"><span class="thumb-title mtb3">' + houseName[i] + '</span><ul class="thumb-desc mtb3"><li> 월</li></ul></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-	    iwPosition = new kakao.maps.LatLng(y[i], x[i]); //인포윈도우 표시 위치입니다
+		var iwContent = '<li class="house-item">'
+						+				'<div class="item-list" onclick="houseDetail(this);">'
+						+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+						+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
+						+  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
+						+  					'<ul class="thumb-desc mtb3">'
+						+  					'<li>월'+ monthly[i] +'만원~</li>';
+						if(gender[i] == '남성전용'){
+						house +=			'<li>남성전용</li>'
+						+  			'</ul>'
+						}else if(gender[i] == '여성전용'){
+						house +=			'<li>남녀공용</li>'
+						+  			'</ul>'
+						}else if(gender[i] == '남녀공용'){
+						house +=			'<li>남녀공용</li>'
+						+  			'</ul>'
+						}
+						if(condition[i] == 'Y'){
+						house +=  			'<span class="status1">입주가능</span>'
+						+  			'</div>'
+						+ 	'</li>' ;
+						}else{
+						house +=  			'<span class="status2">입주불가</span>'
+						+  			'</div>'
+						+ 	'</li>' ;
+						};
+									
+
+		var iwPosition = new kakao.maps.LatLng(y[i], x[i]); //인포윈도우 표시 위치입니다
 
 		// 인포윈도우를 생성합니다
 		var infowindow = new kakao.maps.InfoWindow({
@@ -353,13 +439,7 @@
 	    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 	    kakao.maps.event.addListener(marker, 'click', makeClickListener( hno));
 	}
-	// 지도 위에 표시되고 있는 마커를 모두 제거합니다
-	function removeMarker() {
-	    for ( var i = 0; i < markers.length; i++ ) {
-	        markers[i].setMap(null);
-	    }   
-	    markers = [];
-	}
+	
 	
 	
 	// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
@@ -382,12 +462,14 @@
 		}
 	}
 	
-	$(".item-list").click(function(){
-		var hno = $(this).children('.hno').text();
-	
+	function houseDetail(e){
+		
+		
+		var hno = e.getElementsByClassName('hno')[0].innerText;
+		
 		location.href = "house.de?hno=" + hno; 
-	})		
-
+		
+	}
 
 	</script>
 	

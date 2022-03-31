@@ -24,8 +24,22 @@ public class Room {
 	private int expense;
 	private int utility;
 	private Date availableDate;
+
 	private String status;
 	
+	// 룸에서 하우스 합쳐서 쓸려고
+	private String houseName;
+	private String houseTitle;
+	private String houseIntroduce;
+	
+	private String shareSpace;
+	private String personalSpace;
+	private String traffic;
+	private String convenience;
+	private String address;
+	private String latitude;
+	private String longitude;
+
 	// View 전용
 	private String[] roomNameArr;
 	private String[] genderArr;
@@ -37,4 +51,5 @@ public class Room {
 	private int[] utilityArr;
 	private Date[] availableDateArr;
 	
+
 }

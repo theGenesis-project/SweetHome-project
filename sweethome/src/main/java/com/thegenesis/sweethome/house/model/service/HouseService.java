@@ -36,22 +36,19 @@ public class HouseService {
 		return houseDao.selectHouse(sqlSession, houseName);
 	}
 	
-	public ArrayList<House> houseSearch(PageInfo pi){
-		return houseDao.houseSearch(sqlSession,pi);
+	public ArrayList<House> houseSearch(){
+		return houseDao.houseSearch(sqlSession);
 	}
 	
-	public int selectHouseCount() {
-		return houseDao.selectHouseCount(sqlSession);
-	}
-	
-	public ArrayList<House> houseSearchOne(){
-		return houseDao.houseSearchOne(sqlSession);
+
+	public ArrayList<House> keywordSearch(String keyword) {
+		return houseDao.keywordSearch(sqlSession,keyword);
 	}
 
 
-	public House houseDetail(int hno) {
-		return houseDao.houseDetail(sqlSession, hno);
-	}
+
+
+
 	
 	/**
 	 * 현재 하우스 번호 확인
