@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.chat.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,14 @@ public class ChatService {
 
 	public int insertChatMessage(Chat c) {
 		return chatDao.insertChatMessage(sqlSession, c);
+	}
+
+	public List<Integer> searchChatMember(Chat c) {
+		return chatDao.searchChatMember(sqlSession, c);
+	}
+
+	public int insertNewChatRoom(int[] participant, String houseName) {
+		return chatDao.insertNewChatRoom(sqlSession, participant, houseName);
 	}
 
 }

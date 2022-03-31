@@ -1,21 +1,25 @@
 package com.thegenesis.sweethome.chat.controller;
 
+import static com.thegenesis.sweethome.common.template.DateFormat.dateFormat;
+import static com.thegenesis.sweethome.common.template.DateFormat.timeFormat;
+
 import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.json.simple.JSONObject;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import static com.thegenesis.sweethome.common.template.DateFormat.*;
 import com.thegenesis.sweethome.common.template.jsonParser;
 
 import lombok.extern.log4j.Log4j;
 
 @Log4j
+@Component
 public class ChattingHandler extends TextWebSocketHandler{
 	private Set<WebSocketSession> users = new CopyOnWriteArraySet<WebSocketSession>();
 	

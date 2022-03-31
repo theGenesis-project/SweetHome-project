@@ -2,6 +2,7 @@ package com.thegenesis.sweethome.mypage.controller;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.mypage.model.service.MypageService;
+import com.thegenesis.sweethome.tour.model.vo.Tour;
 
 import lombok.extern.log4j.Log4j;
 
@@ -73,17 +75,23 @@ public class MypageController {
 		// 전체 좋아요 수
 		int HlistCount = mypageService.myDibsHouseCount(userNo); 
 		int IlistCount = mypageService.myDibsInteriorCount(userNo);
-		
 		// 처음 보여줄 게시글 수
-		MoreVO Hpi = new MoreVO(0, 6); 
-		MoreVO Ipi = new MoreVO(0, 8); 
-		
+		MoreVO Hpi = Pagination.getMoreList(HlistCount, 6);
+		MoreVO Ipi = Pagination.getMoreList(IlistCount, 8);
+
 		ArrayList<House> Hlist = mypageService.selectMyHouseList(Hpi, userNo);
 		ArrayList<Interior> Ilist = mypageService.selectMyInteriorList(Ipi, userNo);
 		
+		log.info("===============MyDibsList================");
+		log.info(Hlist);
+		
+		for(int i=0; i<Hlist.size(); i++) {
+			String monthly = priceFormat.format(Integer.parseInt(Hlist.get(i).getMonthly()));
+			log.info(monthly);
+			Hlist.get(i).setMonthly(monthly.substring(0, monthly.lastIndexOf(",") - 1));
+		}
 		for(int i=0; i<Ilist.size(); i++) {
-			int price = Ilist.get(i).getInteriorPrice();
-			Ilist.get(i).setWon(priceFormat.format(price) + "원");
+			Ilist.get(i).setWon(priceFormat.format(Ilist.get(i).getInteriorPrice()) + "원");
 		}
 		
 		// 남은 게시글 수
@@ -102,6 +110,7 @@ public class MypageController {
 	public void AjaxGetMoreHouse(MoreVO m, HttpSession session, HttpServletResponse response) throws IOException {
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
 		int listCount = mypageService.myDibsHouseCount(userNo); // 전체 게시글 수
+		DecimalFormat priceFormat = new DecimalFormat("###,###"); // 가격 단위 변경
 		int remain = listCount - m.getCallLength(); // 남은 게시글 수
 		if(remain < m.getLimit()) { // 남은 게시글 갯수가 불러올 게시글 수보다 적을 때
 			m.setLimit(remain); 
@@ -109,6 +118,11 @@ public class MypageController {
 		
 		ArrayList<House> morelist = mypageService.selectMyHouseList(m, userNo);
 		
+		for(int i=0; i<morelist.size(); i++) {
+			String monthly = priceFormat.format(Integer.parseInt(morelist.get(i).getMonthly()));
+			morelist.get(i).setMonthly(monthly.substring(0, monthly.lastIndexOf(",") - 1));
+		}
+
 		JSONObject jObj = new JSONObject();
 		jObj.put("remain", remain - morelist.size()); // 남은 listCount 수
 		JSONArray jArr = new JSONArray(); // JSONObject 안에 들어갈 ArrayList를 담을 배열
@@ -163,16 +177,35 @@ public class MypageController {
 		response.setContentType("application/json; charset=utf-8");
 		response.getWriter().print(jObj);
 	}
-	
-	
-	
-	
+
 	@RequestMapping("userTour.my")
-	public String MyTourList(@RequestParam(value="tpage", defaultValue="1")int currentPage, HttpSession session) {
-		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+	public ModelAndView MyTourList(@RequestParam(value="tpage", defaultValue="1")int currentPage
+			, HttpSession session, ModelAndView mv) {
+		Member m = Member.builder()
+						.userNo(((Member)session.getAttribute("loginUser")).getUserNo())
+						.userType(((Member)session.getAttribute("loginUser")).getUserType())
+						.build();
+		SimpleDateFormat date = new SimpleDateFormat("yyyy년 MM월 dd일");
 		
-		int listCount = mypageService.myTourListCount(userNo);
+		int listCount = mypageService.myTourListCount(m.getUserNo());
 		
-		return "mypage/tourList";
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		ArrayList<Tour> Tlist = mypageService.selectMyTourList(pi, m);
+		
+		// 날짜 포맷 변경
+		for(int i=0; i<Tlist.size(); i++) {
+			Tlist.get(i).setTimeString(date.format(Tlist.get(i).getTourTime()));
+		}
+					
+		mv.addObject("Tlist", Tlist).addObject("pi", pi);
+		if(m.getUserType().equals("M")) {			
+			mv.setViewName("mypage/tourList");
+		} else {
+			mv.setViewName("mypage/ownerTourList");
+		}
+		
+		return mv;
 	}
+	
 }

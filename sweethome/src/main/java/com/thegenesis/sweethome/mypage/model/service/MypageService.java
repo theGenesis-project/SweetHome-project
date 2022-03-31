@@ -11,7 +11,9 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
+import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.mypage.model.dao.MypageDao;
+import com.thegenesis.sweethome.tour.model.vo.Tour;
 
 @Service
 public class MypageService {
@@ -60,5 +62,9 @@ public class MypageService {
 
 	public ArrayList<Interior> selectMyInteriorList(MoreVO m, int userNo) {
 		return mypageDao.selectMyInteriorList(sqlSession, m, userNo);
+	}
+
+	public ArrayList<Tour> selectMyTourList(PageInfo pi, Member m) {
+		return mypageDao.selectMyTourList(sqlSession, pi, m);
 	}
 }

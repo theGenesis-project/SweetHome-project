@@ -26,13 +26,13 @@
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Review" alias="review"/>
 		<typeAlias type="com.thegenesis.sweethome.tour.model.vo.Tour" alias="tour"/>
 		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat"/>
+		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Payment" alias="payment"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml" />
 		<mapper resource="/mappers/ask-mapper.xml"	/>
 		<mapper resource="/mappers/house-mapper.xml"/>
-		<mapper resource="/mappers/house-file-mapper.xml"/>
 		<mapper resource="/mappers/room-mapper.xml"/>
 		<mapper resource="/mappers/community-mapper.xml"/>
 		<mapper resource="/mappers/interior-mapper.xml"/>	
