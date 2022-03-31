@@ -52,7 +52,7 @@
 				#{userNo},
 				#{roomNo},
 				#{message},
-				SYSDATE
+				CURRENT_DATE
 			   )
 	</insert>
 	
