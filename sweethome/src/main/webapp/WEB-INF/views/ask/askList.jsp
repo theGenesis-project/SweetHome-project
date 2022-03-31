@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>1:1 문의 관리</title>
 <link rel="stylesheet" href="resources/css/mypage.css" />
-<link rel="stylesheet" href="resources/css/ask.css" />
 <style>
 #pagingArea {
 	width: fit-content; 
@@ -23,7 +22,7 @@
 			<jsp:include page="../common/mypageNavi.jsp" />
 		</div>
 		<div class="mypage">
-			<button type="button" class="ask-button" onclick="location.href='askForm';">1:1 문의 작성</button>
+			<button type="button" class="house-button btn-pink btn-right" onclick="location.href='askForm';">1:1 문의 작성</button>
 			<table class="table">
 			  <thead>
 			    <tr>

@@ -1,6 +1,7 @@
 package com.thegenesis.sweethome.house.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ public class HouseService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
 	
 	/**
 	 * 하우스 등록
@@ -49,5 +49,49 @@ public class HouseService {
 
 
 
+	
+	/**
+	 * 현재 하우스 번호 확인
+	 * @return
+	 */
+	public int selectHouseNo() {
+		return houseDao.selectHouseNo(sqlSession);
+	}
+	
+	/**
+	 * 하우스 파일 등록
+	 * @param hfList
+	 * @return
+	 */
+	public int insertHouseFile(ArrayList<HouseFile> hfList) {
+		return houseDao.insertHouseFile(sqlSession, hfList);
+	}
+	
+	/**
+	 * 하우스 삭제
+	 * @param userInfo
+	 * @return
+	 */
+	public int deleteHouse(HashMap<String, Integer> userInfo) {
+		return houseDao.deleteHouse(sqlSession, userInfo);
+	}
+	
+	/**
+	 * 해당 하우스 파일 목록 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectHouseFile(int hno) {
+		return houseDao.selectHouseFile(sqlSession, hno);
+	}
+	
+	/**
+	 * 해당 하우스 파일 삭제
+	 * @param hno
+	 * @return
+	 */
+	public int deleteHouseFile(int hno) {
+		return houseDao.deleteHouseFile(sqlSession, hno);
+	}
 	
 }

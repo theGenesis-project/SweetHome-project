@@ -12,6 +12,7 @@ import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.dao.CommunityDao;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
+import com.thegenesis.sweethome.community.model.vo.Reply;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -48,7 +49,6 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.searchNoticeList(sqlSession, pi, map);
 	}
 
-
 	//게시글 상세보기(조회수 증가)
 	@Override
 	public int increaseCount(int bno) {
@@ -80,11 +80,7 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int deleteBoard(int bno) {
 		return communityDao.deleteBoard(sqlSession, bno);
-	}
-	
-	
-	
-	
+	}		
 	//게시글 신고 선행
 	@Override
 	public int reportCheck(HashMap<String, String> map) {
@@ -94,6 +90,36 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int reportBoard(Report r) {
 		return communityDao.reportBoard(sqlSession, r);
+	}
+	//댓글 불러오기
+	@Override
+	public ArrayList<Reply> selectReplyList(int boardNo) {
+		return communityDao.selectReplyList(sqlSession, boardNo);
+	}
+	//댓글 작성
+	@Override
+	public int insertReply(Reply rp) {
+		return communityDao.insertReply(sqlSession, rp);
+	}
+	//댓글 수정
+	@Override
+	public int updateReply(Reply rp) {
+		return communityDao.updatetReply(sqlSession, rp);
+	}
+	//댓글 삭제
+	@Override
+	public int deleteReply(int boardNo) {
+		return communityDao.updatetReply(sqlSession, boardNo);
+	}
+	//댓글 신고 선행
+	@Override
+	public int reportCheckReply(HashMap<String, String> map) {
+		return communityDao.reportCheckReply(sqlSession, map);
+	}
+	//댓글 신고
+	@Override
+	public int reportReply(Report r) {
+		return communityDao.reportReply(sqlSession, r);
 	}
 	
 	

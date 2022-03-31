@@ -13,6 +13,7 @@ import com.thegenesis.sweethome.interior.model.vo.Interior;
 import com.thegenesis.sweethome.interior.model.vo.InteriorFile;
 import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
 import com.thegenesis.sweethome.interior.model.vo.Payment;
+import com.thegenesis.sweethome.interior.model.vo.Review;
 @Repository
 public class InteriorDao {
 
@@ -44,14 +45,10 @@ public class InteriorDao {
 		}
 		return result;
 	}
-
-	public int deleteInterior(SqlSessionTemplate sqlSession, ArrayList<Integer> checkNumbers) {
-		
-		for(Integer arr : checkNumbers) {
-			sqlSession.update("interiorMapper.deleteInterior", arr);
-		}
-		
-		return 0;
+	//게시글 삭제
+	public int deleteInterior(SqlSessionTemplate sqlSession, HashMap<String, Object> map) {
+		System.out.println("dao에 오는 map" + map);
+		return sqlSession.update("interiorMapper.deleteInterior", map);
 	}
 	//게시글 조회수 증가
 	public int increaseCount(SqlSessionTemplate sqlSession, int ino) {
@@ -165,6 +162,27 @@ public class InteriorDao {
 	public int orderStatusUpdate(SqlSessionTemplate sqlSession, HashMap<String, Integer> map) {
 		return sqlSession.update("interiorMapper.orderStatusUpdate", map);
 	}
+	//주문 페이지 수정
+	public int orderPageUpdate(SqlSessionTemplate sqlSession, OrderInfo oi) {
+		return sqlSession.update("interiorMapper.orderPageUpdate", oi);
+	}
+	//리뷰작성
+	public int insertReview(SqlSessionTemplate sqlSession, Review rv) {
+		return sqlSession.insert("interiorMapper.insertReview", rv);
+	}
+	//리뷰 리스트 불러오기
+	public ArrayList<Review> selectReviewList(SqlSessionTemplate sqlSession, int interiorNo) {
+		return (ArrayList)sqlSession.selectList("interiorMapper.selectReviewList", interiorNo);
+	}
+	//리뷰수정
+	public int updateReview(SqlSessionTemplate sqlSession, Review rv) {
+		return sqlSession.update("interiorMapper.updateReview", rv);
+	}
+	//리뷰삭제
+	public int deleteReview(SqlSessionTemplate sqlSession, int reviewNo) {
+		return sqlSession.update("interiorMapper.deleteReview", reviewNo);
+	}
+
 	
 
 	

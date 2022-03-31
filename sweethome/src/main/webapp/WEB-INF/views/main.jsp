@@ -16,7 +16,25 @@
 	
 	<a href="houseInsert">하우스 등록 테스트</a>
 	
-	<p>${ h2.traffic }</p>
+	<h4>하우스 삭제 테스트</h4>
+
+	삭제할 하우스 번호 입력<br>
+	<input type="text" id="house-no"><button onclick="delHouse();">삭제</button>
+
+	<script>
+		function delHouse() {
+
+			var hno = document.getElementById("house-no").value;
+			var result = confirm("해당 하우스를 삭제하시겠습니까?");
+			
+			if(result) {
+				location.href = "deleteHouse.ho?hno=" + hno;
+			}
+			else {
+				hno = "";
+			}
+		}
+	</script>
 	
 	<jsp:include page="common/footer.jsp" />
 </body>

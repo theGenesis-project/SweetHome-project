@@ -112,11 +112,12 @@
 				// document.getElementById("ir1").value를 이용해서 처리한다.
 
 			})
-			
+
 		})
-		 
-		
+
 	</script>
+	
+	
     
     
     

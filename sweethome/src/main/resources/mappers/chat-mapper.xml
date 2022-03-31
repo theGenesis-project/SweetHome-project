@@ -8,6 +8,7 @@
 		<result column="MESSAGE_NO" property="messageNo"/>
 		<result column="MESSAGE" property="message"/>
 		<result column="SEND_TIME" property="sendTime"/>
+		<result column="OTHER_NO" property="otherNo"/>		
 	</resultMap>
 	
 	<select id="selectRoomList" resultMap="chatResultMap">
@@ -51,7 +52,47 @@
 				#{userNo},
 				#{roomNo},
 				#{message},
-				SYSDATE
+				CURRENT_DATE
 			   )
+	</insert>
+	
+	<select id="searchChatMember" parameterType="chat" resultType="_int">
+		SELECT 
+				ROOM_NO
+		  FROM 
+		  		CHATINFO
+		  WHERE 
+		  		ROOM_NO IN
+		  					(
+		  					<!-- 해당 유저가 포함된 채팅방 -->
+							SELECT 
+									ROOM_NO
+							FROM 
+									CHATINFO
+							WHERE 
+									USER_NO = #{userNo}
+							)
+		AND USER_NO = #{otherNo}
+		ORDER BY ROOM_NO
+	</select>
+	
+	<insert id="insertNewChatRoom">
+		INSERT 
+		  INTO 
+		  		CHATROOM
+		VALUES (
+				SEQ_CHAT_ROOM_NO.NEXTVAL
+			  , #{houseName}
+			   )
+	</insert>
+	
+	<insert id="insertNewChatMember">
+		INSERT 
+		  INTO
+		  		CHATINFO
+		VALUES  (
+				 SEQ_CHAT_ROOM_NO.CURRVAL
+				,#{i}		
+				)
 	</insert>
 </mapper>

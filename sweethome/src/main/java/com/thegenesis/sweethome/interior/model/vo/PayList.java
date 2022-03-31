@@ -20,7 +20,7 @@ public class PayList {
 	private String orderReQ;
 	private int interiorNo;
 	private int orderQuantity;
-	private String postCode;//
+	private String postcode;//
 	private int sumPrice;
 	
 	private String senderName;//	SENDER_NAME	VARCHAR2(100 BYTE)
