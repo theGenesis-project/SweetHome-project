@@ -4,6 +4,7 @@ import static com.thegenesis.sweethome.common.template.DateFormat.dateFormat;
 import static com.thegenesis.sweethome.common.template.DateFormat.timeFormat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -89,6 +90,40 @@ public class ChatController {
 		log.info(c);
 		// DB에 저장한 뒤 결과값 출력
 		return chatService.insertChatMessage(c);
+	}
+	
+	@RequestMapping("/newChat")
+	public ModelAndView createNewChat(int other, String houseName, HttpSession session, ModelAndView mv) {
+		log.info("=================newChat=================");
+		log.info("mateNO: " + other); // 채팅할 회원 번호
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		
+		Chat c = Chat.builder()
+					.userNo(userNo) // 현재 로그인한 유저 번호
+					.otherNo(other)
+					.build();
+		
+		// 유저간 공유하는 방이 있는지 확인
+		List<Integer> chatroom = chatService.searchChatMember(c);
+		log.info("chatRoom: " + chatroom);
+		
+		// 유저간 공유하는 채팅방이 없다면 새로 만들기
+		if(chatroom.isEmpty()) {
+			// int 형 배열로 user를 하나씩 넣기
+			int[] participant = new int[] {other, userNo};
+			int result = chatService.insertNewChatRoom(participant, houseName);
+			
+			// insert 결과값이 채팅방의 user수와 같지 않다면 실패
+			if(result != participant.length) {
+				session.setAttribute("errorMsg", "채팅방 개설에 실패했습니다.");
+			}
+		}
+		
+		// 해당 채팅방 유저의 채팅정보 가져오기
+		ArrayList<Chat> chatList = chatService.selectRoomList(userNo);
+		mv.addObject("chatList", chatList).addObject("chatroom", chatroom).setViewName("mypage/chatBoard");
+		
+		return mv;
 	}
 	
 }

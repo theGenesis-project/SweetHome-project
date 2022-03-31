@@ -21,12 +21,6 @@
         font-weight: 600;
         color: white;
     }
-    .delete {
-        background-color: rgb(224, 224, 224);
-    }
-    .submit {
-        background-color: rgb(247, 202, 201);
-    }
     .memberForm {
         width: 300px;
         margin-top: 5px;
@@ -102,8 +96,8 @@
 		            <b>휴대전화</b><br>
 		            <input type="text" name="phone" class="memberForm" value="${ loginUser.phone }"><br><br>
 
-		            <button type="submit" class="member-button submit">내 정보 수정하기</button><br>
-		            <button type="button" class="member-button delete" data-toggle="modal" data-target="#deleteModal">탈퇴하기</button>
+		            <button type="submit" class="member-button btn-pink">내 정보 수정하기</button><br>
+		            <button type="button" class="member-button btn-lightgray" data-toggle="modal" data-target="#deleteModal">탈퇴하기</button>
 		        </form>
 		    </div>
 		</div>

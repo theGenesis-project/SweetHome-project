@@ -17,52 +17,50 @@
 			<jsp:include page="../common/mypageNavi.jsp" />
 		</div>
 		<div class="mypage">
-			<div class="ask-container" style="margin-left: 0">
-				<table class="Qform">
+			<table class="Qform">
+				<tr>
+					<th width="10%">제목</th>
+					<td>${ a.askTitle }</td>
+					<th width="10%">답변 여부</th>
+					<td width="20%">
+						<c:choose>
+							<c:when test="${ a.askComment eq 'N' }">
+								답변 대기
+							</c:when>
+							<c:otherwise>
+								답변 완료
+							</c:otherwise>
+						</c:choose>
+					</td>
+				</tr>
+				<tr>
+					<th>작성일</th>
+					<td colspan="3">${ a.askDate }</td>
+				</tr>
+				<c:if test="${ !empty aFile.filePath }">
 					<tr>
-						<th width="10%">제목</th>
-						<td>${ a.askTitle }</td>
-						<th width="10%">답변 여부</th>
-						<td width="20%">
-							<c:choose>
-								<c:when test="${ a.askComment eq 'N' }">
-									답변 대기
-								</c:when>
-								<c:otherwise>
-									답변 완료
-								</c:otherwise>
-							</c:choose>
+						<th>첨부파일</th>
+						<td class="Qanswer" colspan="3">
+							<img src="${ aFile.filePath }" alt="첨부사진">
 						</td>
 					</tr>
+				</c:if>
+				<tr>
+					<th>내용</th>
+					<td class="Qcontent" colspan="3">
+						${ a.askContent }
+					</td>
+				</tr>
+				<c:if test="${ not empty commentDate }">
 					<tr>
-						<th>작성일</th>
-						<td colspan="3">${ a.askDate }</td>
-					</tr>
-					<c:if test="${ !empty aFile.filePath }">
-						<tr>
-							<th>첨부파일</th>
-							<td class="Qanswer" colspan="3">
-								<img src="${ aFile.filePath }" alt="첨부사진">
-							</td>
-						</tr>
-					</c:if>
-					<tr>
-						<th>내용</th>
-						<td class="Qcontent" colspan="3">
-							${ a.askContent }
+						<th>답변 내용</th>
+						<td colspan="3">
+							${ a.askComment }
 						</td>
 					</tr>
-					<c:if test="${ not empty commentDate }">
-						<tr>
-							<th>답변 내용</th>
-							<td colspan="3">
-								${ a.askComment }
-							</td>
-						</tr>
-					</c:if>
-				</table>
-				<button type="submit" class="Qbutton" onclick="location.href='list.ask'" style="float:none; display:block; margin:10px auto 0px auto;">목록가기 </button>
-			</div>
+				</c:if>
+			</table>
+			<button type="submit" class="house-button" onclick="location.href='list.ask'" style="float:none; display:block; margin:10px auto 0px auto;">목록가기 </button>
 		</div>
 		<div class="end"></div>
 	</div>

@@ -22,7 +22,8 @@
 		<result column="HOUSE_GENDER" property="houseGender"/>
 		<result column="MONTHLY" property="monthly"/>
 	</resultMap>
-	
+
+	<!-- 하우스 등록 쿼리문 -->
 	<resultMap type="houseFile" id="houseFileResultSet">
 		<result column="FILE_NO" property="fileNo"/>
 		<result column="HOUSE_NO" property="houseNo"/>
@@ -130,7 +131,7 @@
 				(
 				    <!-- 각 HOUSE의 월세 최솟값 -->
 				    SELECT 
-				    		HOUSE_NO, ROOM_NO, SUM(RENT + EXPENSE) MONTHLY
+				    		HOUSE_NO, ROOM_NO, SUM(RENT + EXPENSE + NVL(UTILITY, 0)) MONTHLY
 				    FROM 
 				    		ROOM 
 				    GROUP BY 

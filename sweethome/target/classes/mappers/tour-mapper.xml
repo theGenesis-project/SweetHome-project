@@ -2,16 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="tourMapper">
 	<resultMap type="tour" id="tourResultSet">
+		<result column="ROWNUM" property="rownum" />
 		<result column="TOUR_NO" property="tourNo" />
-		<result column="TOUR_NO" property="houseNo" />
-		<result column="TOUR_NO" property="houseName" />
-		<result column="TOUR_NO" property="roomName" />
-		<result column="TOUR_NO" property="userName" />
-		<result column="TOUR_NO" property="gender" />
-		<result column="TOUR_NO" property="age" />
-		<result column="TOUR_NO" property="phone" />
-		<result column="TOUR_NO" property="email" />
-		<result column="TOUR_NO" property="askContent" />
+		<result column="HOUSE_NO" property="houseNo" />
+		<result column="HOUSE_NAME" property="houseName" />
+		<result column="ROOM_NAME" property="roomName" />
+		<result column="USER_NAME" property="userName" />
+		<result column="GENDER" property="gender" />
+		<result column="AGE" property="age" />
+		<result column="PHONE" property="phone" />
+		<result column="EMAIL" property="email" />
+		<result column="ASK_CONTENT" property="askContent" />
+		<result column="TOUR_TIME" property="tourTime" />
+		<result column="STATUS" property="status" />
+		
+		<result column="USER_NO" property="userNo" />
+		<result column="ROOM_NO" property="roomNo" />
+		<result column="ADDRESS" property="address" />
+		<result column="TIME_STRING" property="timeString" />
+		<result column="OWNER_PHONE" property="ownerPhone" />		
 	</resultMap>
 	
 	<select id="userTourListCount" resultType="_int">
@@ -22,5 +31,72 @@
 	  	 WHERE
 	  	 		USER_NO = #{userNo}
 	</select>
-  
+	<!-- 메이트 투어 내역 -->
+	<select id="selectUserTourList" resultMap="tourResultSet">
+		SELECT 
+				ROWNUM
+			  , T.TOUR_NO
+			  , H.HOUSE_NO
+			  , R.ROOM_NO
+			  , R.ROOM_NAME
+			  , H.HOUSE_NAME
+			  , T.USER_NAME
+			  , T.ASK_CONTENT
+			  , T.TOUR_TIME
+			  , H.ADDRESS
+			  , T.STATUS
+			  , M.PHONE OWNER_PHONE
+		  FROM 
+				TOUR T
+		  JOIN 
+		  		ROOM R 
+		  	ON(R.ROOM_NO = T.ROOM_NO)
+		  JOIN 
+		  		HOUSE H 
+		  	ON(R.HOUSE_NO = H.HOUSE_NO)
+	  	  JOIN 
+               MEMBER M
+           ON(H.USER_NO = M.USER_NO)
+		 WHERE
+		 		T.USER_NO = #{userNo}
+		 ORDER 
+		 	BY 
+		 		ROWNUM DESC
+	</select>
+	
+	<!-- 하우스 오너 투어 내역 -->
+  	<select id="selectOwnerTourList" resultMap="tourResultSet">
+  		SELECT 
+				ROWNUM
+			  , T.TOUR_NO
+			  , H.HOUSE_NO
+			  , R.ROOM_NO
+			  , R.ROOM_NAME
+			  , H.HOUSE_NAME
+			  , T.USER_NAME
+			  , DECODE(T.GENDER, 'M', '남', 'W', '여') GENDER
+			  , T.AGE
+			  , T.PHONE
+			  , T.EMAIL
+			  , T.ASK_CONTENT
+			  , T.TOUR_TIME
+			  , T.STATUS
+			  , T.USER_NO
+		  FROM 
+				TOUR T
+		  JOIN 
+		  		ROOM R 
+		  	ON(R.ROOM_NO = T.ROOM_NO)
+		  JOIN 
+		  		HOUSE H 
+		  	ON(R.HOUSE_NO = H.HOUSE_NO)
+          JOIN 
+                MEMBER M
+            ON(H.USER_NO = M.USER_NO)
+		 WHERE
+		 		M.USER_NO = #{userNo}
+           AND 
+                M.USER_TYPE = 'O'
+        ORDER BY ROWNUM DESC
+  	</select>
 </mapper>
