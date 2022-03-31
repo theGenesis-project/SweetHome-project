@@ -327,6 +327,17 @@
   					HOUSE_NO = #{hno}
   	</delete>
   	
+  	<!-- 하우스 번호로 하우스 정보 가져오기 -->
+  	<select id="selectHouseByNo" parameterType="_int" resultMap="houseResultSet">
+  		SELECT
+  				*
+  		FROM
+  				HOUSE
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				STATUS = 'Y'
+  	</select>
   	
 
 </mapper>

@@ -84,15 +84,23 @@
   				HOUSE_NO = #{hno}
   	</update>
 	
-	
-
-
-
 	<select id="houseDetail" resultMap="roomResultSet">
 			SELECT * 
 			FROM ROOM 
 			LEFT JOIN HOUSE USING(HOUSE_NO)
 			WHERE HOUSE_NO = #{hno}
-			
   	</select>
+  	
+  	<select id="selectRoom" parameterType="_int" resultMap="roomResultSet">
+  		SELECT
+  				*
+  		FROM
+  				ROOM
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				STATUS = 'Y'
+  	</select>
+  	
+  	
 </mapper>

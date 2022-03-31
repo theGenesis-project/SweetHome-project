@@ -45,5 +45,14 @@ public class RoomDao {
 		return sqlSession.update("roomMapper.deleteRoom", hno);
 
 	}
+	/**
+	 * 하우스 번호로 방 정보 가져오기
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<Room> selectRoom(SqlSessionTemplate sqlSession, int hno) {
+		return (ArrayList)sqlSession.selectList("roomMapper.selectRoom", hno);
+	}
 
 }

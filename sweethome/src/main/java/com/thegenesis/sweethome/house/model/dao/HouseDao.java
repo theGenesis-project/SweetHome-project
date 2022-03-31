@@ -96,6 +96,16 @@ public class HouseDao {
 	public int deleteHouseFile(SqlSessionTemplate sqlSession, int hno) {
 		return sqlSession.delete("houseMapper.deleteHouseFile", hno);
 	}
+
+	/**
+	 * 하우스 번호로 하우스 정보 가져오기
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public House selectHouseByNo(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.selectOne("houseMapper.selectHouseByNo", hno);
+	}
 	
 
 }

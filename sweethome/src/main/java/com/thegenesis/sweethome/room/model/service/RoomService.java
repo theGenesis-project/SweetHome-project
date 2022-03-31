@@ -52,5 +52,14 @@ public class RoomService {
 		return roomDao.houseDetail(sqlSession, hno);
 	}
 
+	/**
+	 * 하우스 번호로 방 정보 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<Room> selectRoom(int hno) {
+		return roomDao.selectRoom(sqlSession, hno);
+	}
+
 
 }

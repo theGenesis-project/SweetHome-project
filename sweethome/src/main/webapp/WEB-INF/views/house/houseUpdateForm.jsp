@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>하우스 등록하기</title>
+<title>하우스 수정하기</title>
 <%-- Daum 우편번호 서비스 --%>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <%-- Kakao Map API: services 라이브러리 --%>
@@ -44,9 +44,9 @@
 		color: #999;
 		font-size: .9em;
 	}
-	input[type=file]{
+	/* input[type=file]{
 		display: none;
-	}
+	} */
 </style>
 </head>
 <body>
@@ -55,7 +55,14 @@
 
 	<div class="outer">
 		
-		<h1>하우스 등록</h1>
+		<h1>${ h.houseNo }</h1>
+		<br>
+		${ rList }
+		<br>
+		${ hfList }
+		
+		
+		<h1>하우스 수정</h1>
 
 		<form action="insertHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">
 			<div class="form-group">
@@ -64,7 +71,7 @@
 				<div class="add"></div>
 				
 				<h3>하우스 이름</h3>
-				<input type="text" class="form-control" name="houseName" placeholder="하우스 이름 입력" required>
+				<input type="text" class="form-control" name="houseName" placeholder="하우스 이름 입력" value="${ h.houseName }" required>
 		
 				<h3>하우스 주소</h3>
 
@@ -76,7 +83,7 @@
 					</div>
 				</div>
 
-				<input type="text" id="roadAddress" class="form-control" placeholder="도로명 주소" size="60" required readonly>
+				<input type="text" id="roadAddress" class="form-control" placeholder="도로명 주소" value="${ h.address }" size="60" required readonly>
 				<input type="text" id="detailAddress" class="form-control" placeholder="상세 주소 입력">
 
 				<%-- 위도/경도 자동 입력 --%>
@@ -119,6 +126,10 @@
 					}
 				</script>
 
+<img src="${ hfList.get(0).filePath }">
+<img src="${pageContext.request.contextPath}/${ hfList.get(0).filePath }">
+<img src="resources/uploadFiles/2022033012105861259.jpg">
+
 				<%-- 하우스 대표 사진 --%>
 				<h3>대표 사진</h3>
 
@@ -128,67 +139,73 @@
 
 				<%-- 방 정보 등록 --%>
 				<h2>방 정보 등록</h2>
-
-				<div id='room-1'>
-					<h3>방 사진</h3>
-
-					<a class='button btn1'>사진 첨부</a>
-					<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);' required>
-					<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
-
-					<h3>방 정보</h3>
-					<table>
-						<tr>
-							<td>방 이름(호수 등)</td>
-							<td><input type='text' name='roomNameArr' class='form-control' required></td>
-						</tr>
-						<tr>
-							<td>성별</td>
-							<td>
-								<div class='form-group'>
-									<select class='form-control' name='genderArr'>
-										<option value='M'>남성</option>
-										<option value='F'>여성</option>
-									</select>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>타입</td>
-							<td><input type='number' name='peopleArr' class='form-control' min='1' required></td>
-							<td>인실</td>
-						</tr>
-						<tr>
-							<td>면적</td>
-							<td><input type='number' name='areaArr' class='form-control' min='1' required></td>
-							<td>m2</td>
-						</tr>
-						<tr>
-							<td>보증금</td>
-							<td><input type='number' name='depositArr' class='form-control' min='1' required></td>
-							<td>원</td>
-						</tr>
-						<tr>
-							<td>월임대료</td>
-							<td><input type='number' name='rentArr' class='form-control' min='1' required></td>
-							<td>원</td>
-						</tr>
-						<tr>
-							<td>관리비</td>
-							<td><input type='number' name='expenseArr' class='form-control' min='1' required></td>
-							<td>원</td>
-						</tr>
-						<tr>
-							<td>선불공과금</td>
-							<td><input type='number' name='utilityArr' class='form-control' min='1' required></td>
-							<td>원</td>
-						</tr>
-						<tr>
-							<td>입주가능일</td>
-							<td><input type='date' name='availableDateArr' class='form-control' required></td>
-						</tr>
-					</table>
-				</div>
+				
+				<%-- div room-no 설정용 변수 --%>
+				<c:set var="roomIdNo" value="1"/>
+				
+				<c:forEach var="r" items="${ rList }">
+					<div id='room-${ roomIdNo }'>
+						<h3>방 사진</h3>
+	
+						<a class='button btn1'>사진 첨부</a>
+						<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);' required>
+						<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
+	
+						<h3>방 정보</h3>
+						<table>
+							<tr>
+								<td>방 이름(호수 등)</td>
+								<td><input type='text' name='roomNameArr' value="${ r.roomName }" class='form-control' required></td>
+							</tr>
+							<tr>
+								<td>성별</td>
+								<td>
+									<div class='form-group'>
+										<select class='form-control' name='genderArr'>
+											<option value='M'>남성</option>
+											<option value='F'>여성</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>타입</td>
+								<td><input type='number' name='peopleArr' value="${ r.people }" class='form-control' min='1' required></td>
+								<td>인실</td>
+							</tr>
+							<tr>
+								<td>면적</td>
+								<td><input type='number' name='areaArr' value="${ r.area }" class='form-control' min='1' required></td>
+								<td>m2</td>
+							</tr>
+							<tr>
+								<td>보증금</td>
+								<td><input type='number' name='depositArr' value="${ r.deposit }" class='form-control' min='1' required></td>
+								<td>원</td>
+							</tr>
+							<tr>
+								<td>월임대료</td>
+								<td><input type='number' name='rentArr' value="${ r.rent }" class='form-control' min='1' required></td>
+								<td>원</td>
+							</tr>
+							<tr>
+								<td>관리비</td>
+								<td><input type='number' name='expenseArr' value="${ r.expense }" class='form-control' min='1' required></td>
+								<td>원</td>
+							</tr>
+							<tr>
+								<td>선불공과금</td>
+								<td><input type='number' name='utilityArr' value="${ r.utility }" class='form-control' min='1' required></td>
+								<td>원</td>
+							</tr>
+							<tr>
+								<td>입주가능일</td>
+								<td><input type='date' name='availableDateArr' value="${ r.availableDate }" class='form-control' required></td>
+							</tr>
+						</table>
+					</div>
+					<c:set var="roomIdNo" value="${ roomIdNo + 1 }"/>
+				</c:forEach>
 
 				<%-- 방 추가 버튼 클릭시, 추가 요소 생성 영역 --%>
 				<div id='insert-room'></div>
@@ -202,7 +219,9 @@
 				<script>
 
 					// 방 추가 버튼 클릭시 몇 번째 방인지 확인용 변수
-					var roomNum = 2;
+					var roomNum = ${ roomIdNo };
+					
+					console.log(roomNum);
 
 					// 방 추가 버튼 클릭시 '#insert-room'에 추가되는 요소
 					$(function() {
@@ -298,7 +317,16 @@
 							imageBtn = ($(this).next())[0];
 							attImage = ($(this).next().next())[0];
 							
-							$(this).next().click();
+							if(attImage.children.length == 0) {
+								var result = confirm("파일을 수정하면 기존 파일이 전부 삭제됩니다.\n계속하시겠습니까?");
+								
+								if(result) {
+									$(this).next().click();
+								}
+							}
+							else {
+								$(this).next().click();
+							}
 						})
 					})
 
@@ -311,6 +339,8 @@
 					
 					// [input=file] 요소가 변경될 경우
 					function insertImage(inputFiles) {
+						
+						console.log(inputFiles.value);
 
 						// 선택된 이미지가 5개 이하인지 확인
 						if(inputFiles.files.length > 5) {
@@ -398,30 +428,32 @@
 						div.appendChild(img);
 						div.appendChild(btn);
 						
+						console.log(sel_files_obj)
+						
 						return div;
 					}
 				</script>
 
 				<h2>하우스 소개</h2>
-				<textarea name="houseTitle" class="form-control" placeholder="간략한 하우스 소개를 입력해주세요." style="resize: none;" required></textarea>
-				<textarea name="houseIntroduce" class="form-control" placeholder="하우스에 대한 정보를 자세히 입력해주세요." style="resize: none;" required></textarea>
+				<textarea name="houseTitle" class="form-control" placeholder="간략한 하우스 소개를 입력해주세요." style="resize: none;" required>${ h.houseTitle }</textarea>
+				<textarea name="houseIntroduce" class="form-control" placeholder="하우스에 대한 정보를 자세히 입력해주세요." style="resize: none;" required>${ h.houseIntroduce }</textarea>
 				
 				<h2>제공 서비스</h2>
 
 				<h4>공용공간</h4>
-				<textarea name="shareSpace" class="form-control" placeholder="공용공간 소개를 입력해주세요." style="resize: none;"></textarea>
+				<textarea name="shareSpace" class="form-control" placeholder="공용공간 소개를 입력해주세요." style="resize: none;">${ h.shareSpace }</textarea>
 				<h4>개인공간</h4>
-				<textarea name="personalSpace" class="form-control" placeholder="개인공간 소개를 입력해주세요." style="resize: none;"></textarea>
+				<textarea name="personalSpace" class="form-control" placeholder="개인공간 소개를 입력해주세요." style="resize: none;">${ h.personalSpace }</textarea>
 
 				<h2>위치/편의시설</h2>
 
 				<h4>교통시설/접근성</h4>
-				<textarea name="traffic" class="form-control" placeholder="교통시설/접근성 소개를 입력해주세요." style="resize: none;"></textarea>
+				<textarea name="traffic" class="form-control" placeholder="교통시설/접근성 소개를 입력해주세요." style="resize: none;">${ h.traffic }</textarea>
 				<h4>편의시설</h4>
-				<textarea name="convenience" class="form-control" placeholder="편의시설 소개를 입력해주세요." style="resize: none;"></textarea>
+				<textarea name="convenience" class="form-control" placeholder="편의시설 소개를 입력해주세요." style="resize: none;">${ h.convenience }</textarea>
 
 				<div class="btn-group">
-					<button type="button" class="btn btn-warning" onclick="formCheck()">등록 및 결제</button>
+					<button type="button" class="btn btn-warning" onclick="formCheck()">수정</button>
 					<button class="btn btn-danger" type="reset">취소</button>
 					<button type="submit" id="submit-click"></button>
 				</div>

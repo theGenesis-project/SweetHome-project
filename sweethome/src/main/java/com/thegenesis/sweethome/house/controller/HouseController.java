@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,9 +38,10 @@ public class HouseController {
 		return "house/houseInsert";
 	}
 	
-	@RequestMapping("test")
-	public String test() {
-		return "house/test";
+	// 테스트용
+	@GetMapping("houseUpdateForm")
+	public String houseUpdateForm() {
+		return "house/houseUpdateForm";
 	}
 	
 	/**
@@ -250,7 +252,33 @@ public class HouseController {
 
 		return new Gson().toJson(list1);
 	}
-
+	
+	
+	/**
+	 * 하우스 수정 폼 진입
+	 * @param hno
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("updateHouseForm.ho")
+	public ModelAndView updateHouseForm(int hno, ModelAndView mv) {
+		
+		// 하우스 번호로 정보 가져오기
+		House h = houseService.selectHouseByNo(hno); // 해당 하우스
+		ArrayList<Room> rList = roomService.selectRoom(hno); // 해당 하우스의 방 
+		ArrayList<HouseFile> hfList = houseService.selectHouseFile(hno); // 해당 하우스의 파일
+		
+		mv.addObject("h", h).addObject("rList", rList).addObject("hfList", hfList).setViewName("house/houseUpdateForm");
+		
+		return mv;
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

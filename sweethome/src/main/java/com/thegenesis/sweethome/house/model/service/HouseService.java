@@ -93,5 +93,14 @@ public class HouseService {
 	public int deleteHouseFile(int hno) {
 		return houseDao.deleteHouseFile(sqlSession, hno);
 	}
+
+	/**
+	 * 하우스 번호로 하우스 정보 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public House selectHouseByNo(int hno) {
+		return houseDao.selectHouseByNo(sqlSession, hno);
+	}
 	
 }
