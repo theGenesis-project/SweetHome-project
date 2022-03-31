@@ -24,4 +24,5 @@ public class Reply {
 	private String boardTitle;
 	
 	private int rowNo;
+	private String userId;
 }

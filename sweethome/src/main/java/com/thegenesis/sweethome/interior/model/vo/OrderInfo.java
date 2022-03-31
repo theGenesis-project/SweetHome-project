@@ -19,7 +19,7 @@ public class OrderInfo {
 	private int orderStatus;//	ORDER_STATUS	NUMBER
 	private int interiorNo;//	INTERIOR_NO	VARCHAR2(20 BYTE)
 	private String orderNumber;//	ORDER_NUMBER	VARCHAR2(300 BYTE)
-	private String postCode;// POSTCODE
+	private String postcode;// postcode
 	private Date orderDate;//	ORDER_DATE	DATE
 	private int sumPrice;// SUMPRICE
 	private String senderName;//	SENDER_NAME	VARCHAR2(100 BYTE)

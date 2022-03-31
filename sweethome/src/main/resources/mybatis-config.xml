@@ -22,6 +22,8 @@
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Interior" alias="interior"/>
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.InteriorFile" alias="interiorFile"/>
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.OrderInfo" alias="orderInfo"/>
+		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Payment" alias="payment"/>
+		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Review" alias="review"/>
 		<typeAlias type="com.thegenesis.sweethome.tour.model.vo.Tour" alias="tour"/>
 		<typeAlias type="com.thegenesis.sweethome.chat.model.vo.Chat" alias="chat"/>
 		<typeAlias type="com.thegenesis.sweethome.interior.model.vo.Payment" alias="payment"/>

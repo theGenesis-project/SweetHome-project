@@ -12,9 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Document</title>
     <style>
-        div{
-            border: red 1px solid;
-        }
+      
         #nav{
             width: 1500px;
             height: 50px;
@@ -46,8 +44,8 @@
 <body>
 	<div id="nav">
 	        <ul>
-	            <li><a href="">베스트</a></li>
-	            <li><a href="">카테고리</a></li>
+	            <li><a href="interiorBestList.in">베스트</a></li>
+	            <li><a href="interiorList.in?intCate=1&inpage=1">카테고리</a></li>
 	        </ul>
 	
 	</div>

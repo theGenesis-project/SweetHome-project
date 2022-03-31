@@ -11,6 +11,7 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.community.model.vo.CommunityFile;
+import com.thegenesis.sweethome.community.model.vo.Reply;
 
 @Repository
 public class CommunityDao {
@@ -89,8 +90,8 @@ public class CommunityDao {
 	public int updateBoard(SqlSessionTemplate sqlSession, Community cm, CommunityFile cf) {
 		//게시글 수정
 		int result = sqlSession.update("communityMapper.updateBoard", cm);
-		
-		if(result > 0 && cf != null) {
+			
+		if(result > 0 && cf.getOriginName() != null) {
 			//게시글 수정 후 파일 있을 경우
 			if(cf.getFileNo() != 0) {
 				//기존 파일 있을 경우(첨부파일 update문)
@@ -118,6 +119,32 @@ public class CommunityDao {
 	public int reportCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		
 		return sqlSession.selectOne("communityMapper.reportCheck", map);
+	}
+	//댓글 불러오기
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int boardNo) {
+		return (ArrayList)sqlSession.selectList("communityMapper.selectReplyList", boardNo);
+	}
+	//댓글 작성
+	public int insertReply(SqlSessionTemplate sqlSession, Reply rp) {
+		return sqlSession.insert("communityMapper.insertReply", rp);
+	}
+	//댓글 수정
+	public int updatetReply(SqlSessionTemplate sqlSession, Reply rp) {
+		return sqlSession.update("communityMapper.updateReply", rp);
+	}
+	//댓글 삭제
+	public int updatetReply(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("communityMapper.deleteReply", boardNo);
+	}
+	//댓글 신고 선행
+	public int reportCheckReply(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("communityMapper.reportCheckReply", map);
+	}
+	//댓글 신고
+	public int reportReply(SqlSessionTemplate sqlSession, Report r) {
+		int result = sqlSession.insert("communityMapper.reportReply", r);
+		System.out.println(result);
+		return result;
 	}
 
 	

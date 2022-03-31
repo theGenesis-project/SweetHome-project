@@ -8,7 +8,7 @@
 <title>인테리어 등록</title>
 <script type="text/javascript" src="resources/smartEditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 <style>
-.content{
+        .content{
             margin: auto;
             height: auto;
             width: 1500px;
@@ -33,20 +33,14 @@
         }
         .content4_3{
             width: 100%;
-            height: 500px;
-        }
-
-        
+            height: 400px;
+        }       
         /*세부 크기*/
        
-        #interior-content{
-            margin: auto;
-        }
+       
         #titleImg, .button{
             margin: auto;
-        }
-     
-       
+        } 
         .interior_title>p{
             font-size: 28px;
             font-weight: 600;
@@ -61,7 +55,12 @@
         .interior_com{
             margin-top: 20px;
         }
-      
+        .interior-content{
+            margin-top: 30px;
+        }
+        .content3_2{
+            height: 100%;
+        }
         .buttons button{
             color: rgb(255, 255, 255);
             background-color: rgb(247, 202, 201);
@@ -75,14 +74,16 @@
             background-color: rgb(240, 240, 240);
             color: #212529;
         }
-        .btn{
+        #insertInterior{
             color: rgb(255, 255, 255);
             background-color: rgb(247, 202, 201);
             border: 0ch;
             border-radius: 3px;
-
+            width: 80px;
+            height: 30px;
+            float: right;
         }
-
+    
 </style>
 </head>
 <body>
@@ -123,24 +124,24 @@
                         <hr>
                         </div>
                         <div class="interior_post">
-                           		 택배사 : <input type="text" id="interiorPost" name="interiorPost">
+                           		 택배비: <input type="text" id="interiorPost" name="interiorPost">
                             <hr>
-                        </div>      
-                    </div>
-                </div>
-
-                <div class="content3_2">
-                    <div class="content4_3">
+                        </div> 
                         <div class="img-content">
+                            <p>추가 이미지</p>
                             <img id=contentImg1 width="150" height="150">
                             <img id=contentImg2 width="150" height="150">
                             <img id=contentImg3 width="150" height="150">
-                        </div>
-                        
+                        </div>     
+                    </div>
+                </div>
+                <hr>
+                <div class="content3_2">
+                    <div class="content4_3">               
                         <div class="interior-content">
+                          
                            <textarea name="interiorDetail" id="interiorDetail" rows="10" required></textarea>         
-                        </div>
-                        
+                        </div>                    
                         <div id="file-area">
 							<input type="file" id="file1" name="file" onchange="loadImg(this,1);" required>
 							<input type="file" id="file2" name="file" onchange="loadImg(this,2);">

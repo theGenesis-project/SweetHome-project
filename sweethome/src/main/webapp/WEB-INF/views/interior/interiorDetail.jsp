@@ -22,6 +22,7 @@
         .content3_1{
             width: 100%;
             display: flex;
+            height: 500px;
         }
         .content4_1{
             width: 60%;      
@@ -35,7 +36,7 @@
             height: 500px;
         }     
         /*세부 크기*/
-        .carousel-inner img {
+        .carousel-inner img{
             width: 100%;
             height: 100%;
         }
@@ -125,6 +126,32 @@
             border: 0ch;
             border-radius: 3px;
         }
+        .carousel-inner .carousel-item{
+            width: 450px;
+            height: 450px;
+            margin: auto;
+        }
+        .interior_price>p, .interior_post>p{
+            display: inline-block;
+        }
+        #like{
+            color: rgb(247, 202, 201);
+            font-size: 50px;
+        }
+        .orderButton>form{
+            margin-top: 18px;
+        }
+        .orderButton>form>button{
+            color: rgb(255, 255, 255);
+            background-color: rgb(247, 202, 201);
+            border: 0ch;
+            border-radius: 3px;
+            font-size: 20px;
+            padding: 5px;  
+        }
+        .content3_2{
+            margin-top: 50px;
+        }
 </style>
 </head>
 <body>
@@ -168,11 +195,11 @@
 	                        <p>${in.interiorTitle }</p>
 	                    </div>
 	                    <div class="interior_price">
-	                        <p>${in.interiorPrice }</p>
+	                        <p id="interior_price_view"></p> 원
 	                        <hr>
 	                    </div>
 	                    <div class="interior_post">
-	                        <p>배송비 : ${in.interiorPost }</p>
+	                        배송비 : <p id="interior_post_view"> </p> 원
 	                        <hr>
 	                    </div>
                    		 <div class="like-order-area">
@@ -212,13 +239,14 @@
                     </div>
                 </div>
             </div>
-
+            <c:if test="${loginUser.userId eq 'admin' }">
             <div id="updateBtn">
                 <form method="post" action="updateInteriorDetail.in" id="postForm">
                     <input type="hidden" name="interiorNo" value="${in.interiorNo }">               
                     <button type="submit">수정하기</button>
                 </form>
             </div>
+            </c:if>
             
             <div id="review-area">
                 <h2>리뷰</h2>
@@ -226,60 +254,52 @@
                 <table id="replyArea" class="table" align="center">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th colspan="3">
+                            <th>${loginUser.userId }</th>
+                            
+                            <th colspan="2">
                                 <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
                             </th>
-                            <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;">댓글등록</button></th>
+                            <th style="vertical-align:middle"><button class="btn btn-secondary" style="background-color: rgb(247, 202, 201); border: 0ch;" onclick="addReview()">리뷰등록</button></th>
                         </tr>                      
                     </thead>
                     <tbody>
-                        <tr>
-                            <th></th>
-                            <th>user02</th>
-                            <td width="600">ㅋㅋㅋㅋ</td>
-                            <td width="130">2020-03-12</td>
-                            <td class="buttons">
-                                <!--본인 작성 댓글일 경우 수정하기/삭제하기 아닌 경우 신고하기만!-->
-                                <button type="button" class="btn" data-toggle="modal" data-target="#updateReview">수정</button>
-                                <button>삭제</button>
-                                <button type="button" class="btn" data-toggle="modal" data-target="#rereply">댓글</button><!--관리자만 리뷰 리댓 쓸 수 있음-->
-                            </td>
-                        </tr>
+                       
+                        <!--  
                         <tr class="rereply-area">
                             <th>⤷</th>
                             <th>admin</th>
                             <td width="550">뭐</td>
                             <td width="130">2020-03-12</td>             
                         </tr>     
+                        -->
                     </tbody>
                 </table>
             </div>
-
+	<!-- 
             <div class="modal" id="rereply">
                 <div class="modal-dialog">
                   <div class="modal-content">
               
-                    <!-- Modal Header -->
+                    -- Modal Header 
                     <div class="modal-header">
                       <h4 class="modal-title">리뷰 댓글쓰기</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
               
-                    <!-- Modal body -->
+                    <!-- Modal body 
                     <div class="modal-body">
                         <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;">
                             	리뷰 댓글 작성하는 곳
                         </textarea>
                     </div>           
-                    <!-- Modal footer -->
+                    <!-- Modal footer 
                     <div class="modal-footer">
                       <button type="button" class="btn" data-dismiss="modal">확인</button>
                     </div>           
                   </div>
                 </div>
             </div>
-
+ 		-->
             <div class="modal" id="updateReview">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -289,22 +309,28 @@
                       <h4 class="modal-title">리뷰 수정하기</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-              
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;">
-                        		댓글 내용 들어있음
-                        </textarea>
-                    </div>
-              
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn" data-dismiss="modal">확인</button>
-                    </div>
-              
+                    	<!-- 댓글 수정 -->
+	              		<form action="updateReview.in" method="post">
+		                    <!-- Modal body -->
+		                    <div class="modal-body">
+		                    	<!-- 같이 보낼 것 : 댓글 넘버 -->
+		                    	<input type="hidden" name="reviewNo" class="mReviewNo" value="">
+		                    	<input type="hidden" name="interiorNo" class="mInteriorNo" value="">
+		                        <textarea class="form-control mContent" name="reviewContent" cols="55" rows="2" style="resize:none; width:100%;">
+		                        		댓글 내용 들어있음
+		                        </textarea>
+		                    </div>
+		              
+		                    <!-- Modal footer -->
+		                    <div class="modal-footer">
+		                      <button type="submit" class="btn">확인</button>
+		                    </div>
+              			</form>
+              			
                   </div>
                 </div>
             </div>
+            <!-- 모달 끝 -->
         </div>
     </div>
 
@@ -323,8 +349,7 @@
 	        });
 	        $(".item3").click(function(){
 	            $("#myCarousel").carousel(2);
-	        });       
-	       
+	        });       	       
 	    });
 		//찜기능
 		
@@ -348,23 +373,126 @@
 					
 					if(result == "NN"){
 						$("#like").html("♡");
-	                       
-						
+	                       					
 					}else{
 						$("#like").html("♥");
-					}
-				
-				}
-				
-				
-			})
-			
-			
+					}				
+				}								
+			})						
 		}
 		
+		$(function(){
+			selectReviewList();
+		})
+			
+		function addReview(){//댓글 작성용
+			//아무것도 없을 때 요청 불가능하게!
+			
+			if($("#content").val().trim() != 0 ){			
+					$.ajax({					
+						url : "reviewInsert.in",
+						data : {
+							interiorNo : ${ in.interiorNo },
+	    					reviewContent : $("#content").val(), 
+	    					userNo : ${loginUser.userNo }	
+						},
+						success : function(result){
+							if(result == "YY"){
+	    						
+								selectReviewList();
+	    						$("#content").val("");
+							}else{
+								console.log("???")
+							}
+						},
+						error : function(){
+							console.log("댓글 작성 실패");
+						}
+					})//ajax끝
+				}else{
+					alertify.alert("댓글을 올바르게 입력해주세요.");			
+				}
+			}
+		
+			function selectReviewList(){//리뷰 리스트 불러오기
+				$.ajax({
+					url : "reviewList.in",
+					data : {
+						interiorNo : ${in.interiorNo}
+					},
+					success : function(list){
+						console.log(list)
+						let value = "";
+						for(let i in list){
+							value += "<tr>"
+									+"<th class='reviewNo' style='display:none'>" + list[i].reviewNo + "</th>"
+									+"<th class='reviewUserId'>" + list[i].userId +"</th>"
+									+"<td width='600' class='reviewContent'>" + list[i].reviewContent + "</td>"
+									+"<td width='130' class='createDate'>" + list[i].createDate + "</td>";
+									
+									if(("${loginUser.userId}" == list[i].userId) || ("${loginUser.userId}" == 'admin' )){
+																	
+									value += "<td class='buttons'>" 
+										+ "<button type='button' class='btn updateContent' data-toggle='modal' data-target='#updateReview'>" + "수정"  +"</button>"
+										+ "<button class='deleteContent'>" + "삭제" + "</button>"		
+									+ "</td>";
+									}
+									
+									value += "</tr>";
+						}
+						$("#replyArea tbody").html(value);
+					},
+					error : function(){
+						console.log("조회 실패")
+					}				
+				})
+			}
+		
+			$(function(){
+				
+				$(document).on("click", ".updateContent", function(){
+	    			
+	    			//console.log($(this).parents().siblings(".reviewContent").text())
+	    			$(".mContent").val($(this).parents().siblings(".reviewContent").text());
+	    			//console.log($(this).parents().siblings(".reviewNo").text())
+	    			$(".mReviewNo").val($(this).parents().siblings(".reviewNo").text());
+	    			//console.log(${in.interiorNo})
+	    			$(".mInteriorNo").val(${in.interiorNo});
+	    		})
+	    		
+	    		$(document).on("click", ".deleteContent", function(){
+	    			 var rno = $(this).parents().siblings(".reviewNo").text();
+	    			 var ino = ${in.interiorNo};
+	    			 
+	    			 var con = confirm("삭제하시겠습니까?");
+	    			 
+	    			 if(con == true){
+	    				 location.href = "deleteReview.in?reviewNo=" +  rno + "&interiorNo=" + ino;
+	    			 }
+	    		})
+	
+			})
 
+            $(function(){
+                     //가격
+                    n1 = parseInt('${in.interiorPrice }');   	
+                    cn1 = n1.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");//number format
+                    
+                    document.getElementById("interior_price_view").innerHTML = cn1;
+
+                    //배송비
+                    n2 = parseInt('${in.interiorPost}');
+                    cn2 = n2.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");//number format
+
+                    document.getElementById("interior_post_view").innerHTML = cn2;
+               
+                
+	   
+          
+
+            })
 		
-		
+	
 	
 	
         </script>

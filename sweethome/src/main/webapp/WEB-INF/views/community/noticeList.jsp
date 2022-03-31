@@ -116,11 +116,11 @@
 	            <button type="submit">검색</button>
 	          </form>
 		</div>
-
-        <div id="button">
-            <button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
-        </div>
-
+		 <c:if test="${!empty loginUser }">
+	        <div id="button">
+	            <button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
+	        </div>
+		</c:if>
         <div id="list">
             <table id="boardTable">
             	<thead>
