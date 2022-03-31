@@ -162,6 +162,7 @@
 			<!-- 이너바디 시작 -->
 			<div class="inner-body">
 				<!-- 하우스 찜 시작 -->
+				<%-- 메이트인 경우 house 찜 가능 --%>
 				<c:if test="${ loginUser.userType eq 'M'}">
 				<div class="house">
 					<%-- 하우스리스트가 없을 경우 --%>
@@ -177,7 +178,7 @@
 			        <ul class="myhouse-wrap">
 			        <c:forEach var="h" items="${ Hlist }">
 			        	<li class="myhouse-item">
-			                <a href="house.d?houseNo=${ h.houseNo }">
+			                <a href="house.de?hno=${ h.houseNo }">
 			                <img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">
 			                <span class="thumb-title mtb3">${ h.houseName }</span>
 			                <ul class="thumb-desc mtb3">
@@ -216,7 +217,7 @@
 			        	<div class="empty-list">
 			        		<p>
 			        			아직 찜한 인테리어가 없습니다😢<br>
-			        			<a href=""><b>인테리어 보러가기>></b></a>
+			        			<a href="interior.in"><b>인테리어 보러가기>></b></a>
 			        		</p>
 			        	</div>
 			        </c:if>
@@ -225,6 +226,7 @@
 						<c:forEach var="I" items="${ Ilist }">
 							<div class="interior_list">
 								<input type="checkbox">
+								<div onclick="location.href='detail.in?ino=${I.interiorNo}'">
 							       <div class="thumbnail-area">
 							           <img src="${ I.filePath }" alt="사진 준비중...🖼️">
 							       </div>
@@ -237,6 +239,7 @@
 							       <div class="interior_price">
 							           <p>${ I.won }</p>
 							       </div>
+								</div>
 							</div>
 						</c:forEach>
 		            </div>

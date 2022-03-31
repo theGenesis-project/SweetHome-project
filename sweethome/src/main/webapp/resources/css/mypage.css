@@ -65,3 +65,27 @@
 	margin-top: 10vw;
 	text-align: center;
 }
+
+/* 마이페이지 왼쪽 위 버튼 관련*/
+.house-button{
+    border: 0;
+    border-radius: 5px;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0 10px 0 10px;
+}
+.btn-center{
+	margin: center;
+}
+.btn-right{
+	float: right;
+}
+.btn-pink{
+	color: rgb(266, 266, 266);
+	background-color: rgb(247, 202, 201);
+}
+.btn-lightgray{
+	color: rgb(128, 128, 128);
+	background-color: rgb(224, 224, 224);
+}

@@ -21,4 +21,7 @@ public class Chat {
 	
 	String formatDate;
 	String formatTime;
+	
+	int otherNo; // 채팅방에 있는 상대방 번호
+	
 }

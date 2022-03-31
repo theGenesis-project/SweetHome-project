@@ -23,7 +23,18 @@ public class Room {
 	private int rent;
 	private int expense;
 	private int utility;
-	private Date date;
+	private Date availableDate;
 	private String status;
+	
+	// View 전용
+	private String[] roomNameArr;
+	private String[] genderArr;
+	private int[] peopleArr;
+	private String[] areaArr;
+	private String[] depositArr;
+	private int[] rentArr;
+	private int[] expenseArr;
+	private int[] utilityArr;
+	private Date[] availableDateArr;
 	
 }

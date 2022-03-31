@@ -22,7 +22,7 @@
 		<result column="HOUSE_GENDER" property="houseGender"/>
 		<result column="MONTHLY" property="monthly"/>
 	</resultMap>
-<!--  
+
 	<resultMap type="house" id="houseResultSet">
 		<result property="houseNo" column="HOUSE_NO"/>
 		<result property="houseName" column="HOUSE_NAME"/>
@@ -37,12 +37,19 @@
 		<result property="address" column="ADDRESS"/>
 		<result property="latitude" column="LATITUDE"/>
 		<result property="longitude" column="LONGITUDE"/>
-		
 	</resultMap>
--->
 
-
-	<!-- 하우스 등록 쿼리문 -->
+	<resultMap type="houseFile" id="houseFileResultSet">
+		<result column="FILE_NO" property="fileNo"/>
+		<result column="HOUSE_NO" property="houseNo"/>
+		<result column="ROOM_NO" property="roomNo"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="FILE_LEVEL" property="fileLevel"/>
+	</resultMap>
+  
+	<!-- 하우스 등록 -->
 	<insert id="insertHouse" parameterType="house">
   		INSERT INTO
   			  HOUSE
@@ -61,10 +68,11 @@
   			  	     ,ADDRESS
   			  	     ,LATITUDE
   			  	     ,LONGITUDE
+  			  	     ,USER_NO
   			  	    )
   			 VALUES
   			 		(
-  			 		  SEQ_ASK_NO.NEXTVAL
+  			 		  SEQ_HOUSE_NO.NEXTVAL
   			 		 ,#{houseName}
   			 		 ,#{houseTitle}
   			 		 ,#{houseIntroduce}
@@ -78,6 +86,7 @@
   			 		 ,#{address}
   			 		 ,#{latitude}
   			 		 ,#{longitude}
+  			 		 ,#{userNo}
   			 		)
 	</insert>
 	<select id="selectHouse" parameterType="string" resultType="house">
@@ -137,7 +146,7 @@
 				(
 				    <!-- 각 HOUSE의 월세 최솟값 -->
 				    SELECT 
-				    		HOUSE_NO, ROOM_NO, SUM(RENT + EXPENSE) MONTHLY
+				    		HOUSE_NO, ROOM_NO, SUM(RENT + EXPENSE + NVL(UTILITY, 0)) MONTHLY
 				    FROM 
 				    		ROOM 
 				    GROUP BY 
@@ -167,4 +176,81 @@
   	<select id="houseDetail" resultMap="houseResultSet">
   		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}
   	</select>
+  	
+  	<!-- 현재 하우스 번호 확인 -->
+  	<select id="selectHouseNo" resultType="_int">
+		SELECT 
+		        LAST_NUMBER AS HOUSE_NO
+		FROM 
+		        USER_SEQUENCES 
+		WHERE 
+		        SEQUENCE_NAME = 'SEQ_HOUSE_NO'
+  	</select>
+  	
+  	<!-- 하우스 파일 등록 -->
+  	<insert id="insertHouseFile" parameterType="houseFile">
+  		INSERT
+			INTO HOUSE_FILE(
+								 FILE_NO
+								,HOUSE_NO
+								<choose>
+									<when test="roomNo != 0">
+										,ROOM_NO
+									</when>
+									<otherwise>
+									</otherwise>
+								</choose>
+								,ORIGIN_NAME
+								,CHANGE_NAME
+								,FILE_PATH
+								,FILE_LEVEL
+							)
+					VALUES(
+								 SEQ_HOUSE_FILE_NO.NEXTVAL
+								,SEQ_HOUSE_NO.CURRVAL
+								<choose>
+									<when test="roomNo != 0">
+										,#{roomNo}
+									</when>
+									<otherwise>
+									</otherwise>
+								</choose>
+								,#{originName}
+								,#{changeName}
+								,#{filePath}
+								,#{fileLevel}
+							)
+  	</insert>
+  	
+  	<!-- 하우스 삭제 -->
+  	<update id="deleteHouse" parameterType="hashMap">
+  		UPDATE
+  				HOUSE
+  		SET
+  				STATUS = 'N'
+  		WHERE
+  				HOUSE_NO = #{houseNo}
+  			AND
+  				USER_NO = #{userNo}
+  	</update>
+  	
+  	<!-- 해당 하우스 파일 목록 가져오기 -->
+  	<select id="selectHouseFile" parameterType="_int" resultMap="houseFileResultSet">
+  		SELECT
+  				FILE_PATH
+  		FROM
+  				HOUSE_FILE
+  		WHERE
+  				HOUSE_NO = #{hno}
+  	</select>
+  	
+  	<!-- 해당 하우스 파일 삭제 -->
+  	<delete id="deleteHouseFile" parameterType="_int">
+  		DELETE FROM
+  					HOUSE_FILE
+  		WHERE
+  					HOUSE_NO = #{hno}
+  	</delete>
+  	
+  	
 </mapper>

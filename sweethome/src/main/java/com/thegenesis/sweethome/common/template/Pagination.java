@@ -1,5 +1,6 @@
 package com.thegenesis.sweethome.common.template;
 
+import com.thegenesis.sweethome.common.vo.MoreVO;
 import com.thegenesis.sweethome.common.vo.PageInfo;
 
 public class Pagination {
@@ -14,5 +15,14 @@ public class Pagination {
 		}
 		
 		return new PageInfo(listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage);
+	}
+	
+	public static MoreVO getMoreList(int CallLength, int limit) {
+		
+		if(limit > CallLength) {
+			limit = CallLength;
+		}
+		
+		return new MoreVO(CallLength, limit);
 	}
 }

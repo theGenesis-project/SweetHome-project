@@ -21,16 +21,34 @@
 	
 	<script>
 		$(function(){
-			// 채팅 들어오면 자동 소켓 연결
+			// 페이지 들어오면 자동 소켓 연결
 			$(".connect-button").trigger('click');
+			// 두 유저가 이미 방이 있다면 그 방으로 보내주기	
+			if("${!empty chatroom}" == "true"){ 	
+				goChat("${chatroom[0]}");
+				$(".chat_list").find("input[name='${chatroom[0]}']").parent().addClass("active_chat"); // 해당 채팅방 배경색 바꾸기
+			}
+			
+	
+			// 클릭 시 활성화 class 추가
+			$(".chat_list").click(function(){
+				console.log(this);
+				if($(".chat_list").hasClass("active_chat")){
+					$(".chat_list").removeClass("active_chat");
+					$(this).addClass("active_chat");
+				} else {
+					$(this).addClass("active_chat");
+				}
+			})
 			
 		})
-	
+		
+		// 소켓 주소 저장할 변수
 		var socket;		
 		
 		// 웹소켓 접속 함수
 		function connect() {
-			var uri = "ws://localhost:8706/sweethome/groupchat"
+			var uri = "ws://localhost:8706/sweethome/chatting"
 			socket = new WebSocket(uri);
 			
 			// 연결이 되었는지 안되었는지 확인할 수 있도록 예약작업(콜백)을 설정
@@ -72,9 +90,9 @@
 
 				// 스크롤 맨 아래로
 				$(".msg_history").scrollTop($(".msg_history")[0].scrollHeight);
-			}
-		}
-		
+			} //on.message 끝
+		} // 웹소켓 접속 함수 끝
+				
 		// 웹소켓 종료함수
 		function disconnect() {
 			socket.close();
@@ -135,8 +153,6 @@
 		
 		// 채팅방 입장 함수
 		function goChat(roomNo) {
-			console.log(this);
-			
 			// 채팅내용 불러오기
 			$.ajax({
 				url: 'getContent.chat',
@@ -148,8 +164,10 @@
 					// 페이지 url 변경
 					// 1. 현재 주소 가져오기
 					var renewURL = location.href;
-					// 2. 현재 주소 중 roomNo 부분 삭제
-					renewURL = renewURL.replace(/\?roomNo=([0-9]+)/ig,'');
+					// 2. 현재 주소 중 ? 뒷부분 삭제
+					renewURL = renewURL.substring(0, renewURL.indexOf('?'));
+					// 현재 주소 중 roomNo 부분 삭제
+					//renewURL = renewURL.replace(/\&roomNo=([0-9]+)/ig,'');
 					// 2. 새로 부여될 데이터 할당
 					renewURL += '?roomNo=' + roomNo;
 					// 3. 페이지 갱신
@@ -218,6 +236,7 @@
             </div>
 		  </div>
 		  <div class="inbox_chat scroll">
+		  <%--
 			<div class="chat_list active_chat">
 			  <div class="chat_people">
 				<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
@@ -228,6 +247,7 @@
 				</div>
 			  </div>
 			</div>
+		   --%>
 			<c:if test="${ empty chatList }">
 				<div style="margin:50px auto auto auto; text-align: center;">
 					<img src="resources/image/Nochat.png" style="width:50px;"><br>
@@ -239,7 +259,7 @@
 			</c:if>
 			<c:forEach var="c" items="${ chatList }">
 				<div class="chat_list" onclick="goChat(${c.roomNo});">
-				  <div class="chatRoom" hidden>${c.roomNo}</div>
+				  <input type="hidden" name="${c.roomNo}" />
 				  <div class="chat_people">
 					<div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
 					<div class="chat_ib">
