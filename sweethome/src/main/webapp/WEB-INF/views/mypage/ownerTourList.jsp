@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>투어 신청 확인</title>
+<title>투어 신청 관리</title>
 <link rel="stylesheet" href="resources/css/mypage.css" />
 <style>
 	.tour-detail>span{
@@ -39,14 +39,14 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-				<button type="button" class="house-button btn-pink btn-right" onclick="location.href='house.se';">투어 신청하러 가기</button>
+				<button type="button" class="house-button btn-pink btn-right" onclick="location.href='house.se';">투어 승인하기</button>
 					<%-- 승인 테이블 시작 --%>
 					<table class="table">
 				        <thead>
 				          <tr>
 				            <th scope="col">번호</th>
 				            <th scope="col">날짜</th>
-				            <th scope="col">장소</th>
+				            <th scope="col">신청인</th>
 				            <th scope="col">승인여부</th>
 				          </tr>
 				        </thead>
@@ -56,7 +56,7 @@
 				        		<tr data-toggle="modal" data-target="#exampleModal">
 								  <th scope="row">${ t.rownum }</th>
 								  <td>${ t.timeString }</td>
-								  <td>${ t.address }</td>
+								  <td>${ t.userName }</td>
 								  <c:choose>
 								  	<c:when test="${ t.status eq 'Y' }">
 									  <td><span class="badge badge-pill badge-info">승인 완료</span></td>
@@ -86,19 +86,22 @@
 							            		<p>${ t.timeString }</p>
 							            	</div>
 							            	<div class="tour-detail">
-							            		<span>장소</span>
+							            		<span>투어 하우스</span>
 							            		<p>
-							            			${ t.address } <br>
-							            			[ ${ t.houseName } ${ t.roomName } ]
+							            			${ t.houseName } ${ t.roomName }
 							            		</p>
 							            	</div>
 							            	<div class="tour-detail">
-							            		<span>하우스 오너 번호</span>
-							            		<p>${ t.ownerPhone }</p>
+							            		<span>투어 신청인</span>
+							            		<p>${ t.userName } [${ t.age }세 / ${ t.gender }] </p>
 							            	</div>
 							            	<div class="tour-detail">
-							            		<span>투어 신청인</span>
-							            		<p>${ t.userName }</p>
+							            		<span>전화번호</span>
+							            		<p>${ t.phone }</p>
+							            	</div>
+							            	<div class="tour-detail">
+							            		<span>이메일</span>
+							            		<p>${ t.email }</p>
 							            	</div>
 							            	<div class="tour-detail">
 							            		<span>문의사항</span>
@@ -109,14 +112,13 @@
 							            		<p>
 							            			1. 지각 금지(투어 시간 엄수!!) <br>
 							            			2. 소란 피우지 않기(이웃을 배려해주세요.) <br>
-							            			3. 추가 인원이 있을 시 오너에게 사전 연락하기 <br>
 							            			4. 메이트와 오너 간 대화 시 친절한 어투 사용하기 <br>
 							            		</p>
 							            	</div>
 							            </div>
 							            <div class="modal-footer">
 							            <button type="button" class="house-button btn-lightgray" data-dismiss="modal">닫기</button>
-							            <button type="button" class="house-button btn-pink" onclick="location.href='house.de?hno=${t.houseNo}'">하우스 확인하기</button>
+							            <button type="button" class="house-button btn-pink" onclick="window.open('newChat?other=${t.userNo}&houseName=${ t.houseName }', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')">채팅하기</button>
 							            </div>
 							        </div>
 							        </div>

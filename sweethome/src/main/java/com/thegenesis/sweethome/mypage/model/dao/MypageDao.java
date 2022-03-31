@@ -11,6 +11,8 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
+import com.thegenesis.sweethome.member.model.vo.Member;
+import com.thegenesis.sweethome.tour.model.vo.Tour;
 
 @Repository
 public class MypageDao {
@@ -19,6 +21,7 @@ public class MypageDao {
 		return sqlSession.selectOne("communityMapper.myBoardListCount", userNo);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Community> selectMyBoardList(SqlSessionTemplate sqlSession, PageInfo pi, int userNo) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
@@ -32,6 +35,7 @@ public class MypageDao {
 		return sqlSession.selectOne("communityMapper.myCommunityListCount", userNo);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Community> selectMyCommentList(SqlSessionTemplate sqlSession, PageInfo cpi, int userNo) {
 		int offset = (cpi.getCurrentPage() - 1) * cpi.getBoardLimit();
 		int limit = cpi.getBoardLimit();
@@ -52,6 +56,7 @@ public class MypageDao {
 		return sqlSession.selectOne("houseMapper.myDibsHouseCount", userNo);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<House> selectMyHouseList(SqlSessionTemplate sqlSession, MoreVO m, int userNo) {
 		RowBounds rowBounds = new RowBounds(m.getCallLength(), m.getLimit());
 		
@@ -62,10 +67,25 @@ public class MypageDao {
 		return sqlSession.selectOne("interiorMapper.myDibsInteriorCount", userNo);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Interior> selectMyInteriorList(SqlSessionTemplate sqlSession, MoreVO m, int userNo) {
 		RowBounds rowBounds = new RowBounds(m.getCallLength(), m.getLimit());
 		
 		return (ArrayList)sqlSession.selectList("interiorMapper.selectDibsInteriors", userNo, rowBounds);
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Tour> selectMyTourList(SqlSessionTemplate sqlSession, PageInfo pi, Member m) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		if(m.getUserType().equals("M")) { // 회원일 경우		
+			return (ArrayList)sqlSession.selectList("tourMapper.selectUserTourList", m.getUserNo(), rowBounds);
+		} else {
+			return (ArrayList)sqlSession.selectList("tourMapper.selectOwnerTourList", m.getUserNo(), rowBounds);
+		} 
 	}
 
 }

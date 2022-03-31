@@ -10,11 +10,14 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
+	
 	<div class="sweethome-container">
 		<div class="sub-nav">
 			<jsp:include page="../common/mypageNavi.jsp"/>
 		</div>
+		<!-- 마이페이지 시작 -->
 		<div class="mypage"> 
+			<!-- 이너네비 시작 -->
 			<div class="inner-nav">
 				<div class="inner-nav-area">
 					<div class="inner-nav1 inner-nav-content">	
@@ -24,8 +27,13 @@
 					<div class="end"></div>
 				</div>
 			</div>
-			<div class="inner-body">이너바디</div>
+			<!-- 이너네비 끝 -->
+			<!-- 이너바디 시작 -->
+			<div class="inner-body">
+			</div>
+			<!-- 이너바디 끝 -->
 		</div>
+		<!-- 마이페이지 끝 -->
 		<div class="end">
 		</div>
 	</div>
