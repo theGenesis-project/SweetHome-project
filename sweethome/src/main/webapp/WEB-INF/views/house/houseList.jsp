@@ -99,6 +99,7 @@
             text-align: center;
             line-height: 30px;
             margin-left:25px;
+            margin-bottom:5px;
         }
         .status2 {
             display: inline-block;
@@ -111,6 +112,7 @@
             text-align: center;
             line-height: 30px;
             margin-left:25px;
+            margin-bottom:5px;
         }
         #text-box{
         	width:1500px;
@@ -197,7 +199,7 @@
 				+  					'<div style="display:none" class="uno">' + userNo[i] + '</div>'
 	            +  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
 	            +  					'<ul class="thumb-desc mtb3">'
-	            +  					'<li>월'+ monthly[i] +'만원~</li>';
+	            +  					'<li>월'+ monthly[i] +'원~</li>';
 				if(gender[i] == '남성전용'){
 	       	 	house +=			'<li>남성전용</li>'
 					+  			'</ul>'
@@ -397,8 +399,6 @@
 		var hno = houseNo[i];
 		var uno = userNo[i];
 		
-		console.log(uno);
-		
 	    var imageSize = new kakao.maps.Size(24, 35); 
 	    
 	    // 마커 이미지를 생성합니다    
@@ -410,31 +410,28 @@
 			image : markerImage // 마커 이미지 
 		});
 		
-		var iwContent = '<li class="house-item">'
-						+				'<div class="item-list" onclick="houseDetail(this);">'
+		var iwContent = 	'<div class="item-list" onclick="houseDetail(this);">'
 						+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
 						+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
 						+  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
 						+  					'<ul class="thumb-desc mtb3">'
 						+  					'<li>월'+ monthly[i] +'만원~</li>';
 						if(gender[i] == '남성전용'){
-						house +=			'<li>남성전용</li>'
+						iwContent +=			'<li>남성전용</li>'
 						+  			'</ul>'
 						}else if(gender[i] == '여성전용'){
-						house +=			'<li>남녀공용</li>'
+						iwContent +=			'<li>남녀공용</li>'
 						+  			'</ul>'
 						}else if(gender[i] == '남녀공용'){
-						house +=			'<li>남녀공용</li>'
+						iwContent +=			'<li>남녀공용</li>'
 						+  			'</ul>'
 						}
 						if(condition[i] == 'Y'){
-						house +=  			'<span class="status1">입주가능</span>'
-						+  			'</div>'
-						+ 	'</li>' ;
+						iwContent +=  			'<span class="status1">입주가능</span>'
+						+  			'</div>';
 						}else{
-						house +=  			'<span class="status2">입주불가</span>'
-						+  			'</div>'
-						+ 	'</li>' ;
+						iwContent +=  			'<span class="status2">입주불가</span>'
+						+  			'</div>' ;
 						};
 									
 

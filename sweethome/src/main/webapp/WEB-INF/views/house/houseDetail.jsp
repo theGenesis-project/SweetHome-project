@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList" %>
+<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList"%>
 
 <% 
 	ArrayList<Room> room = (ArrayList)request.getAttribute("room");
 	Room room1 = (Room)request.getAttribute("room1");
-	
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -305,7 +304,8 @@
 	<c:if test="${!empty loginUser }">
 		<c:choose>
 			<c:when test="${(loginUser.userId eq room1.userId) || (loginUser.userId eq 'admin')}">   
-			<button type="button" class="btn btn-primary">정보수정</button>
+			<button type="button" class="btn btn-primary" onclick="fixHouse();">정보수정</button>
+			<button type="button" class="btn btn-primary"  onclick="deleteHouse();">하우스삭제</button>
 			</c:when>
 			<c:otherwise>
 			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">신고하기</button>
@@ -359,7 +359,8 @@
 		        </div>
 	    	</div>
 				<div id="house-name" >
-		        	스위트홈 1호점
+					${ room.get(0).houseName}
+							<c:if test="${!empty loginUser}">
 	                        <c:choose>
 		                        <c:when test="${ idCheckHeart eq 'Y'}">
 		                            <span id="like" style="cursor:pointer;">
@@ -371,7 +372,8 @@
 		                            	  ♡
 		                            </span>
 		                        </c:otherwise>
-	                        </c:choose>                                      
+	                        </c:choose>   
+	                        </c:if>                                   
 		        </div>
 			<div class="content">
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" >
@@ -442,8 +444,6 @@
 				<c:forEach var="r" items="${ room }">
 				<tbody >
 						<c:choose>
-							
-							
 						<c:when test="${r.status eq 'N'}">
 							<td><div class="tour1"><span class="span">투어불가</span></div></td>
 						</c:when>
@@ -461,14 +461,14 @@
 						</c:otherwise>
 						</c:choose>
 							<td>${ r.people }인실</td>
-							<td>${ r.area }</td>
-							<td>${ r.deposit }</td>
-							<td>${ r.rent }만원</td>	
-							<td>${ r.expense }만원</td>	
-							<td>${ r.utility }만원</td>	
+							<td>${ r.area }㎡</td>
+							<td>${ r.deposit }원</td>
+							<td>${ r.rent }원</td>	
+							<td>${ r.expense }원</td>	
+							<td>${ r.utility }원</td>	
 							<td>${ r.availableDate }</td>	
 							<td class="rno" style="display:none">${ r.roomNo }</td>	
-							<td class="hno" style="display:none">${ r.houseNo }</td>	
+							<td id="houseNo"class="hno" style="display:none">${ r.houseNo }</td>	
 				</tbody>
 				</c:forEach>
 	
@@ -670,33 +670,36 @@
 		<script>
 		
 		
+	
+	
+		
+		
+		
 	var likeBtn = document.getElementById("like");
 	likeBtn.onclick = function(){
-	changeHeart();
+	like();
 	}	
+	
+		function like(){
+			$.ajax({
+				url : "changeHeart.ho",
+				data : {
+					houseNo : $("#houseNo"),
+					userNo : ${loginUser.userNo}				
+				},
+				success : function(result){
+					if(result == "NN"){
+						$("#like").html("♡");
+	                       					
+					}else{
+						$("#like").html("♥");
+					}				
+				}							
+			})						
+		}
+		
 		
 	
-	
-	function changeHeart(){
-				
-				$.ajax({
-					url : "changeHeart.ho",
-					data : {
-						houseNo : ${room1.houseNo},
-						userNo : ${loginUser.userNo}					
-					},
-					success : function(result){
-						
-						if(result == "NN"){
-							$("#like").text("♡");
-		                       					
-						}else{
-							$("#like").text("♥");
-						}				
-					}								
-				})						
-			}
-		
 		
 		function tourForm(e){
 			 
@@ -749,6 +752,36 @@
 		    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
 		    infowindow.close();
 		});
+		
+		   
+		      function deleteHouse() {
+				
+		    	var hno = $("#houseNo").text();
+		         var result = confirm("해당 하우스를 삭제하시겠습니까?");
+		         
+		         if(result) {
+		            location.href = "deleteHouse.ho?hno=" + hno;
+		         }
+		         else {
+		            hno = "";
+		         }
+		      }
+		   
+		      function fixHouse() {
+
+		    	var hno = $("#houseNo").text();
+		         var result = confirm("해당 하우스를 수정하시겠습니까?");
+		         
+		         if(result) {
+		            location.href = "updateHouseForm.ho?hno=" + hno;
+		         }
+		         else {
+		            hno = "";
+		         }
+		      }
+		
+		      
+		
 	</script>
 </body>
 </html>

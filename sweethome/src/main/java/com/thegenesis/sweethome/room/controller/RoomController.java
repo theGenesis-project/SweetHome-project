@@ -45,7 +45,8 @@ public class RoomController {
 		}
 			
 		if(result > 0) {
-		
+
+		Member loginUser = ((Member)session.getAttribute("loginUser"));
 
 		HashMap<String, Integer> hm = new HashMap<>();
 		hm.put("houseNo", hno);
@@ -54,10 +55,12 @@ public class RoomController {
 		String idCheckHeart = roomService.checkHeart(hm);//null/N/Y
 
 		
-		mv.addObject("room" ,room).addObject("room1", room1).addObject("idCheckHeart",idCheckHeart).setViewName("house/houseDetail");
-				
-		
+		mv.addObject("room" ,room).addObject("room1", room1).addObject("idCheckHeart",idCheckHeart).addObject("loginUser",loginUser).setViewName("house/houseDetail");
 		}
+		
+
+		
+				
 		
 		return mv;
 		
