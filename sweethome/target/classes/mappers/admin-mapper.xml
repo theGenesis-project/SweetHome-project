@@ -15,6 +15,41 @@
 	  	<result column="OWNER_NO" property="ownerNo" />
 	  	<result column="USER_TYPE" property="userType" />
 	  </resultMap>
+	  
+	  <resultMap type="orderInfo" id="orderInfoResultSet">
+  		<result column="ORDER_NO" property="orderNo"/>
+  		<result column="USER_NO" property="userNo"/>
+  		<result column="ORDER_RE" property="orderRe"/>
+  		<result column="ORDER_PHONE" property="orderPhone"/>
+  		<result column="ORDER_ADD" property="roadAddress"/>
+  		<result column="ORDER_REQ" property="orderReQ"/>
+  		<result column="ORDER_STATUS" property="orderStatus"/>
+  		<result column="INTERIOR_NO" property="interiorNo"/>
+  		<result column="ORDER_NUMBER" property="orderNumber"/>
+  		<result column="POSTCODE" property="postcode"/>
+  		<result column="ORDER_DATE" property="orderDate"/>
+  		<result column="SUMPRICE" property="sumPrice"/>
+  		<result column="ORDER_ADD2" property="detailAddress"/>
+  		<result column="SENDER_NAME" property="senderName"/>
+  		<result column="SENDER_PHONE" property="senderPhone"/>
+  		<result column="SENDER_EMAIL" property="senderEmail"/>
+  		
+  		
+  		<result column="ORDER_QUANTITY" property="orderQuantity"/>
+  		<result column="INTE_CATE" property="inteCate"/>
+  		<result column="INTERIOR_TITLE" property="interiorTitle"/>
+  		<result column="INTERIOR_POST" property="interiorPost"/>
+  		<result column="USER_ID" property="userId"/>
+  	</resultMap>
+  	
+  	<resultMap type="report" id="reportFileResultSet">
+	  	<result column="REPORT_NO" property="reportNo"/>
+	  	<result column="BOARD_NO" property="boardNo"/>
+	  	<result column="REPORT_CATE" property="reportCate"/> 
+	  	<result column="USER_NO" property="userNo"/>	
+  	</resultMap>
+  	
+	  
 
 	<!-- 회원수 -->
 	<select id="selectMemberCount" resultType="_int">
@@ -40,4 +75,98 @@
 		    BY
 		        USER_NO DESC	    
 	</select>
+	
+	<!-- 주문 리스트 카운트 -->
+	<select id="adminOrderListCount" resultType="_int">
+		SELECT
+			COUNT(*)
+		FROM
+			ORDER_INFO
+	</select>
+	
+	<!-- 주문 내역 리스트 -->
+	<select id="selectOrderList" resultMap="orderInfoResultSet">
+		SELECT 
+			ORDER_NO
+			, USER_ID
+			, ORDER_STATUS
+			, INTERIOR_TITLE
+			, ORDER_DATE
+		FROM 
+			ORDER_INFO
+		JOIN 
+			INTERIOR USING(INTERIOR_NO)
+		JOIN 
+			MEMBER USING(USER_NO)
+		ORDER BY 
+			ORDER_DATE DESC
+	
+	</select>
+	  
+	<!-- 신고 내역 리스트 카운트 -->
+	<!-- 
+	<select id="boardReportCount" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			REPORT
+		WHERE 
+			BOARD_NO IS NOT NULL;
+	
+	</select>
+	
+	<select id="replyReportCount" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			REPORT
+		WHERE 
+			REPLY_NO IS NOT NULL;
+	
+	</select>
+	
+	<select id="houseOrderListCount" resultType="_int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			REPORT
+		WHERE 
+			HOUSE_NO IS NOT NULL;
+
+	</select>
+	 -->
+	<!-- 신고 내역 리스트 -->
+	<!--  
+	<select id="" resultMap="reply">
+		SELECT 
+        REPORT_NO
+        , BOARD_NO
+        , USER_
+        , REPORT_CATE
+        
+		FROM 
+			REPORT 
+        WHERE BOARD_NO IS NOT NULL
+        ORDER BY
+            REPORT_NO DESC;
+	
+	
+	</select>
+	
+	<select id="" resultMap="reply">
+		SELECT
+		
+	
+	
+	</select>
+	
+	<select id="" resultMap="reply">
+	
+	
+	
+	</select>
+	-->
+	
+	
+		
 </mapper>

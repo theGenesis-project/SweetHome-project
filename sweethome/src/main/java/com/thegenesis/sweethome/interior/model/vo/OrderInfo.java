@@ -31,5 +31,6 @@ public class OrderInfo {
 	private int inteCate;
 	private String interiorTitle;
 	private int interiorPost;
+	private String userId;
 	
 }

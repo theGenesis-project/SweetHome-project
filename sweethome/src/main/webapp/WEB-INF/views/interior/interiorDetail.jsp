@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>인테리어 상세정보</title>
 <style>
+	
 	.content{
             margin: auto;
             height: auto;
@@ -43,6 +44,7 @@
         .mt-3{      
             width: 450px;
             height: 450px;
+          
         }
       
         #interior-content{
@@ -152,6 +154,8 @@
         .content3_2{
             margin-top: 50px;
         }
+        
+     
 </style>
 </head>
 <body>
@@ -366,7 +370,7 @@
 				url : "changeHeart.in",
 				data : {
 					interiorNo : ${in.interiorNo},
-					userNo : ${loginUser.userNo}					
+					userNo : '${loginUser.userNo}'					
 				},
 				success : function(result){
 					console.log(result);
@@ -394,7 +398,7 @@
 						data : {
 							interiorNo : ${ in.interiorNo },
 	    					reviewContent : $("#content").val(), 
-	    					userNo : ${loginUser.userNo }	
+	    					userNo : '${loginUser.userNo }'	
 						},
 						success : function(result){
 							if(result == "YY"){

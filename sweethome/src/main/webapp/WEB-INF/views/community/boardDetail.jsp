@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>게시글상세보기</title>
 <style>
- .content {
+ 		.content {
             background-color:white;
             width:1200px;
             margin:auto;
@@ -270,7 +270,7 @@
               
                     <!-- Modal Header -->
                     <div class="modal-header">
-                      <h4 class="modal-title">리뷰 수정하기</h4>
+                      <h4 class="modal-title">댓글 수정하기</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     	<!-- 댓글 수정 -->
@@ -308,7 +308,7 @@
 						data : {
 							boardNo : ${ cm.boardNo },
 	    					replyContent : $("#content").val(), 
-	    					userNo : ${loginUser.userNo }	
+	    					userNo : '${loginUser.userNo }'	
 						},
 						success : function(result){
 							if(result == "YY"){

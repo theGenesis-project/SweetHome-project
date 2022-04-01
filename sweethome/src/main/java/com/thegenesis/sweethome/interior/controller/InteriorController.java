@@ -57,7 +57,7 @@ public class InteriorController {
 	public ModelAndView selectInteriorList(@RequestParam(value="inpage", defaultValue="1")int currentPage,@RequestParam(value="intCate") int inteCate, ModelAndView mv ) {
 				
 		int listCount = interiorService.listCount(inteCate);
-				
+		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
 		
 		ArrayList<Interior> list = interiorService.selectInteriorList(pi, inteCate);	
@@ -122,22 +122,22 @@ public class InteriorController {
 	}
 	//인테리어 삭제
 	@RequestMapping("deleteInterior.in")
-	public String deleteInterior(@RequestParam HashMap<String, Object> checkBoxList, HttpSession session) {
-		
-		
-		String interiorNoArr = (String) checkBoxList.get("checkBoxList");
-		
+	public String deleteInterior(@RequestParam HashMap<String, Object> checkBoxList, HttpSession session) throws Exception {
+			
 		String[] checkListArr = null;		
+		String interiorNoArr = (String)checkBoxList.get("checkBoxList");
+		
 		checkListArr = interiorNoArr.split(",");//가져온 배열 나열
 		
-		int[] interiorNo_array = new int[checkListArr.length];
-		
+		int[] interiorNo_array = new int[checkListArr.length];	
+	
 		for(int i = 0; i< checkListArr.length; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("interiorNo", checkListArr[i]);
 			
-			int result = interiorService.deleteInterior(map);
+			
+			int result = interiorService.deleteInterior(map);//게시글 삭제
 			
 			if(result>0) {//삭제 했을 경우 사진 삭제 진행		
 				
@@ -147,12 +147,13 @@ public class InteriorController {
 						//기존 첨부파일 삭제(파일 자체)			
 						new File(session.getServletContext().getRealPath(InteriorFileList.get(j).getFilePath())).delete();
 						//기존 첨부파일 삭제(오라클 내의 정보 삭제)
-						interiorService.deleteInteriorFileInfo(Integer.parseInt(checkListArr[j]));
-					}
+						interiorService.deleteInteriorFileInfo(Integer.parseInt(checkListArr[i]));				
+					}				
 			}
 		}
+		
 		session.setAttribute("alertMsg", "게시글 삭제 완료");
-		return "interiorList.in?intCate=1&inpage=1";
+		return "redirect:interiorList.in?intCate=1&inpage=1";
 	}
 	//게시판 상세보기
 	@RequestMapping("detail.in")
@@ -394,10 +395,10 @@ public class InteriorController {
 		
 		if(result > 0) {	
 			
-			return "dibsList.my";//나중에 주문 페이지로 바꿔주기
+			return "order.my";//나중에 주문 페이지로 바꿔주기
 		}else {
 			session.setAttribute("alertMsg", "주문 실패");
-			return "dibsList.my";
+			return "order.my";
 		}
 		
 		
