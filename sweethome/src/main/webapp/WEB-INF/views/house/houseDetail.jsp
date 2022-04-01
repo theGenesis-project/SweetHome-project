@@ -348,15 +348,11 @@
 		        <div class="sub-nav-list" onclick="">
 		          	 대표사진
 		        </div>
+				<c:forEach var="n" items="${ room }">
 		        <div class="sub-nav-list" onclick="">
-		        	 101호
+		        	 ${n.roomName }
 		        </div>
-		        <div class="sub-nav-list" onclick="">
-		        	 201호
-		        </div>
-		        <div class="sub-nav-list" onclick="">
-		        	 301호
-		        </div>
+		        </c:forEach>
 	    	</div>
 				<div id="house-name" >
 					${ room.get(0).houseName}
@@ -689,7 +685,6 @@
 			
 			var uno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 
-			console.log(uno);
 			 location.href="tour.re?hno=" + hno + "&rno="+ rno  +"&uno=" + uno;
 		}
 		

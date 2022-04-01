@@ -18,7 +18,7 @@ public class TourController {
 	private TourService tourService;
 	
 	@RequestMapping("insertTour.to")
-	public String insertTour(Model m, Tour to) {
+	public String insertTour(Tour to) {
 		
 		int result = tourService.insertTour(to);
 		
