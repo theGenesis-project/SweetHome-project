@@ -314,7 +314,7 @@ public class HouseController {
 									.availableDate(r.getAvailableDateArr()[i])
 									.status(originRoomList.get(i).getStatus())
 									.build());
-			}
+			} 
 			
 //			System.out.println("originRoom: " + originRoomList);
 //			System.out.println("updateRoom: " + updateRoomList);
