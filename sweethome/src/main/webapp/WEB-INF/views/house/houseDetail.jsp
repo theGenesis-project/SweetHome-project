@@ -448,7 +448,14 @@
 							<td><div class="tour1"><span class="span">투어불가</span></div></td>
 						</c:when>
 						<c:otherwise>
+							<c:choose>
+							<c:when test="${!empty loginUser}">
 							<td><div class="tour" onclick="tourForm(this);"><span class="span">투어신청</span></div></td>
+							</c:when>
+							<c:otherwise>
+							<td><div class="tour" ><span class="span">로그인 </span></div></td>
+							</c:otherwise>
+							</c:choose>
 						</c:otherwise>
 						</c:choose>
 							<td>${r.roomName}</td>
@@ -468,7 +475,8 @@
 							<td>${ r.utility }원</td>	
 							<td>${ r.availableDate }</td>	
 							<td class="rno" style="display:none">${ r.roomNo }</td>	
-							<td id="houseNo"class="hno" style="display:none">${ r.houseNo }</td>	
+							<td class="hno" style="display:none">${ r.houseNo }</td>	
+							<td class="uno" style="display:none">${ r.userNo }</td>	
 				</tbody>
 				</c:forEach>
 	
@@ -670,46 +678,19 @@
 		<script>
 		
 		
-	
-	
-		
-		
-		
-	var likeBtn = document.getElementById("like");
-	likeBtn.onclick = function(){
-	like();
-	}	
-	
-		function like(){
-			$.ajax({
-				url : "changeHeart.ho",
-				data : {
-					houseNo : $("#houseNo"),
-					userNo : ${loginUser.userNo}				
-				},
-				success : function(result){
-					if(result == "NN"){
-						$("#like").html("♡");
-	                       					
-					}else{
-						$("#like").html("♥");
-					}				
-				}							
-			})						
-		}
-		
-		
-	
-		
+
 		function tourForm(e){
 			 
-
 			var hno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 
 			
 			var rno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+			
+			
+			var uno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 
-			 location.href="tour.re?hno=" + hno + "&rno="+ rno;
+			console.log(uno);
+			 location.href="tour.re?hno=" + hno + "&rno="+ rno  +"&uno=" + uno;
 		}
 		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -780,6 +761,37 @@
 		         }
 		      }
 		
+		
+
+		      
+				var likeBtn = document.getElementById("like");
+				likeBtn.onclick = function(){
+				like();
+				}	
+				
+				
+					function like(){
+					
+						$.ajax({
+							url : "changeHeart.ho",
+							data : {
+								houseNo : $("#houseNo"),
+								userNo : ${loginUser.userNo}				
+							},
+							success : function(result){
+									if(result == "NN"){
+										$("#like").html("♡");
+					                       					
+									}else{
+										$("#like").html("♥");
+									}				
+								}							
+							})					
+							
+					}
+				
+				
+				      
 		      
 		
 	</script>

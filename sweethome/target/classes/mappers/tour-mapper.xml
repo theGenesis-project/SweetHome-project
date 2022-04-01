@@ -99,4 +99,29 @@
                 M.USER_TYPE = 'O'
         ORDER BY ROWNUM DESC
   	</select>
+  	<insert id="insertTour" parameterType="tour">
+  		INSERT TOUR
+  			(TOUR_NO
+  			 USER_NAME
+  			 GENDER
+  			 PHONE
+  			 EMAIL
+  			 ASK_CONTENT
+  			 USER_NO
+  			 ROOM_NO
+  			 TOUR_TIME
+  			 STATUS)
+  		VALUES
+  			 (SEQ_TOUR_NO.NEXTVAL
+  			  #{userName}
+  			 ,#{gender}
+  			 ,#{phone}
+  			 ,#{email}
+  			 ,#{askContent}
+  			 ,#{userNo}
+  			 ,#{room_No}
+  			 ,#{tourTime}
+  			)
+  	
+  	</insert>
 </mapper>

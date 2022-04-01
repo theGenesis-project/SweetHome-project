@@ -67,11 +67,12 @@ public class RoomController {
 	}	
 	
 	@RequestMapping("tour.re")
-	public String tourRequest(@RequestParam(value = "hno")int hno,@RequestParam(value = "rno")int rno,Model model) {
+	public String tourRequest(@RequestParam(value = "hno")int hno,@RequestParam(value = "rno")int rno,@RequestParam(value = "uno")int uno,Model model) {
 		
 
 			model.addAttribute(hno);
 			model.addAttribute(rno);
+			model.addAttribute(uno);
 		
 		return "house/tour";
 	}

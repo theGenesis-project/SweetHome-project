@@ -84,11 +84,12 @@
 				<input type="text" id="userName" name="userName" class="rounded" placeholder="이름 *"><input class="gender" type="radio" name="gender" id="gender1" value="M" checked><label class="form-check-label" for="gender1">남자</label><input class="gender" type="radio" name="gender" id="gender2" value="W"><label class="form-check-label" for="gender2">여자</label>
 				<input type="text" id="phone" name="phone" class="rounded" placeholder="핸드폰 번호 -를 제외한 숫자만 입력해주세요 *">
 				<input type="text" id="email" name="email" class="rounded" placeholder="이메일 *">
-				<input type="datetime-local" id="tourTime" valuename="tourTime" class="rounded" placeholder="희망일자" >
+				<input type="datetime-local"id="tourTime" valuename="tourTime" class="rounded" placeholder="희망일자" >
 				<textarea id="askContent" name="askContent" class="rounded" placeholder="문의 사항을 입력해주세요"></textarea>
-				<span style="display:none"><c:out value="${param.hno }"/></span>
-				<span style="display:none"><c:out value="${param.rno }"/></span>
-				<button type="submit" class="submit">신청하기</button><button onclick="location.href="house.de"">취소</button>
+				<input type="hidden" name="roomNo" value="${param.rno }">
+				<input type="hidden" name="houseNo" value="${param.hno }">
+				<input type="hidden" name="userNo" value="${param.uno }">				
+				<button type="submit" class="submit">신청하기</button><button onclick="location.href=house.de">취소</button>
 			</div>
 		</form>
 	
