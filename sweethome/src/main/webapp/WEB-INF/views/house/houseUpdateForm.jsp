@@ -44,9 +44,9 @@
 		color: #999;
 		font-size: .9em;
 	}
-	/* input[type=file]{
+	input[type=file]{
 		display: none;
-	} */
+	}
 </style>
 </head>
 <body>
@@ -64,7 +64,7 @@
 		
 		<h1>하우스 수정</h1>
 
-		<form action="insertHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">
+		<form action="updateHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">
 			<div class="form-group">
 			
 				<%-- 방별 파일 개수 확인 --%>
@@ -87,8 +87,8 @@
 				<input type="text" id="detailAddress" class="form-control" placeholder="상세 주소 입력">
 
 				<%-- 위도/경도 자동 입력 --%>
-				<input type="hidden" id="latitude" name="latitude">
-				<input type="hidden" id="longitude" name="longitude">
+				<input type="hidden" id="latitude" name="latitude" value="${ h.latitude }">
+				<input type="hidden" id="longitude" name="longitude" value="${ h.longitude }">
 
 				<script>
 					// Daum 우편번호 서비스
@@ -126,16 +126,21 @@
 					}
 				</script>
 
-<img src="${ hfList.get(0).filePath }">
-<img src="${pageContext.request.contextPath}/${ hfList.get(0).filePath }">
-<img src="resources/uploadFiles/2022033012105861259.jpg">
-
 				<%-- 하우스 대표 사진 --%>
 				<h3>대표 사진</h3>
 
 				<a class="button btn1">사진 첨부</a>
-				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)' required>
-				<div id='image-0' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
+				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)'>
+				<div id='image-0' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'>
+					<c:forEach var="hf" items="${ hfList }">
+						<c:if test="${ hf.roomNo eq 0 }">
+							<div style="display: inline-block; position: relative; width: 150px; height: 120px; margin: 5px; border: 1px; solid #00f; z-index: 1;">
+								<img style="width: 100%; height: 100%; z-index: none;" src="${ hf.filePath }">
+								<input type="button" value="x" class="img0" style="width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;">
+							</div>
+						</c:if>
+					</c:forEach>				
+				</div>
 
 				<%-- 방 정보 등록 --%>
 				<h2>방 정보 등록</h2>
@@ -148,8 +153,19 @@
 						<h3>방 사진</h3>
 	
 						<a class='button btn1'>사진 첨부</a>
-						<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);' required>
-						<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'></div>
+						<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);'>
+						<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'>
+						
+						<c:forEach var="hf" items="${ hfList }">
+							<c:if test="${ hf.roomNo eq r.roomNo }">
+								<div style="display: inline-block; position: relative; width: 150px; height: 120px; margin: 5px; border: 1px; solid #00f; z-index: 1;">
+									<img style="width: 100%; height: 100%; z-index: none;" src="${ hf.filePath }">
+									<input type="button" value="x" class="img${ roomIdNo }" style="width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;">
+								</div>
+							</c:if>
+						</c:forEach>
+							
+						</div>
 	
 						<h3>방 정보</h3>
 						<table>
@@ -162,8 +178,17 @@
 								<td>
 									<div class='form-group'>
 										<select class='form-control' name='genderArr'>
-											<option value='M'>남성</option>
-											<option value='F'>여성</option>
+											<c:choose>
+												<c:when test="${ r.gender eq 'M' }">
+													<option value='M' selected>남성</option>
+													<option value='W'>여성</option>
+												</c:when>
+												<c:otherwise>
+													<option value='M'>남성</option>
+													<option value='W' selected>여성</option>
+												</c:otherwise>
+											</c:choose>
+											
 										</select>
 									</div>
 								</td>
@@ -244,7 +269,7 @@
 								+ "<div class='form-group'>"
 								+ "<select class='form-control' name='genderArr'>"
 								+ "<option value='M'>남성</option>"
-								+ "<option value='F'>여성</option>"
+								+ "<option value='W'>여성</option>"
 								+ "</select>"
 								+ "</div>"
 								+ "</td>"
@@ -316,8 +341,10 @@
 							// 클릭된 사진 첨부 버튼 아래 [input=file] & 미리보기 생성 영역 가져오기
 							imageBtn = ($(this).next())[0];
 							attImage = ($(this).next().next())[0];
-							
-							if(attImage.children.length == 0) {
+
+							console.log(attImage);
+
+							if(attImage.children.length != 0) {
 								var result = confirm("파일을 수정하면 기존 파일이 전부 삭제됩니다.\n계속하시겠습니까?");
 								
 								if(result) {
@@ -467,7 +494,19 @@
 					// 등록 및 결제 전 확인
 					function formCheck() {
 						// 도로명 주소 + 상세 주소 합치기
-						var address = document.getElementById("roadAddress").value + " " + document.getElementById("detailAddress").value;
+						var address = "";
+						var roadAddress = document.getElementById("roadAddress").value;
+						var detailAddress = document.getElementById("detailAddress").value;
+
+						alert("."+ detailAddress +".")
+
+						if(detailAddress == "") {
+							address = roadAddress;
+						}
+						else {
+							address = roadAddress + " " + detailAddress;
+						}
+
 						var addressHtml = "<input type='hidden' name='address' value='"+ address +"'>";
 
 						$(".add").append(addressHtml);
@@ -483,6 +522,19 @@
 
 						var fileNumberHtml = "<input type='hidden' name='fileNumber' value='" + fileNumber + "'>";
 						$(".add").append(fileNumberHtml);
+						
+						// 하우스 번호 넣기
+						var houseNo = new URLSearchParams(location.search).get('hno');
+						
+						var houseNoHtml = "<input type='hidden' name='houseNo' value='" + houseNo + "'>";
+						$(".add").append(houseNoHtml);
+						
+						var conditionHtml = "<input type='hidden' name='condition' value='${ h.condition }'>";
+						var statusHtml = "<input type='hidden' name='status' value='${ h.status }'>";
+						var userNoHtml = "<input type='hidden' name='userNo' value='${ h.userNo }'>";
+						$(".add").append(conditionHtml);
+						$(".add").append(statusHtml);
+						$(".add").append(userNoHtml);
 
 						$("#submit-click").click();
 					}

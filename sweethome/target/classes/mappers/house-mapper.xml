@@ -252,16 +252,6 @@
   		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}
   	</select>
   	
-  	<!-- 현재 하우스 번호 확인 -->
-  	<select id="selectHouseNo" resultType="_int">
-		SELECT 
-		        LAST_NUMBER AS HOUSE_NO
-		FROM 
-		        USER_SEQUENCES 
-		WHERE 
-		        SEQUENCE_NAME = 'SEQ_HOUSE_NO'
-  	</select>
-  	
   	<!-- 하우스 파일 등록 -->
   	<insert id="insertHouseFile" parameterType="houseFile">
   		INSERT
@@ -312,7 +302,7 @@
   	<!-- 해당 하우스 파일 목록 가져오기 -->
   	<select id="selectHouseFile" parameterType="_int" resultMap="houseFileResultSet">
   		SELECT
-  				FILE_PATH
+  				*
   		FROM
   				HOUSE_FILE
   		WHERE

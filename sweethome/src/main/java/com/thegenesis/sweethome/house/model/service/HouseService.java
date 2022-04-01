@@ -44,19 +44,6 @@ public class HouseService {
 	public ArrayList<House> keywordSearch(String keyword) {
 		return houseDao.keywordSearch(sqlSession,keyword);
 	}
-
-
-
-
-
-	
-	/**
-	 * 현재 하우스 번호 확인
-	 * @return
-	 */
-	public int selectHouseNo() {
-		return houseDao.selectHouseNo(sqlSession);
-	}
 	
 	/**
 	 * 하우스 파일 등록

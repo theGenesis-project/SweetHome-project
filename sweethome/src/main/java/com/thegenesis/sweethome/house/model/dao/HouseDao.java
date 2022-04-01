@@ -39,16 +39,6 @@ public class HouseDao {
 	public ArrayList<House> keywordSearch(SqlSessionTemplate sqlSession, String keyword) {
 		return (ArrayList)sqlSession.selectList("houseMapper.keywordSearch",keyword);
 	}
-
-
-	/**
-	 * 현재 하우스 번호 확인
-	 * @param sqlSession
-	 * @return
-	 */
-	public int selectHouseNo(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("houseMapper.selectHouseNo");
-	}
 	
 	/**
 	 * 하우스 파일 등록

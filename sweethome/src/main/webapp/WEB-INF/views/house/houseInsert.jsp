@@ -148,7 +148,7 @@
 								<div class='form-group'>
 									<select class='form-control' name='genderArr'>
 										<option value='M'>남성</option>
-										<option value='F'>여성</option>
+										<option value='W'>여성</option>
 									</select>
 								</div>
 							</td>
@@ -225,7 +225,7 @@
 								+ "<div class='form-group'>"
 								+ "<select class='form-control' name='genderArr'>"
 								+ "<option value='M'>남성</option>"
-								+ "<option value='F'>여성</option>"
+								+ "<option value='W'>여성</option>"
 								+ "</select>"
 								+ "</div>"
 								+ "</td>"
@@ -421,7 +421,7 @@
 				<textarea name="convenience" class="form-control" placeholder="편의시설 소개를 입력해주세요." style="resize: none;"></textarea>
 
 				<div class="btn-group">
-					<button type="button" class="btn btn-warning" onclick="formCheck()">등록 및 결제</button>
+					<button type="button" class="btn btn-warning" onclick="formCheck()">등록</button>
 					<button class="btn btn-danger" type="reset">취소</button>
 					<button type="submit" id="submit-click"></button>
 				</div>
