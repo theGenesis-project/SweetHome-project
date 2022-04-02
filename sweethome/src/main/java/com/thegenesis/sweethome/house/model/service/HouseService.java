@@ -89,5 +89,35 @@ public class HouseService {
 	public House selectHouseByNo(int hno) {
 		return houseDao.selectHouseByNo(sqlSession, hno);
 	}
+
+	/**
+	 * 하우스 수정
+	 * @param h
+	 * @return
+	 */
+	public int updateHouse(House h) {
+		return houseDao.updateHouse(sqlSession, h);
+	}
+	
+	/**
+	 * 해당 방 파일 목록 가져오기
+	 * @param roomNo
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectRoomFile(int roomNo) {
+		return houseDao.selectRoomFile(sqlSession, roomNo);
+	}
+
+
+	/**
+	 * 해당 방 파일 삭제
+	 * @param roomNo
+	 * @return
+	 */
+	public int deleteRoomFile(int roomNo) {
+		return houseDao.deleteRoomFile(sqlSession, roomNo);
+	}
+	
+	
 	
 }

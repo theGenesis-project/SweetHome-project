@@ -96,6 +96,36 @@ public class HouseDao {
 	public House selectHouseByNo(SqlSessionTemplate sqlSession, int hno) {
 		return sqlSession.selectOne("houseMapper.selectHouseByNo", hno);
 	}
+
+	/**
+	 * 하우스 수정
+	 * @param sqlSession
+	 * @param h
+	 * @return
+	 */
+	public int updateHouse(SqlSessionTemplate sqlSession, House h) {
+		return sqlSession.update("houseMapper.updateHouse", h);
+	}
+
+	/**
+	 * 해당 방 파일 목록 가져오기
+	 * @param sqlSession
+	 * @param roomNo
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectRoomFile(SqlSessionTemplate sqlSession, int roomNo) {
+		return (ArrayList)sqlSession.selectList("houseMapper.selectRoomFile", roomNo);
+	}
+
+	/**
+	 * 해당 방 파일 삭제
+	 * @param sqlSession
+	 * @param roomNo
+	 * @return
+	 */
+	public int deleteRoomFile(SqlSessionTemplate sqlSession, int roomNo) {
+		return sqlSession.delete("houseMapper.deleteRoomFile", roomNo);
+	}
 	
 
 }

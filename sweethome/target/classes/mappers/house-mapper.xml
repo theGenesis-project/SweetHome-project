@@ -329,5 +329,43 @@
   				STATUS = 'Y'
   	</select>
   	
+  	<!-- 하우스 수정 -->
+  	<update id="updateHouse" parameterType="house">
+  		UPDATE
+  				 HOUSE
+  		SET
+  				 HOUSE_NAME = #{houseName}
+  				,HOUSE_TITLE = #{houseTitle}
+  				,HOUSE_INTRODUCE = #{houseIntroduce}
+  				,SHARE_SPACE = #{shareSpace}
+				,PERSONAL_SPACE = #{personalSpace}
+				,TRAFFIC = #{traffic}
+				,CONVENIENCE = #{convenience}
+				,CONDITION = #{condition}
+				,ADDRESS = #{address}
+				,LATITUDE = #{latitude}
+				,LONGITUDE = #{longitude}
+		WHERE
+				 HOUSE_NO = #{houseNo}
+  	</update>
+  	
+  	<!-- 해당 방 파일 목록 가져오기 -->
+  	<select id="selectRoomFile" parameterType="_int" resultMap="houseFileResultSet">
+  		SELECT
+  				*
+  		FROM
+  				HOUSE_FILE
+  		WHERE
+  				ROOM_NO = #{roomNo}
+  	</select>
+  	
+	<!-- 해당 하우스 파일 삭제 -->
+  	<delete id="deleteRoomFile" parameterType="_int">
+  		DELETE FROM
+  					HOUSE_FILE
+  		WHERE
+  					ROOM_NO = #{roomNo}
+  	</delete>
+  	
 
 </mapper>

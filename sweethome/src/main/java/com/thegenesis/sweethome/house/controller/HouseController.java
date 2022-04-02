@@ -2,7 +2,11 @@ package com.thegenesis.sweethome.house.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -59,7 +63,7 @@ public class HouseController {
 		
 		// 로그인 유저 번호 확인
 		if(session.getAttribute("loginUser") != null) {
-			h.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo());
+			h.setUserNo(((Member)session.getAttribute("loginUser")).getUserNo()); 
 		} else {
 			session.setAttribute("errorMsg", "로그인하시기 바랍니다.");
 			return "redirect:/";
@@ -285,157 +289,249 @@ public class HouseController {
 	public String updateHouse(House h, HouseFile hf, Room r, MultipartFile[] upfile, int[] fileNumber, HttpSession session) {
 		
 		int hno = h.getHouseNo(); // 하우스 번호
+		int resultHouse = 0; // 하우스 수 결과
+		int resultRoom = 0; // 방 수정 결과
+		int resultRoomFile = 0; // 방 파일 수정 결과
 		
 		// 하우스 번호로 기존 정보 가져오기
 		House originHouse = houseService.selectHouseByNo(hno); // 하우스의 기존 정보
 		ArrayList<Room> originRoomList = roomService.selectRoom(hno); // 해당 하우스의 기존 방 
 		ArrayList<HouseFile> originHouseFileList = houseService.selectHouseFile(hno); // 해당 하우스의 기존 파일
 		
-		if(originHouse.equals(h)) {
-			System.out.println("하우스 같음");
+		// 하우스 정보가 바뀌었다면 수정
+		if(!originHouse.equals(h)) {
 			
-			// 방 등록 성공한 방 번호 리스트
-			ArrayList<Room> updateRoomList  = new ArrayList<>(); // 받아온 방 리스트
-			int roomNum = r.getRoomNameArr().length; // 입력된 방 개수
+			// 하우스 정보 textarea 줄바꿈 <br> 처리
+			h.setHouseTitle(h.getHouseTitle().replace(System.lineSeparator(), "<br>"));
+			h.setHouseIntroduce(h.getHouseIntroduce().replace(System.lineSeparator(), "<br>"));
+			h.setShareSpace(h.getShareSpace().replace(System.lineSeparator(), "<br>"));
+			h.setPersonalSpace(h.getPersonalSpace().replace(System.lineSeparator(), "<br>"));
+			h.setTraffic(h.getTraffic().replace(System.lineSeparator(), "<br>"));
+			h.setConvenience(h.getConvenience().replace(System.lineSeparator(), "<br>"));
 			
-			// 순차적으로 방 입력
-			for(int i = 0; i < roomNum; i ++) {
-				updateRoomList.add(Room.builder()
-									.roomNo(originRoomList.get(i).getRoomNo())
-									.houseNo(originRoomList.get(i).getHouseNo())
-									.roomName(r.getRoomNameArr()[i])
-									.gender(r.getGenderArr()[i])
-									.people(r.getPeopleArr()[i])
-									.area(r.getAreaArr()[i])
-									.deposit(r.getDepositArr()[i])
-									.rent(r.getRentArr()[i])
-									.expense(r.getExpenseArr()[i])
-									.utility(r.getUtilityArr()[i])
-									.availableDate(r.getAvailableDateArr()[i])
-									.status(originRoomList.get(i).getStatus())
-									.build());
-			} 
+			resultHouse = houseService.updateHouse(h);
+			
+			if(resultHouse > 0) {
+				System.out.println("수정됨");
+			}
+		}
+
+		// 방 개수 확인
+		
+		// 받아온 방 번호를 ArrayList로 변환
+		ArrayList<Integer> originRoomNoList = new ArrayList<>();
+		
+		for(int i = 0; i < originRoomList.size(); i++) {
+			originRoomNoList.add(originRoomList.get(i).getRoomNo());
+		}
+		
+		// 받아온 방 번호를 ArrayList로 변환
+		ArrayList<Integer> updateRoomNoList = new ArrayList<>();
+		
+		for(int i = 0; i < r.getRoomNameArr().length; i++) {
+			updateRoomNoList.add(r.getRoomNoArr()[i]);
+		}
+		
+		System.out.println(originRoomNoList);
+		System.out.println(updateRoomNoList);
+		
+		
+//		// 기존 방 번호, 가져온 방 번호 ArrayList Sort
+//		Collections.sort(originRoomNoList);
+//		Collections.sort(updateRoomNoList);
+//		
+//		System.out.println(originRoomNoList);
+//		System.out.println(updateRoomNoList);
+		
+		
+		// 등록된 방 개수보다 적은 경우
+		if(originRoomNoList.size() > updateRoomNoList.size()) {			
+			
+			// 삭제된 방 찾기
+			for(int i = 0; i < originRoomNoList.size(); i++) {
+				if(originRoomNoList.get(i) == updateRoomNoList.get(i)) {
+					originRoomNoList.remove(i);
+					updateRoomNoList.remove(i);
+				}
+			}
+			
+//			System.out.println(originRoomNoList);
+			// 삭제된 해당 방과 방 이미지 삭제
+			for(int i = 0; i < originRoomNoList.size(); i++) {
+				
+				int roomNo = originRoomNoList.get(i);
+				
+				// 해당 방 삭제
+				resultRoom = roomService.deleteRoom(roomNo);
+				
+				// 해당 방 이미지 삭제
+				ArrayList<HouseFile> hfList = houseService.selectRoomFile(roomNo);
+				
+				// 서버에 저장된 실제 이미지 삭제
+				for(HouseFile deleteHF: hfList) {
+					new File(session.getServletContext().getRealPath(deleteHF.getFilePath())).delete();
+					System.out.println("삭제 성공: " + deleteHF.getFilePath());
+				}
+				
+				// 실제 이미지 삭제 후 DB 삭제
+				resultRoomFile = houseService.deleteRoomFile(roomNo);
+			}
+			
+		}
+		
+		// 등록된 방 개수보다 많은 경우
+		if(originRoomNoList.size() < updateRoomNoList.size()) {
+			
+			
+		}
+			
+//			System.out.println(originRoomNoList);
+			// 삭제된 해당 방과 방 이미지 삭제
+			for(int i = 0; i < updateRoomNoList.size(); i++) {
+				
+				int roomNo = updateRoomNoList.get(i);
+				
+				
+				int roomNum = r.getRoomNameArr().length; // 입력된 방 개수
+				int resultTempRoom = 0; // 임시 방 등록 결과
+				
+				// 순차적으로 방 입력
+				for(int i = 0; i < roomNum; i ++) {
+					Room tempRoom = Room.builder()
+										.roomName(r.getRoomNameArr()[i])
+										.gender(r.getGenderArr()[i])
+										.people(r.getPeopleArr()[i])
+										.area(r.getAreaArr()[i])
+										.deposit(r.getDepositArr()[i])
+										.rent(r.getRentArr()[i])
+										.expense(r.getExpenseArr()[i])
+										.utility(r.getUtilityArr()[i])
+										.availableDate(r.getAvailableDateArr()[i])
+										.build();
+					
+					// 임시 방 입력
+					resultTempRoom = roomService.insertRoom(tempRoom);
+					
+					// 임시 방 등록 성공시 방 번호 리스트에 추가
+					if(resultTempRoom > 0) {
+						roomNoArr.add(roomService.selectRoomNo() - 1);
+					} else {
+						break;
+					}
+				}
+				
+				// 입력된 방 개수와 임시 방 등록 성공한 방 번호 리스트 일치 확인
+				if(roomNoArr.size() == roomNum + 1) {
+					resultRoom = 1;
+				}
+				
+				// 방 등록 성공시 하우스 파일 등록
+				if(resultRoom > 0) {
+					int fileCheck = 0; // 하우스 파일 순서 확인
+					int fileLevel = 1; // 이미지 종류 확인
+					ArrayList<HouseFile> hfList = new ArrayList<>(); // 하우스 파일 등록용 ArrayList
+					
+					// 하우스 이미지 파일 저장
+					for(int i = 0; i < fileNumber.length; i++) { // i = 방 번호 확인
+						for(int j = 0; j < fileNumber[i]; j++) { // j = 파일 개수 확인
+							
+							if(i > 0) { // 대표이미지가 아닐 경우
+								fileLevel = 2;
+							}
+							
+							// 서버 업로드용 파일명 변경
+							String changeName = saveFile.changeFileName(upfile[fileCheck], session);
+							
+							// 해당 하우스 이미지 파일 리스트로 저장
+							hfList.add(HouseFile.builder()
+												.roomNo(roomNoArr.get(i))
+												.originName(upfile[fileCheck].getOriginalFilename())
+												.changeName(changeName)
+												.filePath("resources/uploadFiles/" + changeName)
+												.fileLevel(fileLevel)
+												.build());
+							
+							fileCheck++;
+						}
+					}
+					
+					// 하우스 파일 등록
+					resultHouseFile = houseService.insertHouseFile(hfList);
+				
+				
+				
+			}
+			
+		}
+		
+		
+//		
+//		// 순차적으로 방 입력
+//		for(int i = 0; i < roomNum; i ++) {
+//			Room updateRoom = Room.builder()
+//							.roomNo(originRoomList.get(i).getRoomNo())
+//							.houseNo(originRoomList.get(i).getHouseNo())
+//							.roomName(r.getRoomNameArr()[i])
+//							.gender(r.getGenderArr()[i])
+//							.people(r.getPeopleArr()[i])
+//							.area(r.getAreaArr()[i])
+//							.deposit(r.getDepositArr()[i])
+//							.rent(r.getRentArr()[i])
+//							.expense(r.getExpenseArr()[i])
+//							.utility(r.getUtilityArr()[i])
+//							.availableDate(r.getAvailableDateArr()[i])
+//							.status(originRoomList.get(i).getStatus())
+//							.build();
+//			
+//			System.out.println(updateRoom);
+//			System.out.println(originRoomList.get(i));
+//			
+//			if(!updateRoom.equals(originRoomList.get(i))) {
+//				System.out.println(i + "번 방 다름");
+//				System.out.println(i + "번방: " + originRoomList.get(i));
+//			}
+			
+			
+			
+			
+			
+//		}
+//			updateRoomList.add(Room.builder()
+//								.roomNo(originRoomList.get(i).getRoomNo())
+//								.houseNo(originRoomList.get(i).getHouseNo())
+//								.roomName(r.getRoomNameArr()[i])
+//								.gender(r.getGenderArr()[i])
+//								.people(r.getPeopleArr()[i])
+//								.area(r.getAreaArr()[i])
+//								.deposit(r.getDepositArr()[i])
+//								.rent(r.getRentArr()[i])
+//								.expense(r.getExpenseArr()[i])
+//								.utility(r.getUtilityArr()[i])
+//								.availableDate(r.getAvailableDateArr()[i])
+//								.status(originRoomList.get(i).getStatus())
+//								.build());
+//		} 
 			
 //			System.out.println("originRoom: " + originRoomList);
 //			System.out.println("updateRoom: " + updateRoomList);
 			
-			if(originRoomList.equals(updateRoomList)) {
-				System.out.println("방도 같음");
-				
-				int upfileLength = upfile.length;
-				int fileSameCheck = 0;
-				
-				System.out.println(originHouseFileList);
-				
-				for(int i = 0; i < upfileLength; i++) {
-					System.out.println("upfile: " + upfile[i].getOriginalFilename());
-					System.out.println("changeFile: " + originHouseFileList.get(i).getChangeName());
-					
-					if(upfile[i].getOriginalFilename() == originHouseFileList.get(i).getChangeName()) {
-						fileSameCheck++;
-					}
-				}
-				
-				if(upfileLength == fileSameCheck) {
-					System.out.println("다 똑같음");
-				}
-
-
-				
-				
-			}
-		}
-		
-		
-		
-//		int resultHouse = 0; // 하우스 등록 결과
-//		int resultRoom = 0; // 방 등록 결과
-//		int resultHouseFile = 0; // 하우스 파일 등록 결과
-//		
-//		// 하우스 정보 textarea 줄바꿈 <br> 처리
-//		h.setHouseTitle(h.getHouseTitle().replace(System.lineSeparator(), "<br>"));
-//		h.setHouseIntroduce(h.getHouseIntroduce().replace(System.lineSeparator(), "<br>"));
-//		h.setShareSpace(h.getShareSpace().replace(System.lineSeparator(), "<br>"));
-//		h.setPersonalSpace(h.getPersonalSpace().replace(System.lineSeparator(), "<br>"));
-//		h.setTraffic(h.getTraffic().replace(System.lineSeparator(), "<br>"));
-//		h.setConvenience(h.getConvenience().replace(System.lineSeparator(), "<br>"));
-//		
-//		// 하우스 등록
-//		resultHouse = houseService.insertHouse(h);
-//		
-//		// 방 등록 성공한 방 번호 리스트
-//		ArrayList<Integer> roomNoArr = new ArrayList<>(); // 방 번호 리스트
-//		roomNoArr.add(0); // 대표이미지용
-//		
-//		// 하우스 등록 성공시 방 등록
-//		if(resultHouse > 0) {
-//			int roomNum = r.getRoomNameArr().length; // 입력된 방 개수
-//			int resultTempRoom = 0; // 임시 방 등록 결과
-//			
-//			// 순차적으로 방 입력
-//			for(int i = 0; i < roomNum; i ++) {
-//				Room tempRoom = Room.builder()
-//									.roomName(r.getRoomNameArr()[i])
-//									.gender(r.getGenderArr()[i])
-//									.people(r.getPeopleArr()[i])
-//									.area(r.getAreaArr()[i])
-//									.deposit(r.getDepositArr()[i])
-//									.rent(r.getRentArr()[i])
-//									.expense(r.getExpenseArr()[i])
-//									.utility(r.getUtilityArr()[i])
-//									.availableDate(r.getAvailableDateArr()[i])
-//									.build();
+//			if(originRoomList.equals(updateRoomList)) {
+//				System.out.println("방도 같음");
 //				
-//				// 임시 방 입력
-//				resultTempRoom = roomService.insertRoom(tempRoom);
+//				boolean fileNotChange = true;
 //				
-//				// 임시 방 등록 성공시 방 번호 리스트에 추가
-//				if(resultTempRoom > 0) {
-//					roomNoArr.add(roomService.selectRoomNo() - 1);
-//				} else {
-//					break;
-//				}
-//			}
-//			
-//			// 입력된 방 개수와 임시 방 등록 성공한 방 번호 리스트 일치 확인
-//			if(roomNoArr.size() == roomNum + 1) {
-//				resultRoom = 1;
-//			}
-//			
-//			// 방 등록 성공시 하우스 파일 등록
-//			if(resultRoom > 0) {
-//				int fileCheck = 0; // 하우스 파일 순서 확인
-//				int fileLevel = 1; // 이미지 종류 확인
-//				ArrayList<HouseFile> hfList = new ArrayList<>(); // 하우스 파일 등록용 ArrayList
 //				
-//				// 하우스 이미지 파일 저장
-//				for(int i = 0; i < fileNumber.length; i++) { // i = 방 번호 확인
-//					for(int j = 0; j < fileNumber[i]; j++) { // j = 파일 개수 확인
-//						
-//						if(i > 0) { // 대표이미지가 아닐 경우
-//							fileLevel = 2;
-//						}
-//						
-//						// 서버 업로드용 파일명 변경
-//						String changeName = saveFile.changeFileName(upfile[fileCheck], session);
-//						
-//						// 해당 하우스 이미지 파일 리스트로 저장
-//						hfList.add(HouseFile.builder()
-//											.roomNo(roomNoArr.get(i))
-//											.originName(upfile[fileCheck].getOriginalFilename())
-//											.changeName(changeName)
-//											.filePath("resources/uploadFiles/" + changeName)
-//											.fileLevel(fileLevel)
-//											.build());
-//						
-//						fileCheck++;
-//					}
+//				for(int i = 0; i < upfile.length; i++) {
+//					fileNotChange = upfile[i].getOriginalFilename().isEmpty();
 //				}
 //				
-//				// 하우스 파일 등록
-//				resultHouseFile = houseService.insertHouseFile(hfList);
+//				if(fileNotChange) {
+//					System.out.println("다 똑같음");
+//				}
+//				
+//				
 //			}
-//		}
+		
 		
 		
 		

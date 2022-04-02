@@ -129,14 +129,14 @@
 				<%-- 하우스 대표 사진 --%>
 				<h3>대표 사진</h3>
 
-				<a class="button btn1">사진 첨부</a>
+				<a class="button btn1">사진 수정</a>
 				<input type='file' id='insert-image-0' name='upfile' multiple='multiple' onchange='insertImage(this)'>
-				<div id='image-0' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'>
+				<div id='image-0' class='att-image' data-placeholder='사진을 수정하려면 사진 수정 버튼을 클릭하세요'>
 					<c:forEach var="hf" items="${ hfList }">
 						<c:if test="${ hf.roomNo eq 0 }">
 							<div style="display: inline-block; position: relative; width: 150px; height: 120px; margin: 5px; border: 1px; solid #00f; z-index: 1;">
 								<img style="width: 100%; height: 100%; z-index: none;" src="${ hf.filePath }">
-								<input type="button" value="x" class="img0" style="width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;">
+								<!-- <input type="button" value="x" class="img0" style="width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;"> -->
 							</div>
 						</c:if>
 					</c:forEach>				
@@ -149,18 +149,21 @@
 				<c:set var="roomIdNo" value="1"/>
 				
 				<c:forEach var="r" items="${ rList }">
+					<%-- 등록되어 있는 방의 번호 --%>
+					<input type='hidden' name='roomNoArr' value='${ r.roomNo }'>
+
 					<div id='room-${ roomIdNo }'>
 						<h3>방 사진</h3>
 	
-						<a class='button btn1'>사진 첨부</a>
-						<input type='file' id='insert-image-1' name='upfile' multiple='multiple' onchange='insertImage(this);'>
-						<div id='image-1' class='att-image' data-placeholder='사진을 첨부 하려면 사진 첨부 버튼을 클릭하세요'>
+						<a class='button btn1'>사진 수정</a>
+						<input type='file' id='insert-image-${ roomIdNo }' name='upfile' multiple='multiple' onchange='insertImage(this);'>
+						<div id='image-${ roomIdNo }' class='att-image' data-placeholder='사진을 수정하려면 사진 수정 버튼을 클릭하세요'>
 						
 						<c:forEach var="hf" items="${ hfList }">
 							<c:if test="${ hf.roomNo eq r.roomNo }">
 								<div style="display: inline-block; position: relative; width: 150px; height: 120px; margin: 5px; border: 1px; solid #00f; z-index: 1;">
 									<img style="width: 100%; height: 100%; z-index: none;" src="${ hf.filePath }">
-									<input type="button" value="x" class="img${ roomIdNo }" style="width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;">
+									<%-- <input type="button" value="x" class="img${ roomIdNo }" style="width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;"> --%>
 								</div>
 							</c:if>
 						</c:forEach>
@@ -491,14 +494,14 @@
 						$("#submit-click").hide();
 					})
 					
-					// 등록 및 결제 전 확인
+					// 수정 전 확인
 					function formCheck() {
 						// 도로명 주소 + 상세 주소 합치기
 						var address = "";
 						var roadAddress = document.getElementById("roadAddress").value;
 						var detailAddress = document.getElementById("detailAddress").value;
 
-						alert("."+ detailAddress +".")
+						// alert("."+ detailAddress +".")
 
 						if(detailAddress == "") {
 							address = roadAddress;
@@ -525,13 +528,13 @@
 						
 						// 하우스 번호 넣기
 						var houseNo = new URLSearchParams(location.search).get('hno');
-						
-						var houseNoHtml = "<input type='hidden' name='houseNo' value='" + houseNo + "'>";
-						$(".add").append(houseNoHtml);
-						
+
+						// 하우스 정보 넣기
+						var houseNoHtml = "<input type='hidden' name='houseNo' value='" + houseNo + "'>";						
 						var conditionHtml = "<input type='hidden' name='condition' value='${ h.condition }'>";
 						var statusHtml = "<input type='hidden' name='status' value='${ h.status }'>";
 						var userNoHtml = "<input type='hidden' name='userNo' value='${ h.userNo }'>";
+						$(".add").append(houseNoHtml);
 						$(".add").append(conditionHtml);
 						$(".add").append(statusHtml);
 						$(".add").append(userNoHtml);

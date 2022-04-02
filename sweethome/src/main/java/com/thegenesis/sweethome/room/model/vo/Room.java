@@ -41,6 +41,7 @@ public class Room {
 	private String longitude;
 
 	// View 전용
+	private int[] roomNoArr;
 	private String[] roomNameArr;
 	private String[] genderArr;
 	private int[] peopleArr;
