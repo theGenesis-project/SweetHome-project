@@ -44,6 +44,14 @@
   	<result column="REPORT_CATE" property="reportCate"/> 
   	<result column="USER_NO" property="userNo"/>	
   </resultMap>
+  
+  <resultMap type="houseFile" id="FileResultSet">
+  	<result column="FILE_NO" property="fileNo"/>
+  	<result column="HOUSE_NO" property="houseNo"/>
+  	<result column="ROOM_NO" property="roomNo"/> 
+  	<result column="FILE_PATH" property="filePath"/>
+  	<result column="FILE_Level" property="fileLevel"/>	
+  </resultMap>
 	
 	
 	<!-- 방 등록 -->
@@ -109,15 +117,6 @@
 			WHERE HOUSE_NO = #{hno}
   	</select>
   	
-  	<select id="houseDetailOne" resultMap="roomUserSet">
-			SELECT HOUSE_NO,USER_ID 
-			FROM ROOM 
-			JOIN HOUSE USING(HOUSE_NO)
-            JOIN MEMBER USING(USER_NO)
-            where HOUSE_NO = #{hno}
-			GROUP BY
-			HOUSE_NO, USER_ID
-  	</select>
   	
   	<select id="reportCheck" parameterType="hashmap" resultType="_int">
 			SELECT COUNT(*)
@@ -210,7 +209,11 @@
 			USER_NO = #{userNo}
 		AND
 			HOUSE_NO = #{houseNo}
-		
 	</update>
+	<select id="houseFileOne" resultMap="FileResultSet">
+	  	SELECT *
+        FROM HOUSE_FILE
+        WHERE HOUSE_NO = #{hno} and FILE_level = 1
+	</select>
 	
 </mapper>

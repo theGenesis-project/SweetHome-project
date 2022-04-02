@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.thegenesis.sweethome.common.vo.Report;
+import com.thegenesis.sweethome.house.model.vo.HouseFile;
 import com.thegenesis.sweethome.room.model.dao.RoomDao;
 import com.thegenesis.sweethome.room.model.vo.Room;
 
@@ -52,9 +53,6 @@ public class RoomService {
 		return roomDao.houseDetail(sqlSession, hno);
 	}
 
-	public Room houseDetailOne(int hno) {
-		return roomDao.houseDetailOne(sqlSession, hno);
-	}
 
 	public int reportCheck(HashMap<String, String> map) {
 		return roomDao.reportCheck(sqlSession, map);
@@ -74,6 +72,10 @@ public class RoomService {
 
 	public int changeHeart(HashMap<String, Integer> hm) {
 		return roomDao.changeHeart(sqlSession, hm);
+	}
+
+	public ArrayList<HouseFile> houseFileOne(int hno) {
+		return roomDao.houseFileOne(sqlSession, hno);
 	}
 
 

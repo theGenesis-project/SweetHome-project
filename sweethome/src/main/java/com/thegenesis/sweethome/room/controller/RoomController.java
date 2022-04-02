@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.thegenesis.sweethome.common.vo.Report;
 import com.thegenesis.sweethome.house.model.vo.House;
+import com.thegenesis.sweethome.house.model.vo.HouseFile;
 import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.room.model.service.RoomService;
 import com.thegenesis.sweethome.room.model.vo.Room;
@@ -34,7 +35,6 @@ public class RoomController {
 	
 		ArrayList<Room> room = roomService.houseDetail(hno);
 		
-		Room room1 = roomService.houseDetailOne(hno);
 		
 		int result = roomService.increaseCount(hno);	
 		
@@ -54,8 +54,10 @@ public class RoomController {
 		
 		String idCheckHeart = roomService.checkHeart(hm);//null/N/Y
 
+		ArrayList<HouseFile> file = roomService.houseFileOne(hno);
 		
-		mv.addObject("room" ,room).addObject("room1", room1).addObject("idCheckHeart",idCheckHeart).addObject("loginUser",loginUser).setViewName("house/houseDetail");
+		
+		mv.addObject("room" ,room).addObject("idCheckHeart",idCheckHeart).addObject("file",file).addObject("loginUser",loginUser).setViewName("house/houseDetail");
 		}
 		
 

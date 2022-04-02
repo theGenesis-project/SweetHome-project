@@ -4,7 +4,6 @@
 
 <% 
 	ArrayList<Room> room = (ArrayList)request.getAttribute("room");
-	Room room1 = (Room)request.getAttribute("room1");
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -327,7 +326,7 @@
             <!-- Modal body -->
             <div class="modal-body">
             <form action="reportRoom.ho" method="post">
-               	<input type="hidden" name="houseNo" value="${room1.houseNo }">
+               	<input type="hidden" name="houseNo" value="${room.get(0).houseNo }">
                	<input type="hidden" name="userNo" value="${loginUser.userNo }">
                 <select name="reportCate">
                     <option value="1">스팸, 홍보, 도배글</option>
@@ -382,15 +381,11 @@
 				  
 					  <!-- The slideshow -->
 					  <div class="carousel-inner">
+					  <c:forEach var="f" items="${file }">
 					    <div class="carousel-item active">
-					      <img src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="이미지" width="500px" height="500px">
+					      <img src="${file.get(0).filePath }" alt="이미지" width="500px" height="500px">
 					    </div>
-					    <div class="carousel-item">
-					      <img src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="이미지" width="500px" height="500px">
-					    </div>
-					    <div class="carousel-item">
-					      <img src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="이미지" width="500px" height="500px">
-					    </div>
+					  </c:forEach>
 					  </div>
 				  
 					  <!-- Left and right controls -->
@@ -471,7 +466,7 @@
 							<td>${ r.utility }원</td>	
 							<td>${ r.availableDate }</td>	
 							<td class="rno" style="display:none">${ r.roomNo }</td>	
-							<td class="hno" style="display:none">${ r.houseNo }</td>	
+							<td id ="houseNo" class="hno" style="display:none">${ r.houseNo }</td>	
 							<td class="uno" style="display:none">${ r.userNo }</td>	
 				</tbody>
 				</c:forEach>
@@ -732,7 +727,7 @@
 		   
 		      function deleteHouse() {
 				
-		    	var hno = $("#houseNo").text();
+		    	var hno = <%=room.get(0).getHouseNo()%>;
 		         var result = confirm("해당 하우스를 삭제하시겠습니까?");
 		         
 		         if(result) {
@@ -745,7 +740,7 @@
 		   
 		      function fixHouse() {
 
-		    	var hno = $("#houseNo").text();
+		    	var hno = <%=room.get(0).getHouseNo()%>;
 		         var result = confirm("해당 하우스를 수정하시겠습니까?");
 		         
 		         if(result) {
@@ -768,19 +763,19 @@
 					function like(){
 					
 						$.ajax({
-							url : "changeHeart.ho",
-							data : {
-								houseNo : $("#houseNo"),
+								url : "changeHeart.ho",
+								data : {
+								houseNo : <%=room.get(0).getHouseNo()%>,
 								userNo : ${loginUser.userNo}				
-							},
-							success : function(result){
+								},
+								success : function(result){
 									if(result == "NN"){
 										$("#like").html("♡");
 					                       					
 									}else{
 										$("#like").html("♥");
 									}				
-								}							
+								}				
 							})					
 							
 					}

@@ -18,16 +18,23 @@ public class TourController {
 	private TourService tourService;
 	
 	@RequestMapping("insertTour.to")
-	public String insertTour(Tour to) {
+	public String insertTour(Tour to,HttpSession session) {
+		
+		to.setAskContent(to.getAskContent().replace(System.lineSeparator(), "<br>"));
 		
 		int result = tourService.insertTour(to);
 		
 		if(result > 0) {
-			System.out.print(0);
+			session.setAttribute("alertMsg", "투어신청 완료!");
+			return "redirect:house.se";
+		}else {
+			session.setAttribute("alertMsg", "투어신청 실패! 다시 시도해주세요!");
+			return "redirect:house.se";
 		}
+			
 		
+
 		
-		return "redirect:house.se";
 	}
 	
 }

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.thegenesis.sweethome.common.vo.Report;
+import com.thegenesis.sweethome.house.model.vo.HouseFile;
 import com.thegenesis.sweethome.room.model.vo.Room;
 
 @Repository
@@ -46,9 +47,6 @@ public class RoomDao {
 		return sqlSession.update("roomMapper.deleteRoom", hno);
 
 	}
-	public Room houseDetailOne(SqlSessionTemplate sqlSession, int hno) {
-		return sqlSession.selectOne("roomMapper.houseDetailOne",hno);
-	}
 	public int reportCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("roomMapper.reportCheck", map);
 	}
@@ -85,6 +83,9 @@ public class RoomDao {
 		}
 		
 		return result;
+	}
+	public ArrayList<HouseFile> houseFileOne(SqlSessionTemplate sqlSession, int hno) {
+		return (ArrayList)sqlSession.selectList("roomMapper.houseFileOne",hno);
 	}
 
 }

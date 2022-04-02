@@ -100,28 +100,32 @@
         ORDER BY ROWNUM DESC
   	</select>
   	<insert id="insertTour" parameterType="tour">
-  		INSERT TOUR
+  		INSERT INTO TOUR
   			(TOUR_NO
-  			 USER_NAME
-  			 GENDER
-  			 PHONE
-  			 EMAIL
-  			 ASK_CONTENT
-  			 USER_NO
-  			 ROOM_NO
-  			 TOUR_TIME
-  			 STATUS)
+  			,ROOM_NO
+  			,HOUSE_NO
+  			,USER_NO
+  			 ,USER_NAME
+  			 ,GENDER
+  			 ,PHONE
+  			 ,EMAIL
+  			 ,TOUR_TIME
+  			 ,AGE
+  			 ,ASK_CONTENT
+  			 ,STATUS)
   		VALUES
   			 (SEQ_TOUR_NO.NEXTVAL
-  			  #{userName}
+  			 ,#{roomNo}
+  			 ,#{houseNo}
+  			 ,#{userNo}
+  			 ,#{userName}
   			 ,#{gender}
   			 ,#{phone}
   			 ,#{email}
-  			 ,#{askContent}
-  			 ,#{userNo}
-  			 ,#{room_No}
   			 ,#{tourTime}
-  			)
+  			 ,#{age}
+  			 ,#{askContent}
+  			 ,default)
   	
   	</insert>
 </mapper>
