@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,9 +53,7 @@
             height: 100%;
         }
         
-        #button{
-            float: right;          
-        }
+       
         #button>button{
             background-color: rgb(247, 202, 201);  
             color: white; 
@@ -104,7 +103,7 @@
 			<div class="content">
 				<div id="main">
 					<div id="title">
-						<h2>중고장터</h2>
+						<h2>신고 관리</h2>
 					</div>
 					
 					<div id="search">
@@ -117,65 +116,119 @@
 					</div>
 			
 					<div id="button">
-						<button>글쓰기</button>
+						<button onclick="location.href='reportBList.ad?bpage=1'" id="board-report">글</button>
+						<button onclick="location.href='reportRList.ad?bpage=1'" id="reply-report">댓글</button>
+						<button onclick="location.href='reportHList.ad?bpage=1'" id="house-report">하우스</button>
 					</div>
 			
-					<div id="list">
-						<table>
-							<tr>
-								<th>No.</th>
-								<th>분류</th>
-								<th>제목</th>
-								<th>작성자</th>
-								<th>작성일</th>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>판매</td>
-								<td>제목이 오는 자리</td>
-								<td>작성자</td>                  
-								<td>2022-02-03</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>판매</td>
-								<td>제목이 오는 자리</td>
-								<td>작성자</td>                  
-								<td>2022-02-03</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>판매</td>
-								<td>제목이 오는 자리</td>
-								<td>작성자</td>                  
-								<td>2022-02-03</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>판매</td>
-								<td>제목이 오는 자리</td>
-								<td>작성자</td>                  
-								<td>2022-02-03</td>
-							</tr>
+					<div id="reportBList">
+						<table>				
+							<thead>
+								<tr>
+									<th>No.</th>
+									<th>신고게시물 고유번호</th>
+									<th>신고 사유</th>
+									<th>신고자</th>						
+								</tr>
+							</thead>
+							<tbody>				
+							<c:choose>
+								<c:when test="${ empty list }">
+									<tr>
+					                   <td colspan="4">게시글이 없습니다.</td>
+					                </tr>							
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="br" items="${list}">
+									<tr>
+										<td>${br.reportNo }</td>							
+										<td>${br.boardNo }</td>
+										<td class="report-cate">${br.reportCate }</td>
+										<td>${br.userId }</td>                  								
+									</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+							</tbody>	
 			
-						</table>
-			
+						</table>			
 					</div>
-			
+					
+				
+					
+				
 					<div id="paging">
-						<button>&lt;</button> 
-						<button>1</button>
-						<button>2</button>
-						<button>3</button>
-						<button>4</button>
-						<button>&gt;</button>
-					</div>
+					<!-- board 페이징 -->
+						<div id="bListPaging">
+			        	<c:if test="${ Bpi.currentPage ne 1 }">
+			        		<c:choose>
+			        			<c:when test="${empty condition }">
+			        				<button onclick="location.href='reportBList.ad?bpage=${Bpi.currentPage - 1}'">&lt;</button> 
+			        			</c:when>
+			        			
+			        		</c:choose>
+			        	</c:if>	        	
+			        	<c:forEach var="n" begin="${Bpi.startPage }" end="${Bpi.endPage }" step="1">
+			        		<c:choose>
+			        			<c:when test="${empty condition }">
+			        				<button onclick="location.href='reportBList.ad?bpage=${n}'">${ n }</button>
+			        			</c:when>
+			        			
+			        		</c:choose>
+			        	</c:forEach>	        	
+			        	<c:if test="${ Bpi.currentPage ne Bpi.maxPage }">
+			        		<c:choose>
+			        			<c:when test="${empty condition }">
+			        				<button onclick="location.href='reportBList.ad?bpage=${pi.currentPage + 1}'">&gt;</button> 
+			        			</c:when>
+			        			
+			        		</c:choose>
+			        	</c:if>
+			        	</div>
+			        <!-- board페이징 끝 -->
+       			 </div>
 				
 				</div>
 				
 			</div>
 		</div>
 	</div>
+	
+	<script>
+	$(function(){
+		
+		/*var repoCate = $('.report-cate').text()
+		var arr = repoCate.split("");
+		
+		console.log($('.report-cate').text())
+		console.log(arr)
+		
+		for(var i = 0 i<arr.length; i++){
+			$('.report-cate').text("a?")
+		}*/
+		
+		$('.report-cate').each(function(){
+			  var text = $(this).text();
+			  console.log(text);
+			  
+			  if(text == 1){
+				  $(this).text("스팸, 홍보, 도배글")
+			  }else if(text == 2){
+				  $(this).text("욕설 및 음란물")
+			  }else if(text == 3){
+				  $(this).text("불법정보")
+			  }else if(text == 4){
+				  $(this).text("개인정보 노출 게시물")
+			  }
+			
+			});
+		
+	})
+		
+		
+	
+
+	</script>
 
 </body>
 </html>

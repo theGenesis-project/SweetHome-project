@@ -79,28 +79,53 @@ public class AdminController {
 		return mv;
 			
 	}*/
-	/*
+	
 	//신고내역
-	@RequestMapping("reportList.ad")
-	public ModelAndView adminReportList(@RequestParam(value="npage", defaultValue="1") int currentPage) {
+	@RequestMapping("reportBList.ad")
+	public ModelAndView adminReportList(@RequestParam(value="bpage", defaultValue="1") int currentPage, ModelAndView mv) {
 		
 		//listCount 
 		int boardReportCount = adminService.boardReportCount();
-		int replyReportCount = adminService.replyReportCount();
-		int houseReportCount = adminService.houseReportCount();
 		
 		PageInfo Bpi = Pagination.getPageInfo(boardReportCount, currentPage, 10, 10);
-		PageInfo Rpi = Pagination.getPageInfo(replyReportCount, currentPage, 10, 10);
-		PageInfo Hpi = Pagination.getPageInfo(houseReportCount, currentPage, 10, 10);
 		
 		ArrayList<Report> boardReport = adminService.selectboardReportList(Bpi);
+		
+		
+		mv.addObject("list", boardReport).addObject("Bpi", Bpi)
+			
+			.setViewName("admin/adminReportList");
+		
+		return mv;
+		
+	}
+	@RequestMapping("reportRList.ad")
+	public ModelAndView adminReportRList(@RequestParam(value="rpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int replyReportCount = adminService.replyReportCount();
+		
+		PageInfo Rpi = Pagination.getPageInfo(replyReportCount, currentPage, 10, 10);
+		
 		ArrayList<Report> replyReport = adminService.selectreplyReportList(Rpi);
+		System.out.println(replyReport);
+		mv.addObject("list", replyReport).addObject("Rpi", Rpi).setViewName("admin/adminReportList");
+		
+		return mv;
+	}
+	
+	@RequestMapping("reportHList.ad")
+	public ModelAndView adminReportHList(@RequestParam(value="hpage", defaultValue="1") int currentPage, ModelAndView mv) {
+		
+		int houseReportCount = adminService.houseReportCount();
+		
+		PageInfo Hpi = Pagination.getPageInfo(houseReportCount, currentPage, 10, 10);
+		
 		ArrayList<Report> houseReport = adminService.selecthouseReportList(Hpi);
+		System.out.println(houseReport);
+		mv.addObject("list", houseReport).addObject("Hpi", Hpi).setViewName("admin/adminReportList");
 		
-		mv.addObject("list",orderinfo).addObject("pi", pi).setViewName("admin/adminOrderList");
-		
-		
-	}*/
+		return mv;
+	}
 	
 	
 	

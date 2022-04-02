@@ -37,7 +37,7 @@ public class AdminService {
 		return adminDao.selectOrderList(sqlSession, pi);
 	}
 	//신고 리스트 카운트
-	/*
+	
 	public int boardReportCount() {
 		return adminDao.boardReportCount(sqlSession);
 	}
@@ -59,7 +59,7 @@ public class AdminService {
 	public ArrayList<Report> selecthouseReportList(PageInfo hpi) {
 		return adminDao.selecthouseReportList(sqlSession, hpi);
 	}
-	*/
+	
 	
 	
 	

@@ -90,6 +90,7 @@
     <script>
     	$(function(){
     		BestInteriorList();
+    		setInterval(BestInteriorList, 1000);
     	})
     	
     	function BestInteriorList(){		

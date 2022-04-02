@@ -46,7 +46,10 @@
 	  	<result column="REPORT_NO" property="reportNo"/>
 	  	<result column="BOARD_NO" property="boardNo"/>
 	  	<result column="REPORT_CATE" property="reportCate"/> 
-	  	<result column="USER_NO" property="userNo"/>	
+	  	<result column="USER_NO" property="userNo"/>
+	  	
+	  	<result column="USER_ID" property="userId"/>
+	  	<result column="REPLY_NO" property="replyNo"/>	
   	</resultMap>
   	
 	  
@@ -104,14 +107,14 @@
 	</select>
 	  
 	<!-- 신고 내역 리스트 카운트 -->
-	<!-- 
+
 	<select id="boardReportCount" resultType="_int">
 		SELECT 
 			COUNT(*)
 		FROM 
 			REPORT
 		WHERE 
-			BOARD_NO IS NOT NULL;
+			BOARD_NO IS NOT NULL
 	
 	</select>
 	
@@ -121,7 +124,7 @@
 		FROM 
 			REPORT
 		WHERE 
-			REPLY_NO IS NOT NULL;
+			REPLY_NO IS NOT NULL
 	
 	</select>
 	
@@ -131,41 +134,72 @@
 		FROM 
 			REPORT
 		WHERE 
-			HOUSE_NO IS NOT NULL;
+			HOUSE_NO IS NOT NULL
 
 	</select>
-	 -->
+
 	<!-- 신고 내역 리스트 -->
-	<!--  
-	<select id="" resultMap="reply">
+	
+	<select id="selectboardReportList" resultMap="reportFileResultSet">
 		SELECT 
         REPORT_NO
         , BOARD_NO
-        , USER_
+        , USER_ID
         , REPORT_CATE
         
 		FROM 
 			REPORT 
-        WHERE BOARD_NO IS NOT NULL
+		JOIN 
+        	MEMBER USING (USER_NO)
+        WHERE 
+        	BOARD_NO IS NOT NULL
         ORDER BY
-            REPORT_NO DESC;
+            REPORT_NO DESC
 	
 	
 	</select>
 	
-	<select id="" resultMap="reply">
-		SELECT
+	<select id="selectreplyReportList" resultMap="reportFileResultSet">
+		SELECT 
+			REPORT_NO
+			, REPLY_NO
+			, RE.BOARD_NO
+			,USER_ID
+			, REPORT_CATE
+		FROM 
+			REPORT
+		JOIN 
+			MEMBER USING(USER_NO)
+		JOIN 
+			REPLY RE USING(REPLY_NO)
+		WHERE 
+			REPLY_NO IS NOT NULL
+		ORDER BY 
+			REPORT_NO DESC
 		
 	
 	
 	</select>
 	
-	<select id="" resultMap="reply">
-	
+	<select id="selecthouseReportList" resultMap="reportFileResultSet">
+		SELECT 
+	        REPORT_NO
+	        , HOUSE_NO
+	        , USER_ID
+	        , REPORT_CATE
+        
+		FROM 
+			REPORT 
+        JOIN 
+        	MEMBER USING (USER_NO)
+        WHERE 
+        	HOUSE_NO IS NOT NULL
+        ORDER BY
+            REPORT_NO DESC
 	
 	
 	</select>
-	-->
+	
 	
 	
 		

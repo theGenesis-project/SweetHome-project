@@ -37,6 +37,7 @@
             height: 500px;
         }     
         /*세부 크기*/
+        /*
         .carousel-inner img{
             width: 100%;
             height: 100%;
@@ -45,7 +46,7 @@
             width: 450px;
             height: 450px;
           
-        }
+        }*/
       
         #interior-content{
             margin: auto;
@@ -128,11 +129,6 @@
             border: 0ch;
             border-radius: 3px;
         }
-        .carousel-inner .carousel-item{
-            width: 450px;
-            height: 450px;
-            margin: auto;
-        }
         .interior_price>p, .interior_post>p{
             display: inline-block;
         }
@@ -154,6 +150,17 @@
         .content3_2{
             margin-top: 50px;
         }
+        .carousel-indicators{
+		    width: 450px;
+		}
+		.carousel-inner{
+		    width: 450px;
+		    height: 450px;;
+		}
+		#carouselExampleIndicators{
+		    width: 450px;
+		    height: 450px;
+		}
         
      
 </style>
@@ -168,28 +175,34 @@
         <div class="content2">
             <div class="content3_1">
                 <div class="content4_1">
-                    <div class="container mt-3">
-                        <div id="myCarousel" class="carousel slide">
-                        
-                        <!-- Indicators -->
-                        <ul class="carousel-indicators">
-                            <li class="item1 active"></li>
-                            <li class="item2"></li>
-                            <li class="item3"></li>
-                        </ul>
-	                        <!-- The slideshow -->
-	                        <div class="carousel-inner">
-	                            <div class="carousel-item active">
-	                            <img src="${inf.get(0).filePath }" alt="">
-	                            </div>
-                       	<c:forEach var="i" begin="1" end="${ infLength }">
-	                            <div class="carousel-item">
-	                            <img src="${inf.get(i).filePath }" alt="">
-	                            </div>
-                      	</c:forEach>                          
-	                        </div>         
-                        </div>
-                    </div>
+                <!-- 슬라이드 쇼 시작 -->
+                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+				        <ol class="carousel-indicators">
+				          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+				          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+				          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+				        </ol>
+				        <div class="carousel-inner">
+				          <div class="carousel-item active">
+				            <img class="d-block w-100" src="${inf.get(0).filePath }" alt="">
+				          </div>
+				          <c:forEach var="i" begin="1" end="${ infLength }">
+					              <div class="carousel-item">
+					                <img src="${inf.get(i).filePath }" alt="">
+					              </div>
+				          </c:forEach>     
+				
+				        </div>
+				        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+				          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				          <span class="sr-only">Previous</span>
+				        </a>
+				        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+				          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				          <span class="sr-only">Next</span>
+				        </a>
+				      </div>
+
                 </div>
 	                <div class="content4_2">             	
 	                    <div class="interior_com">
@@ -338,25 +351,9 @@
         </div>
     </div>
 
-    <script>
-        //이미지 슬라이드
-	    $(document).ready(function(){
-	        // Activate Carousel
-	        $("#myCarousel").carousel();
-	            
-	        // Enable Carousel Indicators
-	        $(".item1").click(function(){
-	            $("#myCarousel").carousel(0);
-	        });
-	        $(".item2").click(function(){
-	            $("#myCarousel").carousel(1);
-	        });
-	        $(".item3").click(function(){
-	            $("#myCarousel").carousel(2);
-	        });       	       
-	    });
-		//찜기능
-		
+    <script>	
+      
+		//찜기능	
 		var likeBtn = document.getElementById("like");
 		likeBtn.onclick = function(){
 			changeHeart();

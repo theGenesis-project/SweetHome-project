@@ -41,7 +41,7 @@ public class AdminDao {
 		
 		return (ArrayList)sqlSession.selectList("adminMapper.selectOrderList",null, rowBounds);
 	}
-	/*
+	
 	//신고 리스트 카운트
 	public int boardReportCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("adminMapper.boardReportCount");
@@ -82,5 +82,5 @@ public class AdminDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		return (ArrayList)sqlSession.selectList("adminMapper.selecthouseReportList",null, rowBounds);
-	}*/
+	}
 }

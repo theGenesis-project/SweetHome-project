@@ -63,7 +63,7 @@
 				<div onclick="location.href=''">하우스관리</div>
 			</li>
 			<li>
-				<div onclick="location.href=''">신고관리</div>
+				<div onclick="location.href='reportBList.ad?bpage=1'">신고관리</div>
 			</li>
 			<li>
 				<div onclick="location.href=''">1:1문의 관리</div>
