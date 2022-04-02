@@ -380,10 +380,15 @@ public class HouseController {
 		}
 		
 		// 등록된 방 개수보다 많은 경우
-		if(originRoomNoList.size() < updateRoomNoList.size()) {
+		if(originRoomNoList.size() < updateRoomNoList.size()) {			
 			
-			
-		}
+			// 추가 방 찾기
+			for(int i = 0; i < updateRoomNoList.size(); i++) {
+				if(originRoomNoList.get(i) == updateRoomNoList.get(i)) {
+					originRoomNoList.remove(i);
+					updateRoomNoList.remove(i);
+				}
+			}
 			
 //			System.out.println(originRoomNoList);
 			// 삭제된 해당 방과 방 이미지 삭제
