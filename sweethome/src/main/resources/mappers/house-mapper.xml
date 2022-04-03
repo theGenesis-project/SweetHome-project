@@ -246,7 +246,6 @@
   		 WHERE
   		 		STATUS = 'Y'
   	</select>
-  	
 
   	<select id="houseDetail" resultMap="houseResultSet">
   		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}

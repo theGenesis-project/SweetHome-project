@@ -76,7 +76,8 @@
     padding: 0 10px 0 10px;
 }
 .btn-center{
-	margin: center;
+	display: block;
+	margin: auto;
 }
 .btn-right{
 	float: right;

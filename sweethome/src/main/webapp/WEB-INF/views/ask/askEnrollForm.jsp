@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>1:1 문의 작성</title>
 <link rel="stylesheet" href="resources/css/ask.css" />
+<link rel="stylesheet" href="resources/css/mypage.css" />
 <script type="text/javascript" src="resources/smartEditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
 <body>
@@ -57,7 +58,7 @@
 					</td>
 				</tr>
 			</table>
-			<button type="submit" class="Qbutton" onclick=" return save();">등록하기 </button>
+			<button type="submit" class="house-button btn-pink" style="display: block; margin: 10px auto 10px auto;" onclick=" return save();">등록하기 </button>
 			</form>
 		</div>
     </div>

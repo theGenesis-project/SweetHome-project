@@ -50,13 +50,16 @@
   		<result column="SENDER_PHONE" property="senderPhone"/>
   		<result column="SENDER_EMAIL" property="senderEmail"/>
   		
-  		
   		<result column="ORDER_QUANTITY" property="orderQuantity"/>
   		<result column="INTE_CATE" property="inteCate"/>
   		<result column="INTERIOR_TITLE" property="interiorTitle"/>
   		<result column="INTERIOR_POST" property="interiorPost"/>
+  		<result column="INTERIOR_CO" property="interiorCo"/>
+  		<result column="INTERIOR_PRICE" property="interiorPrice"/>
+		
+  		<result column="FILE_PATH" property="filePath"/>  	
+  		<result column="PAYMENT_NO" property="paymentNo"/>  	
   	</resultMap>
-  	
   	
   	<resultMap type="review" id="reviewResultSet">
   		<result column="REVIEW_NO" property="reviewNo"/>
@@ -577,6 +580,41 @@
 			STATUS = 'N'
 		WHERE
 			REVIEW_NO = #{reviewNo}
-		
 	</update>
+	
+	<!-- 구매내역 갯수 -->
+	<select id="selectMyOrderListCount" parameterType="_int" resultType="_int">
+		SELECT 
+				COUNT(1)
+		  FROM 
+				ORDER_INFO
+		 WHERE
+				USER_NO = #{userNo}
+	</select>
+	
+	<!-- 구매내역 -->
+	<select id="selectMyOrderList" resultMap="orderInfoResultSet">
+		SELECT 
+				F.FILE_PATH
+			  , I.INTERIOR_TITLE
+			  , I.INTERIOR_CO
+			  , I.INTERIOR_POST
+			  , I.INTERIOR_PRICE
+			  , O.ORDER_DATE
+			  , O.ORDER_STATUS
+			  , P.ORDER_QUANTITY
+			  , P.PAYMENT_NO
+		 FROM 
+		 		INTERIOR I
+		 JOIN 
+		 		INTERIOR_FILE F USING(INTERIOR_NO)
+		 JOIN 
+		 		ORDER_INFO O USING(INTERIOR_NO)
+		 JOIN 
+		 		PAYMENT P USING(ORDER_NO)
+		WHERE 
+				O.USER_NO = #{userNo}
+		  AND 
+		  		FILE_LEVEL = 1
+	</select>
 </mapper>
