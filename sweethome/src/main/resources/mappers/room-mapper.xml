@@ -215,5 +215,10 @@
         FROM HOUSE_FILE
         WHERE HOUSE_NO = #{hno} and FILE_level = 1
 	</select>
+	<select id="changeFile" resultMap="FileResultSet">
+	  	SELECT FILE_PATH
+        FROM HOUSE_FILE
+        WHERE HOUSE_NO = #{hno} and ROOM_NO = #{rno}
+	</select>
 	
 </mapper>

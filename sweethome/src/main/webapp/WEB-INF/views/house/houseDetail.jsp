@@ -13,7 +13,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
 <style>
 
 	    .sub-nav-area {
@@ -346,11 +345,12 @@
 	</div>	
 	<div class="content">
 			<div class="sub-nav-area">
-		        <div class="sub-nav-list" onclick="">
+		        <div class="sub-nav-list" onclick="capImg();">
 		          	 대표사진
 		        </div>
 				<c:forEach var="n" items="${ room }">
-		        <div class="sub-nav-list" onclick="">
+		        <div id="roomName" class="sub-nav-list" onclick="roomFile(this);">
+		        	<span class="rno" style="display:none">${n.roomNo }</span>
 		        	 ${n.roomName }
 		        </div>
 		        </c:forEach>
@@ -376,21 +376,21 @@
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 				  <!-- Indicators -->
 				  <ul class="carousel-indicators">
-				    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				    <li data-target="#myCarousel" data-slide-to="1"></li>
-				    <li data-target="#myCarousel" data-slide-to="2"></li>
+				    <li class="caro" data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				    <c:forEach var="e" begin="1" end="${fileLength}">
+				    <li class="caro" data-target="#myCarousel" data-slide-to="${e}"></li>
+				    </c:forEach>
 				  </ul>
 				  
 					  <!-- The slideshow -->
 					  <div class="carousel-inner">
-					  
 					    <div class="carousel-item active">
 					      <img src="${file.get(0).filePath }" alt="이미지" width="500px" height="500px">
 					    </div>
-					    <c:if test="${fileLength > 1}">
-					    <c:forEach var="i" begin="1" end="${fileLength }">
+					    <c:if test="${fileLength >= 1}">
+					    <c:forEach var="f" begin="1" end="${fileLength }">
 	                      <div class="carousel-item">
-	                      <img src="${file.get(i).filePath }" alt="이미지" width="500px" height="500px">
+	                      <img src="${file.get(f).filePath }" alt="이미지" width="500px" height="500px">
 	                      </div>
                       	</c:forEach>
                       	</c:if>    
@@ -452,7 +452,7 @@
 							<td><div class="tour" onclick="tourForm(this);"><span class="span">투어신청</span></div></td>
 							</c:when>
 							<c:otherwise>
-							<td><div class="tour" ><span class="span">로그인 </span></div></td>
+							<td><div class="tour" ><span class="span" onclick="location.href='loginform.me'">로그인 </span></div></td>
 							</c:otherwise>
 							</c:choose>
 						</c:otherwise>
@@ -657,7 +657,14 @@
   · 계약금으로 보증금을 수령하며, 계약종료 후 퇴실시 반환됩니다.           · 계약기간 만료 이전에 중도퇴실할 경우, 절차에 따라 위약금이 발생됩니다.</pre>
 			</div>
 			<div class="box4">
-				<button id="chat" type="button">오너와 채팅하기 ></button>
+				<c:choose >
+				<c:when test="${empty loginUser}">
+				<button id="chat" type="button" onclick="location.href='loginform.me'">오너와 채팅하기 ></button>
+				</c:when>
+				<c:otherwise>
+				<button id="chat" type="button" onclick="">오너와 채팅하기 ></button>
+				</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
 		<br><br>
@@ -676,16 +683,81 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6"></script>
 		<script>
 		
+		var file = [];
+		
+		<% for (HouseFile hf: file){%>
+			file.push("<%= hf.getFilePath()%>");
+		<% }%>
+		
+		function capImg(){
+			
+			$(".carousel-item").remove();
+			$(".caro").remove();
+			
+				console.log(file.length);
+				var cap = '<li class="caro" data-target="#myCarousel" data-slide-to="0" class="active"></li>';
+					 	   for(var e = 1; e <= (file.length -1) ; e++){
+						   cap +=  '<li class="caro" data-target="#myCarousel" data-slide-to="' + e + '"></li>';
+					 	   }
+			
+				var capImg = '<div class="carousel-item active">'
+	      			+'<img src="'+  file[0]  +'" alt="이미지" width="500px" height="500px">'
+		    		+'</div>';
+			    for(var i = 1; i <= (file.length -1) ; i++){
+			    	capImg += '<div class="carousel-item">'
+	              	+ '<img src="'+  file[i]  +'" alt="이미지" width="500px" height="500px">'
+	              	+ '</div>';
+		    		}
+		    		
+			    	
+					$(".carousel-inner").append(capImg);	
+					$(".carousel-indicators").append(cap);	
+			    
+		}
 		
 
-		function tourForm(e){
-			 
-			var hno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+		function roomFile(f){
+			
+			$(".carousel-item").remove();
+			$(".caro").remove();
+			
+			
+			$.ajax({
+					url:"changeFile.ro",
+					data :{
+					 hno : <%=room.get(0).getHouseNo()%>,
+					 rno : f.getElementsByClassName('rno')[0].innerText
+					},
+					success:function(fileOne){
+						var change = '<div class="carousel-item active">'
+					      			+'<img src="'+  fileOne[0].filePath  +'" alt="이미지" width="500px" height="500px">'
+						    		+'</div>'
+							    	for(var i = 1; i <= (fileOne.length-1); i++){
+			                      	change += '<div class="carousel-item">'
+			                      	+ '<img src="'+  fileOne[i].filePath  +'" alt="이미지" width="500px" height="500px">'
+			                      	+ '</div>'
+						    		}
+						   
+						var changeMove =  '<li class="caro" data-target="#myCarousel" data-slide-to="0" class="active"></li>';
+					 	   					for(var h = 1; h <= (fileOne.length-1) ; h++){
+					 	   					changeMove +=  '<li class="caro" data-target="#myCarousel" data-slide-to="' + h + '"></li>';
+						 	   			  }   		
+						    		
+						    		
+						$(".carousel-inner").append(change);	
+						$(".carousel-indicators").append(changeMove);
+					}
+			})
+		
+		}
 
+		function tourForm(e){
+			
+			console.log(e);
+			var hno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 			
 			var rno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
-			
-			
+
 			var uno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 
 			 location.href="tour.re?hno=" + hno + "&rno="+ rno  +"&uno=" + uno;
@@ -761,7 +833,31 @@
 		
 		
 
-		      
+		      var likeBtn = document.getElementById("like");
+				likeBtn.onclick = function(){
+				like();
+				}	
+				
+				
+					function like(){
+					
+						$.ajax({
+								url : "changeHeart.ho",
+								data : {
+								houseNo : <%=room.get(0).getHouseNo()%>,
+								userNo : '${loginUser.userNo}'			
+								},
+								success : function(result){
+									if(result == "NN"){
+										$("#like").html("♡");
+					                       					
+									}else{
+										$("#like").html("♥");
+									}				
+								}				
+							})					
+							
+					}
 				
 				
 				

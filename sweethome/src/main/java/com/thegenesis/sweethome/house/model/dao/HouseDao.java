@@ -100,6 +100,12 @@ public class HouseDao {
 	public ArrayList<House> houseSearchOne(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearchOne");
 	}
+
+	public ArrayList<HouseFile> houseSearchTwo(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("houseMapper.houseSearchTwo");
+	}
+
+
 	
 
 }

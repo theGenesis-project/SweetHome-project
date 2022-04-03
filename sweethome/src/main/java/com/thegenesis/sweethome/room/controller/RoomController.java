@@ -56,8 +56,10 @@ public class RoomController {
 
 		ArrayList<HouseFile> file = roomService.houseFileOne(hno);
 		
+		int fileLength = (file.size() - 1);
 		
-		mv.addObject("room" ,room).addObject("idCheckHeart",idCheckHeart).addObject("file",file).addObject("loginUser",loginUser).setViewName("house/houseDetail");
+		
+		mv.addObject("room" ,room).addObject("idCheckHeart",idCheckHeart).addObject("file",file).addObject("loginUser",loginUser).addObject("fileLength",fileLength).setViewName("house/houseDetail");
 		}
 		
 
@@ -135,4 +137,18 @@ public class RoomController {
 		return checkHeart == 1 ? "YY" : "NN";
 			
 		}
+	
+	@ResponseBody
+	@RequestMapping("changeFile.ro")
+	public ArrayList<HouseFile> changeFile(int hno, int rno){
+		
+		HashMap<String, Integer> hm = new HashMap<>();
+		hm.put("hno", hno);
+		hm.put("rno", rno);
+		
+		ArrayList<HouseFile> fileOne = roomService.changeFile(hm);
+		
+		return fileOne;
+	}
+	
 }

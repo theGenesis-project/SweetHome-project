@@ -148,7 +148,7 @@
 								<div class='form-group'>
 									<select class='form-control' name='genderArr'>
 										<option value='M'>남성</option>
-										<option value='F'>여성</option>
+										<option value='W'>여성</option>
 									</select>
 								</div>
 							</td>

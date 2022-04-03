@@ -5,6 +5,7 @@
 <% 
 	ArrayList<House> list = (ArrayList)request.getAttribute("list");
 	ArrayList<House> list1 = (ArrayList)request.getAttribute("list1");
+	ArrayList<HouseFile> list2 = (ArrayList)request.getAttribute("list2");
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -173,6 +174,7 @@
 	var gender = [];
 	var monthly = [];
 	var userNo = [];
+	
 	<% for(House h: list) { %>
     	x.push(<%= h.getLatitude() %>);
     	y.push(<%= h.getLongitude() %>);
@@ -190,11 +192,18 @@
  		
  	<% } %>
  	
+ 	
+ 	var Path = [];
+ 	
+ 	<% for(HouseFile hf: list2) {%>
+ 		Path.push("<%= hf.getPath()%>");
+ 	<% }%>
+ 	
  	for ( var i=0; i<x.length; i++ ) {
 			
 	 		var house = '<li class="house-item">'
 				+				'<div class="item-list" onclick="houseDetail(this);">'
-				+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+				+  					'<img class="thumbnail" src="' + Path[i] + '" alt="썸네일 이미지">'
 				+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
 				+  					'<div style="display:none" class="uno">' + userNo[i] + '</div>'
 	            +  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
@@ -299,6 +308,7 @@
 				url : "keyword.se",
 				data : { keyword: $("#keyword").val()},
 				success : function(list1){
+					console.log(list1);
 					if(Array.isArray(list1)&&list1.length != 0){
 						for ( var i=0; i<list1.length; i++ ) {
 							
@@ -321,12 +331,11 @@
 							
 							if(bound.ha< list1[i].latitude < bound.oa && bound.qa < list1[i].longitude < bound.pa){
 								
-							
-									
 								var house = '<li class="house-item">'
 									+				'<div class="item-list" onclick="houseDetail(this);">'
-									+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+									+  					'<img class="thumbnail" src=' + list1[i].path + ' alt="썸네일 이미지">'
 									+  					'<div style="display:none" class="hno">' + list1[i].houseNo + '</div>'
+						            +  					'<div style="display:none" class="uno">' + list1[i].userNo + '</div>'
 						            +  					'<span class="thumb-title mtb3">' + list1[i].houseName+ '</span>'
 						            +  					'<ul class="thumb-desc mtb3">'
 						            +  					'<li>월'+ list1[i].monthly +'만원~</li>';
@@ -411,8 +420,9 @@
 		});
 		
 		var iwContent = 	'<div class="item-list" onclick="houseDetail(this);">'
-						+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+						+  					'<img class="thumbnail" src="' + Path[i] + 	'"alt="썸네일 이미지">'
 						+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
+						+  					'<div style="display:none" class="uno">' + userNo[i] + '</div>'
 						+  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
 						+  					'<ul class="thumb-desc mtb3">'
 						+  					'<li>월'+ monthly[i] +'만원~</li>';

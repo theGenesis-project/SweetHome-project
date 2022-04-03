@@ -78,5 +78,9 @@ public class RoomService {
 		return roomDao.houseFileOne(sqlSession, hno);
 	}
 
+	public ArrayList<HouseFile> changeFile(HashMap<String, Integer> hm) {
+		return roomDao.changeFile(sqlSession,hm);
+	}
+
 
 }

@@ -87,5 +87,8 @@ public class RoomDao {
 	public ArrayList<HouseFile> houseFileOne(SqlSessionTemplate sqlSession, int hno) {
 		return (ArrayList)sqlSession.selectList("roomMapper.houseFileOne",hno);
 	}
+	public ArrayList<HouseFile> changeFile(SqlSessionTemplate sqlSession, HashMap<String, Integer> hm) {
+		return (ArrayList)sqlSession.selectList("roomMapper.changeFile",hm);
+	}
 
 }
