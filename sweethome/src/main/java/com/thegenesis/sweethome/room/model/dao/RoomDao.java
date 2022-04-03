@@ -54,5 +54,15 @@ public class RoomDao {
 	public ArrayList<Room> selectRoom(SqlSessionTemplate sqlSession, int hno) {
 		return (ArrayList)sqlSession.selectList("roomMapper.selectRoom", hno);
 	}
+	
+	/**
+	 * 하우스 수정에서 방 등록
+	 * @param sqlSession
+	 * @param newRoom
+	 * @return
+	 */
+	public int updateInsertRoom(SqlSessionTemplate sqlSession, Room newRoom) {
+		return sqlSession.insert("roomMapper.updateInsertRoom", newRoom);
+	}
 
 }

@@ -367,5 +367,27 @@
   					ROOM_NO = #{roomNo}
   	</delete>
   	
+	<!-- 해당 하우스 대표 파일 목록 가져오기 -->
+  	<select id="selectPrimaryHouseFile" parameterType="_int" resultMap="houseFileResultSet">
+  		SELECT
+  				*
+  		FROM
+  				HOUSE_FILE
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				ROOM_NO IS NULL
+  	</select>
+  	
+  	<!-- 해당 하우스 대표 파일 삭제 -->
+  	<delete id="deletePrimaryHouseFile" parameterType="_int">
+  		DELETE FROM
+  					HOUSE_FILE
+  		WHERE
+  					HOUSE_NO = #{hno}
+		AND
+  					ROOM_NO IS NULL
+  	</delete>
+  	
 
 </mapper>

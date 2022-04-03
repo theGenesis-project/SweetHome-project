@@ -21,6 +21,6 @@ public class HouseFile {
 	
 	// 파일 수정용
 	private int[] changeFilesRoomNo;
-	private String[] fixFilesName;
+	private int[] changeFilesNumber;
 	
 }

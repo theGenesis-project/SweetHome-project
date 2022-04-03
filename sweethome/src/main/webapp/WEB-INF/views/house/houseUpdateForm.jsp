@@ -253,7 +253,10 @@
 					$(function() {
 						$("#insert-room-btn").click(function() {
 
+							
+					// <input type='hidden' name='roomNoArr' value='${ r.roomNo }'>
 							var addRoom = "<div id='room-" + roomNum + "'>"
+								+ "<input type='hidden' name='roomNoArr' value='0'>"
 								+ "<h3>방 사진</h3>"
 								+ "<a class='button btn1'>사진 첨부</a>"
 								+ "<input type='file' id='insert-image-" + roomNum + "' name='upfile' multiple='multiple' onchange='insertImage(this);' required>"
@@ -508,35 +511,28 @@
 
 						// 변경된 방 사진 길이 체크 해당하는 이름 정리
 						var sel_files_obj_keys = Object.keys(sel_files_obj);
-						var sel_files_numbers = [];
 
+						var sel_files_roomNo = []; // 파일이 변경된 방 번호
+						var sel_files_numbers = []; // 파일이 변경된 방 번호의 파일 개수
+
+						// 파일이 변경된 방 번호의 객체를 배열로 전환
 						for(var i = 0; i < sel_files_obj_keys.length; i++) {
-							sel_files_numbers[i] = sel_files_obj_keys[i];
+							sel_files_roomNo[i] = sel_files_obj_keys[i];
 						}
 
-						console.log("sfn: " + sel_files_numbers);
-
-						// console.log(sel_files_obj[0].length);
-
 						for(var i = 0; i <= roomNum; i++) {
-							if(sel_files_obj[sel_files_numbers[i]]) {
-								console.log(sel_files_obj[sel_files_numbers[i]].length);
+							if(sel_files_obj[sel_files_roomNo[i]]) {
+								sel_files_numbers.push(sel_files_obj[sel_files_roomNo[i]].length);
 							}
 						}
 						
 						// 변경된 방의 번호
-						var houseNoHtml = "<input type='hidden' name='changeFilesRoomNo' value='" + sel_files_numbers + "'>";
-						// 변경된 방의 번호
-						var houseNoHtml = "<input type='hidden' name='changeFilesRoomNo' value='" + sel_files_numbers + "'>";
+						var sel_files_roomNo_html = "<input type='hidden' name='changeFilesRoomNo' value='" + sel_files_roomNo + "'>";
+						// 변경된 방 번호의 파일 개수
+						var sel_files_numbers_html = "<input type='hidden' name='changeFilesNumber' value='" + sel_files_numbers + "'>";
 
-
-						
-						// console.log("sel_files_numbers: " + sel_files_numbers[0]);
-
-
-						// console.log(sel_files_obj_keys[0]);
-						// console.log(sel_files_obj_keys[1]);
-						// console.log(sel_files_obj_keys.length);
+						$(".add").append(sel_files_roomNo_html);
+						$(".add").append(sel_files_numbers_html);
 						
 						// 하우스 번호 넣기
 						var houseNo = new URLSearchParams(location.search).get('hno');
@@ -551,7 +547,7 @@
 						$(".add").append(statusHtml);
 						$(".add").append(userNoHtml);
 
-						// $("#submit-click").click();
+						$("#submit-click").click();
 					}
 				</script>
 			</div>

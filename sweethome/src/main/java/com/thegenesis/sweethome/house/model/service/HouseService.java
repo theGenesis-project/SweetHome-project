@@ -108,7 +108,6 @@ public class HouseService {
 		return houseDao.selectRoomFile(sqlSession, roomNo);
 	}
 
-
 	/**
 	 * 해당 방 파일 삭제
 	 * @param roomNo
@@ -116,6 +115,25 @@ public class HouseService {
 	 */
 	public int deleteRoomFile(int roomNo) {
 		return houseDao.deleteRoomFile(sqlSession, roomNo);
+	}
+
+	/**
+	 * 해당 하우스 대표 파일 목록 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectPrimaryHouseFile(int hno) {
+		return houseDao.selectPrimaryHouseFile(sqlSession, hno);
+	}
+
+
+	/**
+	 * 해당 하우스 대표 파일 삭제
+	 * @param hno
+	 * @return
+	 */
+	public int deletePrimaryHouseFile(int hno) {
+		return houseDao.deletePrimaryHouseFile(sqlSession, hno);
 	}
 	
 	

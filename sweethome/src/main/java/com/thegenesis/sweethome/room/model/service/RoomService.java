@@ -61,5 +61,14 @@ public class RoomService {
 		return roomDao.selectRoom(sqlSession, hno);
 	}
 
+	/**
+	 * 하우스 수정에서 방 등록
+	 * @param newRoom
+	 * @return
+	 */
+	public int updateInsertRoom(Room newRoom) {
+		return roomDao.updateInsertRoom(sqlSession, newRoom);
+	}
+
 
 }
