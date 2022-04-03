@@ -341,7 +341,6 @@
         </div>
         </div>
     </div>
-=======
 	<c:choose>
 		<c:when test ="${ loginUser.userType eq 'M'}">
 		<button type="button" class="btn btn-danger">하우스신고</button>
@@ -350,7 +349,6 @@
 		<button type="button" class="btn btn-primary">정보수정</button>
 		</c:otherwise>
 	</c:choose>
->>>>>>> branch 'master' of https://github.com/theGenesis-project/SweetHome-project.git
 	</div>	
 	<div class="content">
 			<div class="sub-nav-area">
@@ -671,10 +669,10 @@
 				<button id="chat" type="button" onclick="location.href='loginform.me'">오너와 채팅하기 ></button>
 				</c:when>
 				<c:otherwise>
-				<button id="chat" type="button" onclick="">오너와 채팅하기 ></button>
+				<button id="chat" type="button" onclick="window.open('newChat?other=${r.userNo}&houseName=${ r.houseName }', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')" >오너와 채팅하기</button>
 				</c:otherwise>
 				</c:choose>
-				<button id="chat" type="button" onclick="window.open('newChat?other=${r.userNo}&houseName=${ r.houseName }', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')" >오너와 채팅하기</button>
+				
 			</div>
 		</div>
 		<br><br>
