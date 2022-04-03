@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.thegenesis.sweethome.common.template.Pagination;
@@ -22,6 +23,7 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
 import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.mypage.model.service.MypageService;
 import com.thegenesis.sweethome.tour.model.vo.Tour;
@@ -35,6 +37,15 @@ public class MypageController {
 	@Autowired
 	private MypageService mypageService;
 	
+	/**
+	 * 내가 작성한 게시글, 댓글 확인
+	 * 
+	 * @param BcurrentPage
+	 * @param CcurrentPage
+	 * @param session
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping("myBoard.my")
 	public ModelAndView MyBoardView(@RequestParam(value="bpage", defaultValue="1")int BcurrentPage, 
 			@RequestParam(value="cpage", defaultValue="1")int CcurrentPage, HttpSession session, ModelAndView mv) {
@@ -48,13 +59,22 @@ public class MypageController {
 		PageInfo Cpi = Pagination.getPageInfo(ClistCount, CcurrentPage, 10, 10);
 		
 		ArrayList<Community> Blist = mypageService.selectMyBoardList(Bpi, userNo);
-		ArrayList<Community> Clist = mypageService.selectMyCommentList(Cpi, userNo);		
+		ArrayList<Community> Clist = mypageService.selectMyCommentList(Cpi, userNo);
+		log.info("===========myBoardView============");
+		log.info(Clist);
 		
 		mv.addObject("Blist", Blist).addObject("Bpi", Bpi).addObject("Clist", Clist).addObject("Cpi", Cpi).setViewName("mypage/myBoardList");
 		
 		return mv;
 	}
 	
+	/**
+	 * 게시글 여러개 삭제
+	 * 
+	 * @param boardList
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("deleteBoard.my")
 	public String deleteMyBoard(int[] boardList, HttpSession session) {
 		int result = mypageService.deleteMyBoard(boardList);
@@ -68,6 +88,13 @@ public class MypageController {
 	}
 	
 	
+	/**
+	 * 내가 찜한 하우스, 인테리어 확인
+	 * 
+	 * @param session
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping("dibsList.my")
 	public ModelAndView myDibsList(HttpSession session, ModelAndView mv) {
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
@@ -76,8 +103,8 @@ public class MypageController {
 		int HlistCount = mypageService.myDibsHouseCount(userNo); 
 		int IlistCount = mypageService.myDibsInteriorCount(userNo);
 		// 처음 보여줄 게시글 수
-		MoreVO Hpi = Pagination.getMoreList(HlistCount, 6);
-		MoreVO Ipi = Pagination.getMoreList(IlistCount, 8);
+		MoreVO Hpi = Pagination.getMoreList(0, HlistCount, 6);
+		MoreVO Ipi = Pagination.getMoreList(0, IlistCount, 8);
 
 		ArrayList<House> Hlist = mypageService.selectMyHouseList(Hpi, userNo);
 		ArrayList<Interior> Ilist = mypageService.selectMyInteriorList(Ipi, userNo);
@@ -105,6 +132,14 @@ public class MypageController {
 		return mv;
 	}
 	
+	/**
+	 * 하우스 찜하기 더보기
+	 * 
+	 * @param m
+	 * @param session
+	 * @param response
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping("getMoreHouse.my")
 	public void AjaxGetMoreHouse(MoreVO m, HttpSession session, HttpServletResponse response) throws IOException {
@@ -141,6 +176,14 @@ public class MypageController {
 		response.getWriter().print(jObj);
 	}
 	
+	/**
+	 * 인테리어 찜하기 더보기
+	 * 
+	 * @param m
+	 * @param session
+	 * @param response
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping("getMoreInterior.my")
 	public void AjaxGetMoreInterior(MoreVO m, HttpSession session, HttpServletResponse response) throws IOException {
@@ -178,6 +221,14 @@ public class MypageController {
 		response.getWriter().print(jObj);
 	}
 
+	/**
+	 * 투어 목록 보기
+	 * 
+	 * @param currentPage
+	 * @param session
+	 * @param mv
+	 * @return
+	 */
 	@RequestMapping("userTour.my")
 	public ModelAndView MyTourList(@RequestParam(value="tpage", defaultValue="1")int currentPage
 			, HttpSession session, ModelAndView mv) {
@@ -199,13 +250,62 @@ public class MypageController {
 		}
 					
 		mv.addObject("Tlist", Tlist).addObject("pi", pi);
-		if(m.getUserType().equals("M")) {			
+		if(m.getUserType().equals("M")) { // 메이트인 경우 신청한 투어 보기			
 			mv.setViewName("mypage/tourList");
-		} else {
+		} else { // 오너인 경우 신청받은 투어 보기
 			mv.setViewName("mypage/ownerTourList");
 		}
 		
 		return mv;
 	}
 	
+	/**
+	 * 투어 상태 변경
+	 * 
+	 * @param t
+	 */
+	@ResponseBody
+	@RequestMapping("tourStatusChange.my")
+	public int AjaxTourStatusChange(Tour t) {
+		log.info("===============tourStatus===============");
+		log.info(t);
+		
+		// 투어 상태 변경
+		int result = mypageService.updateTourStatus(t);
+		
+		return result;
+	}
+	
+	/**
+	 * 주문 내역 관리
+	 * 
+	 * @return
+	 */
+	@RequestMapping("orderList.my")
+	public ModelAndView MyOrderList(HttpSession session, MoreVO m, ModelAndView mv) {
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		DecimalFormat priceFormat = new DecimalFormat("###,###"); // 가격 단위 변경
+		// 전체 좋아요 수
+		int listCount = mypageService.myOrderListCount(userNo); 
+		
+		// 처음 보여줄 게시글 수
+		MoreVO more = Pagination.getMoreList(0, listCount, 2);
+
+		ArrayList<OrderInfo> orderlist = mypageService.selectMyOrderList(more, userNo);
+
+		log.info("===============MyOrderList================");
+		log.info(orderlist);
+		
+		// 가격 포맷 변경
+		for(int i=0; i<orderlist.size(); i++) {
+			orderlist.get(i).setWon(priceFormat.format(orderlist.get(i).getInteriorPrice()) + "원");
+		}
+
+		// 남은 게시글 수
+		listCount = listCount - orderlist.size();
+		
+		mv.addObject("orderlist", orderlist).addObject("listCount", listCount).setViewName("mypage/myOrderlist");
+		
+		return mv;
+	}
 }

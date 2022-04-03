@@ -17,10 +17,10 @@ public class Pagination {
 		return new PageInfo(listCount, currentPage, pageLimit, boardLimit, maxPage, startPage, endPage);
 	}
 	
-	public static MoreVO getMoreList(int CallLength, int limit) {
+	public static MoreVO getMoreList(int CallLength, int listCount, int limit) {
 		
-		if(limit > CallLength) {
-			limit = CallLength;
+		if(limit > listCount) {
+			limit = listCount;
 		}
 		
 		return new MoreVO(CallLength, limit);

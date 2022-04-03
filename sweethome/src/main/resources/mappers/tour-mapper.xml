@@ -99,4 +99,14 @@
                 M.USER_TYPE = 'O'
         ORDER BY ROWNUM DESC
   	</select>
+  	
+  	<!-- 투어 승인용 쿼리 -->
+  	<update id="updateTourStatus" parameterType="tour">
+  		UPDATE 
+  				TOUR
+  		   SET
+  		   		STATUS = #{status}
+  		 WHERE
+  		   		TOUR_NO = #{tourNo}
+  	</update>
 </mapper>

@@ -111,15 +111,16 @@ public class ChatController {
 		if(chatroom.isEmpty()) {
 			// int 형 배열로 user를 하나씩 넣기
 			int[] participant = new int[] {other, userNo};
-			int result = chatService.insertNewChatRoom(participant, houseName);
+			// 새로운 채팅방 번호 가져가기
+			chatroom.add(chatService.insertNewChatRoom(c, participant, houseName));
 			
-			// insert 결과값이 채팅방의 user수와 같지 않다면 실패
-			if(result != participant.length) {
+			// roomNo == 0 이면 실패
+			if(chatroom.get(0) == 0) {
 				session.setAttribute("errorMsg", "채팅방 개설에 실패했습니다.");
 			}
 		}
 		
-		// 해당 채팅방 유저의 채팅정보 가져오기
+		// 해당 채팅방 유저의 전체 채팅정보 가져오기
 		ArrayList<Chat> chatList = chatService.selectRoomList(userNo);
 		mv.addObject("chatList", chatList).addObject("chatroom", chatroom).setViewName("mypage/chatBoard");
 		

@@ -170,7 +170,7 @@
 			        	<div class="empty-list">
 			        		<p>
 			        			아직 찜한 집이 없습니다😢<br>
-			        			<a href=""><b>하우스 보러가기>></b></a>
+			        			<a href="house.se"><b>하우스 보러가기>></b></a>
 			        		</p>
 			        	</div>
 			        </c:if>
@@ -225,7 +225,6 @@
 					<div id="interior-area">
 						<c:forEach var="I" items="${ Ilist }">
 							<div class="interior_list">
-								<input type="checkbox">
 								<div onclick="location.href='detail.in?ino=${I.interiorNo}'">
 							       <div class="thumbnail-area">
 							           <img src="${ I.filePath }" alt="사진 준비중...🖼️">

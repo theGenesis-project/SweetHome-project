@@ -11,6 +11,7 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
 import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.tour.model.vo.Tour;
 
@@ -86,6 +87,20 @@ public class MypageDao {
 		} else {
 			return (ArrayList)sqlSession.selectList("tourMapper.selectOwnerTourList", m.getUserNo(), rowBounds);
 		} 
+	}
+
+	public int updateTourStatus(SqlSessionTemplate sqlSession, Tour t) {
+		return sqlSession.update("tourMapper.updateTourStatus", t);
+	}
+
+	public int selectMyOrderListCount(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("interiorMapper.selectMyOrderListCount", userNo);
+	}
+
+	public ArrayList<OrderInfo> selectMyOrderList(SqlSessionTemplate sqlSession, MoreVO m, int userNo) {
+		RowBounds rowBounds = new RowBounds(m.getCallLength(), m.getLimit());
+		
+		return (ArrayList)sqlSession.selectList("interiorMapper.selectMyOrderList", userNo, rowBounds);
 	}
 
 }
