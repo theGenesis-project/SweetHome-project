@@ -248,8 +248,6 @@
 
 					// 방 추가 버튼 클릭시 몇 번째 방인지 확인용 변수
 					var roomNum = ${ roomIdNo };
-					
-					console.log(roomNum);
 
 					// 방 추가 버튼 클릭시 '#insert-room'에 추가되는 요소
 					$(function() {
@@ -345,8 +343,6 @@
 							imageBtn = ($(this).next())[0];
 							attImage = ($(this).next().next())[0];
 
-							console.log(attImage);
-
 							if(attImage.children.length != 0) {
 								var result = confirm("파일을 수정하면 기존 파일이 전부 삭제됩니다.\n계속하시겠습니까?");
 								
@@ -369,8 +365,6 @@
 					
 					// [input=file] 요소가 변경될 경우
 					function insertImage(inputFiles) {
-						
-						console.log(inputFiles.value);
 
 						// 선택된 이미지가 5개 이하인지 확인
 						if(inputFiles.files.length > 5) {
@@ -392,7 +386,7 @@
 						for(f of fileArr){
 							imageLoader(f, currentNum);
 						}
-						
+
 						// 몇 번째 방의 파일인지 확인하는 객체 추가
 						sel_files_obj[currentNum] = sel_files;
 						sel_files = [];
@@ -458,8 +452,6 @@
 						div.appendChild(img);
 						div.appendChild(btn);
 						
-						console.log(sel_files_obj)
-						
 						return div;
 					}
 				</script>
@@ -510,27 +502,47 @@
 							address = roadAddress + " " + detailAddress;
 						}
 
-						var addressHtml = "<input type='hidden' name='address' value='"+ address +"'>";
+						var addressHtml = "<input type='hidden' name='address' value='" + address + "'>";
 
 						$(".add").append(addressHtml);
 
-						// 각 사진에 해당하는 이름 정리
-						var sel_files_obj_length = Object.keys(sel_files_obj).length;
-						var fileNumber = []
+						// 변경된 방 사진 길이 체크 해당하는 이름 정리
+						var sel_files_obj_keys = Object.keys(sel_files_obj);
+						var sel_files_numbers = [];
 
-						// 하우스 수정용
-						for(var i = 0; i < sel_files_obj_length; i++) {
-							fileNumber.push(sel_files_obj[i].length);
+						for(var i = 0; i < sel_files_obj_keys.length; i++) {
+							sel_files_numbers[i] = sel_files_obj_keys[i];
 						}
 
-						var fileNumberHtml = "<input type='hidden' name='fileNumber' value='" + fileNumber + "'>";
-						$(".add").append(fileNumberHtml);
+						console.log("sfn: " + sel_files_numbers);
+
+						// console.log(sel_files_obj[0].length);
+
+						for(var i = 0; i <= roomNum; i++) {
+							if(sel_files_obj[sel_files_numbers[i]]) {
+								console.log(sel_files_obj[sel_files_numbers[i]].length);
+							}
+						}
+						
+						// 변경된 방의 번호
+						var houseNoHtml = "<input type='hidden' name='changeFilesRoomNo' value='" + sel_files_numbers + "'>";
+						// 변경된 방의 번호
+						var houseNoHtml = "<input type='hidden' name='changeFilesRoomNo' value='" + sel_files_numbers + "'>";
+
+
+						
+						// console.log("sel_files_numbers: " + sel_files_numbers[0]);
+
+
+						// console.log(sel_files_obj_keys[0]);
+						// console.log(sel_files_obj_keys[1]);
+						// console.log(sel_files_obj_keys.length);
 						
 						// 하우스 번호 넣기
 						var houseNo = new URLSearchParams(location.search).get('hno');
 
 						// 하우스 정보 넣기
-						var houseNoHtml = "<input type='hidden' name='houseNo' value='" + houseNo + "'>";						
+						var houseNoHtml = "<input type='hidden' name='houseNo' value='" + houseNo + "'>";
 						var conditionHtml = "<input type='hidden' name='condition' value='${ h.condition }'>";
 						var statusHtml = "<input type='hidden' name='status' value='${ h.status }'>";
 						var userNoHtml = "<input type='hidden' name='userNo' value='${ h.userNo }'>";
@@ -539,7 +551,7 @@
 						$(".add").append(statusHtml);
 						$(".add").append(userNoHtml);
 
-						$("#submit-click").click();
+						// $("#submit-click").click();
 					}
 				</script>
 			</div>

@@ -19,4 +19,8 @@ public class HouseFile {
 	private String filePath;
 	private int fileLevel;
 	
+	// 파일 수정용
+	private int[] changeFilesRoomNo;
+	private String[] fixFilesName;
+	
 }
