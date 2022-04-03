@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList"%>
+<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList,com.thegenesis.sweethome.house.model.vo.*"%>
 
 <% 
 	ArrayList<Room> room = (ArrayList)request.getAttribute("room");
+	ArrayList<HouseFile> file = (ArrayList)request.getAttribute("file");
+	System.out.print(file);
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -385,11 +387,13 @@
 					    <div class="carousel-item active">
 					      <img src="${file.get(0).filePath }" alt="이미지" width="500px" height="500px">
 					    </div>
-					    <c:forEach var="i" begin="1" end="${ fileLength }">
+					    <c:if test="${fileLength > 1}">
+					    <c:forEach var="i" begin="1" end="${fileLength }">
 	                      <div class="carousel-item">
 	                      <img src="${file.get(i).filePath }" alt="이미지" width="500px" height="500px">
 	                      </div>
-                      	</c:forEach>    
+                      	</c:forEach>
+                      	</c:if>    
 					  </div>
 				  
 					  <!-- Left and right controls -->
