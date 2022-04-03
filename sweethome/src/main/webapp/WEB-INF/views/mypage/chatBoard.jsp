@@ -23,13 +23,13 @@
 		$(function(){
 			// 페이지 들어오면 자동 소켓 연결
 			$(".connect-button").trigger('click');
-			// 두 유저가 이미 방이 있다면 그 방으로 보내주기	
+			
+			// 두 유저의 채팅방으로 바로 보내기
 			if("${!empty chatroom}" == "true"){ 	
 				goChat("${chatroom[0]}");
 				$(".chat_list").find("input[name='${chatroom[0]}']").parent().addClass("active_chat"); // 해당 채팅방 배경색 바꾸기
 			}
 			
-	
 			// 클릭 시 활성화 class 추가
 			$(".chat_list").click(function(){
 				console.log(this);
@@ -227,6 +227,7 @@
 			<div class="recent_heading">
 			  <h4>Recent</h4>
 			</div>
+			<!-- 
 			<div class="srch_bar">
               <div class="stylish-input-group">
                 <input type="text" class="search-bar"  placeholder="Search" >
@@ -234,6 +235,7 @@
                 <button type="button">🔍</button>
                 </span> </div>
             </div>
+			 -->
 		  </div>
 		  <div class="inbox_chat scroll">
 		  <%--
@@ -298,8 +300,5 @@
 		</div>
 	  </div>
 	</div>
-
-	
-	
 </body>
 </html>

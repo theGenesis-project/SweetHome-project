@@ -28,6 +28,7 @@
 		<result column="ADDRESS" property="address"/>
 		<result column="LATITUDE" property="latitude"/>
 		<result column="LONGITUDE" property="longitude"/>
+		<result column="USER_NO" property="userNo"/>
 	</resultMap>
 
 	
@@ -83,10 +84,6 @@
   		WHERE
   				HOUSE_NO = #{hno}
   	</update>
-	
-	
-
-
 
 	<select id="houseDetail" resultMap="roomResultSet">
 			SELECT * 

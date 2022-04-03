@@ -35,8 +35,8 @@ public class ChatService {
 		return chatDao.searchChatMember(sqlSession, c);
 	}
 
-	public int insertNewChatRoom(int[] participant, String houseName) {
-		return chatDao.insertNewChatRoom(sqlSession, participant, houseName);
+	public int insertNewChatRoom(Chat c, int[] participant, String houseName) {
+		return chatDao.insertNewChatRoom(sqlSession, c, participant, houseName);
 	}
 
 }

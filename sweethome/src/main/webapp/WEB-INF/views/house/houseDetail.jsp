@@ -14,50 +14,45 @@
 <title>Insert title here</title>
 
 <style>
+    .sub-nav-area {
+    width: 220px;
+    border-radius: 13px;
+    border: 2px solid lightgray;
+    margin-right: 5px;
+    margin-left:100px;
+    float:left;
+    margin-top:150px;
+    }
 
-	    .sub-nav-area {
-	    width: 220px;
-	    border-radius: 13px;
-	    border: 2px solid lightgray;
-	    margin-right: 5px;
-	    margin-left:100px;
-	    float:left;
-	    margin-top:150px;
-	    }
-	
-	    .sub-nav-area>div {
-	    border-bottom: 2px solid lightgray;
-	    }
-	    
-	    .sub-nav-list {
-	    height: 60px;
-	    font-size: 20px;
-	    font-weight: bold;
-	    line-height: 60px;
-	    background-color: white;
-	    text-align: center;
-	    }
-	
-	    .sub-nav-list:hover {
-	        color: rgb(247, 202, 201);
-	        cursor: pointer;
-	    }
+    .sub-nav-area>div {
+    border-bottom: 2px solid lightgray;
+    }
+    
+    .sub-nav-list {
+    height: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 60px;
+    background-color: white;
+    text-align: center;
+    }
 
+    .sub-nav-list:hover {
+        color: rgb(247, 202, 201);
+        cursor: pointer;
+    }
 
 	 .carousel-inner img {
 	   width: 100%;
 	   height: 100%;
-	   
 	  }
 	  
 	 .carousel-item {
 	   width: 1000px;
 	   height: 600px;
-	   
-
 	 }
 	 
-	  .content{
+	 .content{
 	   width:1500px;
 	   margin:auto;
 	 }
@@ -134,8 +129,8 @@
      padding:5px;
 	}
 	.tour:hover{
-        	cursor: pointer;
-        }
+     	cursor: pointer;
+     }
 	.house-title{
 	 width:1400px;
 	 font-size:30px;
@@ -275,7 +270,6 @@
      outline:none;
      margin-left:1350px;
      }
-	
 </style>
 </head>
 <body>
@@ -283,7 +277,6 @@
 	<br>
 	<hr>
 	<div style="width:1500px;margin:auto;text-align:right;">
-	
 	
 	<c:choose>
 		<c:when test ="${ loginUser.userType eq 'M'}">
@@ -590,7 +583,7 @@
   · 계약금으로 보증금을 수령하며, 계약종료 후 퇴실시 반환됩니다.           · 계약기간 만료 이전에 중도퇴실할 경우, 절차에 따라 위약금이 발생됩니다.</pre>
 			</div>
 			<div class="box4">
-				<button id="chat" type="button">스위트홈 1:1 문의 ></button>
+				<button id="chat" type="button" onclick="window.open('newChat?other=${r.userNo}&houseName=${ r.houseName }', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')" >오너와 채팅하기</button>
 			</div>
 		</div>
 		<br><br>

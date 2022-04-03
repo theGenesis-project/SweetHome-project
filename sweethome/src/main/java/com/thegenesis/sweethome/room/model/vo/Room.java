@@ -31,6 +31,7 @@ public class Room {
 	private String houseName;
 	private String houseTitle;
 	private String houseIntroduce;
+	private int userNo;
 	
 	private String shareSpace;
 	private String personalSpace;

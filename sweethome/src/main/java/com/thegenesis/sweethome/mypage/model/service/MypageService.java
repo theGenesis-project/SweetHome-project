@@ -11,6 +11,7 @@ import com.thegenesis.sweethome.common.vo.PageInfo;
 import com.thegenesis.sweethome.community.model.vo.Community;
 import com.thegenesis.sweethome.house.model.vo.House;
 import com.thegenesis.sweethome.interior.model.vo.Interior;
+import com.thegenesis.sweethome.interior.model.vo.OrderInfo;
 import com.thegenesis.sweethome.member.model.vo.Member;
 import com.thegenesis.sweethome.mypage.model.dao.MypageDao;
 import com.thegenesis.sweethome.tour.model.vo.Tour;
@@ -66,5 +67,17 @@ public class MypageService {
 
 	public ArrayList<Tour> selectMyTourList(PageInfo pi, Member m) {
 		return mypageDao.selectMyTourList(sqlSession, pi, m);
+	}
+
+	public int updateTourStatus(Tour t) {
+		return mypageDao.updateTourStatus(sqlSession, t);
+	}
+
+	public int myOrderListCount(int userNo) {
+		return mypageDao.selectMyOrderListCount(sqlSession, userNo);
+	}
+
+	public ArrayList<OrderInfo> selectMyOrderList(MoreVO more, int userNo) {
+		return mypageDao.selectMyOrderList(sqlSession, more, userNo);
 	}
 }
