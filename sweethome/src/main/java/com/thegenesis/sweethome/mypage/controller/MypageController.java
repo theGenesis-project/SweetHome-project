@@ -289,10 +289,10 @@ public class MypageController {
 		int listCount = mypageService.myOrderListCount(userNo); 
 		
 		// 처음 보여줄 게시글 수
-		MoreVO more = Pagination.getMoreList(0, listCount, 2);
-
+		MoreVO more = Pagination.getMoreList(0, listCount, 5);
+		
 		ArrayList<OrderInfo> orderlist = mypageService.selectMyOrderList(more, userNo);
-
+		
 		log.info("===============MyOrderList================");
 		log.info(orderlist);
 		
