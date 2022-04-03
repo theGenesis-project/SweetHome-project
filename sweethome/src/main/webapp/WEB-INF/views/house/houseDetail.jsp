@@ -381,11 +381,15 @@
 				  
 					  <!-- The slideshow -->
 					  <div class="carousel-inner">
-					  <c:forEach var="f" items="${file }">
+					  
 					    <div class="carousel-item active">
 					      <img src="${file.get(0).filePath }" alt="이미지" width="500px" height="500px">
 					    </div>
-					  </c:forEach>
+					    <c:forEach var="i" begin="1" end="${ fileLength }">
+	                      <div class="carousel-item">
+	                      <img src="${file.get(i).filePath }" alt="이미지" width="500px" height="500px">
+	                      </div>
+                      	</c:forEach>    
 					  </div>
 				  
 					  <!-- Left and right controls -->
@@ -754,31 +758,7 @@
 		
 
 		      
-				var likeBtn = document.getElementById("like");
-				likeBtn.onclick = function(){
-				like();
-				}	
 				
-				
-					function like(){
-					
-						$.ajax({
-								url : "changeHeart.ho",
-								data : {
-								houseNo : <%=room.get(0).getHouseNo()%>,
-								userNo : ${loginUser.userNo}				
-								},
-								success : function(result){
-									if(result == "NN"){
-										$("#like").html("♡");
-					                       					
-									}else{
-										$("#like").html("♥");
-									}				
-								}				
-							})					
-							
-					}
 				
 				
 				      
