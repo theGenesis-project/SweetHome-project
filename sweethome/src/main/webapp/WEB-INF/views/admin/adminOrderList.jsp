@@ -40,14 +40,14 @@
             margin: auto;
             margin-top: 50px;     
             margin-bottom: 150px;
-        }
-        #search{
+   }
+   #search{
             margin : 20px 0px 0px 0px;
             height: 30px;
-        }
-        #search>select{
+   }
+   #search>select{
             height: 100%;
-        }
+   }
         #search>input[name=search]{
             box-sizing: border-box;
             height: 100%;
@@ -197,39 +197,35 @@
 	<script>
 	$(function(){
 		
+		$('.interiorCategory').each(function(){
+			  var text = $(this).text();
+			  console.log(text);
+			  
+			  if(text == 0){
+				  $(this).text("주문 완료")
+			  }else if(text == 1){
+				  $(this).text("출고완료")
+			  }else if(text == 2){
+				  $(this).text("배송완료")
+			  }else if(text == 3){
+				  $(this).text("배송중")
+			  }else if(text == 4){
+				  $(this).text("배송완료")
+			  }else if(text == 5){
+				  $(this).text("환불신청")
+			  }else if(text == 6){
+				  $(this).text("환불완료")
+			  }
+			
+			});
 		
-			var test = $('.interiorCategory').text();
-			console.log(test);
-			
-			for(var i = 0; i < 11; i++){
-				
-			}
-			
-			if(test == 1){
-				$('.interiorCategory').html("침대");
-			}else if(test == 2){
-				$('.interiorCategory').html("매트리스");
-			}else if(test == 3){
-				$('.interiorCategory').html("쇼파");
-			}else if(test == 4){
-				$('.interiorCategory').html("테이블");
-			}else if(test == 5){
-				$('.interiorCategory').html("거실장");
-			}else if(test == 6){
-				$('.interiorCategory').html("조명");
-			}else if(test == 7){
-				$('.interiorCategory').html("화장대");
-			}else if(test == 8){
-				$('.interiorCategory').html("거울");
-			}else if(test == 9){
-				$('.interiorCategory').html("파티션");
-			}
-			
+
 			console.log($(".ono").text())
 			
-			$("#orderTable>tbody>tr").click(function(){
-				location.href = 'orderInfoDetail.ad?ono='+$(this).children(".ono").text();
 			
+			
+			$(document).on("click", "#orderTable>tbody>tr", function(){
+				location.href = 'orderInfoDetail.ad?ono='+$(this).children(".ono").text();
 			})
 		
 		

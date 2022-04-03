@@ -126,6 +126,12 @@ public class AdminController {
 		
 		return mv;
 	}
+	/*
+	@RequestMapping("chart.ad")
+	public ModelAndView adminChartList() {
+		
+		
+	}*/
 	
 	
 	

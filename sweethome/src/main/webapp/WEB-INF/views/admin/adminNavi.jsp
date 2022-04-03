@@ -69,7 +69,7 @@
 				<div onclick="location.href=''">1:1문의 관리</div>
 			</li> 
 			<li>
-				<div onclick="location.href=''">인테리어 판매 관리</div>
+				<div onclick="location.href='orderList.ad?npage=1'">인테리어 판매 관리</div>
 			</li>
 			<li>
 				<div onclick="location.href=''">매출 통계</div>
