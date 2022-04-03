@@ -119,6 +119,7 @@
 			COUNT(*)
 		FROM 
 			INTERIOR
+		JOIN INTERIOR_FILE USING(INTERIOR_NO)
 		WHERE
 			STATUS = 'Y'	
 		<choose>
@@ -126,6 +127,7 @@
 		AND INTE_CATE = #{inteCate}			
 			</when>
 		</choose>
+		AND FILE_LEVEL = 1
 	
 	</select>
 	
