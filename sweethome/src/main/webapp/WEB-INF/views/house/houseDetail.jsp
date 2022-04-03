@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList" %>
+<%@ page import="com.thegenesis.sweethome.room.model.vo.*, java.util.ArrayList,com.thegenesis.sweethome.house.model.vo.*"%>
 
 <% 
 	ArrayList<Room> room = (ArrayList)request.getAttribute("room");
-	
+	ArrayList<HouseFile> file = (ArrayList)request.getAttribute("file");
+	System.out.print(file);
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -12,7 +13,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
 <style>
     .sub-nav-area {
     width: 220px;
@@ -204,7 +204,7 @@
 	background-color:rgb(230, 230, 230);
 	margin:auto;
 	}
-	.like{
+	#like{
 	font-size:50px;
 	margin-left: 50px;
 	}
@@ -270,6 +270,27 @@
      outline:none;
      margin-left:1350px;
      }
+<<<<<<< HEAD
+    .modal-body>form{
+     text-align:center;
+    }
+     #modal-button{
+     width: 90px;
+     height: 35px;
+     margin: auto;
+     margin-top: 20px;
+     margin-bottom: 20px;
+     color: white;
+     background-color: rgb(247, 202, 201);
+     border-radius: 3px;
+     border: 0ch;
+    }
+	#modal-body{
+     margin: auto;
+    }
+	
+=======
+>>>>>>> branch 'master' of https://github.com/theGenesis-project/SweetHome-project.git
 </style>
 </head>
 <body>
@@ -278,6 +299,49 @@
 	<hr>
 	<div style="width:1500px;margin:auto;text-align:right;">
 	
+<<<<<<< HEAD
+	<c:if test="${!empty loginUser }">
+		<c:choose>
+			<c:when test="${(loginUser.userId eq room1.userId) || (loginUser.userId eq 'admin')}">   
+			<button type="button" class="btn btn-primary" onclick="fixHouse();">정보수정</button>
+			<button type="button" class="btn btn-primary"  onclick="deleteHouse();">하우스삭제</button>
+			</c:when>
+			<c:otherwise>
+			<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">신고하기</button>
+			</c:otherwise>
+		</c:choose>
+	</c:if>
+	
+	<!-- 글 신고 -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+	            <h4 class="modal-title">신고하기</h4>
+	            <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form action="reportRoom.ho" method="post">
+               	<input type="hidden" name="houseNo" value="${room.get(0).houseNo }">
+               	<input type="hidden" name="userNo" value="${loginUser.userNo }">
+                <select name="reportCate">
+                    <option value="1">스팸, 홍보, 도배글</option>
+                    <option value="2">욕설 및 음란물</option>
+                    <option value="3">불법정보</option>
+                    <option value="4">개인정보 노출 게시물</option>
+                </select>
+            </div>
+            	<button type="submit" id="modal-button">신고하기</button>
+            </form> 
+            
+        </div>
+        </div>
+    </div>
+=======
 	<c:choose>
 		<c:when test ="${ loginUser.userType eq 'M'}">
 		<button type="button" class="btn btn-danger">하우스신고</button>
@@ -286,46 +350,59 @@
 		<button type="button" class="btn btn-primary">정보수정</button>
 		</c:otherwise>
 	</c:choose>
+>>>>>>> branch 'master' of https://github.com/theGenesis-project/SweetHome-project.git
 	</div>	
 	<div class="content">
 			<div class="sub-nav-area">
-		        <div class="sub-nav-list" onclick="">
+		        <div class="sub-nav-list" onclick="capImg();">
 		          	 대표사진
 		        </div>
-		        <div class="sub-nav-list" onclick="">
-		        	 101호
+				<c:forEach var="n" items="${ room }">
+		        <div id="roomName" class="sub-nav-list" onclick="roomFile(this);">
+		        	<span class="rno" style="display:none">${n.roomNo }</span>
+		        	 ${n.roomName }
 		        </div>
-		        <div class="sub-nav-list" onclick="">
-		        	 201호
-		        </div>
-		        <div class="sub-nav-list" onclick="">
-		        	 301호
-		        </div>
+		        </c:forEach>
 	    	</div>
 				<div id="house-name" >
-		        	스위트홈 1호점
-		        	<span class="like">♡</span>
+					${ room.get(0).houseName}
+							<c:if test="${!empty loginUser}">
+	                        <c:choose>
+		                        <c:when test="${ idCheckHeart eq 'Y'}">
+		                            <span id="like" style="cursor:pointer;">
+		                          		♥
+		                            </span>
+		                        </c:when>
+		                        <c:otherwise>
+		                            <span id="like" style="cursor:pointer;">
+		                            	  ♡
+		                            </span>
+		                        </c:otherwise>
+	                        </c:choose>   
+	                        </c:if>                                   
 		        </div>
 			<div class="content">
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" >
 				  <!-- Indicators -->
 				  <ul class="carousel-indicators">
-				    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				    <li data-target="#myCarousel" data-slide-to="1"></li>
-				    <li data-target="#myCarousel" data-slide-to="2"></li>
+				    <li class="caro" data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				    <c:forEach var="e" begin="1" end="${fileLength}">
+				    <li class="caro" data-target="#myCarousel" data-slide-to="${e}"></li>
+				    </c:forEach>
 				  </ul>
 				  
 					  <!-- The slideshow -->
 					  <div class="carousel-inner">
 					    <div class="carousel-item active">
-					      <img src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="이미지" width="500px" height="500px">
+					      <img src="${file.get(0).filePath }" alt="이미지" width="500px" height="500px">
 					    </div>
-					    <div class="carousel-item">
-					      <img src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="이미지" width="500px" height="500px">
-					    </div>
-					    <div class="carousel-item">
-					      <img src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="이미지" width="500px" height="500px">
-					    </div>
+					    <c:if test="${fileLength >= 1}">
+					    <c:forEach var="f" begin="1" end="${fileLength }">
+	                      <div class="carousel-item">
+	                      <img src="${file.get(f).filePath }" alt="이미지" width="500px" height="500px">
+	                      </div>
+                      	</c:forEach>
+                      	</c:if>    
 					  </div>
 				  
 					  <!-- Left and right controls -->
@@ -375,13 +452,18 @@
 				<c:forEach var="r" items="${ room }">
 				<tbody >
 						<c:choose>
-							
-							
 						<c:when test="${r.status eq 'N'}">
 							<td><div class="tour1"><span class="span">투어불가</span></div></td>
 						</c:when>
 						<c:otherwise>
+							<c:choose>
+							<c:when test="${!empty loginUser}">
 							<td><div class="tour" onclick="tourForm(this);"><span class="span">투어신청</span></div></td>
+							</c:when>
+							<c:otherwise>
+							<td><div class="tour" ><span class="span" onclick="location.href='loginform.me'">로그인 </span></div></td>
+							</c:otherwise>
+							</c:choose>
 						</c:otherwise>
 						</c:choose>
 							<td>${r.roomName}</td>
@@ -394,14 +476,15 @@
 						</c:otherwise>
 						</c:choose>
 							<td>${ r.people }인실</td>
-							<td>${ r.area }</td>
-							<td>${ r.deposit }</td>
-							<td>${ r.rent }만원</td>	
-							<td>${ r.expense }만원</td>	
-							<td>${ r.utility }만원</td>	
+							<td>${ r.area }㎡</td>
+							<td>${ r.deposit }원</td>
+							<td>${ r.rent }원</td>	
+							<td>${ r.expense }원</td>	
+							<td>${ r.utility }원</td>	
 							<td>${ r.availableDate }</td>	
 							<td class="rno" style="display:none">${ r.roomNo }</td>	
-							<td class="hno" style="display:none">${ r.houseNo }</td>	
+							<td id ="houseNo" class="hno" style="display:none">${ r.houseNo }</td>	
+							<td class="uno" style="display:none">${ r.userNo }</td>	
 				</tbody>
 				</c:forEach>
 	
@@ -583,12 +666,20 @@
   · 계약금으로 보증금을 수령하며, 계약종료 후 퇴실시 반환됩니다.           · 계약기간 만료 이전에 중도퇴실할 경우, 절차에 따라 위약금이 발생됩니다.</pre>
 			</div>
 			<div class="box4">
+				<c:choose >
+				<c:when test="${empty loginUser}">
+				<button id="chat" type="button" onclick="location.href='loginform.me'">오너와 채팅하기 ></button>
+				</c:when>
+				<c:otherwise>
+				<button id="chat" type="button" onclick="">오너와 채팅하기 ></button>
+				</c:otherwise>
+				</c:choose>
 				<button id="chat" type="button" onclick="window.open('newChat?other=${r.userNo}&houseName=${ r.houseName }', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')" >오너와 채팅하기</button>
 			</div>
 		</div>
 		<br><br>
 		
-		<button id="return">다른 하우스 찾기</button>
+		<button id="return" onclick="location.href='house.se'">다른 하우스 찾기</button>
 		
 	</div>
 	</c:forEach>
@@ -602,15 +693,84 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6"></script>
 		<script>
 		
+		var file = [];
+		
+		<% for (HouseFile hf: file){%>
+			file.push("<%= hf.getFilePath()%>");
+		<% }%>
+		
+		function capImg(){
+			
+			$(".carousel-item").remove();
+			$(".caro").remove();
+			
+				console.log(file.length);
+				var cap = '<li class="caro" data-target="#myCarousel" data-slide-to="0" class="active"></li>';
+					 	   for(var e = 1; e <= (file.length -1) ; e++){
+						   cap +=  '<li class="caro" data-target="#myCarousel" data-slide-to="' + e + '"></li>';
+					 	   }
+			
+				var capImg = '<div class="carousel-item active">'
+	      			+'<img src="'+  file[0]  +'" alt="이미지" width="500px" height="500px">'
+		    		+'</div>';
+			    for(var i = 1; i <= (file.length -1) ; i++){
+			    	capImg += '<div class="carousel-item">'
+	              	+ '<img src="'+  file[i]  +'" alt="이미지" width="500px" height="500px">'
+	              	+ '</div>';
+		    		}
+		    		
+			    	
+					$(".carousel-inner").append(capImg);	
+					$(".carousel-indicators").append(cap);	
+			    
+		}
+		
+
+		function roomFile(f){
+			
+			$(".carousel-item").remove();
+			$(".caro").remove();
+			
+			
+			$.ajax({
+					url:"changeFile.ro",
+					data :{
+					 hno : <%=room.get(0).getHouseNo()%>,
+					 rno : f.getElementsByClassName('rno')[0].innerText
+					},
+					success:function(fileOne){
+						var change = '<div class="carousel-item active">'
+					      			+'<img src="'+  fileOne[0].filePath  +'" alt="이미지" width="500px" height="500px">'
+						    		+'</div>'
+							    	for(var i = 1; i <= (fileOne.length-1); i++){
+			                      	change += '<div class="carousel-item">'
+			                      	+ '<img src="'+  fileOne[i].filePath  +'" alt="이미지" width="500px" height="500px">'
+			                      	+ '</div>'
+						    		}
+						   
+						var changeMove =  '<li class="caro" data-target="#myCarousel" data-slide-to="0" class="active"></li>';
+					 	   					for(var h = 1; h <= (fileOne.length-1) ; h++){
+					 	   					changeMove +=  '<li class="caro" data-target="#myCarousel" data-slide-to="' + h + '"></li>';
+						 	   			  }   		
+						    		
+						    		
+						$(".carousel-inner").append(change);	
+						$(".carousel-indicators").append(changeMove);
+					}
+			})
+		
+		}
+
 		function tourForm(e){
-			 
-
+			
+			console.log(e);
 			var hno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
-
 			
 			var rno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
 
-			 location.href="tour.re?hno=" + hno + "&rno="+ rno;
+			var uno = e.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+
+			 location.href="tour.re?hno=" + hno + "&rno="+ rno  +"&uno=" + uno;
 		}
 		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -653,6 +813,67 @@
 		    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
 		    infowindow.close();
 		});
+		
+		   
+		      function deleteHouse() {
+				
+		    	var hno = <%=room.get(0).getHouseNo()%>;
+		         var result = confirm("해당 하우스를 삭제하시겠습니까?");
+		         
+		         if(result) {
+		            location.href = "deleteHouse.ho?hno=" + hno;
+		         }
+		         else {
+		            hno = "";
+		         }
+		      }
+		   
+		      function fixHouse() {
+
+		    	var hno = <%=room.get(0).getHouseNo()%>;
+		         var result = confirm("해당 하우스를 수정하시겠습니까?");
+		         
+		         if(result) {
+		            location.href = "updateHouseForm.ho?hno=" + hno;
+		         }
+		         else {
+		            hno = "";
+		         }
+		      }
+		
+		
+
+		      var likeBtn = document.getElementById("like");
+				likeBtn.onclick = function(){
+				like();
+				}	
+				
+				
+					function like(){
+					
+						$.ajax({
+								url : "changeHeart.ho",
+								data : {
+								houseNo : <%=room.get(0).getHouseNo()%>,
+								userNo : '${loginUser.userNo}'			
+								},
+								success : function(result){
+									if(result == "NN"){
+										$("#like").html("♡");
+					                       					
+									}else{
+										$("#like").html("♥");
+									}				
+								}				
+							})					
+							
+					}
+				
+				
+				
+				      
+		      
+		
 	</script>
 </body>
 </html>

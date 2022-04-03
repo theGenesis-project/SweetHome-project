@@ -79,16 +79,18 @@
 	<hr>
 	<div id="content">
 		<h2 id="title">투어(대기)신청 문의</h2>
-		<form action="insertTour.to" method="POST">
+		<form action="insertTour.to">
 			<div id="box">
-				<input type="text" id="userName" class="rounded" placeholder="이름 *"><input class="gender" type="radio" name="gender" id="gender1" value="M" checked><label class="form-check-label" for="gender1">남자</label><input class="gender" type="radio" name="gender" id="gender2" value="W"><label class="form-check-label" for="gender2">여자</label>
-				<input type="text" id="phone" class="rounded" placeholder="핸드폰 번호 -를 제외한 숫자만 입력해주세요 *">
-				<input type="text" id="email" class="rounded" placeholder="이메일 *">
-				<input type="text" id="date" class="rounded" placeholder="희망일자" >
-				<input type="text" id="askContent" class="rounded" placeholder="문의 사항을 입력해주세요">
-				<span style="display:none"><c:out value="${param.hno }"/></span>
-				<span style="display:none"><c:out value="${param.rno }"/></span>
-				<button type="submit" class="submit">신청하기</button><button class="return"onclick="">취소</button>
+				<input type="hidden" id="roomNo" name="roomNo" value="${param.rno }">
+				<input type="hidden" id="houseNo" name="houseNo" value="${param.hno }">
+				<input type="hidden" id="userNo" name="userNo" value="${param.uno }">		
+				<input type="text" id="userName" name="userName" class="rounded" placeholder="이름 *" required><input class="gender" type="radio" name="gender" id="gender1" value="M" checked><label class="form-check-label" for="gender1">남자</label><input class="gender" type="radio" name="gender" id="gender2" value="W"><label class="form-check-label" for="gender2">여자</label>
+				<input type="text" id="phone" name="phone" class="rounded" placeholder="핸드폰 번호 -를 제외한 숫자만 입력해주세요 *" required>
+				<input type="text" id="email" name="email" class="rounded" placeholder="이메일 *" required>
+				<input type="date"id="tourTime" name="tourTime" class="rounded" placeholder="희망일자" required>
+				<input type="text" id="age" name="age" class="rounded" placeholder="나이*" required>
+				<textarea id="askContent" name="askContent" class="rounded" placeholder="문의 사항을 입력해주세요" required></textarea>	
+				<button type="submit" class="submit">신청하기</button><button class="return" onclick="location.href=house.de">취소</button>
 			</div>
 		</form>
 	</div>

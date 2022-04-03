@@ -4,6 +4,8 @@
 
 <% 
 	ArrayList<House> list = (ArrayList)request.getAttribute("list");
+	ArrayList<House> list1 = (ArrayList)request.getAttribute("list1");
+	ArrayList<HouseFile> list2 = (ArrayList)request.getAttribute("list2");
 %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -98,6 +100,7 @@
             text-align: center;
             line-height: 30px;
             margin-left:25px;
+            margin-bottom:5px;
         }
         .status2 {
             display: inline-block;
@@ -110,6 +113,7 @@
             text-align: center;
             line-height: 30px;
             margin-left:25px;
+            margin-bottom:5px;
         }
         #text-box{
         	width:1500px;
@@ -169,6 +173,7 @@
 	var condition = [];
 	var gender = [];
 	var monthly = [];
+	var userNo = [];
 	
 	<% for(House h: list) { %>
     	x.push(<%= h.getLatitude() %>);
@@ -179,17 +184,31 @@
     	gender.push("<%= h.getHouseGender()%>");
     	monthly.push("<%= h.getMonthly() %>");
  	<% } %>
-
+ 	
+ 	
+ 	<% for(House hh: list1){ %>
+ 	
+ 		userNo.push("<%= hh.getUserNo()%>");
+ 		
+ 	<% } %>
+ 	
+ 	
+ 	var Path = [];
+ 	
+ 	<% for(HouseFile hf: list2) {%>
+ 		Path.push("<%= hf.getPath()%>");
+ 	<% }%>
  	
  	for ( var i=0; i<x.length; i++ ) {
 			
 	 		var house = '<li class="house-item">'
 				+				'<div class="item-list" onclick="houseDetail(this);">'
-				+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+				+  					'<img class="thumbnail" src="' + Path[i] + '" alt="썸네일 이미지">'
 				+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
+				+  					'<div style="display:none" class="uno">' + userNo[i] + '</div>'
 	            +  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
 	            +  					'<ul class="thumb-desc mtb3">'
-	            +  					'<li>월'+ monthly[i] +'만원~</li>';
+	            +  					'<li>월'+ monthly[i] +'원~</li>';
 				if(gender[i] == '남성전용'){
 	       	 	house +=			'<li>남성전용</li>'
 					+  			'</ul>'
@@ -289,6 +308,7 @@
 				url : "keyword.se",
 				data : { keyword: $("#keyword").val()},
 				success : function(list1){
+					console.log(list1);
 					if(Array.isArray(list1)&&list1.length != 0){
 						for ( var i=0; i<list1.length; i++ ) {
 							
@@ -311,12 +331,11 @@
 							
 							if(bound.ha< list1[i].latitude < bound.oa && bound.qa < list1[i].longitude < bound.pa){
 								
-							
-									
 								var house = '<li class="house-item">'
 									+				'<div class="item-list" onclick="houseDetail(this);">'
-									+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+									+  					'<img class="thumbnail" src=' + list1[i].path + ' alt="썸네일 이미지">'
 									+  					'<div style="display:none" class="hno">' + list1[i].houseNo + '</div>'
+						            +  					'<div style="display:none" class="uno">' + list1[i].userNo + '</div>'
 						            +  					'<span class="thumb-title mtb3">' + list1[i].houseName+ '</span>'
 						            +  					'<ul class="thumb-desc mtb3">'
 						            +  					'<li>월'+ list1[i].monthly +'만원~</li>';
@@ -387,6 +406,7 @@
 		
 		// 마커 이미지의 이미지 크기 입니다
 		var hno = houseNo[i];
+		var uno = userNo[i];
 		
 	    var imageSize = new kakao.maps.Size(24, 35); 
 	    
@@ -399,31 +419,29 @@
 			image : markerImage // 마커 이미지 
 		});
 		
-		var iwContent = '<li class="house-item">'
-						+				'<div class="item-list" onclick="houseDetail(this);">'
-						+  					'<img class="thumbnail" src="https://www.dgdr.co.kr/upload/jijum/238342658_ZC6fgFLl_20211028123745.jpg" alt="썸네일 이미지">'
+		var iwContent = 	'<div class="item-list" onclick="houseDetail(this);">'
+						+  					'<img class="thumbnail" src="' + Path[i] + 	'"alt="썸네일 이미지">'
 						+  					'<div style="display:none" class="hno">' + houseNo[i] + '</div>'
+						+  					'<div style="display:none" class="uno">' + userNo[i] + '</div>'
 						+  					'<span class="thumb-title mtb3">' + houseName[i] + '</span>'
 						+  					'<ul class="thumb-desc mtb3">'
 						+  					'<li>월'+ monthly[i] +'만원~</li>';
 						if(gender[i] == '남성전용'){
-						house +=			'<li>남성전용</li>'
+						iwContent +=			'<li>남성전용</li>'
 						+  			'</ul>'
 						}else if(gender[i] == '여성전용'){
-						house +=			'<li>남녀공용</li>'
+						iwContent +=			'<li>남녀공용</li>'
 						+  			'</ul>'
 						}else if(gender[i] == '남녀공용'){
-						house +=			'<li>남녀공용</li>'
+						iwContent +=			'<li>남녀공용</li>'
 						+  			'</ul>'
 						}
 						if(condition[i] == 'Y'){
-						house +=  			'<span class="status1">입주가능</span>'
-						+  			'</div>'
-						+ 	'</li>' ;
+						iwContent +=  			'<span class="status1">입주가능</span>'
+						+  			'</div>';
 						}else{
-						house +=  			'<span class="status2">입주불가</span>'
-						+  			'</div>'
-						+ 	'</li>' ;
+						iwContent +=  			'<span class="status2">입주불가</span>'
+						+  			'</div>' ;
 						};
 									
 
@@ -458,7 +476,7 @@
 	
 	function makeClickListener(hno){
 		return function(){
-			location.href = "house.de?hno=" + hno; 
+			location.href = "house.de?hno=" + hno + "&uno=" + uno; 
 		}
 	}
 	
@@ -467,7 +485,9 @@
 		
 		var hno = e.getElementsByClassName('hno')[0].innerText;
 		
-		location.href = "house.de?hno=" + hno; 
+		var uno = e.getElementsByClassName('uno')[0].innerText;
+		
+		location.href = "house.de?hno=" + hno + "&uno=" + uno; 
 		
 	}
 

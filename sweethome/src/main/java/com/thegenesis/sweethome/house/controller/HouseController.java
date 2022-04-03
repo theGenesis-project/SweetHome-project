@@ -231,9 +231,16 @@ public class HouseController {
 		
 	
 		ArrayList<House> list = houseService.houseSearch();
+		
+		
+		ArrayList<House> list1= houseService.houseSearchOne();
 
-	
-		mv.addObject("list", list).setViewName("house/houseList");
+		ArrayList<HouseFile> list2 = houseService.houseSearchTwo();
+		
+		
+		mv.addObject("list", list).addObject("list1", list1).addObject("list2",list2).setViewName("house/houseList");
+		
+		
 		
 		
 		return mv;
@@ -246,8 +253,8 @@ public class HouseController {
 	public String keywordSearch(String keyword) {
 		
 		ArrayList<House> list1 = houseService.keywordSearch(keyword);
-
-
+		
+		
 		return new Gson().toJson(list1);
 	}
 

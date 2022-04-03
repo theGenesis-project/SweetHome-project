@@ -96,6 +96,16 @@ public class HouseDao {
 	public int deleteHouseFile(SqlSessionTemplate sqlSession, int hno) {
 		return sqlSession.delete("houseMapper.deleteHouseFile", hno);
 	}
+
+	public ArrayList<House> houseSearchOne(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("houseMapper.houseSearchOne");
+	}
+
+	public ArrayList<HouseFile> houseSearchTwo(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("houseMapper.houseSearchTwo");
+	}
+
+
 	
 
 }

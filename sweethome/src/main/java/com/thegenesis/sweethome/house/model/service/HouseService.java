@@ -93,5 +93,17 @@ public class HouseService {
 	public int deleteHouseFile(int hno) {
 		return houseDao.deleteHouseFile(sqlSession, hno);
 	}
+
+
+	public ArrayList<House> houseSearchOne() {
+		return houseDao.houseSearchOne(sqlSession);
+	}
+
+
+	public ArrayList<HouseFile> houseSearchTwo() {
+		return houseDao.houseSearchTwo(sqlSession);
+	}
+
+
 	
 }
