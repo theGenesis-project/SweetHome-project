@@ -29,9 +29,9 @@ public class ChatDao {
 	}
 	
 	@Transactional(rollbackFor = {Exception.class})
-	public int insertNewChatRoom(SqlSessionTemplate sqlSession, int[] participant, String houseName) {
+	public int insertNewChatRoom(SqlSessionTemplate sqlSession, Chat c, int[] participant, String houseName) {
 		// 채팅방 추가
-		int result = sqlSession.insert("chatMapper.insertNewChatRoom", houseName);
+		int result = sqlSession.insert("chatMapper.insertNewChatRoom", c);
 		
 		// 채팅방 추가 시 채팅인원 추가
 		if(result > 0) {
@@ -40,7 +40,15 @@ public class ChatDao {
 			}
 		}
 		
-		return result;
+		// insert 결과값이 채팅방의 user수와 같지 않다면 실패
+		if(result != participant.length) {
+			// 해당 채팅방 번호 가져가기			
+			result = sqlSession.selectOne("chatMapper.selectNewChatRoom");
+			return result;
+		} else {
+			result = 0;
+			return result;
+		}		
 	}
 
 }

@@ -14,50 +14,45 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+    .sub-nav-area {
+    width: 220px;
+    border-radius: 13px;
+    border: 2px solid lightgray;
+    margin-right: 5px;
+    margin-left:100px;
+    float:left;
+    margin-top:150px;
+    }
 
-	    .sub-nav-area {
-	    width: 220px;
-	    border-radius: 13px;
-	    border: 2px solid lightgray;
-	    margin-right: 5px;
-	    margin-left:100px;
-	    float:left;
-	    margin-top:150px;
-	    }
-	
-	    .sub-nav-area>div {
-	    border-bottom: 2px solid lightgray;
-	    }
-	    
-	    .sub-nav-list {
-	    height: 60px;
-	    font-size: 20px;
-	    font-weight: bold;
-	    line-height: 60px;
-	    background-color: white;
-	    text-align: center;
-	    }
-	
-	    .sub-nav-list:hover {
-	        color: rgb(247, 202, 201);
-	        cursor: pointer;
-	    }
+    .sub-nav-area>div {
+    border-bottom: 2px solid lightgray;
+    }
+    
+    .sub-nav-list {
+    height: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 60px;
+    background-color: white;
+    text-align: center;
+    }
 
+    .sub-nav-list:hover {
+        color: rgb(247, 202, 201);
+        cursor: pointer;
+    }
 
 	 .carousel-inner img {
 	   width: 100%;
 	   height: 100%;
-	   
 	  }
 	  
 	 .carousel-item {
 	   width: 1000px;
 	   height: 600px;
-	   
-
 	 }
 	 
-	  .content{
+	 .content{
 	   width:1500px;
 	   margin:auto;
 	 }
@@ -134,8 +129,8 @@
      padding:5px;
 	}
 	.tour:hover{
-        	cursor: pointer;
-        }
+     	cursor: pointer;
+     }
 	.house-title{
 	 width:1400px;
 	 font-size:30px;
@@ -275,6 +270,7 @@
      outline:none;
      margin-left:1350px;
      }
+<<<<<<< HEAD
     .modal-body>form{
      text-align:center;
     }
@@ -293,6 +289,8 @@
      margin: auto;
     }
 	
+=======
+>>>>>>> branch 'master' of https://github.com/theGenesis-project/SweetHome-project.git
 </style>
 </head>
 <body>
@@ -301,6 +299,7 @@
 	<hr>
 	<div style="width:1500px;margin:auto;text-align:right;">
 	
+<<<<<<< HEAD
 	<c:if test="${!empty loginUser }">
 		<c:choose>
 			<c:when test="${(loginUser.userId eq room1.userId) || (loginUser.userId eq 'admin')}">   
@@ -342,6 +341,16 @@
         </div>
         </div>
     </div>
+=======
+	<c:choose>
+		<c:when test ="${ loginUser.userType eq 'M'}">
+		<button type="button" class="btn btn-danger">하우스신고</button>
+		</c:when>
+		<c:otherwise>
+		<button type="button" class="btn btn-primary">정보수정</button>
+		</c:otherwise>
+	</c:choose>
+>>>>>>> branch 'master' of https://github.com/theGenesis-project/SweetHome-project.git
 	</div>	
 	<div class="content">
 			<div class="sub-nav-area">
@@ -665,6 +674,7 @@
 				<button id="chat" type="button" onclick="">오너와 채팅하기 ></button>
 				</c:otherwise>
 				</c:choose>
+				<button id="chat" type="button" onclick="window.open('newChat?other=${r.userNo}&houseName=${ r.houseName }', '하우스톡톡', 'height=100%, menubar=no, status=no, tollbar=no, location=no')" >오너와 채팅하기</button>
 			</div>
 		</div>
 		<br><br>

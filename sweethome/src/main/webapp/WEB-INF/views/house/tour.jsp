@@ -93,10 +93,6 @@
 				<button type="submit" class="submit">신청하기</button><button class="return" onclick="location.href=house.de">취소</button>
 			</div>
 		</form>
-	
-		
-	
-	
 	</div>
 	<hr>	
 	<jsp:include page="../common/footer.jsp" />

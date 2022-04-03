@@ -79,7 +79,7 @@
          <div class="sub-nav-list" onclick="location.href='list.ask'">
          	1:1문의 관리
          </div>
-         <div class="sub-nav-list" onclick="location.href=''">
+         <div class="sub-nav-list" onclick="location.href='orderList.my'">
          	주문내역 관리
          </div>
         <div class="sub-nav-bottom">

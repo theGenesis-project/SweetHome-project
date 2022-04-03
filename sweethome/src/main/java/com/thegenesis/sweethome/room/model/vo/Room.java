@@ -25,7 +25,7 @@ public class Room {
 	private int utility;
 	private String userId;
 	private Date availableDate;
-	private int userNo;
+
 
 	private String status;
 	
@@ -34,6 +34,7 @@ public class Room {
 	private String houseName;
 	private String houseTitle;
 	private String houseIntroduce;
+	private int userNo;
 	
 	private String shareSpace;
 	private String personalSpace;

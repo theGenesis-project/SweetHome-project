@@ -252,7 +252,7 @@
 
                 <div id="bottom-button">
                     <button>돌아가기</button>
-                    <button onclick="cancelPay()">환불하기</button>
+                    <!--<button onclick="cancelPay()">환불하기</button>  -->
                 </div>
             </div>
 
