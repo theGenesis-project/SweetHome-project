@@ -116,11 +116,32 @@
 	            <button type="submit">검색</button>
 	          </form>
 		</div>
-		 <c:if test="${!empty loginUser }">
-	        <div id="button">
-	            <button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
-	        </div>
-		</c:if>
+		
+		<c:choose>
+			<c:when test="${ boardType == 0 && (loginUser.userId == 'admin')}">
+				<div id="button">
+	            	<button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
+	        	</div>
+			</c:when>
+			<c:when test="${ boardType == 1 && (not empty loginUser)}">
+				<div id="button">
+	            	<button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
+	        	</div>
+			</c:when>
+			<c:when test="${ boardType == 2 && (not empty loginUser)}">
+				<div id="button">
+	            	<button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
+	        	</div>
+			</c:when>
+			<c:when test="${ boardType == 3 && (not empty loginUser)}">
+				<div id="button">
+	            	<button onclick="location.href='insertBoardView.co?bType=${boardType}'">글쓰기</button>
+	        	</div>
+			</c:when>
+		</c:choose>
+		
+		
+		
         <div id="list">
             <table id="boardTable">
             	<thead>
@@ -159,6 +180,7 @@
             </table>
 
         </div>
+    <!-- 공지사항 페이징  -->
 	<c:if test="${boardType == 0 }">
         <div id="paging">
         	<c:if test="${ pi.currentPage ne 1 }">
@@ -196,6 +218,8 @@
   
         </div>
 		</c:if>
+		
+		<!-- 정보 게시판 -->
 		<c:if test="${boardType == 1 }">
         <div id="paging">
         	<c:if test="${ pi.currentPage ne 1 }">

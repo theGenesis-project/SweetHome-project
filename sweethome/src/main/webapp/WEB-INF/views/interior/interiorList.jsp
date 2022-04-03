@@ -184,7 +184,7 @@
                 <li style="font-size: 30px;">카테고리</li><br>
                 <li><a href="interiorList.in?intCate=1&inpage=1">침대</a></li>
                 <li><a href="interiorList.in?intCate=2&inpage=1">매트리스</a></li>
-                <li><a href="interiorList.in?intCate=3&inpage=1">쇼파</a></li>
+                <li><a href="interiorList.in?intCate=3&inpage=1">소파</a></li>
                 <li><a href="interiorList.in?intCate=4&inpage=1">테이블</a></li>
                 <li><a href="interiorList.in?intCate=5&inpage=1">거실장</a></li>
                 <li><a href="interiorList.in?intCate=6&inpage=1">조명</a></li>
@@ -279,7 +279,7 @@
 		}else if(test == 2){
 			$('#title-area>h2').html("매트리스");
 		}else if(test == 3){
-			$('#title-area>h2').html("쇼파");
+			$('#title-area>h2').html("소파");
 		}else if(test == 4){
 			$('#title-area>h2').html("테이블");
 		}else if(test == 5){
@@ -332,22 +332,7 @@
 	    
 	}
 
-    $(function(){
-                     //가격
-                    var interiorPrice =  document.getElementByclassName("interior_price_view").innerHTML
-                    console.log(interiorPrice)
-                    n1 = parseInt('interiorPrice');   	
-                    console.log(n1)
-                    cn1 = n1.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");//number format
-                    
-                    document.getElementsByClassName("interior_price_view").innerHTML = cn1;
-
-                 
-	   
-          
-
-            })
-		
+   
 	
 	
 	

@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- jQuery 라이브러리 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- 부트스트랩에서 제공하고 있는 스타일 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- 부트스트랩에서 제공하고 있는 스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style type="text/css">
 	body{
 		margin: 0;
@@ -57,13 +63,13 @@
 				<div onclick="location.href=''">하우스관리</div>
 			</li>
 			<li>
-				<div onclick="location.href=''">신고관리</div>
+				<div onclick="location.href='reportBList.ad?bpage=1'">신고관리</div>
 			</li>
 			<li>
 				<div onclick="location.href=''">1:1문의 관리</div>
 			</li> 
 			<li>
-				<div onclick="location.href=''">인테리어 판매 관리</div>
+				<div onclick="location.href='orderList.ad?npage=1'">인테리어 판매 관리</div>
 			</li>
 			<li>
 				<div onclick="location.href=''">매출 통계</div>

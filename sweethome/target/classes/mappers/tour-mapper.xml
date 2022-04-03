@@ -99,4 +99,44 @@
                 M.USER_TYPE = 'O'
         ORDER BY ROWNUM DESC
   	</select>
+  	<insert id="insertTour" parameterType="tour">
+  		INSERT INTO TOUR
+  			(TOUR_NO
+  			,ROOM_NO
+  			,HOUSE_NO
+  			,USER_NO
+  			 ,USER_NAME
+  			 ,GENDER
+  			 ,PHONE
+  			 ,EMAIL
+  			 ,TOUR_TIME
+  			 ,AGE
+  			 ,ASK_CONTENT
+  			 ,STATUS)
+  		VALUES
+  			 (SEQ_TOUR_NO.NEXTVAL
+  			 ,#{roomNo}
+  			 ,#{houseNo}
+  			 ,#{userNo}
+  			 ,#{userName}
+  			 ,#{gender}
+  			 ,#{phone}
+  			 ,#{email}
+  			 ,#{tourTime}
+  			 ,#{age}
+  			 ,#{askContent}
+  			 ,default)
+  	
+  	</insert>
+
+  	<!-- 투어 승인용 쿼리 -->
+  	<update id="updateTourStatus" parameterType="tour">
+  		UPDATE 
+  				TOUR
+  		   SET
+  		   		STATUS = #{status}
+  		 WHERE
+  		   		TOUR_NO = #{tourNo}
+  	</update>
+
 </mapper>

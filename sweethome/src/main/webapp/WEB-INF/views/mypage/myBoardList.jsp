@@ -90,7 +90,7 @@
 							  <tbody>
 							  	<c:forEach var="b" items="${ Blist }">
 								    <tr class="list-area" onclick="return listClick(${ b.boardNo });">
-								      <td><input class="checkbox" type="checkbox" value="${ b.boardNo }"></td>
+								      <td><input name="boardcheck" class="checkbox" type="checkbox" value="${ b.boardNo }"></td>
 								      <th scope="row">${ b.rowNo }</th>
 								      <td>${ b.boardTitle }</td>
 								      <td>${ b.count }</td>
@@ -179,6 +179,7 @@
 				        	</div>
 				        </c:when>
 				        <c:otherwise>
+						<p style="text-align: center; font-size: 0.8em;">댓글 삭제를 위해서는 게시글 확인이 필요합니다.</p>
 						<table class="table">
 						  <thead>
 						    <tr>
@@ -189,7 +190,7 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						  	<c:forEach var="b" items="${ Clist }">
+						  	<c:forEach var="c" items="${ Clist }">
 							    <tr class="list-area" onclick="listClick(${ c.boardNo });">
 							      <th scope="row">${ c.rowNo }</th>
 							      <td>${ c.boardTitle }</td>
@@ -199,7 +200,6 @@
 						  	</c:forEach>
 						  </tbody>
 						</table>
-						<p style="text-align: center; font-size: 0.8em;">댓글 삭제를 위해서는 게시글 확인이 필요합니다.</p>
 						<%-- 페이징바 시작 --%>
 						<div id="pagingArea">
 			                <ul class="pagination">
@@ -242,28 +242,27 @@
 
 	<script>
 		function listClick(a) {
+			console.log(event.target.name == "boardcheck");
 			
-			console.log($(".list-area").children().eq(0).html() != event.target);
-			console.log($(".list-area").children().eq(0).html())
-			console.log(event.target)
-			
-			if($(".checkbox") != $(this).text()){
-				// console.log($(this).is(':checked'));
-				// $(this).prop("checked", true);
-				// return false;
-				// location.href='detail.co?bno=' + a;
-				
+			// 체크박스 이외의 부분 클릭 시  게시물로 이동
+			if(event.target.name != "boardcheck"){								
+				location.href='detail.co?bno=' + a;
 			}
 		}
 		
 		$(function() {
 			// 게시글 전체 선택
 			$(".all-checkbox").on("change", function() {
+				
+				$(".checkbox").trigger("click");
+				/*
+				// prop으로 추가하면 변경됐는지 안됐는지 파악 못함 
 				if($(this).is(":checked")) {
 					$(".checkbox").prop("checked", true);
 				} else {
 					$(".checkbox").prop("checked", false);
 				}
+				*/
 			})
 			
 			// 게시글 선택
@@ -283,8 +282,9 @@
 				if($(this).is(":checked")) {
 					$("#deleteList").append("<li class='" + deleteNo + "'>" + deleteTitle + "</li>");
 					$("#deleteList").append("<input type='hidden' name='boardList' value='" + deleteNo + "'>");
-				} else {
+				} else { // 모달에서 삭제
 					$('#deleteList').find('.'+deleteNo).remove();
+					$('#deleteList').find('input[name=boardList]:input[value='+deleteNo+']').remove();
 				}
 			})
 			

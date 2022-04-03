@@ -31,6 +31,7 @@ public class House {
 	
 	private String houseGender;
 	private String monthly;
+	private String path;
 	
 	private int roomNo;
 	private String filePath;

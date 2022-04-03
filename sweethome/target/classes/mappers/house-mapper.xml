@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="houseMapper">
+
 	<resultMap type="house" id="houseResultSet">
 		<result column="HOUSE_NO" property="houseNo"/>
 		<result column="HOUSE_NAME" property="houseName"/>
@@ -25,19 +26,36 @@
 		<result column="ROOM_NO" property="roomNo"/>
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="FILE_LEVEL" property="fileLevel"/>
+		<result column="PATH" property="path"/>
+		
 	</resultMap>
-  
+
+
+
+
+	<!-- 하우스 등록 쿼리문 -->
+
 	<resultMap type="houseFile" id="houseFileResultSet">
 		<result column="FILE_NO" property="fileNo"/>
 		<result column="HOUSE_NO" property="houseNo"/>
 		<result column="ROOM_NO" property="roomNo"/>
 		<result column="ORIGIN_NAME" property="originName"/>
 		<result column="CHANGE_NAME" property="changeName"/>
+		<result column="PATH" property="path"/>
 		<result column="FILE_PATH" property="filePath"/>
 		<result column="FILE_LEVEL" property="fileLevel"/>
 	</resultMap>
 
+
+
+	<!-- 하우스 등록 쿼리문 -->
+
+
 	<!-- 하우스 등록 -->
+
+
+	<!-- 하우스 등록 -->
+
 	<insert id="insertHouse" parameterType="house">
   		INSERT INTO
   			  HOUSE
@@ -191,10 +209,12 @@
 				    WHERE STATUS = 'Y'
 				    GROUP BY 
 				    HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, H.STATUS
+				    ORDER BY HOUSE_NO ASC 
+				    
 	</select>
 	
 		<select id="keywordSearch" resultMap="houseResultSet">
-		SELECT HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, MIN(MONTHLY) MONTHLY, H.STATUS 
+		SELECT HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, MIN(MONTHLY) MONTHLY, H.STATUS , Min(FILE_PATH) PATH
 		FROM HOUSE h
 		            JOIN  (
 						    SELECT 
@@ -233,9 +253,17 @@
 				                    ) USING(HOUSE_NO)
 				                    GROUP BY HOUSE_NO
 				            )USING(HOUSE_NO)
+                    JOIN
+                        (
+                        SELECT HOUSE_NO ,FILE_PATH
+                         FROM HOUSE_FILE
+                         WHERE FILE_LEVEL = 1
+                         GROUP BY HOUSE_NO ,FILE_PATH
+                         )USING(HOUSE_NO)
 				    WHERE STATUS = 'Y' and address like '%' || #{keyword} || '%'
 				    GROUP BY 
-				    HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, H.STATUS 
+				    HOUSE_NO, HOUSE_NAME, CONDITION , LATITUDE, LONGITUDE, HOUSE_GENDER, H.STATUS
+				    ORDER BY HOUSE_NO ASC 
 		</select>
 	
 	<select id="selectHouseCount" resultType="_int">
@@ -246,7 +274,6 @@
   		 WHERE
   		 		STATUS = 'Y'
   	</select>
-  	
 
   	<select id="houseDetail" resultMap="houseResultSet">
   		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}
@@ -316,6 +343,11 @@
   		WHERE
   					HOUSE_NO = #{hno}
   	</delete>
+  	<select id="houseSearchOne" resultMap="houseResultSet">
+  		SELECT HOUSE_NO,USER_NO
+			 FROM HOUSE
+			 JOIN MEMBER USING(USER_NO)
+  	</select>
   	
   	<!-- 하우스 번호로 하우스 정보 가져오기 -->
   	<select id="selectHouseByNo" parameterType="_int" resultMap="houseResultSet">
@@ -389,5 +421,13 @@
   					ROOM_NO IS NULL
   	</delete>
   	
+  	<select id="houseSearchTwo" resultMap="houseFileResultSet">
+  		SELECT HOUSE_NO,MIN(FILE_PATH) PATH
+               FROM HOUSE
+               JOIN HOUSE_FILE USING(HOUSE_NO)
+            	WHERE STATUS = 'Y' and FILE_LEVEL = 1
+                GROUP BY HOUSE_NO
+         ORDER BY HOUSE_NO ASC 
+  	</select>
 
 </mapper>

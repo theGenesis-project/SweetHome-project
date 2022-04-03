@@ -52,7 +52,7 @@ public class AskController {
 		int result = askService.insertAsk(a, file);
 		
 		if(result > 0) {
-			mv.addObject("alertMsg", "문의 등록 성공!").setViewName("redirect:/");
+			mv.addObject("alertMsg", "문의 등록 성공!").setViewName("redirect:/list.ask");//마이페이지 1:1문의 항목으로
 		} else {
 			mv.addObject("errorMsg", "문의 등록 실패!").setViewName("ask/askEnrollForm");
 		}

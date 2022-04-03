@@ -136,6 +136,14 @@ public class HouseService {
 		return houseDao.deletePrimaryHouseFile(sqlSession, hno);
 	}
 	
-	
+
+	public ArrayList<House> houseSearchOne() {
+		return houseDao.houseSearchOne(sqlSession);
+	}
+
+
+	public ArrayList<HouseFile> houseSearchTwo() {
+		return houseDao.houseSearchTwo(sqlSession);
+	}
 	
 }

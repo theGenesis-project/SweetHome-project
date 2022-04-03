@@ -22,6 +22,55 @@
 <body>
 	<jsp:include page="../common/header.jsp" />
 	
+	<script>
+		$(function(){
+			var status = $('input[name=statusVal]').val();
+			var select = $('select[name=status]')
+			
+			// 현재 상태를 select 기본값으로 지정
+			if(status == 'N') {
+				select.val('N').prop('selected', true);
+			} else if (status == 'Y') {
+				select.val('Y').prop('selected', true);
+			} else {
+				select.val('R').prop('selected', true);
+			}
+			
+			// select값 바꾸면 바꿔서 저장하기
+			select.on('change', function(){
+				$.ajax({
+					url: "tourStatusChange.my",
+					type: "post",
+					data: {
+							status: select.val(),
+							tourNo: $(this).prev().val()
+						},
+					success: function(result){
+						if(result > 0){
+							window.location.reload();
+						} else {
+							alert("데이터 전송 실패! 다시 시도해주세요.");								
+							window.location.reload();
+						}
+					}, error: function(){
+						alert("데이터 전송 실패! 다시 시도해주세요.");
+						window.location.reload();
+					}
+				})
+				
+				// ajax 끝
+			})
+			// select.on 끝
+		})
+		// function 끝
+		
+		// modal 창 띄우기
+		function modalOpen(e){
+			// select 이외의 tr 태그 클릭 시 모달창 띄우기
+			if(event.target.name != 'status') $('#exampleModal').modal('show');
+		}
+	</script>
+	
 	<div class="sweethome-container">
 		<div class="sub-nav">
 			<jsp:include page="../common/mypageNavi.jsp"/>
@@ -48,12 +97,13 @@
 				            <th scope="col">날짜</th>
 				            <th scope="col">신청인</th>
 				            <th scope="col">승인여부</th>
+				            <th scope="col"></th>
 				          </tr>
 				        </thead>
 				        <tbody>
 				        	<c:forEach var="t" items="${ Tlist }">
 				        		<%-- tr 시작 --%>
-				        		<tr data-toggle="modal" data-target="#exampleModal">
+				        		<tr class="tour-list" onclick="modalOpen(this);">
 								  <th scope="row">${ t.rownum }</th>
 								  <td>${ t.timeString }</td>
 								  <td>${ t.userName }</td>
@@ -68,6 +118,15 @@
 									  <td><span class="badge badge-pill badge-secondary">승인 대기</span></td>
 								  	</c:otherwise>
 								  </c:choose>
+								  <td>
+								  	<input type="hidden" name="statusVal" value="${ t.status }">
+								  	<input type="hidden" name="tourNo" value="${ t.tourNo }">
+								  	<select name="status">
+								  		<option value="N">승인 대기</option>
+								  		<option value="Y">승인 완료</option>
+								  		<option value="R">승인 거절</option>
+								  	</select>
+								  </td>
 								</tr>
 								<%-- tr 끝 --%>
 								<%-- 승인 모달 시작 --%>

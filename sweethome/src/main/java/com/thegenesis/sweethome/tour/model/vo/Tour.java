@@ -2,6 +2,8 @@ package com.thegenesis.sweethome.tour.model.vo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +27,10 @@ public class Tour {
 	private String email;
 	private String askContent;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date tourTime;
+	
+	
 	private String status;
 
 	
