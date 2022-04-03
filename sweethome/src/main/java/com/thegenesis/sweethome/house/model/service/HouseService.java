@@ -44,19 +44,6 @@ public class HouseService {
 	public ArrayList<House> keywordSearch(String keyword) {
 		return houseDao.keywordSearch(sqlSession,keyword);
 	}
-
-
-
-
-
-	
-	/**
-	 * 현재 하우스 번호 확인
-	 * @return
-	 */
-	public int selectHouseNo() {
-		return houseDao.selectHouseNo(sqlSession);
-	}
 	
 	/**
 	 * 하우스 파일 등록
@@ -94,6 +81,61 @@ public class HouseService {
 		return houseDao.deleteHouseFile(sqlSession, hno);
 	}
 
+	/**
+	 * 하우스 번호로 하우스 정보 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public House selectHouseByNo(int hno) {
+		return houseDao.selectHouseByNo(sqlSession, hno);
+	}
+
+	/**
+	 * 하우스 수정
+	 * @param h
+	 * @return
+	 */
+	public int updateHouse(House h) {
+		return houseDao.updateHouse(sqlSession, h);
+	}
+	
+	/**
+	 * 해당 방 파일 목록 가져오기
+	 * @param roomNo
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectRoomFile(int roomNo) {
+		return houseDao.selectRoomFile(sqlSession, roomNo);
+	}
+
+	/**
+	 * 해당 방 파일 삭제
+	 * @param roomNo
+	 * @return
+	 */
+	public int deleteRoomFile(int roomNo) {
+		return houseDao.deleteRoomFile(sqlSession, roomNo);
+	}
+
+	/**
+	 * 해당 하우스 대표 파일 목록 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectPrimaryHouseFile(int hno) {
+		return houseDao.selectPrimaryHouseFile(sqlSession, hno);
+	}
+
+
+	/**
+	 * 해당 하우스 대표 파일 삭제
+	 * @param hno
+	 * @return
+	 */
+	public int deletePrimaryHouseFile(int hno) {
+		return houseDao.deletePrimaryHouseFile(sqlSession, hno);
+	}
+	
 
 	public ArrayList<House> houseSearchOne() {
 		return houseDao.houseSearchOne(sqlSession);
@@ -103,7 +145,5 @@ public class HouseService {
 	public ArrayList<HouseFile> houseSearchTwo() {
 		return houseDao.houseSearchTwo(sqlSession);
 	}
-
-
 	
 }

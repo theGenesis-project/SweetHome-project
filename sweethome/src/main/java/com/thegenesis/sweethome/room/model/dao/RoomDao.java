@@ -47,6 +47,27 @@ public class RoomDao {
 		return sqlSession.update("roomMapper.deleteRoom", hno);
 
 	}
+
+	/**
+	 * 하우스 번호로 방 정보 가져오기
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<Room> selectRoom(SqlSessionTemplate sqlSession, int hno) {
+		return (ArrayList)sqlSession.selectList("roomMapper.selectRoom", hno);
+	}
+	
+	/**
+	 * 하우스 수정에서 방 등록
+	 * @param sqlSession
+	 * @param newRoom
+	 * @return
+	 */
+	public int updateInsertRoom(SqlSessionTemplate sqlSession, Room newRoom) {
+		return sqlSession.insert("roomMapper.updateInsertRoom", newRoom);
+	}
+
 	public int reportCheck(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
 		return sqlSession.selectOne("roomMapper.reportCheck", map);
 	}
@@ -89,6 +110,7 @@ public class RoomDao {
 	}
 	public ArrayList<HouseFile> changeFile(SqlSessionTemplate sqlSession, HashMap<String, Integer> hm) {
 		return (ArrayList)sqlSession.selectList("roomMapper.changeFile",hm);
+
 	}
 
 }

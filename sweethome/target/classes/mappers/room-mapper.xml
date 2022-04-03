@@ -106,7 +106,7 @@
   		SET
   				STATUS = 'N'
   		WHERE
-  				HOUSE_NO = #{hno}
+  				ROOM_NO = #{roomNo}
   	</update>
 
 	<select id="houseDetail" resultMap="roomResultSet">
@@ -117,6 +117,49 @@
 			WHERE HOUSE_NO = #{hno}
   	</select>
   	
+  	<select id="selectRoom" parameterType="_int" resultMap="roomResultSet">
+  		SELECT
+  				*
+  		FROM
+  				ROOM
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				STATUS = 'Y'
+  	</select>
+  	
+  	<!-- 하우스 수정에서 방 등록 -->
+	<insert id="updateInsertRoom" parameterType="room">
+		INSERT
+			INTO ROOM(
+						ROOM_NO
+						,HOUSE_NO
+						,ROOM_NAME
+						,GENDER
+						,PEOPLE
+						,AREA
+						,DEPOSIT
+						,RENT
+						,EXPENSE
+						,UTILITY
+						,AVAILABLE_DATE
+						,STATUS
+					)
+			VALUES(
+						 SEQ_ROOM_NO.NEXTVAL
+						,#{houseNo}
+						,#{roomName}
+						,#{gender}
+						,#{people}
+						,#{area}
+						,#{deposit}
+						,#{rent}
+						,#{expense}
+						,#{utility}
+						,#{availableDate}
+						,DEFAULT
+					)
+	</insert>
   	
   	<select id="reportCheck" parameterType="hashmap" resultType="_int">
 			SELECT COUNT(*)

@@ -39,16 +39,6 @@ public class HouseDao {
 	public ArrayList<House> keywordSearch(SqlSessionTemplate sqlSession, String keyword) {
 		return (ArrayList)sqlSession.selectList("houseMapper.keywordSearch",keyword);
 	}
-
-
-	/**
-	 * 현재 하우스 번호 확인
-	 * @param sqlSession
-	 * @return
-	 */
-	public int selectHouseNo(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("houseMapper.selectHouseNo");
-	}
 	
 	/**
 	 * 하우스 파일 등록
@@ -97,6 +87,66 @@ public class HouseDao {
 		return sqlSession.delete("houseMapper.deleteHouseFile", hno);
 	}
 
+	/**
+	 * 하우스 번호로 하우스 정보 가져오기
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public House selectHouseByNo(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.selectOne("houseMapper.selectHouseByNo", hno);
+	}
+
+	/**
+	 * 하우스 수정
+	 * @param sqlSession
+	 * @param h
+	 * @return
+	 */
+	public int updateHouse(SqlSessionTemplate sqlSession, House h) {
+		return sqlSession.update("houseMapper.updateHouse", h);
+	}
+
+	/**
+	 * 해당 방 파일 목록 가져오기
+	 * @param sqlSession
+	 * @param roomNo
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectRoomFile(SqlSessionTemplate sqlSession, int roomNo) {
+		return (ArrayList)sqlSession.selectList("houseMapper.selectRoomFile", roomNo);
+	}
+
+	/**
+	 * 해당 방 파일 삭제
+	 * @param sqlSession
+	 * @param roomNo
+	 * @return
+	 */
+	public int deleteRoomFile(SqlSessionTemplate sqlSession, int roomNo) {
+		return sqlSession.delete("houseMapper.deleteRoomFile", roomNo);
+	}
+
+	/**
+	 * 해당 하우스 대표 파일 목록 가져오기
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<HouseFile> selectPrimaryHouseFile(SqlSessionTemplate sqlSession, int hno) {
+		return (ArrayList)sqlSession.selectList("houseMapper.selectPrimaryHouseFile", hno);
+	}
+
+	/**
+	 * 해당 하우스 대표 파일 삭제 
+	 * @param sqlSession
+	 * @param hno
+	 * @return
+	 */
+	public int deletePrimaryHouseFile(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.delete("houseMapper.deletePrimaryHouseFile", hno);
+	}
+
 	public ArrayList<House> houseSearchOne(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearchOne");
 	}
@@ -104,8 +154,5 @@ public class HouseDao {
 	public ArrayList<HouseFile> houseSearchTwo(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("houseMapper.houseSearchTwo");
 	}
-
-
-	
 
 }

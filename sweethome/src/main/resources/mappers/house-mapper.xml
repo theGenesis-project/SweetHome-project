@@ -279,16 +279,6 @@
   		SELECT * FROM HOUSE WHERE HOUSE_NO = #{hno}
   	</select>
   	
-  	<!-- 현재 하우스 번호 확인 -->
-  	<select id="selectHouseNo" resultType="_int">
-		SELECT 
-		        LAST_NUMBER AS HOUSE_NO
-		FROM 
-		        USER_SEQUENCES 
-		WHERE 
-		        SEQUENCE_NAME = 'SEQ_HOUSE_NO'
-  	</select>
-  	
   	<!-- 하우스 파일 등록 -->
   	<insert id="insertHouseFile" parameterType="houseFile">
   		INSERT
@@ -339,7 +329,7 @@
   	<!-- 해당 하우스 파일 목록 가져오기 -->
   	<select id="selectHouseFile" parameterType="_int" resultMap="houseFileResultSet">
   		SELECT
-  				FILE_PATH
+  				*
   		FROM
   				HOUSE_FILE
   		WHERE
@@ -359,6 +349,78 @@
 			 JOIN MEMBER USING(USER_NO)
   	</select>
   	
+  	<!-- 하우스 번호로 하우스 정보 가져오기 -->
+  	<select id="selectHouseByNo" parameterType="_int" resultMap="houseResultSet">
+  		SELECT
+  				*
+  		FROM
+  				HOUSE
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				STATUS = 'Y'
+  	</select>
+  	
+  	<!-- 하우스 수정 -->
+  	<update id="updateHouse" parameterType="house">
+  		UPDATE
+  				 HOUSE
+  		SET
+  				 HOUSE_NAME = #{houseName}
+  				,HOUSE_TITLE = #{houseTitle}
+  				,HOUSE_INTRODUCE = #{houseIntroduce}
+  				,SHARE_SPACE = #{shareSpace}
+				,PERSONAL_SPACE = #{personalSpace}
+				,TRAFFIC = #{traffic}
+				,CONVENIENCE = #{convenience}
+				,CONDITION = #{condition}
+				,ADDRESS = #{address}
+				,LATITUDE = #{latitude}
+				,LONGITUDE = #{longitude}
+		WHERE
+				 HOUSE_NO = #{houseNo}
+  	</update>
+  	
+  	<!-- 해당 방 파일 목록 가져오기 -->
+  	<select id="selectRoomFile" parameterType="_int" resultMap="houseFileResultSet">
+  		SELECT
+  				*
+  		FROM
+  				HOUSE_FILE
+  		WHERE
+  				ROOM_NO = #{roomNo}
+  	</select>
+  	
+	<!-- 해당 하우스 파일 삭제 -->
+  	<delete id="deleteRoomFile" parameterType="_int">
+  		DELETE FROM
+  					HOUSE_FILE
+  		WHERE
+  					ROOM_NO = #{roomNo}
+  	</delete>
+  	
+	<!-- 해당 하우스 대표 파일 목록 가져오기 -->
+  	<select id="selectPrimaryHouseFile" parameterType="_int" resultMap="houseFileResultSet">
+  		SELECT
+  				*
+  		FROM
+  				HOUSE_FILE
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				ROOM_NO IS NULL
+  	</select>
+  	
+  	<!-- 해당 하우스 대표 파일 삭제 -->
+  	<delete id="deletePrimaryHouseFile" parameterType="_int">
+  		DELETE FROM
+  					HOUSE_FILE
+  		WHERE
+  					HOUSE_NO = #{hno}
+		AND
+  					ROOM_NO IS NULL
+  	</delete>
+  	
   	<select id="houseSearchTwo" resultMap="houseFileResultSet">
   		SELECT HOUSE_NO,MIN(FILE_PATH) PATH
                FROM HOUSE
@@ -367,6 +429,5 @@
                 GROUP BY HOUSE_NO
          ORDER BY HOUSE_NO ASC 
   	</select>
-
 
 </mapper>

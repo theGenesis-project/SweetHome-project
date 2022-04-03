@@ -53,6 +53,24 @@ public class RoomService {
 		return roomDao.houseDetail(sqlSession, hno);
 	}
 
+	/**
+	 * 하우스 번호로 방 정보 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<Room> selectRoom(int hno) {
+		return roomDao.selectRoom(sqlSession, hno);
+	}
+
+	/**
+	 * 하우스 수정에서 방 등록
+	 * @param newRoom
+	 * @return
+	 */
+	public int updateInsertRoom(Room newRoom) {
+		return roomDao.updateInsertRoom(sqlSession, newRoom);
+	}
+
 
 	public int reportCheck(HashMap<String, String> map) {
 		return roomDao.reportCheck(sqlSession, map);
