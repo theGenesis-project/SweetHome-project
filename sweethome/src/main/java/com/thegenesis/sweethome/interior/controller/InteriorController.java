@@ -395,10 +395,10 @@ public class InteriorController {
 		
 		if(result > 0) {	
 			
-			return "order.my";//나중에 주문 페이지로 바꿔주기
+			return "orderList.my";//나중에 주문 페이지로 바꿔주기
 		}else {
 			session.setAttribute("alertMsg", "주문 실패");
-			return "order.my";
+			return "orderList.my";
 		}
 		
 		

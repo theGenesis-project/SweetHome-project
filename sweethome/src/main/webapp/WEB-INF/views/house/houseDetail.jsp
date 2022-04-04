@@ -270,7 +270,7 @@
      outline:none;
      margin-left:1350px;
      }
-<<<<<<< HEAD
+
     .modal-body>form{
      text-align:center;
     }
@@ -302,7 +302,7 @@
 	<c:if test="${!empty loginUser }">
 		<c:choose>
 			<c:when test="${(loginUser.userId eq room1.userId) || (loginUser.userId eq 'admin')}">   
-			<button type="button" class="btn btn-primary" onclick="fixHouse();">정보수정</button>
+			<!--<button type="button" class="btn btn-primary" onclick="fixHouse();">정보수정</button>-->
 			<button type="button" class="btn btn-primary"  onclick="deleteHouse();">하우스삭제</button>
 			</c:when>
 			<c:otherwise>
@@ -341,14 +341,16 @@
         </div>
     </div>
 
-	<c:choose>
+	<!--  	<c:choose>
 		<c:when test ="${ loginUser.userType eq 'M'}">
-		<button type="button" class="btn btn-danger">하우스신고</button>
+		
 		</c:when>
 		<c:otherwise>
 		<button type="button" class="btn btn-primary">정보수정</button>
 		</c:otherwise>
 	</c:choose>
+	
+	-->
 
 	</div>	
 	<div class="content">
