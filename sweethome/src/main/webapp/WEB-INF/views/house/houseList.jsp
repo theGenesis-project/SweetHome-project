@@ -121,6 +121,23 @@
         }
         
         #pagingArea {width:fit-content; margin:auto;}
+        #inputHouse{   	
+        	width : 100%;
+        	heigth : 200px;
+        	display : inline-block;
+        	
+        }
+        #inputHouse>button{
+        	float : right;
+        	margin-right : 200px;
+        	border: 0ch;
+            border-radius: 3px;
+            color: white;
+            background-color: rgb(247, 202, 201);
+            padding: 3px 20px 3px 20px;
+            height: 40px;
+            
+        }
         
         
 </style>
@@ -138,15 +155,22 @@
 	<jsp:include page="../common/header.jsp" />
 		<hr>
 	<div id="text-box">
-					<form onsubmit="searchPlaces(); return false;">
-	   				<input type="text" id="keyword" value=""class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="역 ,학교이름을 입력 해주세요"> 
-                   <button type="submit" id="search" class="btn btn">검색</button>
-                   </form>
-		</div>
+		<form onsubmit="searchPlaces(); return false;">
+	   		<input type="text" id="keyword" value=""class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="역 ,학교이름을 입력 해주세요"> 
+                <button type="submit" id="search" class="btn btn">검색</button>
+        </form>
+        
+	</div>
 	  <br>
 		<div id="map" style="width:1300px;height:450px;"></div>
 	  <br><br>
+	  <c:if test="${ loginUser.userType eq 'O' }">
+	  <div id="inputHouse">
+          <button onclick="location.href='houseInsert'">집 등록</button>
+        </div>
+        </c:if>
 		<div class="w1500" >
+			
 	        <ul class="house-wrap" >
 	            
 	        </ul>
