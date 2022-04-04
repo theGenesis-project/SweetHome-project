@@ -148,7 +148,7 @@
 								<div class='form-group'>
 									<select class='form-control' name='genderArr'>
 										<option value='M'>남성</option>
-										<option value='F'>여성</option>
+										<option value='W'>여성</option>
 									</select>
 								</div>
 							</td>
@@ -225,7 +225,7 @@
 								+ "<div class='form-group'>"
 								+ "<select class='form-control' name='genderArr'>"
 								+ "<option value='M'>남성</option>"
-								+ "<option value='F'>여성</option>"
+								+ "<option value='W'>여성</option>"
 								+ "</select>"
 								+ "</div>"
 								+ "</td>"
@@ -274,7 +274,7 @@
 					
 					// 방 삭제 버튼 클릭시 마지막에 생성된 방 정보 등록 요소 삭제
 					$("#remove-room-btn").click(function() {
-						if(roomNum> 2) {
+						if(roomNum > 2) {
 							roomNum--;
 
 							// 삭제할 div의 아이디 생성용 변수
@@ -306,7 +306,7 @@
 					var div_style = 'display: inline-block; position: relative; width: 150px; height: 120px; margin: 5px; border: 1px; solid #00f; z-index: 1;';
 					// 미리보기 이미지 속성
 					var img_style = 'width: 100%; height: 100%; z-index: none;';
-					// 이미지 안 표시되는 체크 박스 속성
+					// 이미지 안에 표시되는 체크 박스 속성
 					var chk_style = 'width: 30px; height: 30px; position: absolute; font-size: 20px; right: 0px; bottom: 0px; z-index: 999; background-color: rgba(255,255,255,0.1); color: #f00;';
 					
 					// [input=file] 요소가 변경될 경우
@@ -421,7 +421,7 @@
 				<textarea name="convenience" class="form-control" placeholder="편의시설 소개를 입력해주세요." style="resize: none;"></textarea>
 
 				<div class="btn-group">
-					<button type="button" class="btn btn-warning" onclick="formCheck()">등록 및 결제</button>
+					<button type="button" class="btn btn-warning" onclick="formCheck()">등록</button>
 					<button class="btn btn-danger" type="reset">취소</button>
 					<button type="submit" id="submit-click"></button>
 				</div>

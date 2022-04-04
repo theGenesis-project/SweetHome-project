@@ -104,7 +104,7 @@
                     		카테고리 : <select name="inteCate">
                     					<option value="1">침대</option>
                     					<option value="2">매트리스</option>
-                    					<option value="3">쇼파</option>
+                    					<option value="3">소파</option>
                     					<option value="4">테이블</option>
                     					<option value="5">거실장</option>
                     					<option value="6">조명</option>
@@ -114,17 +114,17 @@
                     				</select>
                     	</div>
                         <div class="interior_com">
-                           		 가구사 : <input type="text" id="interiorCo" name="interiorCo">
+                           		 가구사 : <input type="text" id="interiorCo" name="interiorCo" required>
                         </div>
                         <div class="interior_title">
-                            	게시글 제목 : <input type="text" id="interiorTitle" name="interiorTitle">
+                            	게시글 제목 : <input type="text" id="interiorTitle" name="interiorTitle" required>
                         </div>
                         <div class="interior_price">
-                           		 가격 : <input type="text" id="interiorPrice" name="interiorPrice">
+                           		 가격 : <input type="text" id="interiorPrice" name="interiorPrice" required>
                         <hr>
                         </div>
                         <div class="interior_post">
-                           		 택배비: <input type="text" id="interiorPost" name="interiorPost">
+                           		 택배비: <input type="text" id="interiorPost" name="interiorPost" required>
                             <hr>
                         </div> 
                         <div class="img-content">

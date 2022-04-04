@@ -1,13 +1,14 @@
 package com.thegenesis.sweethome.room.model.service;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import com.thegenesis.sweethome.common.vo.Report;
+import com.thegenesis.sweethome.house.model.vo.HouseFile;
 import com.thegenesis.sweethome.room.model.dao.RoomDao;
 import com.thegenesis.sweethome.room.model.vo.Room;
 
@@ -50,6 +51,53 @@ public class RoomService {
 	
 	public ArrayList<Room> houseDetail(int hno) {
 		return roomDao.houseDetail(sqlSession, hno);
+	}
+
+	/**
+	 * 하우스 번호로 방 정보 가져오기
+	 * @param hno
+	 * @return
+	 */
+	public ArrayList<Room> selectRoom(int hno) {
+		return roomDao.selectRoom(sqlSession, hno);
+	}
+
+	/**
+	 * 하우스 수정에서 방 등록
+	 * @param newRoom
+	 * @return
+	 */
+	public int updateInsertRoom(Room newRoom) {
+		return roomDao.updateInsertRoom(sqlSession, newRoom);
+	}
+
+
+	public int reportCheck(HashMap<String, String> map) {
+		return roomDao.reportCheck(sqlSession, map);
+	}
+
+	public int reportRoom(Report r) {
+		return roomDao.reportRoom(sqlSession, r);
+	}
+
+	public int increaseCount(int hno) {
+		return roomDao.increaseCount(sqlSession,hno);
+	}
+
+	public String checkHeart(HashMap<String, Integer> hm) {
+		return roomDao.checkHeart(sqlSession,hm);
+	}
+
+	public int changeHeart(HashMap<String, Integer> hm) {
+		return roomDao.changeHeart(sqlSession, hm);
+	}
+
+	public ArrayList<HouseFile> houseFileOne(int hno) {
+		return roomDao.houseFileOne(sqlSession, hno);
+	}
+
+	public ArrayList<HouseFile> changeFile(HashMap<String, Integer> hm) {
+		return roomDao.changeFile(sqlSession,hm);
 	}
 
 

@@ -32,8 +32,13 @@ public class OrderInfo {
 	private int inteCate;
 	private String interiorTitle;
 	private int interiorPost;
+
+	private String userId;
+	
+
 	private String interiorCo;
 	private int interiorPrice;
 	private String filePath;
 	private String won;
+
 }

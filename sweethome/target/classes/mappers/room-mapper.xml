@@ -28,9 +28,33 @@
 		<result column="ADDRESS" property="address"/>
 		<result column="LATITUDE" property="latitude"/>
 		<result column="LONGITUDE" property="longitude"/>
-		<result column="USER_NO" property="userNo"/>
+
+		<result column="USER_NO" property="userNo"/>	
+
 	</resultMap>
 
+	<resultMap type="room" id="roomUserSet">
+		<result column="ROOM_NO" property="roomNo"/>
+		<result column="HOUSE_NO" property="houseNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="USER_ID" property="userId"/>
+	</resultMap>
+	
+	<resultMap type="report" id="reportFileResultSet">
+  	<result column="REPORT_NO" property="reportNo"/>
+  	<result column="HOUSE_NO" property="houseNo"/>
+  	<result column="REPORT_CATE" property="reportCate"/> 
+  	<result column="USER_NO" property="userNo"/>	
+  </resultMap>
+  
+  <resultMap type="houseFile" id="FileResultSet">
+  	<result column="FILE_NO" property="fileNo"/>
+  	<result column="HOUSE_NO" property="houseNo"/>
+  	<result column="ROOM_NO" property="roomNo"/> 
+  	<result column="FILE_PATH" property="filePath"/>
+  	<result column="FILE_Level" property="fileLevel"/>	
+  </resultMap>
+	
 	
 	<!-- 방 등록 -->
 	<insert id="insertRoom" parameterType="room">
@@ -82,14 +106,162 @@
   		SET
   				STATUS = 'N'
   		WHERE
-  				HOUSE_NO = #{hno}
+  				ROOM_NO = #{roomNo}
   	</update>
 
 	<select id="houseDetail" resultMap="roomResultSet">
 			SELECT * 
 			FROM ROOM 
 			LEFT JOIN HOUSE USING(HOUSE_NO)
+			LEFT JOIN MEMBER USING(USER_NO)
 			WHERE HOUSE_NO = #{hno}
-			
   	</select>
+  	
+  	<select id="selectRoom" parameterType="_int" resultMap="roomResultSet">
+  		SELECT
+  				*
+  		FROM
+  				ROOM
+  		WHERE
+  				HOUSE_NO = #{hno}
+  		AND
+  				STATUS = 'Y'
+  	</select>
+  	
+  	<!-- 하우스 수정에서 방 등록 -->
+	<insert id="updateInsertRoom" parameterType="room">
+		INSERT
+			INTO ROOM(
+						ROOM_NO
+						,HOUSE_NO
+						,ROOM_NAME
+						,GENDER
+						,PEOPLE
+						,AREA
+						,DEPOSIT
+						,RENT
+						,EXPENSE
+						,UTILITY
+						,AVAILABLE_DATE
+						,STATUS
+					)
+			VALUES(
+						 SEQ_ROOM_NO.NEXTVAL
+						,#{houseNo}
+						,#{roomName}
+						,#{gender}
+						,#{people}
+						,#{area}
+						,#{deposit}
+						,#{rent}
+						,#{expense}
+						,#{utility}
+						,#{availableDate}
+						,DEFAULT
+					)
+	</insert>
+  	
+  	<select id="reportCheck" parameterType="hashmap" resultType="_int">
+			SELECT COUNT(*)
+			FROM 
+				REPORT
+			WHERE 
+				USER_NO = #{userNo}
+			AND 
+				HOUSE_NO = #{houseNo}
+	</select>
+	
+	<insert id="reportRoom" parameterType="report">
+			INSERT 
+			INTO REPORT(
+				REPORT_NO,
+				HOUSE_NO,
+				REPORT_CATE,
+				USER_NO
+			)
+			VALUES(
+				SEQ_REPORT_NO.NEXTVAL
+				,#{houseNo}
+				,#{reportCate}	
+				,#{userNo}	
+			)
+
+		</insert>
+		
+	<update id="increaseCount" parameterType="_int">
+	UPDATE 
+		HOUSE
+		SET
+		COUNT = COUNT + 1
+		WHERE 
+			STATUS = 'Y'
+		AND
+		HOUSE_NO = #{hno}
+		
+	</update>
+	
+	<select id="houseChangeHeart" parameterType="hashmap" resultType="string">
+		 SELECT 
+		 	STATUS
+        FROM 
+        	DIBS
+        WHERE
+        	USER_NO = #{userNo}
+        AND 
+            HOUSE_NO = #{houseNo}		
+	</select>
+	
+	<select id="interiorChangeHeart" parameterType="hashmap" resultType="string">
+		 SELECT 
+		 	STATUS
+        FROM 
+        	DIBS
+        WHERE
+        	USER_NO = #{userNo}
+        AND 
+            INTERIOR_NO = #{interiorNo}		
+		
+	</select>
+	
+	<insert id="changeHeartY" parameterType="hashmap">
+		INSERT INTO 
+			DIBS(USER_NO, HOUSE_NO)
+		VALUES
+			(#{userNo},
+			 #{houseNo})
+	</insert>
+	
+	<update id="changeHeartYY" parameterType="hashmap">
+		UPDATE 
+			DIBS
+		SET
+			STATUS = 'Y'
+		WHERE 
+			USER_NO = #{userNo}
+		AND
+			HOUSE_NO = #{houseNo}
+		
+	</update>
+	
+	<update id="changeHeartN" parameterType="hashmap">
+		UPDATE 
+			DIBS
+		SET
+			STATUS = 'N'
+		WHERE 
+			USER_NO = #{userNo}
+		AND
+			HOUSE_NO = #{houseNo}
+	</update>
+	<select id="houseFileOne" resultMap="FileResultSet">
+	  	SELECT *
+        FROM HOUSE_FILE
+        WHERE HOUSE_NO = #{hno} and FILE_level = 1
+	</select>
+	<select id="changeFile" resultMap="FileResultSet">
+	  	SELECT FILE_PATH
+        FROM HOUSE_FILE
+        WHERE HOUSE_NO = #{hno} and ROOM_NO = #{rno}
+	</select>
+	
 </mapper>
