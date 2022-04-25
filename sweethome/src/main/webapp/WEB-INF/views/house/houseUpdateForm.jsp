@@ -55,13 +55,6 @@
 
 	<div class="outer">
 		
-		<h1>${ h.houseNo }</h1>
-		<br>
-		${ rList }
-		<br>
-		${ hfList }
-		
-		
 		<h1>하우스 수정</h1>
 
 		<form action="updateHouse.ho" method="post" enctype="multipart/form-data" id="insertHouse">

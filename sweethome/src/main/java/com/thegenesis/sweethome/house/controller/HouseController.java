@@ -36,13 +36,13 @@ public class HouseController {
 	@Autowired
 	private RoomService roomService;
 	
-	// 테스트용
+	// 하우스 등록 폼
 	@RequestMapping("houseInsert")
 	public String houseInsert() {
 		return "house/houseInsert";
 	}
 	
-	// 테스트용
+	// 하우스 수정 폼
 	@GetMapping("houseUpdateForm")
 	public String houseUpdateForm() {
 		return "house/houseUpdateForm";
@@ -300,7 +300,6 @@ public class HouseController {
 		int resultRoom = 0; // 방 수정 결과
 		int resultHouseFile = 0; // 방 파일 수정 결과
 		
-		
 		// 하우스 번호로 기존 정보 가져오기
 		House originHouse = houseService.selectHouseByNo(hno); // 하우스의 기존 정보
 		ArrayList<Room> originRoomList = roomService.selectRoom(hno); // 해당 하우스의 기존 방 
@@ -330,58 +329,54 @@ public class HouseController {
 			int resultRoomFile = 0; // 방 파일 삭제 확인
 			ArrayList<HouseFile> deleteHfList = new ArrayList<>(); // 삭제할 이미지 파일 목록
 			
-			if(i > 0) {
+			if(i > 0) {				
 				roomNo = r.getRoomNoArr()[changeFilesRoomNo[i - 1]];
 			}
 			
-			// 기존 방 파일 수정
-			if(roomNo > 0) {
-				// 대표 사진 확인
-				if(changeFilesRoomNo[i] == 0) {
-					deleteHfList = houseService.selectPrimaryHouseFile(hno);
-					fileLevel = 1;
-				} else {
-					deleteHfList = houseService.selectRoomFile(roomNo);
-					fileLevel = 2;
-				}
-				
-				// 서버에 저장된 실제 이미지 삭제
-				for(HouseFile deletehf: deleteHfList) {
-					new File(session.getServletContext().getRealPath(deletehf.getFilePath())).delete();
-				}
-				
-				// 실제 이미지 삭제 후 DB 삭제
-				if(changeFilesRoomNo[i] == 0) {
-					resultRoomFile = houseService.deletePrimaryHouseFile(hno);
-				} else {
-					resultRoomFile = houseService.deleteRoomFile(roomNo);
-				}
-				
-				if(resultRoomFile > 0) {
-					// 수정된 파일 삽입
-					ArrayList<HouseFile> hfList = new ArrayList<>(); // 하우스 파일 등록용 ArrayList
-					
-					// 해당 방 바뀐 이미지 파일 저장
-					for(int j = 0; j < changeFilesNumber[i]; j++) { // j = 파일 개수 확인
-						// 서버 업로드용 파일명 변경
-						String changeName = saveFile.changeFileName(upfile[fileCheck], session);
-						
-						// 해당 하우스 이미지 파일 리스트로 저장
-						hfList.add(HouseFile.builder()
-								.roomNo(roomNo)
-								.originName(upfile[fileCheck].getOriginalFilename())
-								.changeName(changeName)
-								.filePath("resources/uploadFiles/" + changeName)
-								.fileLevel(fileLevel)
-								.build());
-						
-						fileCheck++;
-					}
-					// 하우스 파일 등록
-					resultHouseFile = houseService.insertHouseFile(hfList);
-				}
+			// 대표 사진 확인
+			if(changeFilesRoomNo[i] == 0) {
+				deleteHfList = houseService.selectPrimaryHouseFile(hno);
+				fileLevel = 1;
+			} else {
+				deleteHfList = houseService.selectRoomFile(roomNo);
+				fileLevel = 2;
 			}
 			
+			// 서버에 저장된 실제 이미지 삭제
+			for(HouseFile deletehf: deleteHfList) {
+				new File(session.getServletContext().getRealPath(deletehf.getFilePath())).delete();
+			}
+			
+			// 실제 이미지 삭제 후 DB 삭제
+			if(changeFilesRoomNo[i] == 0) {
+				resultRoomFile = houseService.deletePrimaryHouseFile(hno);
+			} else {
+				resultRoomFile = houseService.deleteRoomFile(roomNo);
+			}
+			
+			if(resultRoomFile > 0) {
+				// 수정된 파일 삽입
+				ArrayList<HouseFile> hfList = new ArrayList<>(); // 하우스 파일 등록용 ArrayList
+				
+				// 해당 방 바뀐 이미지 파일 저장
+				for(int j = 0; j < changeFilesNumber[i]; j++) { // j = 파일 개수 확인
+					// 서버 업로드용 파일명 변경
+					String changeName = saveFile.changeFileName(upfile[fileCheck], session);
+					
+					// 해당 하우스 이미지 파일 리스트로 저장
+					hfList.add(HouseFile.builder()
+							.roomNo(roomNo)
+							.originName(upfile[fileCheck].getOriginalFilename())
+							.changeName(changeName)
+							.filePath("resources/uploadFiles/" + changeName)
+							.fileLevel(fileLevel)
+							.build());
+					
+					fileCheck++;
+				}
+				// 하우스 파일 등록
+				resultHouseFile = houseService.insertHouseFile(hfList);
+			}
 		}
 		
 //		// 방 개수 확인
@@ -401,8 +396,8 @@ public class HouseController {
 //		
 //		System.out.println("origin: " + originRoomNoList);
 //		System.out.println("update: " + updateRoomNoList);
-		
-		
+//		
+//		
 //		// 등록된 방 개수보다 적은 경우
 //		if(originRoomNoList.size() > updateRoomNoList.size()) {
 //			
