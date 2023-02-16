@@ -186,7 +186,7 @@
 	<jsp:include page="../common/footer.jsp" />
 
 
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc26f4f2ac186a2ad635ddbe87b694c6&libraries=services"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=PleaseInsertYourApiKey&libraries=services"></script>
 	<script>
 	
 	
